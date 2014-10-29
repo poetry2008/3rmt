@@ -8545,7 +8545,10 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
    $result['error'] = false;
    $all_tmp_row = 0;
    $products_info_array = array();
-   while($tmp_row = tep_db_fetch_array($tmp_query)){
+   while($tmp_res = tep_db_fetch_array($tmp_query)){
+     $tmp_row_list[] = $tmp_res;
+   }
+   foreach($tmp_row_list as $tmp_row){ 
      $tmp_row['products_real_quantity'] = tep_get_quantity($tmp_row['products_id']);
        $tmp_relate_products_id = (int)$tmp_row['relate_products_id'];  
        $products_rate = tep_get_relate_radices_by_products_id($tmp_row['relate_products_id']);
@@ -8576,16 +8579,17 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
               }
               if($orders_products_array['products_rate'] == '' ||
                   $orders_products_array['products_rate'] == null){
-                continue;
-              }
+                $products_info_array[] = array('orders_id'=>'','products_quantity'=>$tmp_row['products_real_quantity'],'products_id'=>$tmp_row['products_id']);
+              }else{
               if($orders_products_array['products_rate'] && $orders_products_array['products_rate'] != '' && $orders_products_array['products_rate'] != 0){
                 if($orders_products_array['products_rate'] == $products_rate){
-                  $temp_quantity += $orders_products_array['products_quantity'];
                   $temp_quantity_value = $orders_products_array['products_quantity'];
+                  $temp_quantity += "$temp_quantity_value";
                   if($temp_quantity > $temp_all_product){
-                    $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
-                    $temp_quantity -= $orders_products_array['products_quantity'];
-                    $temp_quantity += $temp_quantity_value;
+                    $tmp_qvalue = $temp_quantity_value;
+                    $temp_quantity_value = "$temp_quantity_value"-("$temp_quantity" - "$temp_all_product");
+                    $temp_quantity -= "$tmp_qvalue";
+                    $temp_quantity += "$temp_quantity_value";
                   }
                   $temp_real_all_quantity += $temp_quantity_value;
                   if($temp_quantity_value < $orders_products_array['products_quantity']){
@@ -8595,14 +8599,14 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
                   $products_price = $orders_products_array['final_price'];
                 }else{
                   $product_relate_quantity=($orders_products_array['products_rate']*$orders_products_array['products_quantity'])/$products_rate;
-                  $temp_quantity += $product_relate_quantity;
+                  $temp_quantity += "$product_relate_quantity";
                   $temp_quantity_value = $product_relate_quantity;
                   if($temp_quantity > $temp_all_product){
-                    $temp_quantity_value = $product_relate_quantity-($temp_quantity - $temp_all_product);
-                    $temp_quantity -= $product_relate_quantity;
-                    $temp_quantity += $temp_quantity_value;
+                    $temp_quantity_value = "$product_relate_quantity"-("$temp_quantity" - "$temp_all_product");
+                    $temp_quantity -= "$product_relate_quantity";
+                    $temp_quantity += "$temp_quantity_value";
                   }
-                  $temp_real_all_quantity += $temp_quantity_value;
+                  $temp_real_all_quantity += "$temp_quantity_value";
                   if($temp_quantity_value < $product_relate_quantity){
                     $orders_products_array['products_quantity'] = $temp_quantity_value;
                   }
@@ -8614,9 +8618,10 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
                 $temp_quantity += $orders_products_array['products_quantity'];
                 $temp_quantity_value = $orders_products_array['products_quantity'];
                 if($temp_quantity > $temp_all_product){
-                  $temp_quantity_value = $orders_products_array['products_quantity']-($temp_quantity - $temp_all_product);
-                  $temp_quantity -= $orders_products_array['products_quantity'];
-                  $temp_quantity += $temp_quantity_value;
+                  $tmp_qvalue = $temp_quantity_value;
+                  $temp_quantity_value = "$temp_quantity_value"-("$temp_quantity" - "$temp_all_product");
+                  $temp_quantity -= "$tmp_qvalue";
+                  $temp_quantity += "$temp_quantity_value";
                 }
                 $temp_real_all_quantity += $temp_quantity_value;
                 if($temp_quantity_value < $orders_products_array['products_quantity']){
@@ -8627,13 +8632,23 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
                 $products_price = $orders_products_array['final_price'];
               }
               $products_info_array[] = array('orders_id'=>$orders_products_array['orders_id'],'final_price'=>$products_price,'products_quantity'=>$temp_quantity_value,'products_id'=>$tmp_row['products_id']);
+              }
             } 
             tep_db_free_result($o_count_raw);
+          }else{
+            if($tmp_row['products_real_quantity']!=0){
+              $products_info_array[] = array('orders_id'=>'','products_quantity'=>$tmp_row['products_real_quantity'],'products_id'=>$tmp_row['products_id']);
+            }
           }
+       }else{
+         if($tmp_row['products_real_quantity']!=0){
+           $products_info_array[] = array('orders_id'=>'','products_quantity'=>$tmp_row['products_real_quantity'],'products_id'=>$tmp_row['products_id']);
+         }
        }
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
-       $quantity_all_product += $tmp_row['products_real_quantity'];
+       $tmp_quantity_real = $tmp_row['products_real_quantity'];
+       $quantity_all_product += "$tmp_quantity_real";
      }
    }
    if(empty($products_info_array)){
