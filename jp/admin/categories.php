@@ -3880,11 +3880,16 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       'text'=>TABLE_HEADING_CATEGORIES_PEER_PERSON_NO_SETTING);
                 }
               }
+            
+              mysql_select_db(DBNAME);
+              $date_query = mysql_query( "select max(collect_date) as collect_date from ".CATEGORY_TABLE);
+              $date_array = mysql_fetch_array($date_query);
+              mysql_select_db(DB_DATABASE); 
               //采集价格
               $categories_title_collect = ''; 
-              $categories_title_collect .= "<a class='head_sort_order' href='javascript:void(0);' onclick='update_collect_info(".$show_ca_res['parent_id'].");'>";
+              $categories_title_collect .= "<a class='head_sort_order' href='javascript:void(0);' onclick='update_collect_info(".$show_ca_res['parent_id'].",".$show_ca_res['categories_id'].");'>";
               $categories_title_collect .= PRODUCTS_COLLECT_PRICE;
-              $categories_title_collect .= '</a>';
+              $categories_title_collect .= '</a><br>'.date('Y/m/d H:i',strtotime($date_array['collect_date']));
               $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent_order"','text'=>$categories_title_collect);  
               $categories_title_price = '';
               //操作时间排序
