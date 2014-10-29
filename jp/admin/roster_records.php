@@ -185,7 +185,7 @@ if(isset($_GET['action'])){
           &&is_array($_POST['attendance_id'])
           &&!empty($_POST['attendance_id'])){
         $a_id_arr = $_POST['attendance_id'];
-        if(isset($_POST['user'])&&!empty($_POST['user'])){
+        if(isset($_POST['user'])&&!empty($_POST['user'][1])){
           $user_arr = $_POST['user'];
         }else{
           $user_arr = $_POST['user_hidden'];
@@ -1414,7 +1414,7 @@ while($j<=$end_day)
     if($date<=$today&&$temp_is_work_str==''&&$show_att_status!=2){
       $work_time_str .= tep_show_att_time($attendance_info_arr[$date][$user_value][$user_attenande['attendance_detail_id']],$user_value,$date,$attendance_info['src_text'],$j,$show_att_status,'1');
     }
-    $info_td_attendance_str .= '<span style="float:left; display:block;">'.$work_time_str.'</span>';
+    $info_td_attendance_str .= '<span style="float:left; display:block; margin-top: 2px;">'.$work_time_str.'</span>';
     $info_td_attendance_str .= '<span style="display:block; min-height:16px; line-height:16px; float:left">'.$temp_is_work_str.'</span>';
     //请假信息输出
     $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." 
