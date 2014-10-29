@@ -1065,7 +1065,7 @@ if($param_tep[0]!=''){
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
         $group_str .= '</td>';
         
-        $group_str .= '<td>';
+        $group_str .= '<td colspan="3">';
 		if($show_att_status==1){
 	      $status_error = 'checked ="ckecked"';
 		}elseif($show_att_status==2) {
@@ -1570,7 +1570,7 @@ while($j<=$day_num)
   echo "<td id='date_td_".$j."'  valign='top' >";
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
+  echo "<tr><td align='right' style='background-color:#3C7FB1;color:#ffffff; font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
       echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
