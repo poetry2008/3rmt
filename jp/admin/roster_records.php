@@ -1035,8 +1035,8 @@ if($param_tep[0]!=''){
         }
 
         //new 各种设定
-        $group_str .= '<tr height="19">';
-        $group_str .= '<td style="padding-bottom:8px">';
+        $group_str .= '<tr height="22">';
+        $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
         $group_str .= '<td width="20%">';
@@ -1057,8 +1057,8 @@ if($param_tep[0]!=''){
         $group_str .= '</tr>';
 
         //new 显示设定
-        $group_str .= '<tr>';
-        $group_str .= '<td style="padding-bottom:8px">';
+        $group_str .= '<tr height="22">';
+        $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
         $group_sr .= '</td>';
         $group_str .= '<td>';
