@@ -45,6 +45,9 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
       }
       $index++;
     }
+    if($index>$count){
+      return $arr[0].$str_end;
+    }
     for($j=$index;$j>0;$j--){
       if(substr($arr[1],$index-1,1)==0){
         $index--;
@@ -604,9 +607,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
               $products_quantity_num += "$temp_products_quantity";
             $info_str_temp .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
             $products_quantity_value = $info_value['products_quantity'];
-            if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
+           if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
-              $products_quantity_value = "$products_quantity_value" - ("$products_quantity_num" - $category_asset_arr[$key]['real_all_product']);
+              $real_all_product_category = $category_asset_arr[$key]['real_all_product'];
+              $products_quantity_value = "$products_quantity_value" - ("$products_quantity_num" - "$real_all_product_category");
             }
             $info_str_temp .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $info_str_temp .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
@@ -771,8 +775,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             $products_info_str .= '<td>&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
             $products_quantity_value = $info_value['products_quantity'];
             if($products_quantity_num > $all_product[$k]['quantity_all_product']){
+              $products_quantity_all = $all_product[$k]['quantity_all_product'];
 
-              $products_quantity_value = "$products_quantity_value"  - ("$products_quantity_num" - $all_product[$k]['quantity_all_product']);
+              $products_quantity_value = "$products_quantity_value"  - ("$products_quantity_num" - "$products_quantity_all");
             }
             $products_info_str .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $products_info_str .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
