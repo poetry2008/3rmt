@@ -509,11 +509,89 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 }else if(isset($_GET['action']) && $_GET['action'] == 'update_collect_info'){
   //把采集的商品价格同步到后台
   $cid = $_POST['cid'];
+  $pid = $_POST['pid'];
+  $category_query = "select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".CATEGORIES_TABLE." c,".CATEGORIES_DESCRIPTION_TABLE." cd where c.categories_id =cd.categories_id and c.categories_id ='".$pid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1";
+  $category_name_query= tep_db_query($category_query);
+  $category_name_array = tep_db_fetch_array($category_name_query);
+  $category_name = $category_name_array['categories_name'];
+  $category_type_query = tep_db_query("select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".CATEGORIES_TABLE." c, ".CATEGORIES_DESCRIPTION_TABLE." cd where c.categories_id =cd.categories_id and c.categories_id ='".$cid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1");
+  $category_type_array = tep_db_fetch_array($category_type_query);
+  $category_type = (strpos($category_type_array['categories_name'],'販売'))?1:0;
+  mysql_select_db(DBNAME);
+  $game_str_array = array('FF14'=>'FF14',
+      'RO'=>'ラグナロク',
+      'RS'=>'レッドストーン',
+      'FF11'=>'FF11',
+      'DQ10'=>'DQ10',
+      'L2'=>'リネージュ2',
+      'ARAD'=>'アラド戦記',
+      'nobunaga'=>'信長の野望',
+      'PSO2'=>'PSO2',
+      'L1'=>'リネージュ',
+      'TERA'=> 'TERA',
+      'AION'=> 'AION',
+      'CABAL'=> 'CABAL',
+      'WZ'=> 'ウィザードリィ',
+      'latale'=> 'ラテール',
+      'blade'=> 'ブレイドアンドソウル',
+      'megaten'=> '女神転生IMAGINE',
+      'EWD'=> 'エルソード',
+      'LH'=> 'ルーセントハート',
+      'HR'=> 'マビノギ英雄伝',
+      'AA'=> 'ArcheAge',
+      'ThreeSeven'=> '777タウン',
+      'ECO'=> 'エミルクロニクル',
+      'FNO'=> 'FNO',
+      'SUN'=> 'SUN',
+      'talesweave'=> 'テイルズウィーバー',
+      'MU'=> 'MU',
+      'C9'=> 'C9',
+      'MS'=> 'メイプルストーリー',
+      'cronous'=> 'クロノス',
+      'tenjouhi'=> '天上碑',
+      'rose'=> 'ローズオンライン',
+      'hzr'=> '晴空物語',
+      'dekaron'=> 'デカロン',
+      'fez'=> 'ファンタジーアースゼロ',
+      'lakatonia'=> 'ラカトニア',
+      'moe'=> 'ラカトニア',
+      'mabinogi'=> 'マビノギ',
+      'WF'=> '戦場のエルタ',
+      'rohan'=> 'ROHAN',
+      'genshin'=> '幻想神域',
+      'lineage'=> 'リネージュ'
+      );
+ $game_array = array_flip($game_str_array);
+  foreach($game_array as $k=>$v){
+    if(strpos($category_name,$k)!==false){
+      $name = $v;
+      break;
+    }
+  }
+  $products_price_query = tep_db_query("select pp.product_name,ps.product_price from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` = ".$category_type);
+ while($products_price = tep_db_fetch_array($products_price_query)){
+  $products_price_array[] = $products_price ;
+ }
+  mysql_select_db(DB_DATABASE);
+  foreach($products_price_array as $k=>$v){
+   $sql = "select products_id from ".PRODUCTS_DESCRIPTION_TABLE." where site_id = 0 and language_id = 4 and preorder_status=".$category_type." and products_name like '%".$v['product_name']."%'";
+   $products_id_query = tep_db_query($sql); 
+   $products_id_array = tep_db_fetch_array($products_id_query);
+   $products_id = $products_id_array['products_id'];
+   if($products_id){
+      $res = tep_db_query("update ".PRODUCTS_TABLE." set collect_price = ".$v['product_price']." where products_id=".$products_id);
+   }else {
+      continue;
+   }
+ }
+  echo json_encode($products_price_array);
+ // print_r($category_name_array);
+  /* $cid = $_POST['cid'];
   $category_name_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES." where categories_id='".$cid."' and site_id=0");
   $category_name_array = tep_db_fetch_array($category_name_query);
   tep_db_free_result($category_name_query);
 
-  echo $category_name_array['categories_name'];
+  echo $category_name_array['categories_name'];*/
 }
  
 ?>
