@@ -29,11 +29,12 @@ function set_attendance_info(ele,id,flag,param_y,param_m){
   }
   if(flag==2){
     url_tep= 'ajax.php?action=set_attendance_group_info';
+	var att_show_status = $("#show_att_status_hidden").val();
   }
   
   $.ajax({
   url: url_tep,
-  data: 'id='+id+'&param_y='+param_y+'&param_m='+param_m,
+  data: 'id='+id+'&param_y='+param_y+'&param_m='+param_m+'&att_show_status='+att_show_status,
   type: 'POST',
   dataType: 'text',
   async : false,

@@ -9591,10 +9591,10 @@ else if($_GET['action'] == 'set_attendance_info') {
      ); 
 
 
-    $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
-    $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
-    $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
-    $update_time_text= TEXT_DATE_UPDATE.$attendance_info_res['update_time'];
+    $add_user_text= TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_time'];
      $hidden_add_user = tep_draw_input_field('add_user',$attendance_info_res['add_user'],'style="display:none"');
      $hidden_add_time = tep_draw_input_field('add_time',$attendance_info_res['add_time'],'style="display:none"');
 
@@ -9785,9 +9785,17 @@ $group_content[]['text'] = array(
 		$group_user_list = array_combine($show_group_user,$uname_arr);
 		 $group_user_list = array_filter($group_user_list);
 		asort($group_user_list);
-        $user_str = '<div id="show_user_list">';
+        $user_str = '<table id="show_user_list" width="70%" cellspacing="0" cellpadding="0" border="0">';
+        $user_str .= '<tr>';
+		
+	    $i=1;
 		foreach($group_user_list as $key=>$val) {
-          $user_str .= '<input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+			$i++;
+			if($i>1 && $i%2 ==0 ){
+        $user_str .= '<tr/><tr>';
+			}
+
+          $user_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $user_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);
@@ -9795,13 +9803,18 @@ $group_content[]['text'] = array(
           }
           $user_str .= ' value="'.$key.'" >';
           $user_str .=  '<label for="'.$key.'">'.$val.'</label>';
-          $user_str .= '&nbsp;&nbsp;&nbsp;';
+          $user_str .= '</td>';
 		}
-       $user_str .= '</div>';
+          $user_str .= '</tr>';
+       $user_str .= '</table>';
+
+ if($_POST['att_show_status']!='undefined'){
+   $att_status ='<input type="hidden" name="att_status" value='.$_POST['att_show_status'].'>';
+ }
 
     $group_content[]['text'] = array(
            array('params'=>'width="20%"','text'=> ''),
-           array('text' =>$user_str)
+           array('text' =>$user_str.$att_status)
 	); 
 
  $button[] = array('params'=>'align="center" colspan="2"','text'=>'<input type="submit" value="'.IMAGE_SAVE.'">');
@@ -10862,7 +10875,7 @@ if($row_array['set_time']==0){
   //底部内容
   $buttons = array();
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 
@@ -11253,10 +11266,10 @@ if($row_array['set_time']==0){
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ONLY_USER_ATTENDANCE, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_REPLACE_ATTENDANCE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
@@ -11775,12 +11788,10 @@ if($row_array['set_time']==0){
   );
 
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
-        array('align' => 'left', 'text' => $hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_added)?$user_added:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($date_added)?$date_added:TEXT_UNSET_DATA))
+        array('align' => 'left','params'=>'colspan="2"', 'text' => $hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_added)?$user_added:TEXT_UNSET_DATA).'<span style="margin-left:18%"></span>'.TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($date_added)?$date_added:TEXT_UNSET_DATA))
       ));
   $as_info_row[]['text'] = array(
-        array('align' => 'left', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_update)?$user_update:TEXT_UNSET_DATA)),
-        array('align' => 'left', 'text' => TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($last_modified)?$last_modified:TEXT_UNSET_DATA))
+        array('align' => 'left','params'=>'colspan="2"', 'text' => TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($user_update)?$user_update:TEXT_UNSET_DATA).'<span style="margin-left:18%"></span>'.TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($last_modified)?$last_modified:TEXT_UNSET_DATA))
       );
 
   //底部内容
@@ -11788,9 +11799,9 @@ if($row_array['set_time']==0){
   
   if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
     if(tep_is_group_manager($ocertify->auth_user)){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }else{
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP_CONFIG, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }
   }
   if($ocertify->npermission>10
