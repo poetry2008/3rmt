@@ -1035,8 +1035,8 @@ if($param_tep[0]!=''){
         }
 
         //new 各种设定
-        $group_str .= '<tr height="19">';
-        $group_str .= '<td style="padding-bottom:8px">';
+        $group_str .= '<tr height="22">';
+        $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
         $group_str .= '<td width="20%">';
@@ -1057,15 +1057,17 @@ if($param_tep[0]!=''){
         $group_str .= '</tr>';
 
         //new 显示设定
-        $group_str .= '<tr>';
-        $group_str .= '<td style="padding-bottom:8px">';
+        $group_str .= '<tr height="22">';
+        $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
         $group_sr .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
+		//显示出勤状态
+        $group_str .= '<input type="hidden" id="show_att_status_hidden" value='.$show_att_status.'>';
         $group_str .= '</td>';
         
-        $group_str .= '<td>';
+        $group_str .= '<td colspan="3">';
 		if($show_att_status==1){
 	      $status_error = 'checked ="ckecked"';
 		}elseif($show_att_status==2) {
@@ -1336,9 +1338,9 @@ while($j<=$end_day)
       $show_select_group_users = array($user_value);
       $row_index++;
       if($row_index%2==1){
-        echo '<tr style="cursor:pointer">';
+        echo '<tr onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">';
       }else{
-        echo '<tr style="cursor:pointer">';
+        echo '<tr onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'">';
       }
       echo '<td height="16">'.$users_info['name'].'</td>';
       if($j == 7 - $start_week){
@@ -1567,10 +1569,10 @@ while($j<=$day_num)
     asort($show_att_user_list);
   }
   $style= (empty($attendance_arr)) ? '':'cursor:pointer;';
-  echo "<td id='date_td_".$j."'  valign='top' >";
+  echo '<td onmouseout="this.className=\'\'" onmouseover="this.className=\'dataTableRowOver\'" id="date_td_'.$j.'"  valign="top" >';
   echo '<div id ="table_div_databox_minsize"><table width="100%" border="0"
     cellspacing="0" cellpadding="0" class="info_table_small">';
-  echo "<tr><td align='right' style='font-size:14px; border-width:0px; cursor:pointer;' ";
+  echo "<tr><td align='right' style='background-color:#3C7FB1;color:#ffffff; font-size:14px; border-width:0px; cursor:pointer;' ";
   if($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user)){
     if($show_group_id!=0){
       echo " onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$show_group_id."\",\"\",\"\")' >";
