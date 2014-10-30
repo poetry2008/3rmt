@@ -641,7 +641,7 @@ function del_as(ele,asl_id,c_permission){
 function del_as_user(ele,asl_id,is_new){
   var tr_index = $(ele).parent().parent().index();
   tr_index++;
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   if(!is_new){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
   }
