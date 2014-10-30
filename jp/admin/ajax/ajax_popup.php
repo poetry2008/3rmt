@@ -11409,7 +11409,7 @@ if($row_array['set_time']==0){
 
     $admin_flag = true;
   }
-  $attendance_select = '<select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
+  $attendance_select = '<div class="show_att_titile"><select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,$_GET['uid']); 
     $select_att = '';
@@ -11493,7 +11493,7 @@ if($row_array['set_time']==0){
   }
   $attendance_select .= '</select>&nbsp;&nbsp;<font color="red" id="attendance_detail_error"></font>';
   $attendance_select .= $attendance_select_hidden;
-  $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font>';
+  $replace_select .= '</select>&nbsp;&nbsp;<font color="red" id="replace_attendance_detail_error"></font></div>';
 
   $leave_start_array = explode(':',$replace_info_res['leave_start']);
   $leave_start_min_left= substr($leave_start_array[1],0,1);

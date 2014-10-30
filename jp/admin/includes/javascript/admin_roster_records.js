@@ -820,20 +820,41 @@ function del_allow_user(ele){
 
 //change groups
 function change_users_groups(value){
-
+    var y=$("#fetch_year").val();
+    var m=$("#fetch_month").val();
+    var d=$("#fetch_day").val();
+    var date_tep = y+m+d;
   $.ajax({
           url: 'ajax.php?action=change_users_groups',
-          data: 'users_id='+value,
+          data: 'users_id='+value+'&date='+date_tep,
           type: 'POST',
           dataType: 'text',
           async : false,
           success: function(data){
-
+             var tmp_msg_arr = data.split('|||'); 
+            $("#show_user_adl").html(tmp_msg_arr[2]);
+			$(".show_att_titile").html('');
+			$(".show_att_titile").html(tmp_msg_arr[1]);
             $("#users_groups").html('');
-            $("#users_groups").html(data);
+            $("#users_groups").html(tmp_msg_arr[0]);
           }
         });
 }
+//change attendance get detail time
+function get_detail_att_time(value){
+  $.ajax({
+          url: 'ajax.php?action=get_detail_att_time',
+          data: 'att_id='+value,
+          type: 'POST',
+          dataType: 'text',
+          async : false,
+          success: function(data){
+            $("#show_user_adl").html('');
+            $("#show_user_adl").html(data);
+          }
+        });
+
+} 
 //change users allow
 function change_users_allow(value,allow_status_value){
 
