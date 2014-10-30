@@ -1265,8 +1265,8 @@ function auto_add_user(ele,aid){
 
 //auto add attendance
 function auto_add_attendance(ele){
-
-  if(ele.value != ''){
+var len_att = $(".popup_order_info").find('select[name="attendance_id[]"]').length;
+  if(ele.value != '' && len_att==1){
   
     var line_num = $("#line_num").val();
     line_num = parseInt(line_num);
