@@ -374,6 +374,7 @@ function change_model_get_time(model_id){
        dataType: 'text',
        async : false,
        success: function(data){
+          $('#show_user_adl').html('');
           $('#show_user_adl').html(data);
        }
   }); 
@@ -839,6 +840,7 @@ function change_users_groups(value){
           async : false,
           success: function(data){
              var tmp_msg_arr = data.split('|||'); 
+            $("#show_user_adl").html('');
             $("#show_user_adl").html(tmp_msg_arr[2]);
 			$(".show_att_titile").html('');
 			$(".show_att_titile").html(tmp_msg_arr[1]);
