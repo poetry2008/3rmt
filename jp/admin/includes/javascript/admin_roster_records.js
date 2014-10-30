@@ -611,12 +611,9 @@ if(flag !=1 && sign!=1) {
 }
 }
 
-function del_as(ele,asl_id,c_permission){
+function del_as(num,ele,asl_id,c_permission){
   //start
-  $(ele).parent().parent().prev().prev().prev().remove();
-  $(ele).parent().parent().prev().prev().remove();
-  $(ele).parent().parent().prev().remove();
-  $(ele).parent().parent().remove();
+  $(".tr_"+num).parent().remove(); 
   //end
   var tr_index = $(ele).parent().parent().prev().index();
   var next_input = $(ele).parent().prev().html();
