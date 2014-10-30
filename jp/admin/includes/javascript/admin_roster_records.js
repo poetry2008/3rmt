@@ -374,6 +374,7 @@ function change_model_get_time(model_id){
        dataType: 'text',
        async : false,
        success: function(data){
+          $('#show_user_adl').html('');
           $('#show_user_adl').html(data);
        }
   }); 
@@ -611,12 +612,9 @@ if(flag !=1 && sign!=1) {
 }
 }
 
-function del_as(ele,asl_id,c_permission){
+function del_as(num,ele,asl_id,c_permission){
   //start
-  $(ele).parent().parent().prev().prev().prev().remove();
-  $(ele).parent().parent().prev().prev().remove();
-  $(ele).parent().parent().prev().remove();
-  $(ele).parent().parent().remove();
+  $(".tr_"+num).parent().remove(); 
   //end
   var tr_index = $(ele).parent().parent().prev().index();
   var next_input = $(ele).parent().prev().html();
@@ -842,6 +840,7 @@ function change_users_groups(value){
           async : false,
           success: function(data){
              var tmp_msg_arr = data.split('|||'); 
+            $("#show_user_adl").html('');
             $("#show_user_adl").html(tmp_msg_arr[2]);
 			$(".show_att_titile").html('');
 			$(".show_att_titile").html(tmp_msg_arr[1]);

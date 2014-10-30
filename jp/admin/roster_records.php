@@ -1075,9 +1075,9 @@ if($param_tep[0]!=''){
 		}else{
 	      $status_all = 'checked ="ckecked"';
 		}
-        $group_str .= '<input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>&nbsp;&nbsp;';
-        $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;';
-        $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ></span><span style="display:block; float:left;"><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>&nbsp;&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'></span><span style="display:block; float:left;"><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'></span><span style="display:block; float:left;"><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
         $group_sr .= '</td>';
 
 
