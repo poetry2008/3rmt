@@ -612,18 +612,24 @@ if(flag !=1 && sign!=1) {
 }
 
 function del_as(ele,asl_id,c_permission){
-  var tr_index = $(ele).parent().parent().index();
-  var next_input = $(ele).parent().html();
+  //start
+  $(ele).parent().parent().prev().prev().prev().remove();
+  $(ele).parent().parent().prev().prev().remove();
+  $(ele).parent().parent().prev().remove();
+  $(ele).parent().parent().remove();
+  //end
+  var tr_index = $(ele).parent().parent().prev().index();
+  var next_input = $(ele).parent().prev().html();
   tr_index++;
 
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
     if(tr_index==0 && check_last.length>0){
-     $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+     //$('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
     }
   }
   if(asl_id!=''){
@@ -638,7 +644,11 @@ function del_as_user(ele,asl_id,is_new){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
   }
 }
-function del_as_group(ele,attendance_group,is_new,c_permission){
+function del_as_group(num,ele,attendance_group,is_new,c_permission){
+  //start
+
+  $(".tr_"+num).parent().remove();
+  //end
   var tr_index = $(ele).parent().parent().index();
   tr_index++;
 
@@ -657,11 +667,11 @@ function del_as_group(ele,attendance_group,is_new,c_permission){
   var add_str = $('#add_user_group').html();
   next_input = next_input+add_str;
   // get count by attendance_group and for this to remove
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr').eq(tr_index).remove();
   for(var i=0;i<del_sum;i++){
-    $('.popup_order_info').find('tr').eq(tr_index).remove();
+    //$('.popup_order_info').find('tr').eq(tr_index).remove();
   }
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
@@ -1014,7 +1024,7 @@ function edit_space_nums(ele,val) {
    }
 
 }
-function add_att_rows(ele,check_val){
+function add_att_rows(ele){
 
 //rename new user->name
 var bid=$(".popup_order_info").find('select[name="attendance_id[]"]').length+1;
@@ -1023,16 +1033,11 @@ $('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
 
   var add_str = $('#add_source tbody').html();
   add_str = add_str.replace("'temp_del_group_id'",bid);
-  $(ele).parent().parent().before(add_str);
-
-//not null add delete button
-  if(check_val!=''){
-    var tep_data = $("#tep_data").html();
-    $(ele).parent().html(tep_data);
-  }  
-  if(check_val==''){
-    $(ele).remove();
-  }  
+  var line_num = $("#line_num").val();
+  line_num = parseInt(line_num);
+  add_str = add_str.replace(/#line_num_1/g,line_num+1);
+  add_str = add_str.replace(/#line_num/g,line_num);
+  $(ele).parent().parent().next().after(add_str);  
 }
 
 //add person
@@ -1044,7 +1049,10 @@ function add_person_row(ele,aid){
     var aid=$(ele).parent().parent().find('input[class="tep_index_num"]').eq(0).val();
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
   }
-    $(ele).parent().parent().after($('#add_person tbody').html());
+  var html_str = $('#add_person tbody').html();
+   html_str = html_str.replace(/#line_num/g,aid-1);
+    $(ele).parent().parent().after(html_str);
+    $(ele).parent().parent().next().find('input[class="tep_index_num"]').val(aid);
 }
 
 // save att type old or new 
@@ -1207,4 +1215,24 @@ function select_color(ele,color){
       $(this).css('border','1px solid #CCCCCC');
   });
   $(ele).find("div").css('border','2px solid #4F4F4F');
+}
+
+//auto add user
+function auto_add_user(ele,aid){
+
+  if(ele.value != ''){
+    add_person_row(ele,aid);
+  }
+}
+
+//auto add attendance
+function auto_add_attendance(ele){
+
+  if(ele.value != ''){
+  
+    var line_num = $("#line_num").val();
+    line_num = parseInt(line_num);
+    add_att_rows(ele); 
+    $("#line_num").val(line_num+1);
+  }
 }

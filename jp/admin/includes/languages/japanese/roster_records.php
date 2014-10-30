@@ -79,5 +79,6 @@ define('TEXT_ATTENDANCE_SELECT_TITLE', 'スタッフ');
 define('TEXT_ATTENDANCE_SETTING_PAYROLLS', '給与関連設定');
 define('TEXT_ATTENDANCE_CHANGE_USER', '・出勤変更スタッフ');
 define('TEXT_ATTENDANCE_CHANGE_DETAIL_INFO', '・入力項目');
+define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 ?>
 

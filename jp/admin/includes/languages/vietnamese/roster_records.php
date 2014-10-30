@@ -78,5 +78,6 @@ define('TEXT_PARAM_TYPE','Hình thức công việc');
 define('TEXT_PRRAM_ATTENDANCE_NUM','Số thời gian làm việc');
 define('TEXT_ATTENDANCE_SETTING_GROUP_CONFIG', 'Thiết lập nhóm');
 define('TEXT_ATTENDANCE_SELECT_TITLE', 'Nhân viên');
+define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 ?>
 
