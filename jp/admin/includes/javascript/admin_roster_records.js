@@ -622,12 +622,12 @@ function del_as(ele,asl_id,c_permission){
   var next_input = $(ele).parent().prev().html();
   tr_index++;
   //当删除到最后一个将不是删除是清空
-  var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
-  var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
-  if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
-	var add_str = $('#add_source tbody').html();
-	$("#add_end").before(add_str);
-  }
+  //var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
+  //var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
+  //if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
+	//var add_str = $('#add_source tbody').html();
+	//$("#add_end").before(add_str);
+  //}
 
  //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
  //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
@@ -661,8 +661,8 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   tr_index++;
 
   //当删除到最后一个将不是删除是清空
-  var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
-  var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
+  //var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
+  //var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
 
   if(is_new == false){
   var del_sum = 0;
@@ -679,7 +679,6 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   var add_str = $('#add_user_group').html();
   next_input = next_input+add_str;
   // get count by attendance_group and for this to remove
-
   //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   for(var i=0;i<del_sum;i++){
     //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
@@ -696,11 +695,11 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
     $('#get_att_date').after('<input type="hidden" name="del_group[]" value="'+attendance_group+'">');
   }
   //如果是最后一个删除那么在创建者的前面加默认的数据
-  if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
-	var add_str = $('#add_source tbody').html();
-    add_str = add_str.replace("'temp_del_group_id'",'');
-	$("#add_end").before(add_str);
-  }
+  //if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
+	//var add_str = $('#add_source tbody').html();
+    //add_str = add_str.replace("'temp_del_group_id'",'');
+	//$("#add_end").before(add_str);
+  //}
 }
 
 function change_user_list(ele){
