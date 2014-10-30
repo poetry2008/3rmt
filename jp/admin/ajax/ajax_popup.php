@@ -10874,9 +10874,16 @@ if($row_array['set_time']==0){
 
   //底部内容
   $buttons = array();
-  if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  
+  //点排班个人单个排班
+  if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']!=''){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
+  if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))&&$_GET['add_id']==''){
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+  }
+
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
@@ -11342,6 +11349,7 @@ if($row_array['set_time']==0){
     $replace_attendance_id_array[] = $replace_attendance_array['attendance_detail_id'];
   }
   tep_db_free_result($replace_attendance_query);
+  $get_att_id = $_GET['att_id'];
   if($_GET['att_id'] == ''){
     $_GET['att_id'] = !empty($replace_attendance_id_array) ? current(array_intersect($attendance_id_array,$replace_attendance_id_array)) : current($attendance_id_array);
   }
@@ -11629,13 +11637,31 @@ if($row_array['set_time']==0){
     tep_db_free_result($leave_user_query);
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
+//是从指定日期指定排班(个人)过来的请假
+	if(isset($get_att_id)&&$get_att_id!=''){
+       $sql_get_user_by_date = "select user_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where attendance_detail_id=".$get_att_id;
+       $query_sql_get_user_by_date = tep_db_query($sql_get_user_by_date);
+	    $user_by_arr_list=array();
+       while($user_by_att = tep_db_fetch_array($query_sql_get_user_by_date)){
+         $user_by_arr_list[]= $user_by_att['user_id']; 
+       }
+	}
+
     if($ocertify->npermission >= '15'){
       $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
         if(!in_array($row_all_user['userid'],$already_add_user_array)){
-          $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+				
+			if(isset($get_att_id)&&$get_att_id!=''){
+				if(in_array($row_all_user['userid'],$user_by_arr_list)){
+                   $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+				}
+			}else{
+
+              $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+			}
           $current_users_list[] = $row_all_user['userid'];
         }
       }
