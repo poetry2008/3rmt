@@ -623,9 +623,10 @@ function del_as(ele,asl_id,c_permission){
 	$("#add_end").before(add_str);
   }
 
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+ $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+ $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+ $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
@@ -668,11 +669,11 @@ function del_as_group(ele,attendance_group,is_new,c_permission){
   var add_str = $('#add_user_group').html();
   next_input = next_input+add_str;
   // get count by attendance_group and for this to remove
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   for(var i=0;i<del_sum;i++){
-    $('.popup_order_info').find('tr').eq(tr_index).remove();
+    $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   }
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
