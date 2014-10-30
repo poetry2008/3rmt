@@ -473,8 +473,31 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		}
 	}
 }else if(isset($_GET['action']) && $_GET['action'] == 'change_users_groups'){
-
   $users_id = $_POST['users_id'];
+  $date_now = $_POST['date'];
+  //所选用户指定时间的排班
+$user_all_att = tep_all_attenande_by_uid($users_id,$date_now);
+if(count($user_all_att)<=1){
+$disabled = 'disabled="disabled"';
+}else{
+$disabled = '';
+}
+$all_att_detail .= '<select '.$disabled.' name="attendance_detail_id" onchange="get_detail_att_time(this.value)">';
+foreach($user_all_att as $key=>$val){
+ $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$val['attendance_detail_id'];
+ $all_att_auery = tep_db_query($all_att_sql);
+  while($all_att_row = tep_db_fetch_array($all_att_auery)){
+    $all_att_detail .= '<option value="'.$all_att_row['id'].'">'.$all_att_row['title'].'</option>';
+    if($all_att_row['set_time']==0 && $all_att_row['work_start']!=':'&& $all_att_row['work_end']!=':'){
+          $work_time = '<span>'.$all_att_row['work_start'].'--'.$all_att_row['work_end'].'</span>';
+	}else{
+          $work = $all_att_row['work_hours']+$all_att_row['rest_hours'];	
+          $work_time = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+	}
+  }
+}
+$all_att_detail .= '</select>|||'.$work_time;
+
   $users_array = tep_get_user_list_by_userid($users_id);
 
   //获取admin及ROOT
@@ -493,7 +516,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     $allow_user_select .= '<option value="'.$users_value.'">'.$users_info['name'].'</option>';
   }
   $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
-  echo $allow_user_select;
+  echo $allow_user_select.'|||'.$all_att_detail;
 }else if(isset($_GET['action']) && $_GET['action'] == 'open_leftmenu'){
 
   if ($_COOKIE['tarrow'] == 'open') {
@@ -507,6 +530,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     require(DIR_WS_BOXES . 'users.php');
   }
 }else if(isset($_GET['action']) && $_GET['action'] == 'update_collect_info'){
+
   //把采集的商品价格同步到后台
   $cid = $_POST['cid'];
   $pid = $_POST['pid'];
@@ -592,6 +616,24 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   tep_db_free_result($category_name_query);
 
   echo $category_name_array['categories_name'];*/
+  /**
+   *@date20141030
+   *更改排班获取排班对应的时间带
+   * */
+}else if(isset($_GET['action']) && $_GET['action'] == 'get_detail_att_time'){
+   $att_detaile_id = $_POST['att_id'];
+   $att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$att_detaile_id;
+   $att_auery = tep_db_query($att_sql);
+  $att_row = tep_db_fetch_array($att_auery);
+    if($att_row['set_time']==0 && $att_row['work_start']!=':'&& $att_row['work_end']!=':'){
+          $work_time = '<span>'.$att_row['work_start'].'--'.$att_row['work_end'].'</span>';
+	}else{
+          $work = $att_row['work_hours']+$att_row['rest_hours'];	
+          $work_time = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+   }
+   echo $work_time;
+
+
 }
  
 ?>
