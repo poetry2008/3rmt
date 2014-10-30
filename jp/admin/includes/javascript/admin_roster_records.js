@@ -621,10 +621,18 @@ function del_as(ele,asl_id,c_permission){
   var tr_index = $(ele).parent().parent().prev().index();
   var next_input = $(ele).parent().prev().html();
   tr_index++;
+  //当删除到最后一个将不是删除是清空
+  var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
+  var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
+  if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
+	var add_str = $('#add_source tbody').html();
+	$("#add_end").before(add_str);
+  }
 
-  //$('.popup_order_info').find('tr').eq(tr_index).remove();
-  //$('.popup_order_info').find('tr').eq(tr_index).remove();
-  //$('.popup_order_info').find('tr').eq(tr_index).remove();
+ //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+ //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+ //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
+
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
@@ -639,7 +647,7 @@ function del_as(ele,asl_id,c_permission){
 function del_as_user(ele,asl_id,is_new){
   var tr_index = $(ele).parent().parent().index();
   tr_index++;
-  $('.popup_order_info').find('tr').eq(tr_index).remove();
+  $('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   if(!is_new){
     $('#get_att_date').after('<input type="hidden" name="del_as[]" value="'+asl_id+'">');
   }
@@ -651,6 +659,10 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   //end
   var tr_index = $(ele).parent().parent().index();
   tr_index++;
+
+  //当删除到最后一个将不是删除是清空
+  var clear_flag_new=$(".popup_order_info").find('select[name="attendance_id[]"]').length;
+  var clear_flag_old=$(".popup_order_info").find('select[name="has_attendance_id[]"]').length;
 
   if(is_new == false){
   var del_sum = 0;
@@ -667,11 +679,12 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   var add_str = $('#add_user_group').html();
   next_input = next_input+add_str;
   // get count by attendance_group and for this to remove
-  //$('.popup_order_info').find('tr').eq(tr_index).remove();
+
+  //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   for(var i=0;i<del_sum;i++){
-    //$('.popup_order_info').find('tr').eq(tr_index).remove();
+    //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
   }
-  //$('.popup_order_info').find('tr').eq(tr_index).remove();
+  //$('.popup_order_info').find('tr:not(.yui3-calendar-row,.yui3-calendar-weekdayrow)').eq(tr_index).remove();
 
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
@@ -681,6 +694,12 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   }
   if(is_new==false){
     $('#get_att_date').after('<input type="hidden" name="del_group[]" value="'+attendance_group+'">');
+  }
+  //如果是最后一个删除那么在创建者的前面加默认的数据
+  if((clear_flag_new==0&&clear_flag_old==1)||(clear_flag_old==0&&clear_flag_new==1)){
+	var add_str = $('#add_source tbody').html();
+    add_str = add_str.replace("'temp_del_group_id'",'');
+	$("#add_end").before(add_str);
   }
 }
 
@@ -812,20 +831,41 @@ function del_allow_user(ele){
 
 //change groups
 function change_users_groups(value){
-
+    var y=$("#fetch_year").val();
+    var m=$("#fetch_month").val();
+    var d=$("#fetch_day").val();
+    var date_tep = y+m+d;
   $.ajax({
           url: 'ajax.php?action=change_users_groups',
-          data: 'users_id='+value,
+          data: 'users_id='+value+'&date='+date_tep,
           type: 'POST',
           dataType: 'text',
           async : false,
           success: function(data){
-
+             var tmp_msg_arr = data.split('|||'); 
+            $("#show_user_adl").html(tmp_msg_arr[2]);
+			$(".show_att_titile").html('');
+			$(".show_att_titile").html(tmp_msg_arr[1]);
             $("#users_groups").html('');
-            $("#users_groups").html(data);
+            $("#users_groups").html(tmp_msg_arr[0]);
           }
         });
 }
+//change attendance get detail time
+function get_detail_att_time(value){
+  $.ajax({
+          url: 'ajax.php?action=get_detail_att_time',
+          data: 'att_id='+value,
+          type: 'POST',
+          dataType: 'text',
+          async : false,
+          success: function(data){
+            $("#show_user_adl").html('');
+            $("#show_user_adl").html(data);
+          }
+        });
+
+} 
 //change users allow
 function change_users_allow(value,allow_status_value){
 
@@ -1061,7 +1101,7 @@ function save_type(ele,url){
   var month = $('#hidden_month').val();
   var user = $('#hidden_user').val();
   var show_type = ele.value
-  document.location.href = url+'?y='+year+'&month='+month+'&user='+user+'&show_type='+show_type+'&action=save_type';
+  document.location.href = url+'?y='+year+'&m='+month+'&user='+user+'&show_type='+show_type+'&action=save_type';
 }
 // save att status 0 1 2
 function save_att_status(url){
@@ -1069,7 +1109,7 @@ function save_att_status(url){
   var month = $('#hidden_month').val();
   var user = $('#hidden_user').val();
   var att_status =  $('input[name="att_status"]:checked').val();
-  document.location.href = url+'?y='+year+'&month='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
+  document.location.href = url+'?y='+year+'&m='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
 }
 //popup calendar
 function open_new_calendar(type)

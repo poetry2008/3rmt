@@ -45,6 +45,9 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
       }
       $index++;
     }
+    if($index>$count){
+      return $arr[0].$str_end;
+    }
     for($j=$index;$j>0;$j--){
       if(substr($arr[1],$index-1,1)==0){
         $index--;
@@ -401,7 +404,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             $products_quantity_value = $info_value['products_quantity'];
             if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
-              $products_quantity_value = "$products_quantity_value" - ("$products_quantity_num" - $category_asset_arr[$key]['real_all_product']);
+              $real_all_product_category = $category_asset_arr[$key]['real_all_product'];
+              $products_quantity_value = "$products_quantity_value" - ("$products_quantity_num" - "$real_all_product_category");
             }
             $info_str_temp .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $info_str_temp .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
@@ -490,12 +494,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             foreach($products_info_str[$p_value] as $show_str){
               echo $show_str;
             }
-            $show_all_products_num = show_effective_number($show_all_products_num,'');
-            if($sum_flag){
-              foreach($products_type_arr as $type_sum){
-                $show_all_products_num = "$show_all_products_num"-"$type_sum";
-              }
-            }
             if($show_all_products_num>0&&!$category_asset_arr[$key]['error']&&$show_all_products_num!=$temp_show_all_products_num){
               echo "<tr class='assets_error'>";
               if(count($products)!=0){
@@ -518,7 +516,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             }
           }
           $parent_show_num = "$parent_show_num"-"$sub_i";
-          $parent_show_num = show_effective_number($parent_show_num,'');
           if($parent_show_num>0&&!$category_asset_arr[$key]['error']){
             echo "<tr class='assets_error'>";
             if(count($products)!=0){
@@ -566,8 +563,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             $products_info_str .= '<td>&nbsp;&nbsp;'.$info_value['orders_id'].'</td>';
             $products_quantity_value = $info_value['products_quantity'];
             if($products_quantity_num > $all_product[$k]['quantity_all_product']){
-
-              $products_quantity_value = "$products_quantity_value"  - ("$products_quantity_num" - $all_product[$k]['quantity_all_product']);
+              $products_quantity_all = $all_product[$k]['quantity_all_product'];
+              $products_quantity_value = "$products_quantity_value"  - ("$products_quantity_num" - "$products_quantity_all");
             }
             $products_info_str .= '<td align="right">'.show_effective_number($products_quantity_value,TEXT_ROW).'</td>';
             $products_info_str .= '<td align="right">'.($currencies->format(abs($info_value['final_price']))=='0'.TEXT_MONEY_SYMBOL?show_effective_number(abs($info_value['final_price'])):$currencies->format(abs($info_value['final_price']))).'</td>';
@@ -602,7 +599,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         echo "</td>";
         echo "</tr>";
         echo $products_info_str;
-        $show_all_products_num = show_effective_number($show_all_products_num,'');
         if($show_all_products_num>0&&!$all_product[$k]['error']&&$show_all_products_num!=$temp_show_all_products_num){
               echo "<tr class='assets_error'>";
               echo "<td>";

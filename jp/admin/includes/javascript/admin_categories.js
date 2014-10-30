@@ -2086,12 +2086,12 @@ function show_tags_change(num){
 }
 
 //update collect info
-function update_collect_info(cid){
+function update_collect_info(pid,cid){
   $.ajax({
       type:'POST', 
       dataType:'text',
       beforeSend: function(){$('body').css('cursor', 'wait');$('#wait').show();}, 
-      data:'cid='+cid, 
+      data:'cid='+cid+'&pid='+pid, 
       async:false, 
       url: 'ajax.php?action=update_collect_info',
       success: function(msg) {
