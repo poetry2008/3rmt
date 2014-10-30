@@ -11417,7 +11417,19 @@ if($row_array['set_time']==0){
 
     $admin_flag = true;
   }
-  $attendance_select = '<div class="show_att_titile"><select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
+  $attendance_select = '<div class="show_att_titile">
+	  
+	  
+<select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
+//是从指定日期指定排班(个人)过来的请假
+	if(isset($get_att_id)&&$get_att_id!=''){
+       $sql_get_user_by_date = "select user_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where attendance_detail_id=".$get_att_id." and date='".$_GET['date']."'";
+       $query_sql_get_user_by_date = tep_db_query($sql_get_user_by_date);
+	    $user_by_arr_list=array();
+       while($user_by_att = tep_db_fetch_array($query_sql_get_user_by_date)){
+         $user_by_arr_list[]= $user_by_att['user_id']; 
+       }
+	}
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
     $replace_att_list = tep_get_attendance_by_user_date($_GET['date'],$ocertify->auth_user,$_GET['uid']); 
     $select_att = '';
@@ -11471,9 +11483,27 @@ if($row_array['set_time']==0){
       }
     }
   }else{
-    $select_att = 0;
-    $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
-    $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="0">';
+	  if(isset($get_att_id)&&$get_att_id!=''){
+		  $user_all_att = tep_all_attenande_by_uid($user_by_arr_list[0],$_GET['date']);
+		  foreach($user_all_att as $val){
+		      $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$val['attendance_detail_id'];
+		      $all_att_query = tep_db_query($all_att_sql);
+              $all_att_row = tep_db_fetch_array($all_att_query);
+              $attendance_select .= '<option value='.$all_att_row['id'].'>'.$all_att_row['title'].'</option>';
+			  if($all_att_row['set_time']==0 && $all_att_row['work_start']!=':'&& $all_att_row['work_end']!=':'){
+			      $user_adl = '<span>'.$all_att_row['work_start'].'--'.$all_att_row['work_end'].'</span>'; 
+			  }else{
+                  $work = $all_att_row['work_hours']+$all_att_row['rest_hours'];
+                  $user_adl = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+			  }
+
+		  }
+         
+	  }else{
+         $select_att = 0;
+         $attendance_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
+         $attendance_select_hidden = '<input type="hidden" name="attendance_detail_id_hidden" value="0">';
+	  }
   }
 
 
@@ -11637,20 +11667,11 @@ if($row_array['set_time']==0){
     tep_db_free_result($leave_user_query);
     $already_add_user_array = array_unique($already_add_user_array);
     $current_users_list = array();
-//是从指定日期指定排班(个人)过来的请假
-	if(isset($get_att_id)&&$get_att_id!=''){
-       $sql_get_user_by_date = "select user_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where attendance_detail_id=".$get_att_id;
-       $query_sql_get_user_by_date = tep_db_query($sql_get_user_by_date);
-	    $user_by_arr_list=array();
-       while($user_by_att = tep_db_fetch_array($query_sql_get_user_by_date)){
-         $user_by_arr_list[]= $user_by_att['user_id']; 
-       }
-	}
 
     if($ocertify->npermission >= '15'){
       $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
-      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
+      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
         if(!in_array($row_all_user['userid'],$already_add_user_array)){
 				
@@ -11682,7 +11703,7 @@ if($row_array['set_time']==0){
       }
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
-      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);">';
+      $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
