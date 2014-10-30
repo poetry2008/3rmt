@@ -834,6 +834,7 @@ var error_text = '<?php echo TEP_ERROR_NULL;?>';
 var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ROSTER_RECORDS;?>';
 var admin_id = '<?php echo $ocertify->auth_user;?>';
 var admin_npermission = '<?php echo $ocertify->npermission;?>';
+var js_ed_orders_input_right_date = '<?php echo TEXT_ATTENDANCE_DATE_ERROR;?>';
 $(document).ready(function() {
   <?php //监听按键?>
   $(document).keyup(function(event) {

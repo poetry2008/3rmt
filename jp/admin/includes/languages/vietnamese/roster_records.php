@@ -79,5 +79,6 @@ define('TEXT_PRRAM_ATTENDANCE_NUM','Số thời gian làm việc');
 define('TEXT_ATTENDANCE_SETTING_GROUP_CONFIG', 'Thiết lập nhóm');
 define('TEXT_ATTENDANCE_SELECT_TITLE', 'Nhân viên');
 define('TEXT_ATTENDANCE_PLAN', '出勤予定');
+define('TEXT_ATTENDANCE_DATE_ERROR', '正しく入力してください');
 ?>
 
