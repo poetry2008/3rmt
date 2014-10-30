@@ -1292,5 +1292,6 @@ function auto_add_attendance(ele){
     line_num = parseInt(line_num);
     add_att_rows(ele); 
     $("#line_num").val(line_num+1);
+    $(ele).attr('onchange','');
   }
 }
