@@ -418,7 +418,9 @@ define('TABLE_PERMISSIONS','permissions');
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
   require(DIR_WS_FUNCTIONS . 'generalBoth.php');
-  require(DIR_WS_FUNCTIONS . 'preorder_general.php');
+  if(strpos(str_replace('/admin/','',$_SERVER['PHP_SELF']),'preorder')!==false){
+    require(DIR_WS_FUNCTIONS . 'preorder_general.php');
+  }
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 // language
@@ -482,9 +484,6 @@ define('TABLE_PERMISSIONS','permissions');
   if ($ocertify->npermission == 0 && $PHP_SELF != '/'.FILENAME_ORDERS) {
     tep_redirect(FILENAME_ORDERS);
   }
-
-// define our localization functions
-  require(DIR_WS_FUNCTIONS . 'localization.php');
 
 // setup our boxes
   require(DIR_WS_CLASSES . 'table_block.php');

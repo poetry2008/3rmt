@@ -79,5 +79,6 @@ define('TEXT_ATTENDANCE_CHANGE_DETAIL_INFO', '・输入项目');
 define('TEXT_PARAM_TYPE','业务类型');
 define('TEXT_PRRAM_ATTENDANCE_NUM','上班时间');
 define('TEXT_ATTENDANCE_SELECT_TITLE', '员工');
+define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 ?>
 
