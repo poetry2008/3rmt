@@ -3675,35 +3675,12 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 
   echo implode('|',$user_id_array);
 }else if($_GET['action']=='get_index_notes'){
-$notes = '';  
-$left='';  
-$top='';  
-$zindex='';  
+$content_arr =array();
 $belong = $_POST['page_name'];
 $query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author=''))) order by id desc");
 //首页该用户的memo列表
 while($row=tep_db_fetch_array($query)){
-  list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']); 
-  $time = strtotime($row['addtime']);
-  $attribute = $row['attribute'];
-  $attribute_image = $attribute == 1 ? '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PUBLIC.'" src="images/icons/public.gif">' : '<image id="image_id_'.$row['id'].'" alt="'.TEXT_ATTRIBUTE_PRIVATE.'" src="images/icons/private.gif">';
-  $notes.= '
-    <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
-    style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px;'.(($row['is_show'] == '1')?'display:block;':'display:none;').'">
-    <div class="note_head">
-    <div id="note_title_'.$row['id'].'" class="note_title">
-    <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
-     value=" '.IMAGE_SAVE.'" >&nbsp;'.$attribute_image.'&nbsp;'.$row['title'].'&nbsp;&nbsp;
-    '.substr($row['addtime'],0,strlen($row['addtime'])-3).'
-    </div><div class="note_close">
-    <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <a href="javascript:void(0);" onclick="note_min_window(\''.$row['id'].'\')"><img alt="min" title="min" src="images/icons/note_min_window.gif"></a>&nbsp; 
-    <a href="javascript:void(0);" onclick="note_desplay_none(\''.$row['id'].'\')"><img alt="close" title="close" src="images/icons/note_close.gif"></a></div>
-    </div><div id="note_text_'.$row['id'].'" class="note_textarea"
-    style="height:'.($ylen-37).'px">'
-    .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
-    .trim(htmlspecialchars($row['content'])).'</textarea></div>
-    </div>';
+    $content_arr[$row['id']] = trim(htmlspecialchars($row['content']));
 }
-echo $notes;
+echo json_encode($content_arr);
 }
