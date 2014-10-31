@@ -9792,7 +9792,7 @@ $group_content[]['text'] = array(
 		foreach($group_user_list as $key=>$val) {
 			$i++;
 			if($i>1 && $i%2 ==0 ){
-        $user_str .= '<tr/><tr>';
+                $user_str .= '<tr/><tr>';
 			}
 
           $user_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
@@ -10663,7 +10663,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">&nbsp;</td><td nowrap="nowrap" align="left" colspan="2" >------------------------------------------------------------</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left">'.$type_select.'</td><td><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr>';
+  $hidden_div .= '<tr><td class="tr_#line_num" nowrap="nowrap" align="left">&nbsp;</td><td nowrap="nowrap" align="left" colspan="2" >------------------------------------------------------------</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left">'.$type_select.'</td><td><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(this,\'1\')"></div>';
@@ -10673,7 +10673,7 @@ if($row_array['set_time']==0){
   //追加个人
   $hidden_tep = '<div style="display:none">';
   $hidden_tep .= '<table id="add_person">';
-  $hidden_tep .= '<tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td>'.$hidden_user_add.'</td></tr>';
+  $hidden_tep .= '<tr><td class="tr_#line_num" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td>'.$hidden_user_add.'</td></tr>';
   $hidden_tep .= '</table></div>';
 
   if($group_disabled!=''){
@@ -10723,7 +10723,7 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
   $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
   $show_arr = true;
@@ -10740,12 +10740,12 @@ if($row_array['set_time']==0){
     if($line_i != 0){
 
       $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" width="30%" nowrap="nowrap"', 'text' => ''), 
+        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" nowrap="nowrap"', 'text' => ''), 
         array('align' => 'left', 'params' => '"nowrap="nowrap" colspan="2"', 'text' => '------------------------------------------------------------')
       );     
     }
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
       );
     $has_adl_select = '<select name="has_attendance_id[]" '.$disabled.' >';
@@ -10759,7 +10759,7 @@ if($row_array['set_time']==0){
     $has_adl_select .= '</select>';
 
     $as_info_row_tmp = array(); 
-    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
+    $as_info_row_tmp[] = array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT);
     $as_info_row_tmp[] = array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_adl_select.'<input type="hidden" name="u_group[]" value="'.$a_info[0]['u_group'].'"><input type="hidden" name="type_array[]" value="'.$a_info['type'].'">');
     if($show_arr){
       $as_user_added = $a_info[0]['add_user'];
@@ -10801,7 +10801,7 @@ if($row_array['set_time']==0){
 	}
     $has_user_select .= '</select><input type="hidden" name="data_as['.$a_info[$j]['u_group'].'][]" value="'.$a_info[$j]['id'].'"><td nowrap="nowrap"><input '.$style_hidden_del.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_user(this,\''.$a_info[$j]['id'].'\',false)"></td>';
     $temp_as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_user_select)
     );
 
@@ -10831,7 +10831,7 @@ if($row_array['set_time']==0){
   $user_select .= '</select></select><input type="hidden" value="1" class="tep_index_num">&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"></td>';
   $hidden_users_select .= '</select><input type="hidden" value="1" class="tep_index_num">&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"></td>';
   $temp_as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $hidden_users_select)
     );
 
@@ -10875,7 +10875,7 @@ if($row_array['set_time']==0){
 	$has_type_select .= '</select><span class="space" '.$style_space.' >'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_HEAD.'<input class="limit_input_width" type="text" name="has_space[]" value='.$a_info[0]['space'].' '.$disabled.' onkeyup="if(this.value!=\'\'){if(!/^[1-9]{1}[0-9]{0,1}$/.test(this.value)){this.value=\'1\'}}">'.TEXT_CALENDAR_REPEAT_TYPE_WEEK_TAIL.'</span>';
 
     $as_info_row[]['text'] = array(
-      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+      array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $has_type_select),
       array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">')
     );
@@ -10887,31 +10887,31 @@ if($row_array['set_time']==0){
   //没有个人排班的时候显示新数据
   if(count($as_info_row)>1){
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" width="30%" nowrap="nowrap"', 'text' => ''), 
+        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" nowrap="nowrap"', 'text' => ''), 
         array('align' => 'left', 'params' => '"nowrap="nowrap" colspan="2"', 'text' => '------------------------------------------------------------')
       );
   }
   $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
       ); 
   if(count($as_info_row)==2){ 
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $user_select)
       ); 
   }
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $hidden_user_select)
       );
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
         array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
         array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '')
       );
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select)
       );
 
