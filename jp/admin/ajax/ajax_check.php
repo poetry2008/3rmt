@@ -473,31 +473,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		}
 	}
 }else if(isset($_GET['action']) && $_GET['action'] == 'change_users_groups'){
-  $users_id = $_POST['users_id'];
-  $date_now = $_POST['date'];
-  //所选用户指定时间的排班
-$user_all_att = tep_all_attenande_by_uid($users_id,$date_now);
-if(count($user_all_att)<=1){
-$disabled = 'disabled="disabled"';
-}else{
-$disabled = '';
-}
-$all_att_detail .= '<select '.$disabled.' name="attendance_detail_id" onchange="get_detail_att_time(this.value)">';
-foreach($user_all_att as $key=>$val){
- $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$val['attendance_detail_id'];
- $all_att_auery = tep_db_query($all_att_sql);
-  while($all_att_row = tep_db_fetch_array($all_att_auery)){
-    $all_att_detail .= '<option value="'.$all_att_row['id'].'">'.$all_att_row['title'].'</option>';
-    if($all_att_row['set_time']==0 && $all_att_row['work_start']!=':'&& $all_att_row['work_end']!=':'){
-          $work_time = '<span>'.$all_att_row['work_start'].'--'.$all_att_row['work_end'].'</span>';
-	}else{
-          $work = $all_att_row['work_hours']+$all_att_row['rest_hours'];	
-          $work_time = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
-	}
-  }
-}
-$all_att_detail .= '</select>|||'.$work_time;
 
+  $users_id = $_POST['users_id'];
   $users_array = tep_get_user_list_by_userid($users_id);
 
   //获取admin及ROOT
@@ -516,7 +493,7 @@ $all_att_detail .= '</select>|||'.$work_time;
     $allow_user_select .= '<option value="'.$users_value.'">'.$users_info['name'].'</option>';
   }
   $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
-  echo $allow_user_select.'|||'.$all_att_detail;
+  echo $allow_user_select;
 }else if(isset($_GET['action']) && $_GET['action'] == 'open_leftmenu'){
 
   if ($_COOKIE['tarrow'] == 'open') {
@@ -530,7 +507,6 @@ $all_att_detail .= '</select>|||'.$work_time;
     require(DIR_WS_BOXES . 'users.php');
   }
 }else if(isset($_GET['action']) && $_GET['action'] == 'update_collect_info'){
-
   //把采集的商品价格同步到后台
   $cid = $_POST['cid'];
   $pid = $_POST['pid'];
@@ -585,6 +561,7 @@ $all_att_detail .= '</select>|||'.$work_time;
       'genshin'=> '幻想神域',
       'lineage'=> 'リネージュ'
       );
+  // define('CATEGORY_TABLE','category');
  $game_array = array_flip($game_str_array);
   foreach($game_array as $k=>$v){
     if(strpos($category_name,$k)!==false){
@@ -592,10 +569,40 @@ $all_att_detail .= '</select>|||'.$work_time;
       break;
     }
   }
-  $products_price_query = tep_db_query("select pp.product_name,ps.product_price from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` = ".$category_type);
- while($products_price = tep_db_fetch_array($products_price_query)){
-  $products_price_array[] = $products_price ;
- }
+ $products_id_query  = tep_db_query("select pp.product_name,pp.product_id from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` =".$category_type);
+   while($products_id = tep_db_fetch_array($products_id_query)){
+     $products_id_array[] = $products_id ; 
+   }
+  foreach($products_id_array as $key=>$val){
+       $product_price_array = array();
+      if(in_array($val['product_id'],array(0,-1))){
+        //最安，次点
+        $product_price_query = tep_db_query("select p.product_price from ".PRODUCT_TABLE." p left join ".CATEGORY_TABLE." c on p.category_id =c.category_id where c.category_name = '".$name."' and p.product_name ='".$val['product_name']."' and c.category_type = ".$category_type);
+        while($product_price = tep_db_fetch_array($product_price_query)){
+             $product_price_array[] = $product_price ;
+         }
+         sort($product_price_array);
+         $price = array();
+         foreach($product_price_array as $i){
+           if(!in_array($i['product_price'],$price)){
+              $price[] = $i['product_price'];
+           }
+         }
+         $products_price_array[$key]['product_name'] = $val['product_name'];
+         if($val['product_id'] == -1){
+            $products_price_array[$key]['product_price'] = $price[0];
+         }else if ($val['product_id'] == 0){
+            $products_price_array[$key]['product_price'] = $price[1]; 
+         }
+
+      }else{
+      $products_price_query = tep_db_query("select product_name,product_price from ".PRODUCT_TABLE." where product_id = ".$val['product_id']);
+      while($products_price = tep_db_fetch_array($products_price_query)){
+         $products_price_array[$key] = $products_price ;
+      }
+      }
+  
+  }
   mysql_select_db(DB_DATABASE);
   foreach($products_price_array as $k=>$v){
    $sql = "select products_id from ".PRODUCTS_DESCRIPTION_TABLE." where site_id = 0 and language_id = 4 and preorder_status=".$category_type." and products_name like '%".$v['product_name']."%'";
@@ -609,31 +616,6 @@ $all_att_detail .= '</select>|||'.$work_time;
    }
  }
   echo json_encode($products_price_array);
- // print_r($category_name_array);
-  /* $cid = $_POST['cid'];
-  $category_name_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES." where categories_id='".$cid."' and site_id=0");
-  $category_name_array = tep_db_fetch_array($category_name_query);
-  tep_db_free_result($category_name_query);
-
-  echo $category_name_array['categories_name'];*/
-  /**
-   *@date20141030
-   *更改排班获取排班对应的时间带
-   * */
-}else if(isset($_GET['action']) && $_GET['action'] == 'get_detail_att_time'){
-   $att_detaile_id = $_POST['att_id'];
-   $att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$att_detaile_id;
-   $att_auery = tep_db_query($att_sql);
-  $att_row = tep_db_fetch_array($att_auery);
-    if($att_row['set_time']==0 && $att_row['work_start']!=':'&& $att_row['work_end']!=':'){
-          $work_time = '<span>'.$att_row['work_start'].'--'.$att_row['work_end'].'</span>';
-	}else{
-          $work = $att_row['work_hours']+$att_row['rest_hours'];	
-          $work_time = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
-   }
-   echo $work_time;
-
-
 }
  
 ?>
