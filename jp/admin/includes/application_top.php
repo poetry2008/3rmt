@@ -333,6 +333,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('PRODUCTS_TABLE','products');
   define('PRODUCTS_DESCRIPTION_TABLE','products_description');
   define('CATEGORIES_TABLE','categories');
+  define('CATEGORY_TABLE','category');
   define('CATEGORIES_DESCRIPTION_TABLE','categories_description');
 
   /* ---------------------------------------------
