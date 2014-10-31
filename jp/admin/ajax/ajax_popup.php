@@ -10687,6 +10687,8 @@ if($row_array['set_time']==0){
   $as_info_row = array();
   //选择日期
   $date_select_str = '';
+  $date_select_str .= '<input type="text" name="select_date_text" onchange="change_fetch_date(this.value,\'user\');" value="'.date('Y/m/d',strtotime($_GET['date'])).'">';
+  /*
   $date_select_str .= '<select name="select_year" id="fetch_year" onchange="change_fetch_date(\'user\');">';
   for($i=2007;$i<=date('Y')+10;$i++){
     $select_year_selected = $i == date('Y',strtotime($_GET['date'])) ? ' selected' : '';
@@ -10707,6 +10709,7 @@ if($row_array['set_time']==0){
     $date_select_str .= '<option value="'.$i_str.'"'.$select_year_selected.'>'.$i_str.'</option>';
   }
   $date_select_str .= '</select>'.DAY_TEXT;
+   */
   $date_click_str = '';
   
   $date_click_str .= '<div class="yui3-skin-sam yui3-g"><input id="date_orders" type="hidden" name="" size="10" value="'.date('Y-m-d',strtotime($_GET['date'])).'">
@@ -11104,6 +11107,8 @@ if($row_array['set_time']==0){
   $as_info_row = array();
   //选择日期
   $date_select_str = '';
+  $date_select_str .= '<input type="text" name="select_date_text" onchange="change_fetch_date(this.value,\'group\');" value="'.date('Y/m/d',strtotime($_GET['date'])).'">';
+  /*
   $date_select_str .= '<select name="select_year" id="fetch_year" onchange="change_fetch_date(\'group\');">';
   for($i=2007;$i<=date('Y')+10;$i++){
     $select_year_selected = $i == date('Y',strtotime($_GET['date'])) ? ' selected' : '';
@@ -11124,6 +11129,7 @@ if($row_array['set_time']==0){
     $date_select_str .= '<option value="'.$i_str.'"'.$select_year_selected.'>'.$i_str.'</option>';
   }
   $date_select_str .= '</select>'.DAY_TEXT;
+   */
   $date_click_str = '';
   
   $date_click_str .= '<div class="yui3-skin-sam yui3-g"><input id="date_orders" type="hidden" name="" size="10" value="'.date('Y-m-d',strtotime($_GET['date'])).'">
@@ -11674,6 +11680,8 @@ if($row_array['set_time']==0){
 
   //选择日期
   $date_select_str = '';
+  $date_select_str .= '<input type="text" name="select_date_text" onchange="change_fetch_date(this.value,\'replace\');" value="'.date('Y/m/d',strtotime($_GET['date'])).'">';
+  /*
   $date_select_str .= '<select name="select_year" id="fetch_year" onchange="change_fetch_date(\'replace\');">';
   for($i=2007;$i<=date('Y')+10;$i++){
     $select_year_selected = $i == date('Y',strtotime($_GET['date'])) ? ' selected' : '';
@@ -11694,6 +11702,7 @@ if($row_array['set_time']==0){
     $date_select_str .= '<option value="'.$i_str.'"'.$select_year_selected.'>'.$i_str.'</option>';
   }
   $date_select_str .= '</select>'.DAY_TEXT;
+   */
   $date_click_str = '';
   
   $date_click_str .= '<div class="yui3-skin-sam yui3-g"><input id="date_orders" type="hidden" name="" size="10" value="'.date('Y-m-d',strtotime($_GET['date'])).'">

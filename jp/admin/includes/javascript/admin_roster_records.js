@@ -1201,9 +1201,29 @@ function is_date(dateval)
   var arr = new Array();
   if(dateval.indexOf("-") != -1){
     arr = dateval.toString().split("-");
+    if(arr.length != 3){
+   
+      return false;
+    }
   }else if(dateval.indexOf("/") != -1){
     arr = dateval.toString().split("/");
+    if(arr.length != 3){
+   
+      return false;
+    }
   }else{
+    var date_str = dateval.toString(); 
+    if(date_str.length == 8){
+      arr[0] = date_str.substr(0,4);
+      arr[1] = date_str.substr(4,2);
+      arr[2] = date_str.substr(6,2);
+    }else{
+      return false;
+    }
+  }
+
+  if(!(arr[0].length==4 && arr[1].length==2 && arr[2].length==2)){
+  
     return false;
   }
   if(arr[0].length==4){
@@ -1231,10 +1251,10 @@ function is_date(dateval)
 }
 
 //copy the date of delivery time to hide field
-function change_fetch_date(type) {
-  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
-  date = $("#fetch_year").val()+$("#fetch_month").val()+$("#fetch_day").val(); 
-  if (!is_date(fetch_date_str)) {
+function change_fetch_date(value,type) {
+  fetch_date_str = value.replace(/\//g,'-'); 
+  date = value.replace(/\//g,'');; 
+  if (!is_date(value)) {
     alert(js_ed_orders_input_right_date); 
   } else {
     $("#date_orders").val(fetch_date_str); 
@@ -1265,12 +1285,12 @@ function auto_add_user(ele,aid){
 
 //auto add attendance
 function auto_add_attendance(ele){
-
-  if(ele.value != ''){
+  if(ele.value != '' ){
   
     var line_num = $("#line_num").val();
     line_num = parseInt(line_num);
     add_att_rows(ele); 
     $("#line_num").val(line_num+1);
+    $(ele).attr('onchange','');
   }
 }
