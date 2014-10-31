@@ -11761,7 +11761,7 @@ if($row_array['set_time']==0){
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
-        if(!in_array($row_all_user['userid'],$already_add_user_array)){
+        if(!in_array($row_all_user['userid'],$already_add_user_array)&& empty($already_add_group_array)){
 				
 			if(isset($get_att_id)&&$get_att_id!=''){
 				if(in_array($row_all_user['userid'],$user_by_arr_list)){
@@ -11772,7 +11772,14 @@ if($row_array['set_time']==0){
               $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
 			}
           $current_users_list[] = $row_all_user['userid'];
-        }
+			//组更改
+		}else if(!empty($already_add_group_array)){
+			if(in_array($row_all_user['userid'],$already_add_user_array)){
+              $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+			
+			}
+		
+		}
       }
       $all_user_select .= '</select>';
     }else{

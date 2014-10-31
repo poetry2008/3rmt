@@ -555,7 +555,7 @@ if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
        }
    });
 
-if(flag !=1 && sign!=1) {
+if( sign!=1) {
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
   } else {
