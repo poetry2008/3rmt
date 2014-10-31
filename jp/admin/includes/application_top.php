@@ -326,7 +326,6 @@ define('TABLE_PERMISSIONS','permissions');
   define('CURRENCY_SERVER_PRIMARY', 'oanda');
   define('CURRENCY_SERVER_BACKUP', 'xe');
   //collect price 
-  define('DBNAME','osc_collect');
   define('CATEGORY_TABLE','category');
   define('PRODUCTS_PRICE_TABLE','products_price');
   define('PRODUCT_TABLE','product');
