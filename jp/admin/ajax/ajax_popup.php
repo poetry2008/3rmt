@@ -11779,19 +11779,26 @@ if($row_array['set_time']==0){
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
-        if(!in_array($row_all_user['userid'],$already_add_user_array)&& empty($already_add_group_array)){
+		  //没有指定的组
+		  if($_GET['group_id']==0 || $_GET['group_id']==''){
+                $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
+		  
+		  }
+		  //指定的人
+		  else if(!in_array($row_all_user['userid'],$already_add_user_array)&& (!$_GET['group_id']==0)){
 				
 			if(isset($get_att_id)&&$get_att_id!=''){
 				if(in_array($row_all_user['userid'],$user_by_arr_list)){
                    $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
 				}
-			}else{
+			}
+			else{
 
               $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
 			}
           $current_users_list[] = $row_all_user['userid'];
 			//组更改
-		}else if(!empty($already_add_group_array)){
+		}else if(!empty($already_add_group_array) && $_GET['group_id']!=0){
 			if(in_array($row_all_user['userid'],$already_add_user_array)){
               $all_user_select .= "<option value='".$row_all_user['userid']."'>".$row_all_user['name']."</option>";
 			
@@ -11960,9 +11967,10 @@ if($row_array['set_time']==0){
   
   if(!isset($_GET['uid'])||$_GET['uid']==''||tep_is_group_manager($ocertify->auth_user)){
     if(tep_is_group_manager($ocertify->auth_user)){
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }else{
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
     }
   }
   if($ocertify->npermission>10
