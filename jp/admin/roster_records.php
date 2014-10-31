@@ -185,7 +185,7 @@ if(isset($_GET['action'])){
           &&is_array($_POST['attendance_id'])
           &&!empty($_POST['attendance_id'])){
         $a_id_arr = $_POST['attendance_id'];
-        if(isset($_POST['user'])&&!empty($_POST['user'])){
+        if(isset($_POST['user'])&&!empty($_POST['user'][1])){
           $user_arr = $_POST['user'];
         }else{
           $user_arr = $_POST['user_hidden'];
@@ -834,6 +834,7 @@ var error_text = '<?php echo TEP_ERROR_NULL;?>';
 var href_attendance_calendar = '<?php echo HTTP_SERVER.DIR_WS_ADMIN.FILENAME_ROSTER_RECORDS;?>';
 var admin_id = '<?php echo $ocertify->auth_user;?>';
 var admin_npermission = '<?php echo $ocertify->npermission;?>';
+var js_ed_orders_input_right_date = '<?php echo TEXT_ATTENDANCE_DATE_ERROR;?>';
 $(document).ready(function() {
   <?php //监听按键?>
   $(document).keyup(function(event) {
@@ -1075,9 +1076,9 @@ if($param_tep[0]!=''){
 		}else{
 	      $status_all = 'checked ="ckecked"';
 		}
-        $group_str .= '<input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>';
-        $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>';
-        $group_str .= '<input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ></span><span style="display:block; float:left;"><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>&nbsp;&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'></span><span style="display:block; float:left;"><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'></span><span style="display:block; float:left;"><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
         $group_sr .= '</td>';
 
 
@@ -1414,7 +1415,7 @@ while($j<=$end_day)
     if($date<=$today&&$temp_is_work_str==''&&$show_att_status!=2){
       $work_time_str .= tep_show_att_time($attendance_info_arr[$date][$user_value][$user_attenande['attendance_detail_id']],$user_value,$date,$attendance_info['src_text'],$j,$show_att_status,'1');
     }
-    $info_td_attendance_str .= '<span style="float:left; display:block;">'.$work_time_str.'</span>';
+    $info_td_attendance_str .= '<span style="float:left; display:block; margin-top: 2px;">'.$work_time_str.'</span>';
     $info_td_attendance_str .= '<span style="display:block; min-height:16px; line-height:16px; float:left">'.$temp_is_work_str.'</span>';
     //请假信息输出
     $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." 
@@ -1606,14 +1607,14 @@ while($j<=$day_num)
     if(tep_is_show_att($attendance_row['id'],$date)){
       $info_td_attendance_str .= "<tr>";
       if($attendance_info['scheduling_type'] == 0){
-        $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:6px;">';
+        $info_td_attendance_str .=  '<td style="border-width:0px; padding-top:1px;">';
         $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
         if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
           $info_td_attendance_str .=  '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        $info_td_attendance_str .=  "<td style='border-width:0px; padding-top:1px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
         $info_td_attendance_str .=  "<div onclick='show_group_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_row['group_id']."\",\"".$attendance_row['id']."\",\"\")' style=".$style.">";
         $info_td_attendance_str .=  $attendance_info['short_language'];
       }
@@ -1757,14 +1758,14 @@ while($j<=$day_num)
         $show_ulist_flag = true;
       echo "<tr>";
       if($attendance_info['scheduling_type'] == 0){
-        echo '<td style="border-width:0px; padding-top:6px;">';
+        echo '<td style="border-width:0px; padding-top:1px;">';
         echo "<div onclick='show_user_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\",\"".$show_group_id."\")' style='cursor:pointer;'>";
         echo $attendance_info['short_language'];
         if(file_exists("images/".$attendance_info['src_text'])&&$attendance_info['src_text']!=''){
           echo '<img style="width:16px;" src="images/'.$attendance_info['src_text'].'" alt="'.$attendance_info['title'].'">';
         }
       }else{
-        echo "<td style='border-width:0px; padding-top:6px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
+        echo "<td style='border-width:0px; padding-top:1px;".($attendance_info['scheduling_type'] == 1 && in_array($attendance_info['src_text'],$color_array) ? 'color:#FFFFFF;' : '')."' bgcolor='".$attendance_info['src_text']."'>";
         echo "<div onclick='show_user_attendance_info(this,\"".$date."\",\"".$j."\",\"".$attendance_user_row['user_id']."\",\"".$attendance_user_row['id']."\",\"".$attendance_user_row['attendance_detail_id']."\",\"".$show_group_id."\")' style='cursor:pointer;'>";
         echo $attendance_info['short_language'];
       }
@@ -1837,7 +1838,7 @@ if($show_ulist_flag){
 
 
   //不在排班组的请假
-    echo "<tr><td style='padding-top:6px; border-width:0px;'>";
+    echo "<tr><td style='padding-top:1px; border-width:0px;'>";
     echo '<div>';
     $show_replace_array = array();
     foreach($all_replace_att as $row_replace_att){

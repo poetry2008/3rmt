@@ -3554,15 +3554,23 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         }
         $group_user_list = array_combine($show_group_user,$uname_arr);
 		$group_user_list = array_filter($group_user_list);
+		$group_str = '<table id="show_user_list" width="70%" cellspacing="0" cellpadding="0" border="0">';
+		$group_str .= '<tr>';
+		$i = 1;
         foreach($group_user_list as $key=>$val) {
-            $group_str .= '<input type="checkbox" name="show_group_user_list[]" id="'.$key.'"';
+			$i++;
+			if($i>1 && $i%2 ==0 ){
+			   $group_str .= '<tr/><tr>';
+			}
+            $group_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';
             }
    	            $group_str .= ' value="'.$key.'" >';
 			    $group_str .=  '<label for="'.$key.'">'.$val.'</label>';
-			    $group_str .= '&nbsp;&nbsp;&nbsp;';
-		}	
+			    $group_str .= '</td>';
+		}
+        $group_str .= '</tr></table>';
 
         if($group_str == ''){
           echo '  ';
@@ -3674,4 +3682,13 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 
 
   echo implode('|',$user_id_array);
+}else if($_GET['action']=='get_index_notes'){
+$content_arr =array();
+$belong = $_POST['page_name'];
+$query = tep_db_query("select * from notes where belong='".$belong."' and (attribute='1' or (attribute='0' and (author='".$ocertify->auth_user."' or author=''))) order by id desc");
+//首页该用户的memo列表
+while($row=tep_db_fetch_array($query)){
+    $content_arr[$row['id']] = trim(htmlspecialchars($row['content']));
+}
+echo json_encode($content_arr);
 }

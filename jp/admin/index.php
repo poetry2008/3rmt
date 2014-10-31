@@ -4,7 +4,6 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_CLASSES . 'currencies.php');
 
 //notes
 $notes = '';  
@@ -38,7 +37,7 @@ while($row=tep_db_fetch_array($query)){
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-37).'px">'
     .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
-    .trim(htmlspecialchars($row['content'])).'</textarea></div>
+    .'</textarea></div>
     </div>';
 }
 //end nodes
@@ -60,8 +59,26 @@ while($row=tep_db_fetch_array($query)){
 <script type="text/javascript" src='includes/javascript/admin_index.js?v=<?php echo $back_rand_info?>'></script>
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
+function add_notes(page_self){
+  $.ajax({
+    url: 'ajax_orders.php?action=get_index_notes',
+    data:'page_name='+page_self ,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data){
+      var obj = $.parseJSON(data);
+    <?php
+      foreach($note_arr as $note_row){
+        echo "$('#note_textarea_".$note_row."').val(obj[".$note_row."]);\n";
+      }
+    ?>
+    }
+  });
+}
 $(document).ready(function() { 
 $('.box_warp').height(<?php echo max($height_arr);?>);
+add_notes('<?php echo $belong;?>');
 <?php
 //监听memo的缩放
 foreach($note_arr as $note_row){
