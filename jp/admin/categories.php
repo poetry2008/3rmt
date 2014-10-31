@@ -3889,7 +3889,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $categories_title_collect = ''; 
               $categories_title_collect .= "<a class='head_sort_order' href='javascript:void(0);' onclick='update_collect_info(".$show_ca_res['parent_id'].",".$show_ca_res['categories_id'].");'>";
               $categories_title_collect .= PRODUCTS_COLLECT_PRICE;
-              $categories_title_collect .= '</a><br>'.date('Y/m/d H:i',strtotime($date_array['collect_date']));
+              $categories_title_collect .= '</a><br><small style="font-weight:bold;font-size:12px;color:#ffffff;">'.date('m/d',strtotime($date_array['collect_date'])).'<br>'.date('H:i',strtotime($date_array['collect_date'])).'</small>';
               $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent_order"','text'=>$categories_title_collect);  
               $categories_title_price = '';
               //操作时间排序
