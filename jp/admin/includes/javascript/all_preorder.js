@@ -273,7 +273,7 @@ function hideOrdersInfo(popup_type){
 //play sound
 function playSound()  
 {  
-  var node=document.getElementById('warn_sound');  
+  var node=document.getElementById('head_warn');  
   if(node!=null)  
   {  
     $.ajax({
