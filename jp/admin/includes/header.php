@@ -144,10 +144,10 @@ function check_header_messages(){
 				$('#show_messages_notice').append(str_html);
 				if(play_flag == true){
 					switch(this['type']){
-					case 'messages':var notice_audio = document.getElementById('head_alarm'); break;
-					case 'bulletin':var notice_audio = document.getElementById("head_alarm"); break;
-					case 'order':var notice_audio = document.getElementById("head_order_audio");break;
-					case 'button':var notice_audio = document.getElementById("head_alarm");break;
+					case 'messages':var notice_audio = document.getElementById('head_message'); break;
+					case 'bulletin':var notice_audio = document.getElementById("head_message"); break;
+					case 'order':var notice_audio = document.getElementById("head_alarm");break;
+					case 'button':var notice_audio = document.getElementById("head_message");break;
 						}
                     notice_audio.play();
                 }
@@ -338,14 +338,14 @@ if(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8.0")){
 
 	?>
 <embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="head_order_audio" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <embed id="head_alarm" src="images/alarm.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="head_message" src="images/message.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <?php
 }else{
 	?>
 <audio id="head_warn" src="images/warn.mp3" ></audio>
-<audio id="head_order_audio"  src="images/notice.mp3" ></audio>
 <audio id="head_alarm" src="images/alarm.mp3" ></audio>
+<audio id="head_message" src="images/message.mp3" ></audio>
 
 <?php
 }
