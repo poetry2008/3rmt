@@ -597,7 +597,44 @@ if(flag !=1 && sign!=1) {
 
 function del_as(num,ele,asl_id,c_permission){
   //start
-  $(".tr_"+num).parent().remove(); 
+  var line_num = $("#line_num").val();
+  line_num = parseInt(line_num);
+  num = parseInt(num);
+  if(line_num > 0){
+    $(".tr_"+num).parent().remove(); 
+    if(num == line_num){
+    
+      $(".tr_"+(num-1)).last().parent().remove(); 
+    }
+    if(!($("#add_end").prev().prev().find('input[type=button]').val())){
+    
+      $("#add_end").prev().prev().remove();
+    }
+    $("#line_num").val(line_num-1);
+  }else{
+    //当删除到最后一个将不是删除而是清空 
+    if(asl_id != ''){
+      $(".popup_order_info select[name='has_group[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='has_attendance_id[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='has_type[]']").each(function(){
+        $(this).val('0');
+      });
+    }else{
+      $(".popup_order_info select[name='group[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='attendance_id[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='type[]']").each(function(){
+        $(this).val('0');
+      });
+    }
+  }  
   //end
   var tr_index = $(ele).parent().parent().prev().index();
   var next_input = $(ele).parent().prev().html();
@@ -636,7 +673,45 @@ function del_as_user(ele,asl_id,is_new){
 function del_as_group(num,ele,attendance_group,is_new,c_permission){
   //start
 
-  $(".tr_"+num).parent().remove();
+  var line_num = $("#line_num").val();
+  line_num = parseInt(line_num);
+  num = parseInt(num);
+  if(line_num > 1){
+    $(".tr_"+num).parent().remove(); 
+    if(num+1 == line_num){
+    
+      $(".tr_"+(num-1)).last().parent().remove(); 
+    }
+    if(!($("#add_end").prev().prev().find('input[type=button]').val())){
+    
+      $("#add_end").prev().prev().remove();
+    }
+    $("#line_num").val(line_num-1);
+  }else{
+    //当删除到最后一个将不是删除而是清空 
+    if(is_new == false){
+      $(".popup_order_info select[name='has_user["+attendance_group+"][]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='has_attendance_id[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='has_type[]']").each(function(){
+        $(this).val('0');
+      });
+    }else{
+      var uid_num=$(ele).parent().parent().prev().prev().prev().find('input[class="tep_index_num"]').eq(0).val();
+      $(".popup_order_info select[name='user["+uid_num+"][]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='attendance_id[]']").each(function(){
+        $(this).val('');
+      });
+      $(".popup_order_info select[name='type[]']").each(function(){
+        $(this).val('0');
+      });
+    }
+  }
   //end
   var tr_index = $(ele).parent().parent().index();
   tr_index++;
@@ -669,7 +744,7 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
   var check_last = $('.popup_order_info').find('tr').eq(0).find('td:last input').val();
   if(check_last){
     if(tr_index==0 && check_last.length>0){
-     $('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
+     //$('.popup_order_info').find('tr').eq(0).find('td:last').html(next_input);
     }
   }
   if(is_new==false){
@@ -1054,14 +1129,16 @@ $('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
   var line_num = $("#line_num").val();
   line_num = parseInt(line_num);
   add_str = add_str.replace(/#line_num_1/g,line_num+1);
+  add_str = add_str.replace(/#line_num_2/g,line_num-1);
   add_str = add_str.replace(/#line_num/g,line_num);
-  $(ele).parent().parent().next().after(add_str);  
+  $("#add_end").prev().before(add_str);  
 }
 
 //add person
-function add_person_row(ele,aid){
+function add_person_row(ele,aid,num){
   if(aid!=''){
     $('#add_person select[id="user_tep"]').attr('name','has_user['+'new'+']['+aid+'][]');
+    aid = num;
   }else{
 
     var aid=$(ele).parent().parent().find('input[class="tep_index_num"]').eq(0).val();
@@ -1256,10 +1333,10 @@ function select_color(ele,color){
 }
 
 //auto add user
-function auto_add_user(ele,aid){
+function auto_add_user(ele,aid,num){
 
   if(ele.value != ''){
-    add_person_row(ele,aid);
+    add_person_row(ele,aid,num);
   }
 }
 
@@ -1268,9 +1345,22 @@ function auto_add_attendance(ele){
   if(ele.value != '' ){
   
     var line_num = $("#line_num").val();
-    line_num = parseInt(line_num);
-    add_att_rows(ele); 
-    $("#line_num").val(line_num+1);
-    $(ele).attr('onchange','');
+    line_num = parseInt(line_num); 
+    var show_num = 0;
+    $(".popup_order_info select[name='has_attendance_id[]']").each(function(){
+      if($(this).val() == ''){
+        show_num++; 
+      }
+    });
+    $(".popup_order_info select[name='attendance_id[]']").each(function(){
+      if($(this).val() == ''){
+        show_num++;
+      }
+    });
+    if(show_num == 0){
+      add_att_rows(ele); 
+      $("#line_num").val(line_num+1);
+    }
+    //$(ele).attr('onchange','');
   }
 }
