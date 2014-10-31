@@ -585,6 +585,7 @@ $all_att_detail .= '</select>|||'.$work_time;
       'genshin'=> '幻想神域',
       'lineage'=> 'リネージュ'
       );
+  // define('CATEGORY_TABLE','category');
  $game_array = array_flip($game_str_array);
   foreach($game_array as $k=>$v){
     if(strpos($category_name,$k)!==false){
@@ -592,10 +593,39 @@ $all_att_detail .= '</select>|||'.$work_time;
       break;
     }
   }
-  $products_price_query = tep_db_query("select pp.product_name,ps.product_price from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` = ".$category_type);
- while($products_price = tep_db_fetch_array($products_price_query)){
-  $products_price_array[] = $products_price ;
- }
+ $products_id_query  = tep_db_query("select pp.product_name,pp.product_id from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` =".$category_type);
+   while($products_id = tep_db_fetch_array($products_id_query)){
+     $products_id_array[] = $products_id ; 
+   }
+  foreach($products_id_array as $key=>$val){
+       $product_price_array = array();
+      if(in_array($val['product_id'],array(0,-1))){
+        $product_price_query = tep_db_query("select p.product_price from ".PRODUCT_TABLE." p left join ".CATEGORY_TABLE." c on p.category_id =c.category_id where c.category_name = '".$name."' and p.product_name ='".$val['product_name']."' and c.category_type = ".$category_type);
+        while($product_price = tep_db_fetch_array($product_price_query)){
+             $product_price_array[] = $product_price ;
+         }
+         sort($product_price_array);
+         $price = array();
+         foreach($product_price_array as $i){
+           if(!in_array($i['product_price'],$price)){
+              $price[] = $i['product_price'];
+           }
+         }
+         $products_price_array[$key]['product_name'] = $val['product_name'];
+         if($val['product_id'] == -1){
+            $products_price_array[$key]['product_price'] = $price[0];
+         }else if ($val['product_id'] == 0){
+            $products_price_array[$key]['product_price'] = $price[1]; 
+         }
+
+      }else{
+      $products_price_query = tep_db_query("select product_name,product_price from ".PRODUCT_TABLE." where product_id = ".$val['product_id']);
+      while($products_price = tep_db_fetch_array($products_price_query)){
+         $products_price_array[$key] = $products_price ;
+      }
+      }
+  
+  }
   mysql_select_db(DB_DATABASE);
   foreach($products_price_array as $k=>$v){
    $sql = "select products_id from ".PRODUCTS_DESCRIPTION_TABLE." where site_id = 0 and language_id = 4 and preorder_status=".$category_type." and products_name like '%".$v['product_name']."%'";

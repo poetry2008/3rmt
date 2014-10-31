@@ -3889,7 +3889,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
               $categories_title_collect = ''; 
               $categories_title_collect .= "<a class='head_sort_order' href='javascript:void(0);' onclick='update_collect_info(".$show_ca_res['parent_id'].",".$show_ca_res['categories_id'].");'>";
               $categories_title_collect .= PRODUCTS_COLLECT_PRICE;
-              $categories_title_collect .= '</a><br>'.date('Y/m/d H:i',strtotime($date_array['collect_date']));
+              $categories_title_collect .= '</a><br><small style="font-weight:bold;font-size:12px;color:#ffffff;">'.date('m/d',strtotime($date_array['collect_date'])).'<br>'.date('H:i',strtotime($date_array['collect_date'])).'</small>';
               $categories_title_row[] = array('align'=>'center','params'=>'class="dataTableHeadingContent_order"','text'=>$categories_title_collect);  
               $categories_title_price = '';
               //操作时间排序
@@ -4155,7 +4155,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $categories_name_text .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'search_type=categories_id&scategories_id='.$categories['categories_id']).(!empty($s_site_id)?'&site_id='.$s_site_id:'').'&order_sort=torihiki_date&order_type=desc">'.tep_image(DIR_WS_ICONS.'search.gif', IMAGE_SEARCH).'</a>&nbsp;'; 
                 $categories_name_text .=  '<a href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '')) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) .  '</a>&nbsp;'; 
                 $categories_name_text .= '<a class="title_text_link" href="' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).(isset($_GET['show_type']) ? '&show_type='.$_GET['show_type'] : '').'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . $categories['categories_name'].'&nbsp;' .  '</a></div>';
-                $tmp_count_cnt = 9 + $count_dougyousya['cnt']; 
+                $tmp_count_cnt = 10 + $count_dougyousya['cnt']; 
                 if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
                   $categories_colspan_params .= 'class="dataTableContent" align="right" colspan="'.$tmp_count_cnt.'" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id']).'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).'&s_site_id='.$categories['site_id'].(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
                   $categories_colspan_text .="&nbsp;";
