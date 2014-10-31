@@ -519,23 +519,6 @@ function save_submit(c_permission){
   })
   //默认值没有进行更改
 
-  //同组同天不能有不同排班类型
-   $.ajax({
-       url: 'ajax.php?action=check_same_group_att',
-       type: 'POST',
-       dataType: 'text',
-       data: 'group_id='+group_id+'&att_id='+att_id, 
-       async : false,
-       success: function(data){
-		   if(data) {
-			 var data =data + warn_attendance_type_diff;
-			 alert(data);
-			 flag = 1;
-		   }else{
-		     flag = 0;
-		   }
-       }
-  }); 
 
    //请假或加班时间问题的验证
    sign = '';
@@ -828,10 +811,7 @@ function del_allow_user(ele){
 
 //change groups
 function change_users_groups(value){
-    var y=$("#fetch_year").val();
-    var m=$("#fetch_month").val();
-    var d=$("#fetch_day").val();
-    var date_tep = y+m+d;
+	var date_tep = $("input[name='get_date']").val();
   $.ajax({
           url: 'ajax.php?action=change_users_groups',
           data: 'users_id='+value+'&date='+date_tep,
