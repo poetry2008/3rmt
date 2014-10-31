@@ -9449,10 +9449,10 @@ else if($_GET['action'] == 'set_attendance_info') {
         array('text' => $right_td)
         );
    
-    $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
-    $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
-    $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
-    $update_time_text= TEXT_DATE_UPDATE.$attendance_info_res['update_time'];
+    $add_user_text= TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_time'];
      $hidden_add_user = tep_draw_input_field('add_user',$attendance_info_res['add_user'],'style="display:none"');
      $hidden_add_time = tep_draw_input_field('add_time',$attendance_info_res['add_time'],'style="display:none"');
 
@@ -9473,7 +9473,7 @@ else if($_GET['action'] == 'set_attendance_info') {
 	   ); 
 	 }
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="check_attendance_info(0'.$action.');"'.$show_style).'</a>'; 
+  $button[] = '<input type="hidden" id="flag_num" value="1"><a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="clear_data();"'.$show_style).'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"'.$show_style).'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info(1'.$action.');"'.$show_style).'</a>'; 
   if (!empty($button)) {
