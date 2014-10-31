@@ -63,7 +63,7 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
         }
         if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
           document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
-          var n_node=document.getElementById('head_alarm');  
+          var n_node=document.getElementById('head_message');  
           if (msg == '1') {
             if (n_node.controls) {
               n_node.controls.play();  
