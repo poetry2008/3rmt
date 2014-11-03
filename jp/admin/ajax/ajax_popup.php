@@ -11834,7 +11834,6 @@ if($row_array['set_time']==0){
    }
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
-	  var_dump($row_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       foreach($row_all_user as $row_all_user_value){
 
