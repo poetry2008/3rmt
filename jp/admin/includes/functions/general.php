@@ -15375,16 +15375,21 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
 function tep_sort_attendance($attendance_list,$attendance_info){
   $temp_time_arr = array();
   $temp_sum_arr = array();
-  foreach($attendance_list as $attendance_value){
+  $temp_array = array();
+  foreach($attendance_list as $attendance_key=>$attendance_value){
     $temp_info = $attendance_info[$attendance_value['attendance_detail_id']];
     if($temp_info['set_time'] == 1){
       $temp_sum_arr[] = $attendance_value;
     }else{
       $temp_key = str_replace(':','',$temp_info['work_start']);
-      $temp_time_arr[$temp_key] = $attendance_value;
+      $temp_array[$attendance_key] = $temp_key;
     }
   }
-  ksort($temp_time_arr);
+  asort($temp_array);
+  foreach($temp_array as $key=>$value){
+
+      $temp_time_arr[] = $attendance_list[$key];
+  }
   $res_arr = array_merge($temp_time_arr,$temp_sum_arr);
   return $res_arr;
 }
