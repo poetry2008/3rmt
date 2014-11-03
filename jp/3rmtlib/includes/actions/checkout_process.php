@@ -541,6 +541,8 @@ if($payment_modules->moneyInRange($payment,$valadate_total)){
 }
 $customers_referer_query = tep_db_query("select referer, is_send_mail, is_calc_quantity, is_quited, quited_date from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $customers_referer_array = tep_db_fetch_array($customers_referer_query);
+$referer = $customers_referer_array['referer'];
+tep_db_query("update ".TABLE_CUSTOMERS." set referer=''   where customers_id='".$customer_id."'");
 # Select
 
 $_SESSION['insert_id'] = $insert_id;
@@ -593,9 +595,9 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'site_id'           => SITE_ID,
                         'torihiki_date'     => $insert_torihiki_date,
                         'torihiki_date_end' => $insert_torihiki_date_end,
-                        'orders_ref'        => tep_db_prepare_input($_SESSION['referer']),
-                        'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
-                        'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
+                        'orders_ref'        => $referer,
+                        'orders_ref_site'   => tep_get_domain($referer),
+                        'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($referer))),
                         'orders_ip'         => $_SERVER['REMOTE_ADDR'],
                         'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))),
                         'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'],
