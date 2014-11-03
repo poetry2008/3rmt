@@ -931,6 +931,9 @@ color:#0066CC;
         </table></td>
       </tr>
       <?php
+//检测是不是组长
+$is_manager = tep_is_group_manager($ocertify->auth_user);
+
 //显示白色字的背景
    $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080');
 
@@ -1046,14 +1049,14 @@ if($param_tep[0]!=''){
         $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
-        $group_str .= '<td width="20%">';
+        $group_str .= '<td>';
         $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);"'.($ocertify->npermission>15 ? ' onclick="set_attendance_info(this, 0,0'.$param.')"' : '').'>'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
-        $group_str .= '<td>';
-        $group_str .= '<a href="javascript:void(0);"'.($ocertify->npermission>15 ? ' onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"' : '').'><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
+        $group_str .= '<td '.(($ocertify->npermission>15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
         $group_str .= '</td>';
-        $group_str .= '<td>';
-        $group_str .= '<a href="javascript:void(0);"'.($ocertify->npermission>15 ? ' onclick="show_group_attendance_info(this,\'\',\'\',\''.$show_group_id.'\',\'\',\''.$ocertify->auth_user.'\');"' : '').'><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
+        $group_str .= '<td '.(($ocertify->npermission>15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '<a href="javascript:void(0);" onclick="show_group_attendance_info(this,\'\',\'\',\''.$show_group_id.'\',\'\',\''.$ocertify->auth_user.'\');"><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
@@ -1282,7 +1285,6 @@ $end_day = $day_num+(7-($day_num+$start_week)%7);
 $j=1;
 $user_info_arr = array();
 $user_key_arr = array();
-$is_manager = tep_is_group_manager($ocertify->auth_user);
 $user_group_arr = array();
 $all_date_user_attendance_date = array();
 $attendance_info_arr = array();
