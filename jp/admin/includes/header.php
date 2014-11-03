@@ -155,9 +155,9 @@ function check_header_messages(){
 						}
                     notice_audio.play();
                     if(long_sound){
-                      setTimeout(function(){notice_audio.play();},610);
+                      setTimeout(function(){notice_audio.play();},700);
                     }else{
-                      setTimeout(function(){notice_audio.play();},500);
+                      setTimeout(function(){notice_audio.play();},600);
                     }
                 }
 					}else{

@@ -67,11 +67,11 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
           if (msg == '1') {
             if (n_node.controls) {
               n_node.controls.play();  
-              setTimeout(function(){n_node.controls.play();},500);
+              setTimeout(function(){n_node.controls.play();},600);
             } else {
               if (check_exists_function('play')) {
                 n_node.play();  
-                setTimeout(function(){n_node.play();},500);
+                setTimeout(function(){n_node.play();},600);
               }
             }
           }

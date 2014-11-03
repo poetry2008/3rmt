@@ -557,7 +557,7 @@ function playSound(soundname)
   
   if (soundname=='new_sound'){
     newsound.play();
-    setTimeout(function(){newsound.play();},580);
+    setTimeout(function(){newsound.play();},600);
   }
 }
 function playLoad(){
