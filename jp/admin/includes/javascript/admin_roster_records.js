@@ -1141,18 +1141,33 @@ $('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
 
 //add person
 function add_person_row(ele,aid,num){
+  var show_num = 0;
   if(aid!=''){
     $('#add_person select[id="user_tep"]').attr('name','has_user['+'new'+']['+aid+'][]');
-    aid = num;
+    $('#add_person select[id="user_tep"]').attr('onchange','auto_add_user(this,\''+aid+'\','+num+')');
+    $(".popup_order_info select[name='has_user[new]["+aid+"][]']").each(function(){
+      if($(this).val() == ''){
+        show_num++;
+      }
+    });
+    aid = num; 
   }else{
 
     var aid=$(ele).parent().parent().find('input[class="tep_index_num"]').eq(0).val();
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
+
+    $(".popup_order_info select[name='user["+aid+"][]']").each(function(){
+      if($(this).val() == ''){
+        show_num++;
+      }
+    });
   }
   var html_str = $('#add_person tbody').html();
    html_str = html_str.replace(/#line_num/g,aid-1);
+  if(show_num == 0){
     $(ele).parent().parent().after(html_str);
     $(ele).parent().parent().next().find('input[class="tep_index_num"]').val(aid);
+  }
 }
 
 // save att type old or new 
