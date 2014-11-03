@@ -1050,7 +1050,7 @@ if($param_tep[0]!=''){
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
         $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
-        $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);"'.($ocertify->npermission>15 ? ' onclick="set_attendance_info(this, 0,0'.$param.')"' : '').'>'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
+        $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
         $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
