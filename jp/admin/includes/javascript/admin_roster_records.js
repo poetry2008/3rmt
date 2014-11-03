@@ -218,6 +218,11 @@ function check_attendance_info(flag,param_a,param_b){
       var work_hours = $("#work_hours").val();
       var rest_hours = $("#rest_hours").val();
       var sign = '';
+      var flag_num = $("#flag_num").val();
+      if(flag_num == 0){
+      
+        flag = 0;
+      }
       if(title_val==''){
         $("#title_text_error").html(error_text);
 		sign=1;
@@ -1363,4 +1368,26 @@ function auto_add_attendance(ele){
     }
     //$(ele).attr('onchange','');
   }
+}
+
+//clear data
+function clear_data(){
+
+  $("#attendance_title").val('');
+  $("#short_language").val('');
+  $("#work_start_hour").val(0);
+  $("#work_start_min_r").val(0);
+  $("#work_start_min_l").val(0);
+  $("#work_end_hour").val(0);
+  $("#work_end_min_r").val(0);
+  $("#work_end_min_l").val(0);
+  $("#work_hours").val('');
+  $("#rest_hours").val('');
+  $("input[name=sort]").eq(0).val(0);
+  $("#type_id").val('0');
+  change_type_text();
+  $("#set_left").attr('checked',true);
+  change_set_time(0);
+  $("#flag_num").val(0);
+  
 }

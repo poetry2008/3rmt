@@ -9449,10 +9449,10 @@ else if($_GET['action'] == 'set_attendance_info') {
         array('text' => $right_td)
         );
    
-    $add_user_text= TEXT_USER_ADDED.$attendance_info_res['add_user'];
-    $update_user_text= TEXT_DATE_ADDED.$attendance_info_res['add_time'];
-    $add_time_text= TEXT_USER_UPDATE.$attendance_info_res['update_user'];
-    $update_time_text= TEXT_DATE_UPDATE.$attendance_info_res['update_time'];
+    $add_user_text= TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_user'];
+    $update_user_text= TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['add_time'];
+    $add_time_text= TEXT_USER_UPDATE.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_user'];
+    $update_time_text= TEXT_DATE_UPDATE.'&nbsp;&nbsp;&nbsp;'.$attendance_info_res['update_time'];
      $hidden_add_user = tep_draw_input_field('add_user',$attendance_info_res['add_user'],'style="display:none"');
      $hidden_add_time = tep_draw_input_field('add_time',$attendance_info_res['add_time'],'style="display:none"');
 
@@ -9473,7 +9473,7 @@ else if($_GET['action'] == 'set_attendance_info') {
 	   ); 
 	 }
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="check_attendance_info(0'.$action.');"'.$show_style).'</a>'; 
+  $button[] = '<input type="hidden" id="flag_num" value="1"><a href="javascript:void(0);">'.tep_html_element_button(BUTTON_ADD_TEXT,'onclick="clear_data();"'.$show_style).'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,'onclick="delete_attendance_info(\''.$id.'\');"'.$show_style).'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,'onclick="check_attendance_info(1'.$action.');"'.$show_style).'</a>'; 
   if (!empty($button)) {
@@ -11813,7 +11813,7 @@ if($row_array['set_time']==0){
       while($group_show_array = tep_db_fetch_array($group_show_query)){
 
         $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
-        if(in_array($ocertify->auth_user,$group_list_select_array)&&!empty($group_list_select_array)){
+        if(in_array($group_list_select_array,$ocertify->auth_user)&&!empty($group_list_select_array)){
 
           $all_user_select_array = explode('|||',$group_show_array['all_users_id']);
           foreach($all_user_select_array as $all_user_select_value){
@@ -11821,6 +11821,16 @@ if($row_array['set_time']==0){
           }
         }
       }
+if(empty($row_all_user)){
+$row_all_user=array();
+      $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
+      $query_all_user = tep_db_query($sql_all_user);
+      while($all_user = tep_db_fetch_array($query_all_user)){
+         if( $ocertify->auth_user == $all_user['userid']){
+             $row_all_user[]=$all_user['userid'];
+         } 
+      }
+}
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
@@ -11969,7 +11979,7 @@ if($row_array['set_time']==0){
     if(tep_is_group_manager($ocertify->auth_user)||$ocertify->npermission >= '15'){
 	    $disabled='';
 	}else{
-		 $disabled = ' disabled="disabled" ';
+            $disabled = ' disabled="disabled" ';
 	}
        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
@@ -11985,9 +11995,9 @@ if($row_array['set_time']==0){
       $style_hide = 'style="display:none;"';
     }
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$style_hide.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
   }
