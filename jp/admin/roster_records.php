@@ -82,12 +82,14 @@ if(isset($_GET['action'])){
 		}
 
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
 		$u_key = $_POST['u_group'][$key];	
                 $update_flag = true;
-			foreach($_POST['has_user'][$u_key] as $k=>$user_id){
+                foreach($_POST['has_user'][$u_key] as $k=>$user_id){
+                  if($user_id == ''){continue;}
           $update_date = false;
           if(!empty($_POST['has_user']['new'][$u_key])){
             $update_date = true;
@@ -168,7 +170,8 @@ if(isset($_GET['action'])){
 
 		$sql_new_arr = array();
 		foreach($_POST['has_user']['new'] as $k=>$userlist) {
-			for($i=0;$i<count($userlist);$i++){
+                  for($i=0;$i<count($userlist);$i++){
+                    if($userlist[$i] == ''){continue;}
 				$sql_new_has_arr = $old_info_list[$k]; 
 				$sql_new_has_arr['user_id']=$userlist[$i];
 				$sql_new_has_arr['add_time']=date("Y-m-d H:i:s");
@@ -198,12 +201,14 @@ if(isset($_GET['action'])){
 			}	
 		}
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
 
                         $update_insert_id = '';
-			foreach($_POST['user'][$key+1] as $k=>$user_new){
+                        foreach($_POST['user'][$key+1] as $k=>$user_new){
+                          if($user_new == ''){continue;}
 				for($j=0;$j<count($user_new);$j++){
 
           $sql_arr = array(
@@ -359,6 +364,7 @@ if(isset($_GET['action'])){
 		}
 
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
