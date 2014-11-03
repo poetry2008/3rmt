@@ -143,13 +143,22 @@ function check_header_messages(){
                                 }
 				$('#show_messages_notice').append(str_html);
 				if(play_flag == true){
+                                var long_sound = false;
 					switch(this['type']){
 					case 'messages':var notice_audio = document.getElementById('head_message'); break;
 					case 'bulletin':var notice_audio = document.getElementById("head_message"); break;
-					case 'order':var notice_audio = document.getElementById("head_alarm");break;
 					case 'button':var notice_audio = document.getElementById("head_message");break;
+					case 'order':
+                                          var notice_audio = document.getElementById("head_alarm");
+                                          long_sound = true;
+                                          break;
 						}
                     notice_audio.play();
+                    if(long_sound){
+                      setTimeout(function(){notice_audio.play();},610);
+                    }else{
+                      setTimeout(function(){notice_audio.play();},500);
+                    }
                 }
 					}else{
 					if(this['type']=='messages'){

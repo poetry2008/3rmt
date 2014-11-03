@@ -325,8 +325,10 @@ function playSound()
         if (sound_msg == '1') {
           if (node.controls) {
             node.controls.play();
+            setTimeout(function(){node.controls.play();},550);
           } else {
             node.play();
+            setTimeout(function(){node.play();},550);
           }
         }
       }

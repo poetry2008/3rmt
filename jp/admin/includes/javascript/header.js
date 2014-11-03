@@ -67,9 +67,11 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
           if (msg == '1') {
             if (n_node.controls) {
               n_node.controls.play();  
+              setTimeout(function(){n_node.controls.play();},500);
             } else {
               if (check_exists_function('play')) {
                 n_node.play();  
+                setTimeout(function(){n_node.play();},500);
               }
             }
           }
@@ -264,8 +266,10 @@ function playHeadSound()
       if (msg == '1') {
         if (hnode.controls) {
           hnode.controls.play();  
+          setTimeout(function(){hnode.controls.play();},550);
         } else {
           hnode.play();  
+          setTimeout(function(){hnode.play();},550);
         }
       }
     }
@@ -320,8 +324,10 @@ function playOrderHeadSound()
       if (msg == '1') {
         if (ohnode.controls) {
           ohnode.controls.play();  
+          setTimeout(function(){hnode.controls.play();},550);
         } else {
           ohnode.play();  
+          setTimeout(function(){ohnode.play();},550);
         }
       }
     }

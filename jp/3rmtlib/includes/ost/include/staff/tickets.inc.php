@@ -546,22 +546,22 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
  </table>
 </div>
       <?php echo OST_SERVER;?>
+<?php if(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8.0")){ ?>
 <embed id="new_sound" src="../images/new_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="email_sound" src="../images/email_sound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+<?php }else{ ?>
+<audio id="new_sound" src="../images/new_sound.mp3"></audio>
+<?php }?>
 <script type= 'text/javascript'>
 function playSound(soundname)
 {
   
   if (soundname=='new_sound'){
-    newsound.Play();
-  }
-  if (soundname=='email_sound'){
-    emailsound.Play();
+    newsound.play();
+    setTimeout(function(){newsound.play();},570);
   }
 }
 function playLoad(){
 newsound=document.getElementById('new_sound');
-emailsound=document.getElementById('email_sound');
 <?php 
 
 if ($_SESSION['play_new_sound']){
