@@ -11813,7 +11813,7 @@ if($row_array['set_time']==0){
       while($group_show_array = tep_db_fetch_array($group_show_query)){
 
         $group_list_select_array = explode('|||',$group_show_array['all_managers_id']); 
-        if(in_array($group_list_select_array,$ocertify->auth_user)&&!empty($group_list_select_array)){
+        if(in_array($ocertify->auth_user,$group_list_select_array)&&!empty($group_list_select_array)){
 
           $all_user_select_array = explode('|||',$group_show_array['all_users_id']);
           foreach($all_user_select_array as $all_user_select_value){
@@ -11821,27 +11821,29 @@ if($row_array['set_time']==0){
           }
         }
       }
-if(empty($row_all_user)){
-$row_all_user=array();
+    $row_all_user = array_unique($row_all_user);
+   if(empty($row_all_user)){
+      $row_all_user=array();
       $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       while($all_user = tep_db_fetch_array($query_all_user)){
-         if( $ocertify->auth_user == $all_user['userid']){
+         if($ocertify->auth_user == $all_user['userid']){
              $row_all_user[]=$all_user['userid'];
          } 
       }
-}
+   }
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
+	  var_dump($row_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
-        if(!in_array($row_all_user_value,$already_add_user_array)){
+   //     if(!in_array($row_all_user_value,$already_add_user_array)){
           $all_user_select .= "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
           $current_users_list[] = $row_all_user_value;
         }
-      }
+    //  }
       $all_user_select .= '</select>';
     } 
     $as_info_row[]['text'] = array(
