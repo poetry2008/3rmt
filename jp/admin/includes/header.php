@@ -183,7 +183,7 @@ function check_header_messages(show_flag){
                                 }
                                 });
 			}
-                        if(eval(data).length > 1||length_all>2){
+                        if(eval(data).length > 1||length_all>0){
                                 if(eval(data).length > 1){
                                   length_all = eval(data).length-1;
                                 }
