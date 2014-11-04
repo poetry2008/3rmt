@@ -9759,13 +9759,26 @@ $action = 'update_show_user';
    $group_str .= ' selected ';
  }
  $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
+
+//当前用户所在的组
+ $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+
  foreach($group_list as $group){
-    $group_str .= '<option value="'.$group['id'].'"';
-    if($show_group_id == $group['id']){
-       $group_str .= ' selected ';
-    }
-   $group_str .= '>'.$group['text'].'</option>';
- }
+    if($ocertify->npermission <15 && in_array($group['id'],$user_group_list)){
+       $group_str .= '<option value="'.$group['id'].'"';
+       if($show_group_id == $group['id']){
+           $group_str .= ' selected ';
+       }
+      $group_str .= '>'.$group['text'].'</option>';
+	}else if($ocertify->npermission >=15){
+       $group_str .= '<option value="'.$group['id'].'"';
+       if($show_group_id == $group['id']){
+           $group_str .= ' selected ';
+       }
+      $group_str .= '>'.$group['text'].'</option>';
+	
+	}
+}
 $group_str .= '</select>';
 
  $group_content[]['text'] = array(
