@@ -9754,27 +9754,59 @@ $action = 'update_show_user';
         $show_select_group_user = array_unique($show_select_group_user);
 
  $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
+if($ocertify->npermission >=15){
  $group_str .= '<option value="0" ';
  if($show_group_id==0){
    $group_str .= ' selected ';
  }
  $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
- foreach($group_list as $group){
-    $group_str .= '<option value="'.$group['id'].'"';
-    if($show_group_id == $group['id']){
-       $group_str .= ' selected ';
-    }
-   $group_str .= '>'.$group['text'].'</option>';
+}
+
+//当前用户所在的组
+ $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+ foreach($user_group_list as $group_id){
+	 //用户所在组的父级组
+    $g_prarent_id_list= group_parent_id_list($group_id);
+	foreach($g_prarent_id_list as $val_tep){
+       $group_parents_list[] = $val_tep; 	
+	}
  }
+ $group_parents_list = array_unique($group_parents_list);
+ if(!empty($group_parents_list)){
+    $group_parents_list = array_merge($group_parents_list,$user_group_list);
+ }else{
+    $group_parents_list = $user_group_list; 
+ }
+ foreach($group_list as $group){
+    if($ocertify->npermission <15 && in_array($group['id'],$group_parents_list)){
+		if(!in_array($group['id'],$user_group_list)){
+			$disabled_group = 'disabled = "disabled"';
+		}else{
+			$disabled_group = '';
+		}
+           $group_str .= '<option '.$disabled_group.' value="'.$group['id'].'"';
+           if($show_group_id == $group['id']){
+               $group_str .= ' selected ';
+           }
+         $group_str .= '>'.$group['text'].'</option>';
+	}else if($ocertify->npermission >=15){
+       $group_str .= '<option value="'.$group['id'].'"';
+       if($show_group_id == $group['id']){
+           $group_str .= ' selected ';
+       }
+      $group_str .= '>'.$group['text'].'</option>';
+	
+	}
+}
 $group_str .= '</select>';
 
  $group_content[]['text'] = array(
-       array('params'=>'width="20%"','text'=> TEXT_GROUP_SELECT),
+       array('params'=>'width="20%" nowrap="nowrap"','text'=> TEXT_GROUP_SELECT),
        array('text' => $group_str)
   ); 
 $select_all ='<input type="checkbox" value="1" onclick="select_all_box(this.value)" id="select_all_users">';
 $group_content[]['text'] = array(
-      array('text' => TEXT_ATTENDANCE_SELECT_TITLE),
+      array('params'=>'width="20%" nowrap="nowrap"','text' => TEXT_ATTENDANCE_SELECT_TITLE),
       array('text' => $select_all.TEXT_ALL_GROUP)
   ); 
 
@@ -9788,7 +9820,7 @@ $group_content[]['text'] = array(
 		$group_user_list = array_combine($show_group_user,$uname_arr);
 		 $group_user_list = array_filter($group_user_list);
 		asort($group_user_list);
-        $user_str = '<table id="show_user_list" width="70%" cellspacing="0" cellpadding="0" border="0">';
+        $user_str = '<table id="show_user_list" width="80%" cellspacing="0" cellpadding="0" border="0">';
         $user_str .= '<tr>';
 		
 	    $i=1;
@@ -9798,7 +9830,7 @@ $group_content[]['text'] = array(
                 $user_str .= '<tr/><tr>';
 			}
 
-          $user_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+          $user_str .= '<td width="40%" style="min-width:220px"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $user_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);
@@ -10532,9 +10564,9 @@ if($row_array['set_time']==0){
   //获得所有用户
   $all_user = array();
   $operator = $ocertify->auth_user;
+  $show_user_id_list = array();
   if($ocertify->npermission >= '15'||tep_is_group_manager($ocertify->auth_user)){
 	  //选中的
-    $show_user_id_list = array();
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
     $query_all_check_user = tep_db_query($sql_all_check_user);
     while($row_all_check_user = tep_db_fetch_array($query_all_check_user)){
@@ -10550,6 +10582,9 @@ if($row_array['set_time']==0){
       }
     }
 	$all_user = array_intersect($all_user,$all_check_user);
+  }else{
+
+    $show_user_id_list[] = $operator;
   }
   //获得所有循环方式
   $type_list = array(
@@ -10608,7 +10643,7 @@ if($row_array['set_time']==0){
   $attendance_dd_arr = $attendance_temp_arr;
 
   //默认的排班模板
-  $adl_select = '<select onchange="auto_add_attendance(this);" name="attendance_id[]" '.$show_only.' >';
+  $adl_select = '<select onchange="auto_add_attendance(this);" '.$disabled.' name="attendance_id[]" '.$show_only.' >';
   $adl_select .= '<option value="">--</option>';
   foreach($attendance_detail_list as $a_value){
     $adl_select .= '<option value="'.$a_value['id'].'">'.$a_value['title'].'</option>';
@@ -10618,7 +10653,7 @@ if($row_array['set_time']==0){
   //默认的用户显示
   $user_select = '<select id="user_default" name="user[1][]" '.$disabled.'>';
   $user_select .= '<option value="">--</option>';
-  $hidden_user_select = '<select name="user[1][]" id="user_default" onchange="auto_add_user(this,\'\');">';
+  $hidden_user_select = '<select name="user[1][]" id="user_default" '.$disabled.' onchange="auto_add_user(this,\'\');">';
   $hidden_user_select .= '<option value="">--</option>';
   $user_select_hidden = '';
   $default_hidden = '';
@@ -10740,17 +10775,7 @@ if($row_array['set_time']==0){
   }
   $line_i = 0;
   foreach($attendane_temp_user_list_arr as $a_info){
-    if($line_i != 0){
-
-      $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" nowrap="nowrap"', 'text' => ''), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap" colspan="2"', 'text' => '----------------------------------------------------------')
-      );     
-    }
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
-      );
+    
     $has_adl_select = '<select onchange="auto_add_attendance(this);" name="has_attendance_id[]" '.$disabled.' >';
     $has_adl_select .= '<option value="">--</option>';
     foreach($attendance_detail_list as $a_value){
@@ -10775,6 +10800,7 @@ if($row_array['set_time']==0){
   $temp_as_info_row = array();
   $show_user = true;
   $temp_count = 0;
+  $show_flag = true;
   for($j=0; $j<count($a_info);$j++){
     $has_user_select = '<select name="has_user['.$a_info[$j]["u_group"].'][]" '.$disabled.' style="max-width:280px;">';
     $has_user_select .= '<option value="">--</option>';
@@ -10782,6 +10808,7 @@ if($row_array['set_time']==0){
     $default_has_user = '';
     if(!in_array($a_info[$j]['user_id'],$show_user_id_list)){
       $temp_count++;
+      $show_flag = false;
       continue;
     }
     foreach($all_user as $user){
@@ -10813,7 +10840,22 @@ if($row_array['set_time']==0){
 
   }
 
-  $hidden_users_select = '<select name="has_user[new]['.$a_info[0]["u_group"].'][]" id="user_default" onchange="auto_add_user(this,\''.$a_info[0]['u_group'].'\','.($line_i+1).');">';
+  if($show_flag == true){
+
+    if($line_i != 0){
+
+      $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" nowrap="nowrap"', 'text' => ''), 
+        array('align' => 'left', 'params' => '"nowrap="nowrap" colspan="2"', 'text' => '----------------------------------------------------------')
+      );     
+    }
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
+      );
+  }
+
+  $hidden_users_select = '<select name="has_user[new]['.$a_info[0]["u_group"].'][]" id="user_default" '.$disabled.' onchange="auto_add_user(this,\''.$a_info[0]['u_group'].'\','.($line_i+1).');">';
   $hidden_users_select .= '<option value="">--</option>';
   $user_select_hidden = '';
   $default_hidden = '';
@@ -10921,7 +10963,7 @@ if($row_array['set_time']==0){
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''), 
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_i.'\',this,\'\')">')
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" '.$disabled.' value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_i.'\',this,\'\')">')
     );
 
 
@@ -11438,7 +11480,7 @@ if($row_array['set_time']==0){
 
   //个人的排班
   $attendance_user_id_array = tep_get_attendance_user($_GET['date']);
-  foreach($attendance_group_id_array as $date_attendance_array){
+  foreach($attendance_user_id_array as $date_attendance_array){
 
     if($date_attendance_array['user_id'] == $ocertify->auth_user){
 
