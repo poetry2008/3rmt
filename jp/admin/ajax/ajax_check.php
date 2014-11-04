@@ -448,7 +448,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
 		for($i=0;$i<$header_num;$i++){
 			$messages_header_all[$i]['time']=substr($messages_header_all[$i]['time'],0,16);
 		}
-		echo json_encode($messages_header_all);
+                if($_POST['show_all']=='true'){
+		  echo json_encode($messages_header_all);
+                }else{
+                  $messages_header_all[0]['length'] = $i;
+		  echo json_encode(array($messages_header_all[0]));
+                }
 	//die(var_dump($messages_header_all));
 	}
 }else if(isset($_GET['action']) && $_GET['action'] == 'delete_messages_header'){
