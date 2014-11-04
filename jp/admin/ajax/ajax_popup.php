@@ -9772,7 +9772,11 @@ if($ocertify->npermission >=15){
 	}
  }
  $group_parents_list = array_unique($group_parents_list);
- $group_parents_list = array_merge($group_parents_list,$user_group_list);
+ if(!empty($group_parents_list)){
+    $group_parents_list = array_merge($group_parents_list,$user_group_list);
+ }else{
+    $group_parents_list = $user_group_list; 
+ }
  foreach($group_list as $group){
     if($ocertify->npermission <15 && in_array($group['id'],$group_parents_list)){
 		if(!in_array($group['id'],$user_group_list)){

@@ -13164,6 +13164,7 @@ function group_parent_id_list($group_id,&$group_parent_id_list){
             $group_parent_id_list[] = $parent_array['parent_id'];
             group_parent_id_list($parent_array['parent_id'],$group_parent_id_list);
           }
+		  return $group_parent_id_list;
 }
 /* -------------------------------------
     功能: 递归组的所有数据 
