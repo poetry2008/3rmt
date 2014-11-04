@@ -9754,22 +9754,37 @@ $action = 'update_show_user';
         $show_select_group_user = array_unique($show_select_group_user);
 
  $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
+if($ocertify->npermission >=15){
  $group_str .= '<option value="0" ';
  if($show_group_id==0){
    $group_str .= ' selected ';
  }
  $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
+}
 
 //当前用户所在的组
  $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
-
+ foreach($user_group_list as $group_id){
+	 //用户所在组的父级组
+    $g_prarent_id_list= group_parent_id_list($group_id);
+	foreach($g_prarent_id_list as $val_tep){
+       $group_parents_list[] = $val_tep; 	
+	}
+ }
+ $group_parents_list = array_unique($group_parents_list);
+ $group_parents_list = array_merge($group_parents_list,$user_group_list);
  foreach($group_list as $group){
-    if($ocertify->npermission <15 && in_array($group['id'],$user_group_list)){
-       $group_str .= '<option value="'.$group['id'].'"';
-       if($show_group_id == $group['id']){
-           $group_str .= ' selected ';
-       }
-      $group_str .= '>'.$group['text'].'</option>';
+    if($ocertify->npermission <15 && in_array($group['id'],$group_parents_list)){
+		if(!in_array($group['id'],$user_group_list)){
+			$disabled_group = 'disabled = "disabled"';
+		}else{
+			$disabled_group = '';
+		}
+           $group_str .= '<option '.$disabled_group.' value="'.$group['id'].'"';
+           if($show_group_id == $group['id']){
+               $group_str .= ' selected ';
+           }
+         $group_str .= '>'.$group['text'].'</option>';
 	}else if($ocertify->npermission >=15){
        $group_str .= '<option value="'.$group['id'].'"';
        if($show_group_id == $group['id']){
@@ -9811,7 +9826,7 @@ $group_content[]['text'] = array(
                 $user_str .= '<tr/><tr>';
 			}
 
-          $user_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+          $user_str .= '<td width="40%" style="min-width:180px"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $user_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);

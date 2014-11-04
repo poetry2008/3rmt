@@ -3562,7 +3562,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 			if($i>1 && $i%2 ==0 ){
 			   $group_str .= '<tr/><tr>';
 			}
-            $group_str .= '<td width="40%"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+            $group_str .= '<td width="40%" style="min-width:180px;"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';
             }
