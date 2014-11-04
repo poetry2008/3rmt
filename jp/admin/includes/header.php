@@ -47,6 +47,8 @@ var header_text_alert_link = '<?php echo HEADER_TEXT_ALERT_LINK?>';
 <script languages="javascript" src="includes/javascript/header.js?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
 function hide_messages(){
+        $('#show_all_messages_notice').children().remove();
+        check_header_messages(true);
 	if($('#show_all_messages_notice').css('display') == 'none'){
 		$('#show_all_messages_notice').css('display', '');
 	}else{
@@ -62,7 +64,7 @@ function delete_header_messages(messages_id){
 			},
 			function(data){
 				if(data == '1'){
-					check_header_messages();
+					check_header_messages(false);
 				}	
 			}
 		);
@@ -91,7 +93,7 @@ function delete_header_messages_all(){
 			},
 			function(data){
 				if(data == '1'){
-					check_header_messages();
+					check_header_messages(false);
 					
 				}	
 			}
@@ -103,12 +105,14 @@ function delete_header_messages_all(){
 
 
 var timestamp = <?php echo time();?>;
-function check_header_messages(){
+function check_header_messages(show_flag){
 	var messages_num = 0;
+        var length_all;
 	$.post(
 		"ajax.php?&action=check_messages_header",
 		{
     			sender_id:"<?php echo $ocertify->auth_user;?>",
+                        show_all:show_flag,
   		},
   		function(data){
 			$('#show_messages_notice').children().remove();
@@ -153,11 +157,13 @@ function check_header_messages(){
                                           long_sound = true;
                                           break;
 						}
+                    if(!show_flag){
                     notice_audio.play();
                     if(long_sound){
                       setTimeout(function(){notice_audio.play();},700);
                     }else{
                       setTimeout(function(){notice_audio.play();},600);
+                    }
                     }
                 }
 					}else{
@@ -172,24 +178,32 @@ function check_header_messages(){
 					$('#show_all_messages_notice').append(str_html);
 					}
 					messages_num++;
+                                if(!show_flag){
+                                  length_all = (this.length - 1);
+                                }
                                 });
 			}
-                        if(eval(data).length > 1){
+                        if(eval(data).length > 1||length_all>2){
+                                if(eval(data).length > 1){
+                                  length_all = eval(data).length-1;
+                                }
                                 var messages_background_color = '#FFCC00';
                                 if(show_recent_messages_num == show_all_messages_num){
 
                                   messages_background_color = '#FFFF33';
                                 }
-                                $('#show_all_messages_notice').css('display','none');
-				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)"  href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
+                                if(!show_flag){
+                                  $('#show_all_messages_notice').css('display','none');
+                                }
+				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" href="javascript:void(0);"><span>他'+length_all+'件</span></a>');
 				$('#show_all_messages_notice').append('<table style="background:'+messages_background_color+'" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:'+messages_background_color+'"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'" ></a></td></tr></table>');
 			};
   		}
 	);
 }
 $(document).ready(function(){
-  check_header_messages();
-  setInterval(function(){check_header_messages()}, 60000);
+  check_header_messages(false);
+  setInterval(function(){check_header_messages(false)}, 60000);
 });
 
 <?php
