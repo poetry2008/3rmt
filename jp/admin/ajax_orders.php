@@ -3554,7 +3554,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         }
         $group_user_list = array_combine($show_group_user,$uname_arr);
 		$group_user_list = array_filter($group_user_list);
-		$group_str = '<table id="show_user_list" width="70%" cellspacing="0" cellpadding="0" border="0">';
+		$group_str = '<table id="show_user_list" width="80%" cellspacing="0" cellpadding="0" border="0">';
 		$group_str .= '<tr>';
 		$i = 1;
         foreach($group_user_list as $key=>$val) {
@@ -3562,7 +3562,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 			if($i>1 && $i%2 ==0 ){
 			   $group_str .= '<tr/><tr>';
 			}
-            $group_str .= '<td width="40%" style="min-width:180px;"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+            $group_str .= '<td width="40%" style="min-width:220px;"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';
             }

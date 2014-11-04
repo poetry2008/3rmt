@@ -9801,12 +9801,12 @@ if($ocertify->npermission >=15){
 $group_str .= '</select>';
 
  $group_content[]['text'] = array(
-       array('params'=>'width="20%"','text'=> TEXT_GROUP_SELECT),
+       array('params'=>'width="20%" nowrap="nowrap"','text'=> TEXT_GROUP_SELECT),
        array('text' => $group_str)
   ); 
 $select_all ='<input type="checkbox" value="1" onclick="select_all_box(this.value)" id="select_all_users">';
 $group_content[]['text'] = array(
-      array('text' => TEXT_ATTENDANCE_SELECT_TITLE),
+      array('params'=>'width="20%" nowrap="nowrap"','text' => TEXT_ATTENDANCE_SELECT_TITLE),
       array('text' => $select_all.TEXT_ALL_GROUP)
   ); 
 
@@ -9820,7 +9820,7 @@ $group_content[]['text'] = array(
 		$group_user_list = array_combine($show_group_user,$uname_arr);
 		 $group_user_list = array_filter($group_user_list);
 		asort($group_user_list);
-        $user_str = '<table id="show_user_list" width="70%" cellspacing="0" cellpadding="0" border="0">';
+        $user_str = '<table id="show_user_list" width="80%" cellspacing="0" cellpadding="0" border="0">';
         $user_str .= '<tr>';
 		
 	    $i=1;
@@ -9830,7 +9830,7 @@ $group_content[]['text'] = array(
                 $user_str .= '<tr/><tr>';
 			}
 
-          $user_str .= '<td width="40%" style="min-width:180px"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+          $user_str .= '<td width="40%" style="min-width:220px"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
           if(in_array($key,$show_select_group_user)){
             $user_str .= ' checked="checked" ';
             $user_atted[$key] = tep_is_attenandced_date($key);
