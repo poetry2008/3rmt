@@ -211,7 +211,8 @@ while($config_array = mysql_fetch_array($config_query)){
 }
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新" onclick="update_data();"></td>';
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新" onclick="update_data();">';
+echo '&nbsp;&nbsp;<input type="button" name="collect_button" value="开始更新" onclick="collect_data_start(1);"></td>';
 echo '</tr></table>';
 echo '</form>';
 ?>
@@ -295,6 +296,21 @@ function update_products_price(category_name,products_name,products_type,product
     }
   }); 
 }
+
+function collect_data_start(config_val){
+  $.ajax({
+    type: "POST",
+	data: 'config_value='+config_val,
+    async:true,
+    url: 'ajax.php?action=collect_data_start',
+    success: function(msg) {
+		alert(msg);
+
+    }
+  }); 
+}
+
+//update products price
 
 
 </script>
