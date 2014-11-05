@@ -9833,8 +9833,16 @@ $group_content[]['text'] = array(
       array('text' => $select_all.TEXT_ALL_GROUP)
   ); 
 
+$user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
+$user_query = tep_db_query($user_sql);
+$all_users =array();
+while($user_row = tep_db_fetch_array($user_query)){
+   $all_users[]=$user_row['userid'];
+}
+//用户合法
+$show_group_user = array_intersect($show_group_user,$all_users);
         foreach($show_group_user as $show_list_uid){
-          if($show_list_uid!=''){
+          if($show_list_uid!='' ){
 			$tep_array= tep_get_user_info($show_list_uid);
 			$uname_arr[] = $tep_array['name'];
 
