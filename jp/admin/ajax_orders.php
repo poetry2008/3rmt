@@ -3562,7 +3562,14 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
 			if($i>1 && $i%2 ==0 ){
 			   $group_str .= '<tr/><tr>';
 			}
-            $group_str .= '<td width="40%" style="min-width:220px;"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+       if($show_group_id==0){
+            if(($ocertify->npermission <15 && $ocertify->auth_user==$key)||$ocertify->npermission >=15){
+                $display = '';
+	    }else{
+                $display = 'display:none;';
+	    }
+       }
+            $group_str .= '<td width="40%" style="min-width:220px;'.$display.'"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';
             }

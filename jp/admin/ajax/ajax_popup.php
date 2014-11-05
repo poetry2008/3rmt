@@ -9754,28 +9754,28 @@ $action = 'update_show_user';
         $show_select_group_user = array_unique($show_select_group_user);
 
  $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
-if($ocertify->npermission >=15){
- $group_str .= '<option value="0" ';
- if($show_group_id==0){
-   $group_str .= ' selected ';
- }
- $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
-}
 
 //当前用户所在的组
  $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
- foreach($user_group_list as $group_id){
+     foreach($user_group_list as $group_id){
 	 //用户所在组的父级组
-    $g_prarent_id_list= group_parent_id_list($group_id);
-	foreach($g_prarent_id_list as $val_tep){
-       $group_parents_list[] = $val_tep; 	
-	}
- }
- $group_parents_list = array_unique($group_parents_list);
- if(!empty($group_parents_list)){
-    $group_parents_list = array_merge($group_parents_list,$user_group_list);
- }else{
-    $group_parents_list = $user_group_list; 
+        $g_prarent_id_list= group_parent_id_list($group_id);
+	    foreach($g_prarent_id_list as $val_tep){
+           $group_parents_list[] = $val_tep; 	
+	    }
+    }
+     $group_parents_list = array_unique($group_parents_list);
+     if(!empty($group_parents_list)){
+        $group_parents_list = array_merge($group_parents_list,$user_group_list);
+     }else{
+        $group_parents_list = $user_group_list; 
+    }
+ if(empty($group_parents_list) ||$ocertify->npermission >=15){
+       $group_str .= '<option value="0" ';
+       if($show_group_id==0){
+         $group_str .= ' selected ';
+        }
+       $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
  }
  foreach($group_list as $group){
     if($ocertify->npermission <15 && in_array($group['id'],$group_parents_list)){
@@ -9829,16 +9829,23 @@ $group_content[]['text'] = array(
 			if($i>1 && $i%2 ==0 ){
                 $user_str .= '<tr/><tr>';
 			}
-
-          $user_str .= '<td width="40%" style="min-width:220px"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
-          if(in_array($key,$show_select_group_user)){
-            $user_str .= ' checked="checked" ';
-            $user_atted[$key] = tep_is_attenandced_date($key);
-            $show_checked_user_list[] = $key;
-          }
-          $user_str .= ' value="'.$key.'" >';
-          $user_str .=  '<label for="'.$key.'">'.$val.'</label>';
-          $user_str .= '</td>';
+            if($show_group_id==0){
+               if(($ocertify->npermission <15 && $ocertify->auth_user==$key)||$ocertify->npermission >=15){
+                  $display = '';
+               }else{
+                   $display = 'display:none;';
+               }
+            }
+             $user_str .= '<td width="40%" style="min-width:220px;'.$display.'"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
+             if(in_array($key,$show_select_group_user)){
+                $user_str .= ' checked="checked" ';
+                $user_atted[$key] = tep_is_attenandced_date($key);
+                $show_checked_user_list[] = $key;
+             }
+              $user_str .= ' value="'.$key.'" >';
+              $user_str .=  '<label for="'.$key.'">'.$val.'</label>';
+              $user_str .= '</td>';
+		  
 		}
           $user_str .= '</tr>';
        $user_str .= '</table>';

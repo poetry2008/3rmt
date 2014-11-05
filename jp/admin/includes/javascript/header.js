@@ -1,6 +1,6 @@
 var alert_update_id = '';
 $(function() {
-   setTimeout(function() {check_header_messages()}, 35000);
+   setTimeout(function() {check_header_messages(false)}, 35000);
 });
 //handle notice time
 function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)
@@ -109,7 +109,7 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       success: function(data) {
       } 
       });
-  check_header_messages();
+  check_header_messages(false);
 }
 // ajax change language
 function change_language(language,cur_page)
@@ -155,10 +155,10 @@ function delete_micro_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
-        check_header_messages();
+        check_header_messages(false);
       } 
       });
-  check_header_messages();
+  check_header_messages(false);
   window.scrollTo(0,0);
 }
 //show header notice
@@ -232,7 +232,7 @@ function show_head_notice(no_type)
               $("#notice_id_str").remove();
             }
           }
-          setTimeout(function() {check_header_messages()}, 35000);
+          setTimeout(function() {check_header_messages(false)}, 35000);
         }
       } 
       });
