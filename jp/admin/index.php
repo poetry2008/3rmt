@@ -48,10 +48,8 @@ while($row=tep_db_fetch_array($query)){
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
-<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js?v=<?php echo $back_rand_info?>"></script>
+<script type="text/javascript" src="includes/note_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="js2php.php?path=includes&name=global&type=js&v=<?php echo $back_rand_info?>"></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js?v=<?php echo $back_rand_info?>'></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js?v=<?php echo $back_rand_info?>'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css?v=<?php echo $back_rand_info?>" />
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info?>" />
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>" />
