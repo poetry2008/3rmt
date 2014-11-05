@@ -81,5 +81,7 @@ define('TEXT_PRRAM_ATTENDANCE_NUM','上班时间');
 define('TEXT_ATTENDANCE_SELECT_TITLE', '员工');
 define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 define('TEXT_ATTENDANCE_DATE_ERROR', '正しく入力してください');
+define('TEXT_ATTENDANCE_DATE_END', '终止');
+define('TEXT_ATTENDANCE_DATE_END_CONFIRM', '确定要终止吗？');
 ?>
 
