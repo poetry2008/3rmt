@@ -11919,6 +11919,9 @@ if($row_array['set_time']==0){
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
+        if($row_all_user_value_name['userid'] == ''){
+          continue;
+        }
    //     if(!in_array($row_all_user_value,$already_add_user_array)){
           $all_user_select .= "<option value='".$row_all_user_value."'>".$row_all_user_value_name['name']."</option>";
           $current_users_list[] = $row_all_user_value;
