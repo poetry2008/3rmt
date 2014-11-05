@@ -13642,16 +13642,22 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$g
   if (!is_array($group_tree_array)) $group_tree_array = array();
   $group_sql = "select name,parent_id,id,all_users_id,payrolls_admin from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1' order by order_sort asc";
   $group_query = tep_db_query($group_sql);
+  $all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
+  $all_user_query = tep_db_query($all_user_sql);
+  while($user_info_row = tep_db_fetch_array($all_user_query)){
+      $all_user_info[] = $user_info_row['userid'];
+  }
   while ($groups = tep_db_fetch_array($group_query)){
 	$group_users_tep_array = explode('|||',$groups['all_users_id']);
 	$groups_tep='';
 	//查看组成员是否存在
 	foreach($group_users_tep_array as $tep_group_users){
-		if(in_array($tep_group_users,$all_user_info)){
-	       $groups_tep .= $tep_group_users.'|||';	
-		}
+    	  if(in_array($tep_group_users,$all_user_info)){
+              $groups_tep .= $tep_group_users.'|||';	
+           }
 	}
 	$groups['all_users_id']=trim($groups_tep);
+
     $group_id_list = array();
     $all_users_id = '';
     $parent_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups['id']."'");
@@ -13666,11 +13672,6 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$g
       tep_db_free_result($child_user_query);
     }
 
-    $all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
-    $all_user_query = tep_db_query($all_user_sql);
-    while($user_info_row = tep_db_fetch_array($all_user_query)){
-      $all_user_info[] = $user_info_row['userid'];
-    }
 	
     if(trim($all_users_id) != ''){
           $users_list_array = explode('|||',$all_users_id);
@@ -13678,9 +13679,9 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$g
 	//查看组成员是否存在
 	$all_users_id ='';
 	foreach($users_list_array as $key=>$tep_users){
-		if(in_array($tep_users,$all_user_info)){
-	     $all_users_id .= $tep_users.'|||';	
-		}
+	    if(in_array($tep_users,$all_user_info)){
+	        $all_users_id .= $tep_users.'|||';	
+	    }
 	}
 
     //工资计算管理员

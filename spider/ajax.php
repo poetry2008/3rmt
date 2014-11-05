@@ -29,4 +29,18 @@ if($_GET['action'] == 'update_products_price'){
     mysql_query("insert into products_price(id,category_name,product_name,product_type,product_id) values(NULL,'".$category_name."','".$products_name."','".$products_type."','".$products_id."')"); 
   }
 }
+/**
+ *点击开始/停止采集
+ * */
+else if($_GET['action'] == 'collect_data_start'){
+   $config_value = $_POST['config_value'];
+    mysql_query("update config set config_value='".$config_value."' where config_key='COLLECT_DATA_STATUS'");
+   if(isset($config_value)&&$config_value==1){
+	   exec('/etc/php cron_collect_tep.php',$array,$status);
+	   var_dump($array);
+	   var_dump($status);
+   }
+
+
+}
 ?>
