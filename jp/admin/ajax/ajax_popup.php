@@ -10961,7 +10961,7 @@ if($row_array['set_time']==0){
     $as_info_row[]['text'] = array(
       array('params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"','text'=>''),
       array('text'=>''),
-      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info[0]['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'user\',\''.$a_info[0]['u_group'].'\',\''.$_GET['date'].'\');">' : ''))
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info[0]['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input '.$disabled.' type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'user\',\''.$a_info[0]['u_group'].'\',\''.$_GET['date'].'\');">' : ''))
     );
   $line_i++;
   }
@@ -11340,7 +11340,7 @@ if($row_array['set_time']==0){
       $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(\''.$line_i.'\',this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'group\',\''.$a_info['id'].'\',\''.$_GET['date'].'\');">' : ''))
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(\''.$line_i.'\',this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input '.$show_only.' type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'group\',\''.$a_info['id'].'\',\''.$_GET['date'].'\');">' : ''))
       );
       $line_i++;
     }
