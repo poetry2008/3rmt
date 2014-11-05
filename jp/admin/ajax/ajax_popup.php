@@ -9790,7 +9790,30 @@ $action = 'update_show_user';
            }
          $group_str .= '>'.$group['text'].'</option>';
 	}else if($ocertify->npermission >=15){
-       $group_str .= '<option value="'.$group['id'].'"';
+      $group_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$group['id']."' and group_status=1");
+      $group_array = tep_db_fetch_array($group_query);
+
+      $group_child_query = tep_db_query("select * from ".TABLE_GROUPS." where parent_id='".$group['id']."' and group_status=1");
+	  $group_child_num = tep_db_num_rows($group_child_query);
+		     $flag = 0; 
+      while($group_child_array = tep_db_fetch_array($group_parent_query)){
+          $group_tep_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$group_child_array['id']."' and group_status=1");
+          $group_tep = tep_db_fetch_array($group_tep_query);
+		  if($group_tep['all_users_id']!=''){
+		     $flag = 1; 
+		  }
+	  }
+	  
+	  if(($group_array['all_users_id']=='' && $group_child_num==0) || ($group_array['all_users_id']=='' && $flag != 1)){
+          $dis = 'style="display:none;"';    
+	  }else if($group_array['all_users_id']=='' && $group_child_num!=0 & $flag = 1 ){
+          $dis = 'disabled="disabled"';    
+	  }else{
+          $dis = '';    
+	  
+	  }
+
+       $group_str .= '<option '.$dis.' value="'.$group['id'].'"';
        if($show_group_id == $group['id']){
            $group_str .= ' selected ';
        }
