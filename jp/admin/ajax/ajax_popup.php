@@ -10805,7 +10805,11 @@ if($row_array['set_time']==0){
   }
   $line_i = 0;
   foreach($attendane_temp_user_list_arr as $a_info){
-    
+
+    if($a_info[0]['end_date'] != 0 && $a_info[0]['type'] != 0 && $a_info[0]['end_date'] <= $_GET['date']){
+
+      continue; 
+    }  
     $has_adl_select = '<select onchange="auto_add_attendance(this);" name="has_attendance_id[]" '.$disabled.' >';
     $has_adl_select .= '<option value="">--</option>';
     foreach($attendance_detail_list as $a_value){
@@ -10958,7 +10962,7 @@ if($row_array['set_time']==0){
     $as_info_row[]['text'] = array(
       array('params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"','text'=>''),
       array('text'=>''),
-      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">')
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info[0]['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'user\',\''.$a_info[0]['u_group'].'\',\''.$_GET['date'].'\');">' : ''))
     );
   $line_i++;
   }
@@ -11239,6 +11243,10 @@ if($row_array['set_time']==0){
     $show_arr = true;
     $line_i = 0;
     foreach($attendance_dd_arr as $a_info){
+      if($a_info['end_date'] != 0 && $a_info['type'] != 0 && $a_info['end_date'] <= $_GET['date']){
+
+        continue;
+      }
 
       if($line_i != 0){
         $as_info_row[]['text'] = array(
@@ -11335,7 +11343,7 @@ if($row_array['set_time']==0){
       $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(\''.$line_i.'\',this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">')
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$show_only.' type="button" onclick="del_as(\''.$line_i.'\',this,\''.$a_info['id'].'\',\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'group\',\''.$a_info['id'].'\',\''.$_GET['date'].'\');">' : ''))
       );
       $line_i++;
     }

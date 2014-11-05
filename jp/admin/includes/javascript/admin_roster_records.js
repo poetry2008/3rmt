@@ -1406,3 +1406,13 @@ function clear_data(){
   $("#flag_num").val(0);
   
 }
+
+//end date
+function end_date(type,id,date){
+
+  if(confirm(end_date_confirm)){
+  
+    document.forms.attendance_setting_form.action='roster_records.php?action=end_date&type='+type+'&id='+id+'&date='+date;
+    document.forms.attendance_setting_form.submit();
+  }
+}
