@@ -982,18 +982,24 @@ if($param_tep[0]!=''){
         $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        //$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s,  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        $show_group_sql = "select s.*,g.group_status from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id  and is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         $show_type=1;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
-          if($show_group_row['user_id']!=''){
+		  //组是否被禁止
+          if($show_group_row['user_id']!='' && $show_group_row['group_status']!=0){
             $show_select_group_user[] = $show_group_row['user_id'];
-          }
+		  }else{
+           $user_group_arr_tep[] = $show_group_row['gid'];
+          
+		  $show_select_group_user[]=$ocertify->auth_user;
+		  }
 		  $show_att_status =$show_group_row['att_status'];
-                  $show_type = $show_group_row['show_type'];
+          $show_type = $show_group_row['show_type'];
         }
         if($has_default){
           if($show_group_id==0){
@@ -1007,7 +1013,12 @@ if($param_tep[0]!=''){
                where id='".$show_group_id."'";
             $user_query = tep_db_query($user_sql);
             if($user_row = tep_db_fetch_array($user_query)){
-              $show_group_user = explode('|||',$user_row['all_users_id']);
+				//判断组是否被禁止
+                if($user_row['group_status']==1){
+                   $show_group_user = explode('|||',$user_row['all_users_id']);
+				}else{
+                  $show_group_user[] = $ocertify->auth_user;           
+				}
             }
           }
         }else{
@@ -1127,6 +1138,7 @@ if($param_tep[0]!=''){
 
 $attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
 $replace_select_sql = '';
+$show_group_id=13;
 if(!empty($show_select_group_user)){
   if($show_group_id == 0){
     $attendance_select_sql .= " is_user = 0 ";
@@ -1264,16 +1276,18 @@ $end = false;
 
 
 //初始化 获得所有排班
+
 $all_att_arr = array();
 $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
 $all_att_auery = tep_db_query($all_att_sql);
 while($all_att_row = tep_db_fetch_array($all_att_auery)){
   $all_att_arr[$all_att_row['id']] = $all_att_row;
 }
-
 ?>
 <table width="100%" border="0" cellspacing="1" cellpadding="2" class="dataTable_border">
-<?php if($show_type!=1){?>
+<?php
+
+if($show_type!=1){?>
 <tr>
 <?php 
 echo '  <td width="16%">
@@ -1311,7 +1325,13 @@ foreach($show_select_group_user as $user_value){
   $users_info = tep_get_user_info($user_value);
   $user_info_arr[$user_value] = $users_info;
   $user_key_arr[] = $user_value;
-  $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+  $user_group = tep_get_groups_by_user($user_value);
+  //如果用户所在的组是空的
+  if(empty($user_group)){
+      $user_group_arr[$user_value]=$user_group_arr_tep; 
+  }else{
+     $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+  }
 }
 while($j<=$end_day)
 { 
