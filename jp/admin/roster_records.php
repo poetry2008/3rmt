@@ -1138,7 +1138,6 @@ if($param_tep[0]!=''){
 
 $attendance_select_sql = "select attendance_detail_id from ".TABLE_ATTENDANCE_DETAIL_DATE." where "; 
 $replace_select_sql = '';
-$show_group_id=13;
 if(!empty($show_select_group_user)){
   if($show_group_id == 0){
     $attendance_select_sql .= " is_user = 0 ";
