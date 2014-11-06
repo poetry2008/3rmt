@@ -1313,7 +1313,9 @@ for($i = 0; $i<$start_week; $i++)
 {
   echo "<td></td>";
 }
-$end_day = $day_num+(7-($day_num+$start_week)%7);
+$temp_day = ($day_num+$start_week)%7;
+$temp_day = $temp_day == 0 ? 0 : 7-$temp_day;
+$end_day = $day_num+$temp_day;
 $j=1;
 $user_info_arr = array();
 $user_key_arr = array();
