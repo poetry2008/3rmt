@@ -265,7 +265,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>'; 
 
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGENT.'</b></td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
@@ -1471,6 +1471,13 @@ if(isset($_GET['reload'])) {
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
 }else{
 #{{
+  $where_no_error = ' and(o.torihiki_date is not null and 
+      o.date_purchased is not null and 
+      o.torihiki_date != "" and 
+      o.date_purchased != "" and 
+      o.torihiki_date != "0000-00-00 00:00:00" and 
+      o.date_purchased != "0000-00-00 00:00:00" 
+      )';
   $where_type = '';
   $where_payment = '';
   $from_payment = '';
@@ -1479,7 +1486,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   if(isset($_GET['keyword'])||isset($_GET['search_type'])){
     $order_str = ''; 
   }else{
-    $order_str = 'torihiki_date_error desc,date_purchased_error desc,'; 
+    $order_str = ''; 
   }
   $user_info = tep_get_user_info($ocertify->auth_user);
   $sort_setting_flag = false;
@@ -1730,7 +1737,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.read_flag
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
-               " . " and o.site_id in (". $site_list_str .")"  . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type . " order by ".$order_str;
+               " . " and o.site_id in (". $site_list_str .")"  . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " " . $where_payment . $where_type .$where_no_error . " order by ".$order_str;
+    
   } else if (isset($_GET['cID']) && $_GET['cID']) {
     //顾客id查询 
     $cID = tep_db_prepare_input($_GET['cID']);
@@ -1766,7 +1774,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
                " . " and o.site_id in (". $site_list_str .")"  . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
-               " . $where_payment . $where_type . " order by ".$order_str;
+               " . $where_payment . $where_type .$where_no_error . " order by ".$order_str;
   } elseif (isset($_GET['status']) && $_GET['status']) {
     //状态查询 
     $status = tep_db_prepare_input($_GET['status']);
@@ -1803,7 +1811,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                where ".$sort_where."
                o.orders_status = '" . tep_db_input($status) . "' 
                " . " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . "
-               " . $where_payment . $where_type . " order by ".$order_str;
+               " . $where_payment . $where_type .$where_no_error . " order by ".$order_str;
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
     //商品名查询 
     $orders_query_raw = " select distinct op.orders_id from " .
@@ -1814,12 +1822,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }else{
       $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
     }
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".$order_str;
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') .$where_no_error . " order by ".$order_str;
   } elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
     //商品id查询 
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id='".$_GET['products_id']."'";
 
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ". $order_str;
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') .$where_no_error . " order by ". $order_str;
   } elseif (isset($_GET['scategories_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'categories_id') {
     //分类id查询 
     if (isset($_GET['site_id'])) {
@@ -1827,7 +1835,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }
     $relate_category_array = tep_get_child_category_by_cid($_GET['scategories_id']);
     $orders_query_raw = " select distinct op.orders_id from " .  TABLE_ORDERS_PRODUCTS . " op, ".TABLE_ORDERS." o,".TABLE_PRODUCTS_TO_CATEGORIES." p2c " .$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $relate_category_array).")";
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') .$where_no_error . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'sproducts_id' ) {
     //未完成订单查询 
     $query_str = ''; 
@@ -1893,7 +1901,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       o.orders_id = op.orders_id and o.orders_status = o_s.orders_status_id and op.products_id ";
     $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
     $orders_query_raw .= " and o.finished = '0' and flag_qaf = '0'and o_s.is_cancle = 0".$query_str;
-    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
+    $orders_query_raw .= " and o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'') .$where_no_error . " order by ".str_replace('torihiki_date_error desc,date_purchased_error desc,', '', $order_str);
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     //订单状态查询 
     if (!empty($_GET['keywords'])) {
@@ -1933,7 +1941,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                    '%".$_GET['keywords']."%' or o.customers_email_address like
                    '%".$_GET['keywords']."%' or op.products_name like
-                   '%".$_GET['keywords']."%') " . $where_payment . $where_type ."  order by
+                   '%".$_GET['keywords']."%') " . $where_payment . $where_type .$where_no_error ."  order by
                   ".$order_str;
                   } else {
                   $orders_query_raw = "
@@ -1969,7 +1977,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     ".$sort_where .
                     " o.site_id in (". $site_list_str .")" .  ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and '). "
                      o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
-                     . $where_type ."  order by ".$order_str;
+                     . $where_type .$where_no_error ."  order by ".$order_str;
                      }
                      } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
                      //订单id查询 
@@ -2008,7 +2016,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.site_id,
                      o.is_gray,
                      o.read_flag
-                       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type."  order by ".$order_str;
+                       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ." where " . $sort_where.  " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') .  $orders_id_search .  $where_payment . $where_type.$where_no_error ."  order by ".$order_str;
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
                        //顾客名/邮件查询 
@@ -2080,7 +2088,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                          } 
                        }
 
-                       $orders_query_raw .= " order by ".$order_str;
+                       $orders_query_raw .= $where_no_error ." order by ".$order_str;
                      }
   
   
@@ -2132,7 +2140,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	       from " . TABLE_ORDERS . " o use index(orders_id) " . $from_payment .$sort_table ."
 	       where " . $sort_where.
 	       " o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.orders_id" .$orders_str.
-	       $where_payment . $where_type.' order by '.$order_str;
+	       $where_payment . $where_type.$where_no_error .' order by '.$order_str;
 	     }
 
   
@@ -2178,7 +2186,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                                       '%".$_GET['keywords']."%' or o.customers_email_address like
                                       '%".$_GET['keywords']."%' or op.products_name like
-                                      '%".$_GET['keywords']."%') "." order by
+                                      '%".$_GET['keywords']."%') ".$where_no_error ." order by
                                      ".$order_str;
                                      } else {
                                      $orders_query_raw = "
@@ -2212,7 +2220,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.read_flag
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                        where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " o.payment_method like '".$payment_m[1]."'";
-                                    $orders_query_raw .= "order by ".$order_str;
+                                    $orders_query_raw .= $where_no_error ."order by ".$order_str;
                                      }
                      }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
                              preg_match('/^type/', $_GET['search_type'])))){
@@ -2266,7 +2274,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
                                     where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
-                         $orders_query_raw .= " order by ".$order_str;
+                         $orders_query_raw .= $where_no_error ." order by ".$order_str;
                        } else {
                          $orders_query_raw = "
                            select distinct(o.orders_id), 
@@ -2299,7 +2307,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.read_flag
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
                                     where ".$sort_where." o.site_id in (". $site_list_str .")" . ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str.' and ':' and ') . " ".$w_type;
-                         $orders_query_raw .= " order by ".$order_str;
+                         $orders_query_raw .= $where_no_error ." order by ".$order_str;
                        }
                      }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
                        //关键字查询 
@@ -2364,7 +2372,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                          $orders_query_raw .= ")";  
                        }
 
-                       $orders_query_raw .= "order by ".$order_str;
+                       $orders_query_raw .= $where_no_error ."order by ".$order_str;
 
                      } else {
                        // orders_list 隐藏 「取消」和「取消订单」
@@ -2404,19 +2412,44 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   ".$sort_where."
                                   o.site_id in (".$site_list_str.")". 
                                   ((!$is_show_transaction)?" and o.flag_qaf = 0":'').(($mark_sql_str != '')?' and '.$mark_sql_str:'')." 
-                                  " . $where_payment . $where_type . " order by ".$order_str;
+                                  " . $where_payment . $where_type .$where_no_error . " order by ".$order_str;
                      }
   // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
   // new sort is  order by o.torihiki_date DESC
   $from_pos = strpos($orders_query_raw, 'from orders');
-  $order_pos = strpos($orders_query_raw, 'order by');
+  $order_pos = strpos($orders_query_raw, 'and(o.torihiki_date');
   $op_pos = strpos($orders_query_raw, 'distinct op.orders_id'); 
+  $start_pos = strpos($orders_query_raw, 'from orders');
+  $end_pos = strpos($orders_query_raw,'and(o.torihiki_date');
+  if(($start_pos!==false)&&($end_pos!==false)){
+    if ($op_pos !== false) {
+      $error_order_sql = "select op.orders_id ".substr($orders_query_raw, $start_pos, $end_pos - $start_pos).
+         "and(o.date_purchased is null or o.torihiki_date is null or 
+         o.date_purchased ='' or o.torihiki_date = '' or 
+         o.date_purchased ='0000-00-00 00:00:0' or o.torihiki_date = '0000-00-00 00:00:00')";
+    }else{
+      $error_order_sql = "select o.orders_id ".substr($orders_query_raw, $start_pos, $end_pos - $start_pos).
+         "and(o.date_purchased is null or o.torihiki_date is null or 
+         o.date_purchased ='' or o.torihiki_date = '' or 
+         o.date_purchased ='0000-00-00 00:00:0' or o.torihiki_date = '0000-00-00 00:00:00')";
+    }
+  }
+  $e_orders_arr =array();
+  $e_orders_id_arr =array();
+  $error_order_query = tep_db_query($error_order_sql);
+  while ($e_orders = tep_db_fetch_array($error_order_query)){
+    $e_orders_arr[] = $e_orders;
+    $e_orders_id_arr[] = '"'.$e_orders['orders_id'].'"';
+  }
   if (($from_pos !== false) && ($order_pos !== false)) {
     if ($op_pos !== false) {
       $sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
     } else {
       $sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
     }
+  } 
+  if(!empty($e_orders_id_arr)){
+    $sql_count_query .= ' and orders_id not in ('.implode(',',$e_orders_id_arr).')';
   }
 #}}
 
@@ -2487,17 +2520,12 @@ else { ?>
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
         <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
-        <script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/javascript/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/javascript/all_page.js?v=<?php echo $back_rand_info?>"></script> 
+        <script language="javascript" src="includes/jquery_tool.php?v=<?php echo $back_rand_info?>"></script>
+        <script language="javascript" src="includes/orders_tool.php?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
         var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>'; 
         var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
         </script> 
-        <script language="javascript" src="includes/javascript/all_order.js?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/javascript/order.js?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
 <?php // 用作跳转?>
         var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
@@ -2540,7 +2568,6 @@ if (!isset($_GET['action'])) {
 ?>
 var popup_num = 1;
 </script>
-<script language="javascript" src="includes/javascript/admin_orders.js?v=<?php echo $back_rand_info?>"></script>	
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
@@ -5424,10 +5451,6 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
         $orders_query = tep_db_query($orders_query_raw);
         $orders_num = tep_db_num_rows($orders_query);
 
-        if($orders_num == 0){
-
-          echo '<tr><td colspan="12"><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
-        }
         $allorders    = $allorders_ids = array();
         $orders_i = 0;
         //获取订单状态标记的过期警告数组
@@ -5443,6 +5466,10 @@ $transaction_class = ($is_finish == '1')?'mark_flag_checked':'mark_flag_unchecke
         $tmp_order_id_list = array();
         $orders_info_arr = array();
         $orders_id_list = array();
+        foreach($e_orders_arr as $e_orders){
+          $orders_info_arr[] = $e_orders;
+          $orders_id_list[] = $e_orders['orders_id'];
+        }
         while ($orders = tep_db_fetch_array($orders_query)) {
           $orders_info_arr[] = $orders;
           $orders_id_list[] = $orders['orders_id'];
@@ -5774,6 +5801,10 @@ if(isset($_GET['action'])&&$_GET['action']=='edit'){
                   </table>
                   <?php  
 }
+        if($orders_num == 0){
+
+          echo '<tr><td colspan="12"><font color="red"><b>'.TEXT_DATA_IS_EMPTY.'</b></font></td></tr>';
+        }
                   //移动代码结束 ?>
                   </td><td valign="top" align="right" width="30%">
                   <div id='select_question' style="display:none" >
@@ -5846,9 +5877,7 @@ if(isset($_GET['action'])&&$_GET['action']=='edit'){
               <!-- body_eof -->
 
               <!-- footer -->
-              <?php
-              require(DIR_WS_INCLUDES . 'footer.php');
-?>
+              <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
               <!-- footer_eof -->
               <br>
               <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>

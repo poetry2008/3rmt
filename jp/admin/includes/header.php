@@ -7,7 +7,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
   echo $messageStack->output();
 }
 ?>
-<script languages="javascript" src="includes/javascript/common.js?v=<?php echo $back_rand_info;?>"></script>
+<script languages="javascript" src="includes/header_tool.php?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
 
 <?php
@@ -43,9 +43,6 @@ var check_head_o_single = '0';
 }
 ?>
 var header_text_alert_link = '<?php echo HEADER_TEXT_ALERT_LINK?>';
-</script>
-<script languages="javascript" src="includes/javascript/header.js?v=<?php echo $back_rand_info;?>"></script>
-<script type="text/javascript">
 function hide_messages(){
         $('#show_all_messages_notice').children().remove();
         check_header_messages(true);
