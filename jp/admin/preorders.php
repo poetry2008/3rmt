@@ -733,6 +733,19 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 <?php }?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
 <script language="javascript" src="includes/jquery_tool.php?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript">
+<?php
+if (!isset($_GET['action'])) {
+?>
+	var js_preorders_action = true;
+<?php
+}else{
+?>
+	var js_preorders_action = false;
+<?php
+}
+?>
+</script>
 <script language="javascript" src="includes/preorders_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
 	var js_preorders_self = '<?php echo $_SERVER['PHP_SELF']?>';
@@ -779,17 +792,6 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 	var js_preorders_payment_time_success = '<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>';
 	var js_preorders_title_changed =  "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
 
-<?php
-if (!isset($_GET['action'])) {
-?>
-	var js_preorders_action = true;
-<?php
-}else{
-?>
-	var js_preorders_action = false;
-<?php
-}
-?>
 	var popup_num = 1;
 </script>
 <?php 

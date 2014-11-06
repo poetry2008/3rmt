@@ -54,6 +54,7 @@ while($row=tep_db_fetch_array($query)){
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info?>" />
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css?v=<?php echo $back_rand_info?>" />
+<script type="text/javascript" src='includes/javascript/admin_index.js?v=<?php echo $back_rand_info?>'></script>
 <?php if(!empty($height_arr)){?>
 <script language="javascript">
 function add_notes(page_self){

@@ -2521,7 +2521,6 @@ else { ?>
 <?php }?>
         <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
         <script language="javascript" src="includes/jquery_tool.php?v=<?php echo $back_rand_info?>"></script>
-        <script language="javascript" src="includes/orders_tool.php?v=<?php echo $back_rand_info?>"></script>
         <script language="javascript">
         var tmp_other_str = '<?php echo $_SERVER['PHP_SELF'];?>'; 
         var notice_relogin_str = '<?php echo TEXT_TIMEOUT_RELOGIN;?>'; 
@@ -2568,6 +2567,7 @@ if (!isset($_GET['action'])) {
 ?>
 var popup_num = 1;
 </script>
+<script language="javascript" src="includes/orders_tool.php?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
