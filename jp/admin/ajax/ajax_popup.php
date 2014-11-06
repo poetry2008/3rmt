@@ -11541,10 +11541,10 @@ if($row_array['set_time']==0){
     $replace_attendance_id_array[] = $replace_attendance_array['attendance_detail_id'];
   }
   tep_db_free_result($replace_attendance_query);
-  $get_att_id = $_GET['att_id'];
   if($_GET['att_id'] == ''){
     $_GET['att_id'] = !empty($replace_attendance_id_array) ? current(array_intersect($attendance_id_array,$replace_attendance_id_array)) : current($attendance_id_array);
   }
+  $get_att_id = $_GET['att_id'];
   if(isset($_GET['uid'])&&$_GET['uid']!=''){
   $replace_sql = "select * from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where 
     `date`='".$_GET['date']."' ";
