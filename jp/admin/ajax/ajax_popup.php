@@ -9685,7 +9685,8 @@ $action = 'update_show_user';
         $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+		//当前用户最后一次保存显示的组(并且组是有效的)
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id and g.group_status=1 and is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
@@ -9706,11 +9707,15 @@ $action = 'update_show_user';
             }
           } else {
             $user_sql = "select * from ".TABLE_GROUPS." 
-               where id='".$show_group_id."'";
+               where id='".$show_group_id."' and group_status=1";
             $user_query = tep_db_query($user_sql);
             if($user_row = tep_db_fetch_array($user_query)){
               $show_group_user = explode('|||',$user_row['all_users_id']);
             }
+			if(empty($show_group_user)){
+			    $show_group_user[]=$ocertify->auth_user;
+			
+			}
           }
         }else{
           if($ocertify->npermission>10){
@@ -9723,6 +9728,9 @@ $action = 'update_show_user';
             }
           }else{
             $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+            $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+			//个人所在的组和哪个组的组长
+			$prent_group = array_merge($prent_group,$is_manage_group);
             if(!empty($prent_group)){
               $show_group_id = $prent_group[0];
               if($show_group_id==0){
@@ -9734,7 +9742,7 @@ $action = 'update_show_user';
                 }
               } else {
                 $user_sql = "select * from ".TABLE_GROUPS." 
-                   where id='".$show_group_id."'";
+                   where id='".$show_group_id."' and group_status=1";
                 $user_query = tep_db_query($user_sql);
                 if($user_row = tep_db_fetch_array($user_query)){
                   $show_group_user = explode('|||',$user_row['all_users_id']);
@@ -9757,6 +9765,10 @@ $action = 'update_show_user';
 
 //当前用户所在的组
  $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+$is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+if(!empty($is_manage_group)){
+$user_group_list = array_merge($user_group_list,$is_manage_group);
+}
      foreach($user_group_list as $group_id){
 	 //用户所在组的父级组
         $g_prarent_id_list= group_parent_id_list($group_id);
