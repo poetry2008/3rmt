@@ -982,8 +982,8 @@ if($param_tep[0]!=''){
         $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
-        //$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s,  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
-        $show_group_sql = "select s.*,g.group_status from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id  and is_select='1' and operator_id='".$ocertify->auth_user."'";
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW."  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        //$show_group_sql = "select s.*,g.group_status from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id  and is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         $show_type=1;
@@ -991,13 +991,27 @@ if($param_tep[0]!=''){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
 		  //组是否被禁止
-          if($show_group_row['user_id']!='' && $show_group_row['group_status']!=0){
+            $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
+            $user_query = tep_db_query($user_sql);
+            $user_row = tep_db_fetch_array($user_query);
+            $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1")             ;
+            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+			//处理显示
+          if(($show_group_row['user_id']!='' && $user_row['group_status'] ==1 && $show_group_id!=0)||($ocertify->npermission>=15&&$show_group_row['user_id']!='')){
             $show_select_group_user[] = $show_group_row['user_id'];
-		  }else{
-           $user_group_arr_tep[] = $show_group_row['gid'];
-          
-		  $show_select_group_user[]=$ocertify->auth_user;
+		  }else if($user_row['group_status'] ==0&&$show_group_id!=0 ||($show_group_id==0 && $ocertify->npermission<15 && $show_group_row['user_id']!='' )){
+		    $show_select_group_user[]=$ocertify->auth_user;
 		  }
+			$show_group_id = $show_group_row['gid'];
+            $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1");
+            $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+           //组被禁止||管理员
+            if((tep_db_num_rows($check_sql)==0 && !empty($user_group_list)) ||($show_group_id==0 &&tep_is_group_manager($ocertify->auth_user))){
+                if($ocertify->npermission <15){
+                     $has_default = false;
+                }
+            }
+	
 		  $show_att_status =$show_group_row['att_status'];
           $show_type = $show_group_row['show_type'];
         }
@@ -1017,6 +1031,8 @@ if($param_tep[0]!=''){
                 if($user_row['group_status']==1){
                    $show_group_user = explode('|||',$user_row['all_users_id']);
 				}else{
+         //         $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+		//		  $show_group_id = $prent_group[0];
                   $show_group_user[] = $ocertify->auth_user;           
 				}
             }
@@ -1328,9 +1344,7 @@ foreach($show_select_group_user as $user_value){
   $user_key_arr[] = $user_value;
   $user_group = tep_get_groups_by_user($user_value);
   //如果用户所在的组是空的
-  if(empty($user_group)){
-      $user_group_arr[$user_value]=$user_group_arr_tep; 
-  }else{
+  if(!empty($user_group)){
      $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
   }
 }

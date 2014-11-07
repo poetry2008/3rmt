@@ -9686,18 +9686,35 @@ $action = 'update_show_user';
         $show_group_user = array();
         $show_select_group_user = array();
 		//当前用户最后一次保存显示的组(并且组是有效的)
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id and g.group_status=1 and is_select='1' and operator_id='".$ocertify->auth_user."'";
+        //$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id and g.group_status=1 and is_select='1' and operator_id='".$ocertify->auth_user."'";
+		$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW."  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
-          if($show_group_row['user_id']!=''){
+          $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1");
+          $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+		  //组被禁止||管理员
+		  if((tep_db_num_rows($check_sql)==0 && !empty($user_group_list)) ||($show_group_id==0 &&tep_is_group_manager($ocertify->auth_user))){
+			  if($ocertify->npermission <15){
+                 $has_default = false;
+			  }
+		  }
+		  //设置显示的用户不是空并且组没有被禁止
+          if(($show_group_row['user_id']!='' && tep_db_num_rows($check_sql)!=0)||$show_group_id==0){
             $show_select_group_user[] = $show_group_row['user_id'];
-          }
+		  }else{
+            $show_select_group_user[] = $ocertify->auth_user;
+		  }
 		  $show_att_status =$show_group_row['att_status'];
         }
         if($has_default){
+            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+			if(!empty($prent_group) && $ocertify->npermission <15&& tep_db_num_rows($check_sql)==0){
+		       $show_group_id = $prent_group[0];
+			}
           if($show_group_id==0){
            // $user_sql = "select * from ".TABLE_USERS." where status='1'";
             $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
