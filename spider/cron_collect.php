@@ -144,24 +144,3 @@ while(true){
     }
   }
 }
-//发送游戏相关信息
-/*foreach($category_name_array as $game){
-   foreach($category_type as $key=>$category){
-	   foreach($site_array as $site){
-		   
-          $tep = get_contents_main($game,$key,$site['site_id']); 
-		  explode('|||',$tep);
-		  if($tep[0]!='error'){
-			  $write_str =$game.'--'.$category.'--'.$site['site_name'];
-			  cron_log($write_str);
-		  }else{
-			  $write_str = 'collect fail'.$game.'-'.$site['site_name'].'<br/>';
-			  cron_log($write_str);
-		  }
-		  sleep(10);
-	   } 
-   }
-}
-
-*/
-

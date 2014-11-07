@@ -21,6 +21,15 @@ $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_query('set names utf8');
 mysql_select_db(DB_DATABASE);
 
+$config_value_query = mysql_query("select config_key,config_value from config where config_key='COLLECT_IS_STOP_STATUS'");
+$config_value_array = mysql_fetch_array($config_value_query);
+$update_status = $config_value_array['config_value'];
+//更改更新状态
+if($_GET['action'] == 'update_status'){
+  $update_status = $_POST['update_status'];
+  $result = mysql_query("update config set config_value='".$update_status."' where config_key='COLLECT_IS_STOP_STATUS'");
+  echo $result;
+}
 //设置保存处理
 if($_GET['action'] == 'save'){
 
@@ -211,7 +220,12 @@ while($config_array = mysql_fetch_array($config_query)){
 }
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新" onclick="update_data();">&nbsp;&nbsp;<input type="button" name="button_update" value="更新" onclick="update_data_all(1);"></td>';
+if($update_status==1){
+$value_status = '停止更新';
+}else{
+$value_status = '继续更新';
+}
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');"></td>';
 echo '</tr></table>';
 echo '</form>';
 ?>
@@ -281,18 +295,16 @@ function update_data(){
     }
   }); 
 }
-function update_data_all(flag){
- // alert(flag)
+function update_data_status(update_status){
+  var update_status = (update_status==0)?1:0;
   $.ajax({
     type: "POST",
-    //data: 'flag='+flag+'&act=auto',
-     data: 'act=auto',
-//    beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
+    data:"update_status="+update_status,
     async:true,
-    url: 'cron_collect.php',
+    url: 'show.php?action=update_status',
     success: function(msg) {
-      alert(msg);
-      }
+      location.href = "show.php"
+    }
    });
 
 }
