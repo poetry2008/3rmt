@@ -12173,7 +12173,7 @@ if($row_array['set_time']==0){
       $style_hide = 'style="display:none;"';
     }
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,(!isset($replace_info_res['allow_status']) ? ' disabled="disabled" ' : $disabled).'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
