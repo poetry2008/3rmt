@@ -28,7 +28,6 @@ $update_status = $config_value_array['config_value'];
 if($_GET['action'] == 'update_status'){
   $update_status = $_POST['update_status'];
   $result = mysql_query("update config set config_value='".$update_status."' where config_key='COLLECT_IS_STOP_STATUS'");
-  echo $result;
 }
 //设置保存处理
 if($_GET['action'] == 'save'){
@@ -220,7 +219,7 @@ while($config_array = mysql_fetch_array($config_query)){
 }
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
-if($update_status==1){
+if($update_status==0){
 $value_status = '停止更新';
 }else{
 $value_status = '继续更新';
@@ -296,16 +295,24 @@ function update_data(){
   }); 
 }
 function update_data_status(update_status){
-  var update_status = (update_status==0)?1:0;
-  $.ajax({
-    type: "POST",
-    data:"update_status="+update_status,
-    async:true,
-    url: 'show.php?action=update_status',
-    success: function(msg) {
-      location.href = "show.php"
-    }
-   });
+  if(update_status==0){
+     var flag = window.confirm("确定要停止更新吗?如果停止将不会继续更新数据,直到点击继续更新时才会继续更新数据,");
+  }else{
+  
+     var flag =  window.confirm("确定要继续更新吗?如果继续更新将继续更新数据,直到点击停止更新时才会停止更新数据,");
+  }
+  if(flag){ 
+      var update_status = (update_status==0)?1:0;
+      $.ajax({
+         type: "POST",
+         data:"update_status="+update_status,
+         async:true,
+         url: 'show.php?action=update_status',
+         success: function(msg) {
+         location.href = "show.php<?php echo (isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : '').'&';?>"
+         }
+       });
+  }
 
 }
 //update products price

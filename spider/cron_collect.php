@@ -5,7 +5,6 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
 
-require_once(PRO_ROOT_DIR."includes/configure.php");
 require_once(PRO_ROOT_DIR."class/spider.php");
 require_once(PRO_ROOT_DIR."collect.php");
 
@@ -47,20 +46,6 @@ function cron_log($collect_info){
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_select_db(DB_DATABASE);
 
-
-$run_sql = "select config_value from config where config_key = 'COLLECT_IS_RUN_STATUS'";
-$run_query = mysql_query($run_sql);
-if($run_res = mysql_fetch_array($run_query)){
-  $is_run = $run_res['config_value'];
-}else{
-  $is_run = 1;
-}
-//获得是否停止状态
-if($is_run==1){
-  echo "the script is run";
-  exit;
-}
-
 $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
 $stop_query = mysql_query($stop_sql);
 if($stop_res = mysql_fetch_array($stop_query)){
@@ -72,16 +57,33 @@ if($stop_res = mysql_fetch_array($stop_query)){
 if($is_stop==1){
   //确定可以运行 is_run = 0;
   $is_run = 0;
-  $sql = '';
+  $run_update_sql = "update config set config_value='".$is_run."' where config_key='COLLECT_IS_RUN_STATUS'";
+  mysql_query($run_update_sql);
+  $log_str = "script is stop";
+  cron_log($log_str);
   exit;
 }
+
+$run_sql = "select config_value from config where config_key = 'COLLECT_IS_RUN_STATUS'";
+$run_query = mysql_query($run_sql);
+if($run_res = mysql_fetch_array($run_query)){
+  $is_run = $run_res['config_value'];
+}else{
+  $is_run = 1;
+}
+//获得是否停止状态
+if($is_run==1){
+  $log_str = "the script is run";
+  exit;
+}
+
 
 //检索到的行数
 $auto_array = array();
 $auto_sql = "select config_value from config where config_key = 'COLLECT_LAST_DATE'";
 $auto_query = mysql_query($auto_sql);
 if($auto_res = mysql_fetch_array($auto_query)){
-  $auto_array = $auto_res['config_value'];
+  $auto_array = unserialize($auto_res['config_value']);
   $flag = 1;
 }else{
   $flag = 0;
@@ -108,7 +110,7 @@ while($site_row = mysql_fetch_array($site_query)){
 
 while(true){
   foreach($category_name_array as $game){
-    if($game == $auto_array['game_name'] && $flag == 1){
+    if($game != $auto_array['game_name'] && $flag == 1){
       continue;
     }
     foreach($category_type as $key=>$category){
@@ -116,21 +118,42 @@ while(true){
         continue;
       }
       foreach($site_array as $site){
-        if($site['site_id'] == $auto_array['site_name'] && $flag == 1){
+        if($site['site_id'] == $auto_array['site_id']){
           $flag = 0;
           continue;
         }
-        if($is_stop==1){
-           $is_run = 0;
-           //mysql_query("update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_name='".$site['site_id']."'");
-           echo "update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_name='".$site['site_id']."'";
-           exit;
+        if($flag == 1){
+          continue;
         }
+
+        $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
+        $stop_query = mysql_query($stop_sql);
+        if($stop_res = mysql_fetch_array($stop_query)){
+          $is_stop = $stop_res['config_value'];
+        }else{
+          $is_stop = 1;
+        }
+        if($is_stop==1){
+          $is_run = 0;
+          $run_update_sql = "update config set config_value='".$is_run."' where config_key='COLLECT_IS_RUN_STATUS'";
+          mysql_query($run_update_sql);
+          $log_str = "script is stop";
+          cron_log($log_str);
+          exit;
+        }
+        $insert_auto_array = array();
+        $insert_auto_array['game_name'] = $game;
+        $insert_auto_array['game_type'] = $key;
+        $insert_auto_array['site_id'] = $site['site_id'];
+        $insert_auto_str = serialize($insert_auto_array);
+        $update_last_data_sql = "update config set config_value = '".$insert_auto_str."' where
+          config_key='COLLECT_LAST_DATE'";
+        mysql_query($update_last_data_sql);
         $is_run = 1;
         $run_update_sql = "update config set config_value='".$is_run."' where
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
-        //$tep = get_contents_main($game,$key,$site['site_id']); 
+        $tep = get_contents_main($game,$key,$site['site_id']); 
         explode('|||',$tep);
         if($tep[0]!='error'){
           $write_str =$game.'--'.$category.'--'.$site['site_name'];
@@ -139,7 +162,7 @@ while(true){
           $write_str = 'collect fail'.$game.'-'.$site['site_name'].'<br/>';
           cron_log($write_str);
         }
-        sleep(3);
+        sleep(10);
       }
     }
   }
