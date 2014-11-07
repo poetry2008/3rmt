@@ -22,7 +22,6 @@ $(function() {
   note_popup_list();
 });
 </script>
-<script type="text/javascript" src="includes/javascript/split_page.js?v=<?php echo $back_rand_info?>"></script>
 <script type="text/javascript">
 <?php //更改新的URL?>
 function redirect_new_url(new_object)

@@ -46,7 +46,7 @@ while($row=tep_db_fetch_array($query)){
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="js2php.php?path=includes|javascript&name=one_time_pwd&type=js&v=<?php echo $back_rand_info?>"></script>
 <script type="text/javascript" src="includes/note_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript" src="js2php.php?path=includes&name=global&type=js&v=<?php echo $back_rand_info?>"></script>

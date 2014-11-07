@@ -732,11 +732,21 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css?v=<?php echo $back_rand_info?>">
-<script language="javascript" src="includes/javascript/jquery.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/jquery.form.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/all_preorder.js?v=<?php echo $back_rand_info?>"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript" src="includes/jquery_tool.php?v=<?php echo $back_rand_info?>"></script>
+<script language="javascript">
+<?php
+if (!isset($_GET['action'])) {
+?>
+	var js_preorders_action = true;
+<?php
+}else{
+?>
+	var js_preorders_action = false;
+<?php
+}
+?>
+</script>
+<script language="javascript" src="includes/preorders_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
 	var js_preorders_self = '<?php echo $_SERVER['PHP_SELF']?>';
 	var js_preorders_pwd = '<?php echo NOTICE_ORDER_INPUT_PASSWORD;?>';
@@ -782,20 +792,8 @@ if(isset($_SESSION['error_preorders_status'])&&$_SESSION['error_preorders_status
 	var js_preorders_payment_time_success = '<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>';
 	var js_preorders_title_changed =  "<?php echo TEXT_STATUS_MAIL_TITLE_CHANGED;?>";
 
-<?php
-if (!isset($_GET['action'])) {
-?>
-	var js_preorders_action = true;
-<?php
-}else{
-?>
-	var js_preorders_action = false;
-<?php
-}
-?>
 	var popup_num = 1;
 </script>
-<script language="javascript" src="includes/javascript/admin_preorders.js?v=<?php echo $back_rand_info?>"></script>
 <?php 
 $href_url = str_replace('/admin/','',$_SERVER['SCRIPT_NAME']);
 $belong = str_replace('/admin/','',$_SERVER['REQUEST_URI']);
