@@ -1088,41 +1088,57 @@ if($param_tep[0]!=''){
             $show_checked_user_list[] = $key;
           }
         }
-
         //new 各种设定
         $group_str .= '<tr height="22">';
-        $group_str .= '<td>';
+
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
-        $group_sr .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span '.(($ocertify->npermission>=15)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15){
+            $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15 || $is_manager)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15 || $is_manager){
+            $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15 || $is_manager)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_group_attendance_info(this,\'\',\'\',\''.$show_group_id.'\',\'\',\''.$ocertify->auth_user.'\');"><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15 || $is_manager){
+	        $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15){
+		    $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')" >'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
+        $group_str .= '</span>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
 
         //new 显示设定
         $group_str .= '<tr height="22">';
         $group_str .= '<td>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
-        $group_sr .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
 		//显示出勤状态
         $group_str .= '<input type="hidden" id="show_att_status_hidden" value='.$show_att_status.'>';
-        $group_str .= '</td>';
-        
-        $group_str .= '<td colspan="3">';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
 		if($show_att_status==1){
 	      $status_error = 'checked ="ckecked"';
 		}elseif($show_att_status==2) {
@@ -1133,6 +1149,7 @@ if($param_tep[0]!=''){
         $group_str .= '<span style="display:block; float:left;"><input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ></span><span style="display:block; float:left;"><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>&nbsp;&nbsp;</span>';
         $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'></span><span style="display:block; float:left;"><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
         $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'></span><span style="display:block; float:left;"><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
+        $group_sr .= '</span>';
         $group_sr .= '</td>';
 
 
