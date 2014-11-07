@@ -28,7 +28,6 @@ $update_status = $config_value_array['config_value'];
 if($_GET['action'] == 'update_status'){
   $update_status = $_POST['update_status'];
   $result = mysql_query("update config set config_value='".$update_status."' where config_key='COLLECT_IS_STOP_STATUS'");
-  echo $result;
 }
 //设置保存处理
 if($_GET['action'] == 'save'){
