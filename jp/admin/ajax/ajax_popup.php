@@ -9702,10 +9702,11 @@ $action = 'update_show_user';
                  $has_default = false;
 			  }
 		  }
-		  //设置显示的用户不是空并且组没有被禁止
+		  //设置显示的用户不是空并且组没有被禁止 
           if(($show_group_row['user_id']!='' && tep_db_num_rows($check_sql)!=0)||$show_group_id==0){
             $show_select_group_user[] = $show_group_row['user_id'];
-		  }else{
+			//没有默认 或者有默认但是组的id不是0并且没有他所在的组
+		  }else if(!$has_default ||($has_default&&$show_group_id!=0&&empty($user_group_list))){
             $show_select_group_user[] = $ocertify->auth_user;
 		  }
 		  $show_att_status =$show_group_row['att_status'];
@@ -10743,6 +10744,10 @@ if($row_array['set_time']==0){
       $user_select_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['user'].'">';
     }
     $user_select .= ($user['userid']==$_GET['uid'] ? ' selected' :'').'>'.$user['name'].'</oprion>';
+    if($_GET['u_att_id'] == ''){
+
+      $hidden_user_select .= $user['userid']==$_GET['uid'] ? ' selected' :'';
+    }
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
   $user_select .= '</select></select><input type="hidden" value="1" class="tep_index_num">&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"></td>';
@@ -12173,7 +12178,7 @@ if($row_array['set_time']==0){
       $style_hide = 'style="display:none;"';
     }
   }
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,(!isset($replace_info_res['allow_status']) ? ' disabled="disabled" ' : $disabled).'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {

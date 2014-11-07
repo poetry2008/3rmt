@@ -639,6 +639,7 @@ function del_as(num,ele,asl_id,c_permission){
         $(this).val('0');
       });
     }
+    $(".space").hide();
   }  
   //end
   var tr_index = $(ele).parent().parent().prev().index();
@@ -716,6 +717,7 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
         $(this).val('0');
       });
     }
+    $(".space").hide();
   }
   //end
   var tr_index = $(ele).parent().parent().index();
