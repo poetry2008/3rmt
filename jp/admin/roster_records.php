@@ -1090,7 +1090,7 @@ if($param_tep[0]!=''){
         }
         //new 各种设定
         $group_str .= '<tr height="22">';
-
+        $group_str .= '<td>';
         $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_str .= '</span>';
