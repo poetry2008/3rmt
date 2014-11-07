@@ -218,6 +218,11 @@ function check_attendance_info(flag,param_a,param_b){
       var work_hours = $("#work_hours").val();
       var rest_hours = $("#rest_hours").val();
       var sign = '';
+      var flag_num = $("#flag_num").val();
+      if(flag_num == 0){
+      
+        flag = 0;
+      }
       if(title_val==''){
         $("#title_text_error").html(error_text);
 		sign=1;
@@ -555,7 +560,7 @@ if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
        }
    });
 
-if(flag !=1 && sign!=1) {
+if( sign!=1) {
   if (c_permission == 31) {
     document.attendance_setting_form.submit();
   } else {
@@ -1136,18 +1141,33 @@ $('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
 
 //add person
 function add_person_row(ele,aid,num){
+  var show_num = 0;
   if(aid!=''){
     $('#add_person select[id="user_tep"]').attr('name','has_user['+'new'+']['+aid+'][]');
-    aid = num;
+    $('#add_person select[id="user_tep"]').attr('onchange','auto_add_user(this,\''+aid+'\','+num+')');
+    $(".popup_order_info select[name='has_user[new]["+aid+"][]']").each(function(){
+      if($(this).val() == ''){
+        show_num++;
+      }
+    });
+    aid = num; 
   }else{
 
     var aid=$(ele).parent().parent().find('input[class="tep_index_num"]').eq(0).val();
     $('#add_person select[id="user_tep"]').attr('name','user['+aid+'][]');
+
+    $(".popup_order_info select[name='user["+aid+"][]']").each(function(){
+      if($(this).val() == ''){
+        show_num++;
+      }
+    });
   }
   var html_str = $('#add_person tbody').html();
    html_str = html_str.replace(/#line_num/g,aid-1);
+  if(show_num == 0){
     $(ele).parent().parent().after(html_str);
     $(ele).parent().parent().next().find('input[class="tep_index_num"]').val(aid);
+  }
 }
 
 // save att type old or new 
@@ -1362,5 +1382,37 @@ function auto_add_attendance(ele){
       $("#line_num").val(line_num+1);
     }
     //$(ele).attr('onchange','');
+  }
+}
+
+//clear data
+function clear_data(){
+
+  $("#attendance_title").val('');
+  $("#short_language").val('');
+  $("#work_start_hour").val(0);
+  $("#work_start_min_r").val(0);
+  $("#work_start_min_l").val(0);
+  $("#work_end_hour").val(0);
+  $("#work_end_min_r").val(0);
+  $("#work_end_min_l").val(0);
+  $("#work_hours").val('');
+  $("#rest_hours").val('');
+  $("input[name=sort]").eq(0).val(0);
+  $("#type_id").val('0');
+  change_type_text();
+  $("#set_left").attr('checked',true);
+  change_set_time(0);
+  $("#flag_num").val(0);
+  
+}
+
+//end date
+function end_date(type,id,date){
+
+  if(confirm(end_date_confirm)){
+  
+    document.forms.attendance_setting_form.action='roster_records.php?action=end_date&type='+type+'&id='+id+'&date='+date;
+    document.forms.attendance_setting_form.submit();
   }
 }

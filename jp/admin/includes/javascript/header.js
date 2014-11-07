@@ -1,6 +1,6 @@
 var alert_update_id = '';
 $(function() {
-   setTimeout(function() {check_header_messages()}, 35000);
+   setTimeout(function() {check_header_messages(false)}, 35000);
 });
 //handle notice time
 function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, notice_day_title, notice_hour_title, notice_min_title)
@@ -63,13 +63,15 @@ function calc_notice_time(leave_time, nid, start_calc, alarm_flag, alarm_date, n
         }
         if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
           document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
-          var n_node=document.getElementById('head_notice');  
+          var n_node=document.getElementById('head_message');  
           if (msg == '1') {
             if (n_node.controls) {
               n_node.controls.play();  
+              setTimeout(function(){n_node.controls.play();},600);
             } else {
               if (check_exists_function('play')) {
                 n_node.play();  
+                setTimeout(function(){n_node.play();},600);
               }
             }
           }
@@ -107,7 +109,7 @@ function delete_alarm_notice(nid, e_type,all_del,aid)
       success: function(data) {
       } 
       });
-  check_header_messages();
+  check_header_messages(false);
 }
 // ajax change language
 function change_language(language,cur_page)
@@ -153,10 +155,10 @@ function delete_micro_notice(nid, e_type)
       dataType: 'text',
       async: false,
       success: function(data) {
-        check_header_messages();
+        check_header_messages(false);
       } 
       });
-  check_header_messages();
+  check_header_messages(false);
   window.scrollTo(0,0);
 }
 //show header notice
@@ -230,7 +232,7 @@ function show_head_notice(no_type)
               $("#notice_id_str").remove();
             }
           }
-          setTimeout(function() {check_header_messages()}, 35000);
+          setTimeout(function() {check_header_messages(false)}, 35000);
         }
       } 
       });
@@ -254,7 +256,7 @@ function checkHeadPreOrders(t)
 //play sound
 function playHeadSound()  
 {  
-  var hnode=document.getElementById('head_sound');  
+  var hnode=document.getElementById('head_warn');  
   if(hnode!=null)  
   {  
    $.ajax({
@@ -264,8 +266,10 @@ function playHeadSound()
       if (msg == '1') {
         if (hnode.controls) {
           hnode.controls.play();  
+          setTimeout(function(){hnode.controls.play();},550);
         } else {
           hnode.play();  
+          setTimeout(function(){hnode.play();},550);
         }
       }
     }
@@ -320,8 +324,10 @@ function playOrderHeadSound()
       if (msg == '1') {
         if (ohnode.controls) {
           ohnode.controls.play();  
+          setTimeout(function(){hnode.controls.play();},550);
         } else {
           ohnode.play();  
+          setTimeout(function(){ohnode.play();},550);
         }
       }
     }

@@ -315,7 +315,7 @@ function hideOrdersInfo(popup_type){
 //play sound
 function playSound()  
 {  
-  var node=document.getElementById('warn_sound');  
+  var node=document.getElementById('head_warn');  
   if(node!=null)  
   {  
     $.ajax({
@@ -325,8 +325,10 @@ function playSound()
         if (sound_msg == '1') {
           if (node.controls) {
             node.controls.play();
+            setTimeout(function(){node.controls.play();},600);
           } else {
             node.play();
+            setTimeout(function(){node.play();},600);
           }
         }
       }

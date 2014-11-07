@@ -19,6 +19,23 @@ $str_str = '?y='.$year.'&m=';
 
 if(isset($_GET['action'])){
   switch($_GET['action']){
+    //终了排班
+    case 'end_date':
+      $type = $_GET['type'];
+      $id = $_GET['id'];
+      $date = $_GET['date'];
+      if($type == 'user'){
+        tep_db_query("update ".TABLE_ATTENDANCE_DETAIL_DATE." set end_date='".$date."' where u_group='".$id."'");
+      }else if($type == 'group'){
+        tep_db_query("update ".TABLE_ATTENDANCE_DETAIL_DATE." set end_date='".$date."' where id='".$id."'");
+      }
+      if(isset($_POST['get_date'])&&$_POST['get_date']!=''){
+        $date_info = tep_date_info($_POST['get_date']);
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS,'y='.$date_info['year'].'&m='.$date_info['month']));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_ROSTER_RECORDS));
+      }
+    break;
     case 'save_att_date':
       $attendance_start = $_POST['att_start_hour'].':'.$_POST['att_start_minute_a'].$_POST['att_start_minute_b'];
       $attendance_end = $_POST['att_end_hour'].':'.$_POST['att_end_minute_a'].$_POST['att_end_minute_b'];
@@ -82,12 +99,14 @@ if(isset($_GET['action'])){
 		}
 
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
 		$u_key = $_POST['u_group'][$key];	
                 $update_flag = true;
-			foreach($_POST['has_user'][$u_key] as $k=>$user_id){
+                foreach($_POST['has_user'][$u_key] as $k=>$user_id){
+                  if($user_id == ''){continue;}
           $update_date = false;
           if(!empty($_POST['has_user']['new'][$u_key])){
             $update_date = true;
@@ -168,7 +187,8 @@ if(isset($_GET['action'])){
 
 		$sql_new_arr = array();
 		foreach($_POST['has_user']['new'] as $k=>$userlist) {
-			for($i=0;$i<count($userlist);$i++){
+                  for($i=0;$i<count($userlist);$i++){
+                    if($userlist[$i] == ''){continue;}
 				$sql_new_has_arr = $old_info_list[$k]; 
 				$sql_new_has_arr['user_id']=$userlist[$i];
 				$sql_new_has_arr['add_time']=date("Y-m-d H:i:s");
@@ -198,12 +218,14 @@ if(isset($_GET['action'])){
 			}	
 		}
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
 
                         $update_insert_id = '';
-			foreach($_POST['user'][$key+1] as $k=>$user_new){
+                        foreach($_POST['user'][$key+1] as $k=>$user_new){
+                          if($user_new == ''){continue;}
 				for($j=0;$j<count($user_new);$j++){
 
           $sql_arr = array(
@@ -359,6 +381,7 @@ if(isset($_GET['action'])){
 		}
 
         foreach($a_id_arr as $key => $value){
+          if($value == ''){continue;}
 			if($type_arr[$key]==8){
 			  $type_arr[$key]=1;
 			}
@@ -824,6 +847,7 @@ case 'update':
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js?v=<?php echo $back_rand_info?>"></script>
 
 <script language="javascript">
+var end_date_confirm = '<?php echo TEXT_ATTENDANCE_DATE_END_CONFIRM;?>'; 
 var js_cale_date = '<?php echo date('Y-m-d', time())?>'; 
 var warn_change_attendance_error = '<?php echo TEXT_WARN_CHANGE_ATTENDANCE_OVERLAP;?>'
 var warn_attendance_type_diff = '<?php echo TEXT_WARN_ATTENDANCE_TYPE_DIFF;?>';
@@ -925,6 +949,9 @@ color:#0066CC;
         </table></td>
       </tr>
       <?php
+//检测是不是组长
+$is_manager = tep_is_group_manager($ocertify->auth_user);
+
 //显示白色字的背景
    $color_array = array('#000000','#808080','#800000','#800080','#008000','#808000','#000080','#008080');
 
@@ -955,18 +982,24 @@ if($param_tep[0]!=''){
         $show_checked_user_list = array();
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        //$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s,  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+        $show_group_sql = "select s.*,g.group_status from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id  and is_select='1' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         $show_type=1;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
-          if($show_group_row['user_id']!=''){
+		  //组是否被禁止
+          if($show_group_row['user_id']!='' && $show_group_row['group_status']!=0){
             $show_select_group_user[] = $show_group_row['user_id'];
-          }
+		  }else{
+           $user_group_arr_tep[] = $show_group_row['gid'];
+          
+		  $show_select_group_user[]=$ocertify->auth_user;
+		  }
 		  $show_att_status =$show_group_row['att_status'];
-                  $show_type = $show_group_row['show_type'];
+          $show_type = $show_group_row['show_type'];
         }
         if($has_default){
           if($show_group_id==0){
@@ -980,7 +1013,12 @@ if($param_tep[0]!=''){
                where id='".$show_group_id."'";
             $user_query = tep_db_query($user_sql);
             if($user_row = tep_db_fetch_array($user_query)){
-              $show_group_user = explode('|||',$user_row['all_users_id']);
+				//判断组是否被禁止
+                if($user_row['group_status']==1){
+                   $show_group_user = explode('|||',$user_row['all_users_id']);
+				}else{
+                  $show_group_user[] = $ocertify->auth_user;           
+				}
             }
           }
         }else{
@@ -1040,20 +1078,20 @@ if($param_tep[0]!=''){
         $group_str .= '<td>';
         $group_str .= TEXT_ATTENDANCE_SETTING;
         $group_sr .= '</td>';
-        $group_str .= '<td width="20%">';
+        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
         $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
         $group_str .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
         $group_str .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_group_attendance_info(this,\'\',\'\',\''.$show_group_id.'\',\'\',\''.$ocertify->auth_user.'\');"><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
         $group_str .= '</td>';
         $group_str .= '<td>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
         $group_str .= '</td>';
-        $group_str .= '<td>';
-        $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')">'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
+        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
+        $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')" >'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
 
@@ -1237,16 +1275,18 @@ $end = false;
 
 
 //初始化 获得所有排班
+
 $all_att_arr = array();
 $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL;
 $all_att_auery = tep_db_query($all_att_sql);
 while($all_att_row = tep_db_fetch_array($all_att_auery)){
   $all_att_arr[$all_att_row['id']] = $all_att_row;
 }
-
 ?>
 <table width="100%" border="0" cellspacing="1" cellpadding="2" class="dataTable_border">
-<?php if($show_type!=1){?>
+<?php
+
+if($show_type!=1){?>
 <tr>
 <?php 
 echo '  <td width="16%">
@@ -1272,11 +1312,12 @@ for($i = 0; $i<$start_week; $i++)
 {
   echo "<td></td>";
 }
-$end_day = $day_num+(7-($day_num+$start_week)%7);
+$temp_day = ($day_num+$start_week)%7;
+$temp_day = $temp_day == 0 ? 0 : 7-$temp_day;
+$end_day = $day_num+$temp_day;
 $j=1;
 $user_info_arr = array();
 $user_key_arr = array();
-$is_manager = tep_is_group_manager($ocertify->auth_user);
 $user_group_arr = array();
 $all_date_user_attendance_date = array();
 $attendance_info_arr = array();
@@ -1285,7 +1326,13 @@ foreach($show_select_group_user as $user_value){
   $users_info = tep_get_user_info($user_value);
   $user_info_arr[$user_value] = $users_info;
   $user_key_arr[] = $user_value;
-  $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+  $user_group = tep_get_groups_by_user($user_value);
+  //如果用户所在的组是空的
+  if(empty($user_group)){
+      $user_group_arr[$user_value]=$user_group_arr_tep; 
+  }else{
+     $user_group_arr[$user_value] = tep_get_groups_by_user($user_value);
+  }
 }
 while($j<=$end_day)
 { 
@@ -1364,9 +1411,15 @@ while($j<=$end_day)
 
   //个人的所有排班
   $info_td_attendance_str = '<table width="100%" border="0" cellspacing="0" cellpadding="0" class="info_table_small">';
+  $replace_array = array();
   foreach($temp_user_attenande as $user_attenande){
     if($user_attenande['replace_attendance_detail_id']!=''&&$user_attenande['attendance_detail_id']==0){
       continue;
+    }
+    if($user_attenande['end_date'] != 0 && $user_attenande['type'] != 0 && $user_attenande['end_date'] <= $date){
+
+      $replace_array[] = $user_attenande['attendance_detail_id'];
+      continue; 
     }
     //排班信息输出
     $attendance_info =  $all_att_arr[$user_attenande['attendance_detail_id']];
@@ -1423,7 +1476,7 @@ while($j<=$end_day)
       and attendance_detail_id='".$user_attenande['attendance_detail_id']."' 
       and date='".$date."'";
     $replace_query = tep_db_query($replace_sql);
-    if($replace_user_row = tep_db_fetch_array($replace_query)){
+    if($replace_user_row = tep_db_fetch_array($replace_query) && !in_array($user_attenande['attendance_detail_id'],$replace_array)){
       $info_td_attendance_str .= "<span style='display:block; min-height:16px; line-height:16px; float:left' onclick='show_replace_attendance_info(this,\"".$date."\",\"".$j."\",\"".$user_value."\",\"".$user_attenande['attendance_detail_id']."\",\"".$show_group_id."\")'>";
       $replace_attendance_info = $all_att_arr[$replace_user_row['replace_attendance_detail_id']];
       if($replace_attendance_info['scheduling_type']==0){
@@ -1598,7 +1651,13 @@ while($j<=$day_num)
   $user_worker_list = array();
   $user_att_info = array();
   $attendance_arr = tep_sort_attendance($attendance_arr,$all_att_arr);
+  $replace_group_array = array();
   foreach($attendance_arr as $attendance_row){
+    if($attendance_row['end_date'] != 0 && $attendance_row['type'] != 0 && $attendance_row['end_date'] <= $date){
+
+      $replace_group_array[] = $attendance_row['attendance_detail_id'];
+      continue;
+    }
     $info_td_attendance_str = '';
     $show_info_td_attendance_str = false;
     $attendance_info = $all_att_arr[$attendance_row['attendance_detail_id']];
@@ -1725,7 +1784,13 @@ while($j<=$day_num)
   $show_att_div = true;
   $show_ulist_flag = false;
   $user_att_arr = tep_sort_attendance($user_att_arr,$all_att_arr);
+  $replace_array = array();
   foreach($user_att_arr as $uatt_arr){
+    if($uatt_arr['end_date'] != 0 && $uatt_arr['type'] != 0 && $uatt_arr['end_date'] <= $date){
+
+      $replace_array[] = $uatt_arr['attendance_detail_id'];
+      continue;
+    }
     $attendance_user_row = $uatt_arr;
     $attendance_info = $all_att_arr[$attendance_user_row['attendance_detail_id']];
     $show_user_flag = false;
@@ -1842,7 +1907,7 @@ if($show_ulist_flag){
     echo '<div>';
     $show_replace_array = array();
     foreach($all_replace_att as $row_replace_att){
-      if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)){
+      if(!in_array($row_replace_att['user'],$user_worker_list)&&in_array($row_replace_att['user'],$show_select_group_user)&&!in_array($row_replace_att['attendance_detail_id'],$replace_array)&&!in_array($row_replace_att['attendance_detail_id'],$replace_group_array)){
       $user_replace = tep_get_replace_by_uid_date($row_replace_att['user'],$date,0,$show_replace_array);
       $manager_list = tep_get_user_list_by_userid($row_replace_att['user']);
       if((!empty($user_replace))&&($ocertify->auth_user==$row_replace_att['user']||$ocertify->npermission>'10'||in_array($ocertify->auth_user,$manager_list))){

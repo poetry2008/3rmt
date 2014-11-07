@@ -45,7 +45,7 @@ function show_effective_number($str,$str_end=TEXT_MONEY_SYMBOL,$count=2){
       }
       $index++;
     }
-    if($index>$count){
+    if($index>$count+1){
       return $arr[0].$str_end;
     }
     for($j=$index;$j>0;$j--){
@@ -607,7 +607,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
               $products_quantity_num += "$temp_products_quantity";
             $info_str_temp .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: rgb(0, 0, 255);" target="_black" href="'.FILENAME_ORDERS.'?oID='.$info_value['orders_id'].'&action=edit">'.$info_value['orders_id'].'</a></td>';
             $products_quantity_value = $info_value['products_quantity'];
-            if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
+           if($products_quantity_num > $category_asset_arr[$key]['real_all_product']){
 
               $real_all_product_category = $category_asset_arr[$key]['real_all_product'];
               $products_quantity_value = "$products_quantity_value" - ("$products_quantity_num" - "$real_all_product_category");
@@ -698,6 +698,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
             echo "</tr>";
             foreach($products_info_str[$p_value] as $show_str){
               echo $show_str;
+            }
+            if($sum_flag){
+              foreach($products_type_arr as $type_sum){
+                $show_all_products_num = "$show_all_products_num"-"$type_sum";
+              }
             }
             if($show_all_products_num>0&&!$category_asset_arr[$key]['error']&&$show_all_products_num!=$temp_show_all_products_num){
               echo "<tr class='assets_error'>";

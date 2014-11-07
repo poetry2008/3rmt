@@ -7,7 +7,7 @@ if (isset($messageStack) && $messageStack->size > 0) {
   echo $messageStack->output();
 }
 ?>
-<script languages="javascript" src="includes/javascript/common.js?v=<?php echo $back_rand_info;?>"></script>
+<script languages="javascript" src="includes/header_tool.php?v=<?php echo $back_rand_info;?>"></script>
 <script type="text/javascript">
 
 <?php
@@ -43,10 +43,9 @@ var check_head_o_single = '0';
 }
 ?>
 var header_text_alert_link = '<?php echo HEADER_TEXT_ALERT_LINK?>';
-</script>
-<script languages="javascript" src="includes/javascript/header.js?v=<?php echo $back_rand_info;?>"></script>
-<script type="text/javascript">
 function hide_messages(){
+        $('#show_all_messages_notice').children().remove();
+        check_header_messages(true);
 	if($('#show_all_messages_notice').css('display') == 'none'){
 		$('#show_all_messages_notice').css('display', '');
 	}else{
@@ -62,7 +61,7 @@ function delete_header_messages(messages_id){
 			},
 			function(data){
 				if(data == '1'){
-					check_header_messages();
+					check_header_messages(false);
 				}	
 			}
 		);
@@ -91,7 +90,7 @@ function delete_header_messages_all(){
 			},
 			function(data){
 				if(data == '1'){
-					check_header_messages();
+					check_header_messages(false);
 					
 				}	
 			}
@@ -103,12 +102,14 @@ function delete_header_messages_all(){
 
 
 var timestamp = <?php echo time();?>;
-function check_header_messages(){
+function check_header_messages(show_flag){
 	var messages_num = 0;
+        var length_all;
 	$.post(
 		"ajax.php?&action=check_messages_header",
 		{
     			sender_id:"<?php echo $ocertify->auth_user;?>",
+                        show_all:show_flag,
   		},
   		function(data){
 			$('#show_messages_notice').children().remove();
@@ -143,13 +144,24 @@ function check_header_messages(){
                                 }
 				$('#show_messages_notice').append(str_html);
 				if(play_flag == true){
+                                var long_sound = false;
 					switch(this['type']){
-					case 'messages':var notice_audio = document.getElementById('head_notice_audio'); break;
-					case 'bulletin':var notice_audio = document.getElementById("head_notice"); break;
-					case 'order':var notice_audio = document.getElementById("head_order_audio");break;
-					case 'button':var notice_audio = document.getElementById("head_button_audio");break;
+					case 'messages':var notice_audio = document.getElementById('head_message'); break;
+					case 'bulletin':var notice_audio = document.getElementById("head_message"); break;
+					case 'button':var notice_audio = document.getElementById("head_message");break;
+					case 'order':
+                                          var notice_audio = document.getElementById("head_alarm");
+                                          long_sound = true;
+                                          break;
 						}
+                    if(!show_flag){
                     notice_audio.play();
+                    if(long_sound){
+                      setTimeout(function(){notice_audio.play();},700);
+                    }else{
+                      setTimeout(function(){notice_audio.play();},600);
+                    }
+                    }
                 }
 					}else{
 					if(this['type']=='messages'){
@@ -163,24 +175,32 @@ function check_header_messages(){
 					$('#show_all_messages_notice').append(str_html);
 					}
 					messages_num++;
+                                if(!show_flag){
+                                  length_all = (this.length - 1);
+                                }
                                 });
 			}
-                        if(eval(data).length > 1){
+                        if(eval(data).length > 1||length_all>0){
+                                if(eval(data).length > 1){
+                                  length_all = eval(data).length-1;
+                                }
                                 var messages_background_color = '#FFCC00';
                                 if(show_recent_messages_num == show_all_messages_num){
 
                                   messages_background_color = '#FFFF33';
                                 }
-                                $('#show_all_messages_notice').css('display','none');
-				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)"  href="javascript:void(0);"><span>他'+(eval(data).length - 1)+'件</span></a>');
+                                if(!show_flag){
+                                  $('#show_all_messages_notice').css('display','none');
+                                }
+				$('#messages_head').append('&nbsp;&nbsp;<a onclick="hide_messages();" onmousemove="mouse_on(this)" onmouseout="mouse_leave(this)" href="javascript:void(0);"><span>他'+length_all+'件</span></a>');
 				$('#show_all_messages_notice').append('<table style="background:'+messages_background_color+'" width="100%" border="0" cellspacing="0" cellpadding="0"><tr style="background:'+messages_background_color+'"><td colspan="3" align="right"><a href="javascript:void(0);" onclick="delete_header_messages_all()"><img src="images/icons/bbs_del.png" onmousemove="this.src=\'images/icons/white_bbs_del.png\'" onmouseout="this.src=\'images/icons/bbs_del.png\'" ></a></td></tr></table>');
 			};
   		}
 	);
 }
 $(document).ready(function(){
-  check_header_messages();
-  setInterval(function(){check_header_messages()}, 60000);
+  check_header_messages(false);
+  setInterval(function(){check_header_messages(false)}, 60000);
 });
 
 <?php
@@ -334,32 +354,18 @@ if($check_result==0) {
 	echo sprintf(HEADER_ATTENDANCE_LOGIN,'href="javascript:void(0);" onclick=change_attendance_logout("'.$user_info['userid'].'") title="'.HEADER_ATTENDANCE_LOGOUT_TITLE.'" style="text-decoration:underline;"');
 }
 
-if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
-?>
-<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
-?>
-<?php
-if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
-?>
-<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
 if(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8.0")){
 
 	?>
-<embed id="head_notice" src="images/bbs.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="head_notice_audio" src="images/messages_notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="head_order_audio" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<embed id="head_button_audio" src="images/button.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="head_alarm" src="images/alarm.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="head_message" src="images/message.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <?php
 }else{
 	?>
-<audio id="head_notice" src="images/bbs.mp3"></audio>
-<audio id="head_notice_audio" src="images/messages_notice.mp3"></audio>
-<audio id="head_order_audio"  src="images/notice.mp3" ></audio>
-<audio id="head_button_audio" src="images/button.mp3" ></audio>
+<audio id="head_warn" src="images/warn.mp3" ></audio>
+<audio id="head_alarm" src="images/alarm.mp3" ></audio>
+<audio id="head_message" src="images/message.mp3" ></audio>
 
 <?php
 }

@@ -13164,6 +13164,7 @@ function group_parent_id_list($group_id,&$group_parent_id_list){
             $group_parent_id_list[] = $parent_array['parent_id'];
             group_parent_id_list($parent_array['parent_id'],$group_parent_id_list);
           }
+		  return $group_parent_id_list;
 }
 /* -------------------------------------
     功能: 递归组的所有数据 
@@ -13641,7 +13642,22 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$g
   if (!is_array($group_tree_array)) $group_tree_array = array();
   $group_sql = "select name,parent_id,id,all_users_id,payrolls_admin from ".TABLE_GROUPS." WHERE parent_id = '".$parent_id."' and group_status='1' order by order_sort asc";
   $group_query = tep_db_query($group_sql);
+  $all_user_sql = "select * from ". TABLE_USERS ." where status='1'";
+  $all_user_query = tep_db_query($all_user_sql);
+  while($user_info_row = tep_db_fetch_array($all_user_query)){
+      $all_user_info[] = $user_info_row['userid'];
+  }
   while ($groups = tep_db_fetch_array($group_query)){
+	$group_users_tep_array = explode('|||',$groups['all_users_id']);
+	$groups_tep='';
+	//查看组成员是否存在
+	foreach($group_users_tep_array as $tep_group_users){
+    	  if(in_array($tep_group_users,$all_user_info)){
+              $groups_tep .= $tep_group_users.'|||';	
+           }
+	}
+	$groups['all_users_id']=trim($groups_tep);
+
     $group_id_list = array();
     $all_users_id = '';
     $parent_query = tep_db_query("select id from ".TABLE_GROUPS." where parent_id='".$groups['id']."'");
@@ -13655,6 +13671,18 @@ function tep_get_group_tree($parent_id = 0,$spacing = '',$group_tree_array='',$g
       }
       tep_db_free_result($child_user_query);
     }
+
+	
+    if(trim($all_users_id) != ''){
+          $users_list_array = explode('|||',$all_users_id);
+    }
+	//查看组成员是否存在
+	$all_users_id ='';
+	foreach($users_list_array as $key=>$tep_users){
+	    if(in_array($tep_users,$all_user_info)){
+	        $all_users_id .= $tep_users.'|||';	
+	    }
+	}
 
     //工资计算管理员
     $payrolls_admin = $groups['payrolls_admin'];
@@ -15375,16 +15403,21 @@ function tep_get_replace_str($payroll_str,$user_id,$payroll_date,$group_id){
 function tep_sort_attendance($attendance_list,$attendance_info){
   $temp_time_arr = array();
   $temp_sum_arr = array();
-  foreach($attendance_list as $attendance_value){
+  $temp_array = array();
+  foreach($attendance_list as $attendance_key=>$attendance_value){
     $temp_info = $attendance_info[$attendance_value['attendance_detail_id']];
     if($temp_info['set_time'] == 1){
       $temp_sum_arr[] = $attendance_value;
     }else{
       $temp_key = str_replace(':','',$temp_info['work_start']);
-      $temp_time_arr[$temp_key] = $attendance_value;
+      $temp_array[$attendance_key] = $temp_key;
     }
   }
-  ksort($temp_time_arr);
+  asort($temp_array);
+  foreach($temp_array as $key=>$value){
+
+      $temp_time_arr[] = $attendance_list[$key];
+  }
   $res_arr = array_merge($temp_time_arr,$temp_sum_arr);
   return $res_arr;
 }

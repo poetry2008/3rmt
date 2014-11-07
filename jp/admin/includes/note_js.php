@@ -47,7 +47,7 @@ while($row=tep_db_fetch_array($query)){
     </div>';
 }
 ?>
-<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js?v=<?php echo $back_rand_info;?>"></script>
+<script type="text/javascript" src="includes/note_tool.php?v=<?php echo $back_rand_info?>"></script>
 <script language="javascript">
 var notice_input_info_str = '<?php echo JS_TEXT_NOTICE_INPUT_INFO;?>';
 var notice_input_title_str = '<?php echo JS_TEXT_NOTICE_INPUT_TITLE;?>';
@@ -56,8 +56,6 @@ var notice_input_is_del_str = '<?php echo JS_TEXT_NOTICE_IS_DELETE;?>';
 var notice_info_save_str = '<?php echo JS_TEXT_NOTICE_INFO_SAVED;?>';
 </script>
 <script type="text/javascript" src="includes/javascript/note.js?v=<?php echo $back_rand_info?>"></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery-ui-1.8.16.custom.min.js?v=<?php echo $back_rand_info;?>'></script>
-<script type='text/javascript' src='includes/javascript/ui/jquery.ui.resizable.js?v=<?php echo $back_rand_info;?>'></script>
 <link rel="stylesheet" type="text/css" href="includes/note_style.css?v=<?php echo $back_rand_info;?>" />
 <link rel="stylesheet" type="text/css" href="includes/fancybox.css?v=<?php echo $back_rand_info;?>" />
 <link rel="stylesheet" type="text/css" href="includes/base/jquery.ui.all.css?v=<?php echo $back_rand_info;?>" />
