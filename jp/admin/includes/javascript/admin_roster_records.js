@@ -1187,7 +1187,7 @@ function save_att_status(url){
   document.location.href = url+'?y='+year+'&m='+month+'&att_status='+att_status+'&user='+user+'&action=save_att_status'
 }
 //popup calendar
-function open_new_calendar(type)
+function open_new_calendar(type,group_id)
 {
   var is_open = $('#toggle_open').val(); 
   if (is_open == 0) {
@@ -1260,7 +1260,7 @@ calendar.on("selectionChange", function (ev) {
     if(type == 'user'){
       show_user_attendance_info('',date,'','','','');
     }else if(type == 'group'){
-      show_group_attendance_info('',date,'','','');
+      show_group_attendance_info('',date,'',group_id,'');
     }else if(type == 'replace'){
       show_replace_attendance_info('',date,'','','');
     }
