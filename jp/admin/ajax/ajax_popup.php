@@ -10743,6 +10743,10 @@ if($row_array['set_time']==0){
       $user_select_hidden = '<input type="hidden" name="user_hidden[]" value="'.$user['user'].'">';
     }
     $user_select .= ($user['userid']==$_GET['uid'] ? ' selected' :'').'>'.$user['name'].'</oprion>';
+    if($_GET['u_att_id'] == ''){
+
+      $hidden_user_select .= $user['userid']==$_GET['uid'] ? ' selected' :'';
+    }
     $hidden_user_select .= '>'.$user['name'].'</oprion>';
   }
   $user_select .= '</select></select><input type="hidden" value="1" class="tep_index_num">&nbsp;&nbsp;<font color="red">'.TEXT_REMIND_CHOICE_SELECT.'</font><td><input disabled="disabled" style="opacity:0;" type="button" value="'.TEXT_DEL_ADL.'"></td>';
