@@ -9702,10 +9702,11 @@ $action = 'update_show_user';
                  $has_default = false;
 			  }
 		  }
-		  //设置显示的用户不是空并且组没有被禁止
+		  //设置显示的用户不是空并且组没有被禁止 
           if(($show_group_row['user_id']!='' && tep_db_num_rows($check_sql)!=0)||$show_group_id==0){
             $show_select_group_user[] = $show_group_row['user_id'];
-		  }else{
+			//没有默认 或者有默认但是组的id不是0并且没有他所在的组
+		  }else if(!$has_default ||($has_default&&$show_group_id!=0&&empty($user_group_list))){
             $show_select_group_user[] = $ocertify->auth_user;
 		  }
 		  $show_att_status =$show_group_row['att_status'];
