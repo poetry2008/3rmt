@@ -52,7 +52,7 @@ if($act == 'auto'){
    
    */
 
-  $auto_query = mysql_query("select game_name,game_type,site_name from product_auto");
+  $auto_query = mysql_query("select game_name,game_type,site_id from product_auto");
   $auto_attay = mysql_fetch_assoc($auto_query);
    /*  if(empty($auto_attay)){
        $auto_attay['game_name'] = 'FF11';
@@ -61,12 +61,11 @@ if($act == 'auto'){
     */ }
     // print_r($auto_attay);
 if($is_run){
- // while(true){
+  while(true){
     foreach($category_name_array as $game){
         if($game == $auto_attay['game_name'] && $flag == 1){
           continue;
         }
-        //echo 123;die;
         foreach($category_type as $key=>$category){
 
           if($key != $auto_attay['game_type'] && $flag == 1){
@@ -79,22 +78,18 @@ if($is_run){
                  continue;
              }
              if($is_stop){
+               mysql_query("update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_id='".$site['site_id']."'");
+             // echo "update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_id='".$site['site_id']."'";
                 $is_run = 0;
-               // echo $game.'<br>';
-               // echo $key.'<br>';
-               // echo $site['site_id'];
-               // mysql_query("update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_name='".$site['site_id']."'");
-              echo "update product_auto set is_run='".$is_run."',game_name='".$game."',game_type='".$key."',site_name='".$site['site_id']."'";
               exit;
             }
               $is_run = 1;
-              echo 123;
-            //  $tep = get_contents_main($game,$key,$site['site_id']); 
-          //    sleep(10);
+              $tep = get_contents_main($game,$key,$site['site_id']); 
+              sleep(10);
          }     
       }
     }
- // }
+  }
  }
 
 die;
