@@ -9686,18 +9686,35 @@ $action = 'update_show_user';
         $show_group_user = array();
         $show_select_group_user = array();
 		//当前用户最后一次保存显示的组(并且组是有效的)
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id and g.group_status=1 and is_select='1' and operator_id='".$ocertify->auth_user."'";
+        //$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." s, ".TABLE_GROUPS." g  WHERE s.gid=g.id and g.group_status=1 and is_select='1' and operator_id='".$ocertify->auth_user."'";
+		$show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW."  WHERE is_select='1' and operator_id='".$ocertify->auth_user."'";
+
         $show_group_query = tep_db_query($show_group_sql);
         $has_default = false;
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
-          if($show_group_row['user_id']!=''){
+          $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1");
+          $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+		  //组被禁止||管理员
+		  if((tep_db_num_rows($check_sql)==0 && !empty($user_group_list)) ||($show_group_id==0 &&tep_is_group_manager($ocertify->auth_user))){
+			  if($ocertify->npermission <15){
+                 $has_default = false;
+			  }
+		  }
+		  //设置显示的用户不是空并且组没有被禁止
+          if(($show_group_row['user_id']!='' && tep_db_num_rows($check_sql)!=0)||$show_group_id==0){
             $show_select_group_user[] = $show_group_row['user_id'];
-          }
+		  }else{
+            $show_select_group_user[] = $ocertify->auth_user;
+		  }
 		  $show_att_status =$show_group_row['att_status'];
         }
         if($has_default){
+            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
+			if(!empty($prent_group) && $ocertify->npermission <15&& tep_db_num_rows($check_sql)==0){
+		       $show_group_id = $prent_group[0];
+			}
           if($show_group_id==0){
            // $user_sql = "select * from ".TABLE_USERS." where status='1'";
             $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
@@ -9854,7 +9871,7 @@ while($user_row = tep_db_fetch_array($user_query)){
 //用户合法
 $show_group_user = array_intersect($show_group_user,$all_users);
         foreach($show_group_user as $show_list_uid){
-          if($show_list_uid!='' ){
+          if($show_list_uid!=''){
 			$tep_array= tep_get_user_info($show_list_uid);
 			$uname_arr[] = $tep_array['name'];
 
@@ -10756,7 +10773,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td class="tr_#line_num_2" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num"></td><td></td><td><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr>';
+  $hidden_div .= '<tr><td class="tr_#line_num_2" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num"></td><td></td><td><input type="hidden" name="line_num_array[]" value="#line_num"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'\',this,\'1\')"></div>';
@@ -10986,7 +11003,7 @@ if($row_array['set_time']==0){
     $as_info_row[]['text'] = array(
       array('params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"','text'=>''),
       array('text'=>''),
-      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info[0]['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input '.$disabled.' type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'user\',\''.$a_info[0]['u_group'].'\',\''.$_GET['date'].'\');">' : ''))
+      array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="hidden" name="line_num_array[]" value="'.$line_i.'"><input  '.$disabled.' type="button" onclick="del_as_group(\''.$line_i.'\',this,\''.$a_info[0]['u_group'].'\',false,\''.$ocertify->npermission.'\')" value="'.TEXT_DEL_ADL.'">'.($a_info[0]['type'] != 0 && $_GET['date'] >= date('Ymd') ? '<input '.$disabled.' type="button" value="'.TEXT_ATTENDANCE_DATE_END.'" onclick="end_date(\'user\',\''.$a_info[0]['u_group'].'\',\''.$_GET['date'].'\');">' : ''))
     );
   $line_i++;
   }
@@ -11020,7 +11037,7 @@ if($row_array['set_time']==0){
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''), 
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" '.$disabled.' value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_i.'\',this,\'\')">')
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="hidden" name="line_num_array[]" value="'.$line_i.'"><input type="button" '.$disabled.' value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_i.'\',this,\'\')">')
     );
 
 
@@ -11196,7 +11213,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" colspan="2">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td></td><td></td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'#line_num_1\',this,\'\')"></td></tr>';
+  $hidden_div .= '<td class="tr_#line_num" width="30%" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" colspan="2">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num_1"></td><td></td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'#line_num_1\',this,\'\')"></td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'\',this,\'1\')"></div>';
@@ -11239,7 +11256,7 @@ if($row_array['set_time']==0){
   
   $date_click_str .= '<div class="yui3-skin-sam yui3-g"><input id="date_orders" type="hidden" name="" size="10" value="'.date('Y-m-d',strtotime($_GET['date'])).'">
                 <div class="date_box">
-                <a href="javascript:void(0);" onclick="open_new_calendar(\'group\');" class="dpicker"></a> 
+                <a href="javascript:void(0);" onclick="open_new_calendar(\'group\',\''.$_GET['gid'].'\');" class="dpicker"></a> 
                 </div>
                 <input type="hidden" id="date_order" name="update_date" value="">
                 <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
