@@ -5,7 +5,6 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
 
-require_once(PRO_ROOT_DIR."includes/configure.php");
 require_once(PRO_ROOT_DIR."class/spider.php");
 require_once(PRO_ROOT_DIR."collect.php");
 
