@@ -1060,9 +1060,9 @@ if($param_tep[0]!=''){
             }
           }else{
 			   $show_group_user=$show_group_user_staff;
-               $show_select_group_user[] = $show_group_user;
+               $show_select_group_user = $show_group_user_staff;
           }
-          $show_select_group_user[] = $ocertify->auth_user;
+         // $show_select_group_user[] = $ocertify->auth_user;
         }
 		
 		if($ocertify->npermission<15){

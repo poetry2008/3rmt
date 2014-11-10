@@ -9765,9 +9765,9 @@ $action = 'update_show_user';
             }
           }else{
 			  $show_group_user=$show_group_user_staff;
-              $show_select_group_user[] = $show_group_user_staff;
+              $show_select_group_user = $show_group_user_staff;
           }
-          $show_select_group_user[] = $ocertify->auth_user;
+          //$show_select_group_user[] = $ocertify->auth_user;
         }
         $show_select_group_user = array_unique($show_select_group_user);
 		//保证被禁止的组的数据/禁用用户不会显示了
