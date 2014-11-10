@@ -305,6 +305,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id,user){
     gid = '';
   }
 	//check the user if is manager or group leader
+   /*
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
       data: 'gid='+gid,
@@ -324,6 +325,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id,user){
   if(is_manager==0 && admin_npermission < 15){
 	return false;
   }
+  */
 
   if(!gid){
     gid='';
