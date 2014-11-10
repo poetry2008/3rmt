@@ -978,6 +978,33 @@ if($param_tep[0]!=''){
         $self_href = tep_href_link(FILENAME_ROSTER_RECORDS);
         $user_info = tep_get_user_info($ocertify->auth_user);
         $group_list = tep_get_group_tree();
+/*--------------------------------------------------------------*/
+//当前用户可操作的所以用户
+//当前用户所在的组
+         $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+//组长对应的组
+         $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+//用所有可看到的组
+         if(!empty($is_manage_group)){
+             $user_group_list = array_merge($user_group_list,$is_manage_group);
+         }
+//当个人不是root和admin用户的时候显示相应权限的用户
+         $all_users_list ='';
+         foreach($user_group_list as $user_all_group_id){
+            $user_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$user_all_group_id."' and group_status=1");
+            $user_row = tep_db_fetch_array($user_query);
+            $all_users_list .= $user_row['all_users_id'].'|||';
+          }
+          $all_users_tep_array = explode('|||',$all_users_list.'|||'.$ocertify->auth_user);
+          $show_group_user_all = array_unique($all_users_tep_array);
+          $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
+          $user_query = tep_db_query($user_sql);
+          while($user_row = tep_db_fetch_array($user_query)){
+             $show_group_user_true[] = $user_row['userid'];
+          }
+		 $show_group_user_staff = array_intersect($show_group_user_true,$show_group_user_all);
+
+/*--------------------------------------------------------------*/
         $show_group_id=0;
         $show_checked_user_list = array();
         $show_group_user = array();
@@ -990,31 +1017,19 @@ if($param_tep[0]!=''){
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $has_default = true;
           $show_group_id = $show_group_row['gid'];
-		  //组是否被禁止
-            $user_sql = "select * from ".TABLE_GROUPS." where id='".$show_group_id."'";
-            $user_query = tep_db_query($user_sql);
-            $user_row = tep_db_fetch_array($user_query);
             $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1")             ;
             $prent_group = tep_get_groups_by_user($ocertify->auth_user);
 			//处理显示
-          if(($show_group_row['user_id']!='' && $user_row['group_status'] ==1 && $show_group_id!=0)||($ocertify->npermission>=15&&$show_group_row['user_id']!='')){
-            $show_select_group_user[] = $show_group_row['user_id'];
-		  }else if($user_row['group_status'] ==0&&$show_group_id!=0 ||($show_group_id==0 && $ocertify->npermission<15 && $show_group_row['user_id']!='' )){
-		    $show_select_group_user[]=$ocertify->auth_user;
-		  }
-			$show_group_id = $show_group_row['gid'];
-            $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1");
-            $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
-           //组被禁止||管理员
-            if((tep_db_num_rows($check_sql)==0 && !empty($user_group_list)) ||($show_group_id==0 &&tep_is_group_manager($ocertify->auth_user))){
-                if($ocertify->npermission <15){
-                     $has_default = false;
-                }
-            }
-	
-		  $show_att_status =$show_group_row['att_status'];
+			if(tep_db_num_rows($check_sql)==0 && $show_group_id!=0){
+			   $has_default = false;
+		       $show_group_id=0;	
+			}else if($show_group_row['user_id']!=''){
+         		$show_select_group_user[]=$show_group_row['user_id'];
+			}
+			  $show_att_status =$show_group_row['att_status'];
           $show_type = $show_group_row['show_type'];
         }
+		//有默认
         if($has_default){
           if($show_group_id==0){
             $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
@@ -1031,8 +1046,6 @@ if($param_tep[0]!=''){
                 if($user_row['group_status']==1){
                    $show_group_user = explode('|||',$user_row['all_users_id']);
 				}else{
-         //         $prent_group = tep_get_groups_by_user($ocertify->auth_user);
-		//		  $show_group_id = $prent_group[0];
                   $show_group_user[] = $ocertify->auth_user;           
 				}
             }
@@ -1046,32 +1059,15 @@ if($param_tep[0]!=''){
               $show_select_group_user[] = $user_row['userid'];
             }
           }else{
-            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
-            if(!empty($prent_group)){
-              $show_group_id = $prent_group[0];
-              if($show_group_id==0){
-                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
-                $user_query = tep_db_query($user_sql);
-                while($user_row = tep_db_fetch_array($user_query)){
-                  $show_group_user[] = $user_row['userid'];
-                }
-              } else {
-                $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
-                $user_query = tep_db_query($user_sql);
-                if($user_row = tep_db_fetch_array($user_query)){
-                  $show_group_user = explode('|||',$user_row['all_users_id']);
-                }
-              }
-            }else{
-              $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1";
-              $user_query = tep_db_query($user_sql);
-              while($user_row = tep_db_fetch_array($user_query)){
-                $show_group_user[] = $user_row['userid'];
-              }
-            }
+			   $show_group_user=$show_group_user_staff;
+               $show_select_group_user = $show_group_user_staff;
           }
-          $show_select_group_user[] = $ocertify->auth_user;
+         // $show_select_group_user[] = $ocertify->auth_user;
         }
+		
+		if($ocertify->npermission<15){
+           $show_select_group_user= array_intersect($show_group_user_staff,$show_select_group_user);
+		}
         $show_select_group_user = array_unique($show_select_group_user);
         $group_str ='';
         $group_str .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
@@ -1088,41 +1084,57 @@ if($param_tep[0]!=''){
             $show_checked_user_list[] = $key;
           }
         }
-
         //new 各种设定
         $group_str .= '<tr height="22">';
         $group_str .= '<td>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= TEXT_ATTENDANCE_SETTING;
-        $group_sr .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span '.(($ocertify->npermission>=15)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a id="set_attendance_info"" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,0'.$param.')">'.TEXT_ATTENDANCE_SETTING_MOVE.'</a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15){
+            $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15 || $is_manager)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_user_attendance_info(this,\'\',\'\',\''.$ocertify->auth_user.'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_USER.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15 || $is_manager)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15 || $is_manager){
+            $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15 || $is_manager)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a href="javascript:void(0);" onclick="show_group_attendance_info(this,\'\',\'\',\''.$show_group_id.'\',\'\',\''.$ocertify->auth_user.'\');"><u>'.TEXT_ATTENDANCE_SETTING_GROUP.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15 || $is_manager){
+	        $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= '<a href="javascript:void(0);" onclick="show_replace_attendance_info(this,\'\',\'\',\'\',\'\',\''.$show_group_id.'\');"><u>'.TEXT_ATTENDANCE_SETTING_CHANGE.'</u></a>';
-        $group_str .= '</td>';
-        $group_str .= '<td '.(($ocertify->npermission>=15)?'':'style="display:none;"').'>';
+        $group_str .= '</span>';
+        if($ocertify->npermission>=15){
+		    $group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        }
+        $group_str .= '<span '.(($ocertify->npermission>=15)?'style="display:block; float:left; width:auto"':'style="display:none;"').'>';
         $group_str .= '<a id="set_payrols_info" style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this, 0,1'.$param.')" >'.TEXT_ATTENDANCE_SETTING_PAYROLLS.'</a>';
+        $group_str .= '</span>';
         $group_str .= '</td>';
         $group_str .= '</tr>';
 
         //new 显示设定
         $group_str .= '<tr height="22">';
         $group_str .= '<td>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= TEXT_ATTENDANCE_SETTING_SHOW;
-        $group_sr .= '</td>';
-        $group_str .= '<td>';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
         $group_str .= '<a style="text-decoration: underline;" href="javascript:void(0);" onclick="set_attendance_info(this,'.$show_group_id.',2'.$param.')">'.TEXT_GROUP_USER_LIST.'</a>';
 		//显示出勤状态
         $group_str .= '<input type="hidden" id="show_att_status_hidden" value='.$show_att_status.'>';
-        $group_str .= '</td>';
-        
-        $group_str .= '<td colspan="3">';
+        $group_str .= '</span>';
+		$group_str .= '<span style="display:block; float:left; width:5%">&nbsp;</span>';
+        $group_str .= '<span style="display:block; float:left; width:auto">';
 		if($show_att_status==1){
 	      $status_error = 'checked ="ckecked"';
 		}elseif($show_att_status==2) {
@@ -1133,6 +1145,7 @@ if($param_tep[0]!=''){
         $group_str .= '<span style="display:block; float:left;"><input type="radio" style="margin:0px; padding:0px;" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_all" value="0" '.$status_all.' ></span><span style="display:block; float:left;"><label for="show_all">'.SHOW_ALL_ATT_STATUS.'</label>&nbsp;&nbsp;</span>';
         $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_error" value="1" '.$status_error.'></span><span style="display:block; float:left;"><label for="show_error">'.SHOW_ERROR_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
         $group_str .= '<span style="display:block; float:left;"><input type="radio" onclick="save_att_status(\''.$self_href.'\')" name="att_status" id="show_null" value="2" '.$status_null.'></span><span style="display:block; float:left;"><label for="show_null">'.SHOW_NULL_ATT_STATUS.'</label>&nbsp;&nbsp;&nbsp;</span>';
+        $group_sr .= '</span>';
         $group_sr .= '</td>';
 
 
