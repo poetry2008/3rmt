@@ -4934,19 +4934,28 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     $radio_res = tep_db_query("select * from set_dougyousya_history where categories_id='".$current_category_id."' order by history_id asc");
                     $radio_col = tep_db_fetch_array($radio_res);
                   }
+                  $i=0;
+                  $collect_checked = true;
                     if ($count['cnt'] > 0) {
                       $dougyousya = get_products_dougyousya($products['products_id']);
                       $all_dougyousya = get_all_products_dougyousya($cPath_yobi, $products['products_id']);
                       $j_num = 0; 
                       for($i=0;$i<$count['cnt'];$i++) {
+                        $radio_check = false;
+                        if(check_in_dougyousya($dougyousya, $all_dougyousya)){
+                          if($all_dougyousya[$i]['dougyousya_id'] == $dougyousya){
+                            $radio_check = true;
+                            $collect_checked = false;
+                          }
+                        }
                         $products_peer_params = '';
                         $products_peer_text = '';
                         if (empty($s_site_id)) {
                           $products_peer_params .= 'class="dataTableContent" '; 
-                          $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
+                          $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".($radio_check?'checked':'')."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
                         } else {
                           $products_peer_params .= 'class="dataTableContent" align="right"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
-                          $products_peer_text .= "<input type='radio' disabled='disabled' name='ro_".$target_cnt."_".$i."'".(check_in_dougyousya($dougyousya, $all_dougyousya) ?  ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':'')).">";
+                          $products_peer_text .= "<input type='radio' disabled='disabled' name='ro_".$target_cnt."_".$i."'".($radio_check?'checked':'').">";
                           if ($j_num == 0) {
                             $products_peer_text .= "<input type='hidden' id='radio_".$target_cnt."_".$i."' value='".get_dougyousya_history($products['products_id'], $dougyousya)."' name='chk[".$target_cnt."]'>";
                           }
@@ -4957,6 +4966,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       }
                     } else {
                         $products_peer_params .= 'class="dataTableContent" align="center" colspan="'.$count_dougyousya['cnt'].'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
+                        $collect_checked = false;
                       if (empty($s_site_id)) {
                         $products_peer_text .= "<input type='radio' value='0' id='radio_".$target_cnt."_0' onclick='set_money(".$target_cnt.",false,1)' name='chk[".$target_cnt."]' checked>";
                       } else {
@@ -4969,10 +4979,10 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                   }
                 $collect_radio = $i+1;
                 if(empty($s_site_id)){
-                  $collect_radio = "<input type='radio' id='radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='set_money(".$target_cnt.",false,1)'>";
+                  $collect_radio = "<input ".($collect_checked?' checked ':'')." type='radio' id='radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='chek_radio(".$target_cnt.")'>";
                   $collect_radio .= "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".(int)$products['collect_price']."</span>";
                 }else{
-                  $collect_radio = "<input type='radio' disabled='disabled' id=radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='set_money(".$target_cnt.",false,1)'>";
+                  $collect_radio = "<input ".($collect_checked?' checked ':'')."type='radio' disabled='disabled' id=radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='set_money(".$target_cnt.",false,1)'>";
                   $collect_radio .= "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".(int)$products['collect_price']."</span>";
                 }
                 $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$collect_radio);
