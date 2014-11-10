@@ -9773,6 +9773,7 @@ $action = 'update_show_user';
 		//保证被禁止的组的数据/禁用用户不会显示了
         if($ocertify->npermission<15){
             $show_select_group_user= array_intersect($show_group_user_staff,$show_select_group_user);
+			$show_group_user =  array_intersect($show_group_user_staff,$show_group_user);
         }
 
  $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
@@ -9897,16 +9898,8 @@ $show_group_user = array_intersect($show_group_user,$all_users);
 		foreach($group_user_list as $key=>$val) {
 	 	    $i++;
 			if($i>1 && $i%2 ==0 ){
-                $user_str .= '<tr/><tr>';
+                $user_str .= '</tr><tr>';
 			}
-            if($show_group_id==0){
-				//普通用户和组长显示有操作权限的用户
-               if(($ocertify->npermission <15 && in_array($key,$all_users_array))||$ocertify->npermission >=15){
-                  $display = '';
-               }else{
-                   $display = 'display:none;';
-               }
-            }
              $user_str .= '<td width="40%" style="min-width:220px;'.$display.'"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
              if(in_array($key,$show_select_group_user)){
                 $user_str .= ' checked="checked" ';
