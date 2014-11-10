@@ -4821,7 +4821,6 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                 $products_preorder_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
                 $products_table_content_row[] = array('params'=>$products_preorder_params, 'text'=>$products_preorder_text);
                 $products_order_params .= 'class="dataTableContent" align="center" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
-
               if($products['products_status']==1){
                 $tmp_order_product_num = tep_get_order_cnt_by_pid($products['products_id'], $s_site_id,$orders_query_str,$orders_query_num,$order_status_info); 
                 if($tmp_order_product_num){
@@ -4943,8 +4942,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                         $products_peer_params = '';
                         $products_peer_text = '';
                         if (empty($s_site_id)) {
-                          $products_peer_params .= 'class="dataTableContent"  align="right" onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
-
+                          $products_peer_params .= 'class="dataTableContent" '; 
                           $products_peer_text .= "<input type='radio' id='radio_".$target_cnt."_".$i."' value='".$all_dougyousya[$i]['dougyousya_id']."' name='chk[".$target_cnt."]' onClick='chek_radio(".$target_cnt.")'".(check_in_dougyousya($dougyousya, $all_dougyousya) ? ($all_dougyousya[$i]['dougyousya_id'] == $dougyousya?' checked':'') : ($i == 0 ? ' checked':''))."><span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".get_dougyousya_history($products['products_id'], $all_dougyousya[$i]['dougyousya_id'])."</span> </td>";
                         } else {
                           $products_peer_params .= 'class="dataTableContent" align="right"  onclick="document.location.href=\'' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  ($_GET['page'] ? ('&page=' . $_GET['page']): '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').'&s_site_id='.$products['site_id'].$type_url_str) . '\'"'; 
@@ -4960,7 +4958,7 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                     } else {
                         $products_peer_params .= 'class="dataTableContent" align="center" colspan="'.$count_dougyousya['cnt'].'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['show_type'])?'&show_type='.$_GET['show_type']:'')) . '\'"';
                       if (empty($s_site_id)) {
-                        $products_peer_text .= "<input type='radio' value='0' name='chk[".$target_cnt."]' checked>";
+                        $products_peer_text .= "<input type='radio' value='0' id='radio_".$target_cnt."_0' onclick='set_money(".$target_cnt.",false,1)' name='chk[".$target_cnt."]' checked>";
                       } else {
                         $products_peer_text .= "<input type='radio' value='0' name='hr_chk[".$target_cnt."]' checked disabled='disabled'>";
                         $products_peer_text .= "<input type='hidden' value='0' name='chk[".$target_cnt."]'>"; 
@@ -4969,7 +4967,15 @@ if(isset($_GET['eof'])&&$_GET['eof']=='error'){
                       $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$products_peer_text);
                     }
                   }
-                $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$currencies->format($products['collect_price']));
+                $collect_radio = $i+1;
+                if(empty($s_site_id)){
+                  $collect_radio = "<input type='radio' id='radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='set_money(".$target_cnt.",false,1)'>";
+                  $collect_radio .= "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".(int)$products['collect_price']."</span>";
+                }else{
+                  $collect_radio = "<input type='radio' disabled='disabled' id=radio_".$target_cnt."_".$i."' name='chk[".$target_cnt."]' onclick='set_money(".$target_cnt.",false,1)'>";
+                  $collect_radio .= "<span name='TARGET_INPUT[]' id='target_".$target_cnt."_".$i."' >".(int)$products['collect_price']."</span>";
+                }
+                $products_table_content_row[] = array('params'=>$products_peer_params, 'text'=>$collect_radio);
                 $tmp_p_price = ($products['products_bflag'])?(0-(int)$products['products_price']):(int)$products['products_price']; 
                 if (empty($s_site_id)) {
                   $products_price_params .= 'class="dataTableContent" align="right" onclick="show_update_info(this,'.$products['products_id'].', \'3\','. $target_cnt.')" onmouseover="this.style.cursor=\'pointer\'" ';
