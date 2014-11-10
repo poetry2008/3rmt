@@ -3588,7 +3588,7 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         foreach($group_user_list as $key=>$val) {
 			$i++;
 			if($i>1 && $i%2 ==0 ){
-			   $group_str .= '<tr/><tr>';
+			   $group_str .= '</tr><tr>';
 			}
 			/*
        if($show_group_id==0){
