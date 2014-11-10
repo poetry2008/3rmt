@@ -466,7 +466,7 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
-   hidden_info_box();
+   //hidden_info_box();
   //选择的组
   group_id = '';
   error_default ='';
@@ -537,6 +537,7 @@ function save_submit(c_permission){
    var e_m_r =$("#leave_end_min_r").val();
    var end_time = e_hour+':'+e_m_l+e_m_r;
 if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
+  $("#leave_end_error").html(attendance_select_date_error);
   return false;
 }
    var tep_str = $("#use_get_userid").text();
