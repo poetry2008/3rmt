@@ -1559,13 +1559,12 @@ while($j<=$end_day)
     $info_td_attendance_str .= "</td>";
     $info_td_attendance_str .= "</tr>";
   }
-  //echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"".$show_group_id."\");'" : '').">";
-  echo " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"".$show_group_id."\");'>";
-  //if(empty($temp_user_attenande)&&!$is_replace){
+  echo (empty($temp_user_attenande)&&!$is_replace ? " onclick='show_replace_attendance_info(this,\"".$date."\",\"".$k."\",\"".$user_value."\",\"\",\"".$show_group_id."\");'" : '').">";
+  if(empty($temp_user_attenande)&&!$is_replace){
     echo "<span style='display:block; min-height:16px; line-height:16px; float:left'>";
     echo "&nbsp;";
     echo "</span>";
-  //}
+  }
   $info_td_attendance_str .= '</table>';
   echo $info_td_attendance_str;
   echo "</td></tr>";
