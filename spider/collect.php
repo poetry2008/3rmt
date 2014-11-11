@@ -1844,7 +1844,8 @@ $game_type=$game_type;
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
           $result_array_kaka = array($result_array_kaka[0][0]);
-          foreach($result_array_kaka as $k=>$kaka){
+         $result_array_kakas = array();
+         foreach($result_array_kaka as $k=>$kaka){
              foreach($kaka as $keyk=>$kk){
                 $kk =str_replace(',','',$kk);
                 $result_array_kakas[$k][$keyk]['price'] = $kk;
@@ -1865,7 +1866,6 @@ $game_type=$game_type;
           array_multisort($prices_array, SORT_ASC,$kaka_array);
          
  if($site_value==5){
-  
           $result_array[0][prices][] =  $kaka_array[0]['price'];
           $result_array[0][inventory][] = $kaka_array[0]['inventory'];
          
