@@ -39,8 +39,6 @@ function get_contents_main($game_type,$category,$site){
   /*以下是区分是手动更新的还是后台自动执行更新的判断
    * 买卖是数组是手动更新的,相反就是后台自动更新的
    * */
-if(is_array($category)){
-	$category_type = $category;
   //site
   $site_query = mysql_query("select site_id from site order by site_id asc");
   $i = 0;
@@ -65,7 +63,7 @@ if(is_array($category)){
       }
     } 
   }
-}else{
+if(!is_array($category)){
 	if($category==1){
 	    $category_tep = 'buy';
 	}else{
@@ -75,10 +73,17 @@ if(is_array($category)){
 	$x=0;
     $category_query = mysql_query("select * from category where site_id='".$site."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
     $category_array =  mysql_fetch_array($category_query);
-	$x=$site-1;
-        $url_str_array[$category_tep][$x] = $category_array['category_url'];
-        $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
-        $site_str[$category_tep][] = $x;
+    foreach($url_str_array[$category_tep] as $k => $v){
+      if($v == $category_array['category_url']){
+        $x= $k;
+        break;
+      }
+    }
+    $url_str_array[$category_tep][$x] = $category_array['category_url'];
+    $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
+    $site_str[$category_tep][] = $x;
+}else{
+  $category_type = $category;
 }
 /*以下是正式采集*/
 $game_type=$game_type;
@@ -1820,8 +1825,6 @@ $game_type=$game_type;
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
    }
-//echo $url_array[$site_value];
-//var_dump($result_array);
     //处理kakaran
     if($result_array[0]['url']){
       //取出单价
@@ -1833,7 +1836,8 @@ $game_type=$game_type;
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
           $result_array_kaka = array($result_array_kaka[0][0]);
-          foreach($result_array_kaka as $k=>$kaka){
+         $result_array_kakas = array();
+         foreach($result_array_kaka as $k=>$kaka){
              foreach($kaka as $keyk=>$kk){
                 $kk =str_replace(',','',$kk);
                 $result_array_kakas[$k][$keyk]['price'] = $kk;
@@ -1854,7 +1858,6 @@ $game_type=$game_type;
           array_multisort($prices_array, SORT_ASC,$kaka_array);
          
  if($site_value==5){
-  
           $result_array[0][prices][] =  $kaka_array[0]['price'];
           $result_array[0][inventory][] = $kaka_array[0]['inventory'];
          
@@ -1870,9 +1873,6 @@ if($site_value==13){
           }
      }
    }
-//echo $url_array[$site_value];
-//echo $site_value;
-//var_dump($result_array);
 
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
@@ -4547,9 +4547,7 @@ if($game_type == 'FF14'){
     $result = new Spider($value,'',$na_search_array[$key]);
     $result_array = $result->fetch();
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
-    //echo '<pre>';
     //print_r($result_array);
-    //echo '</pre>';
 
     foreach($result_array[0]['products_name'] as $products_key=>$products_value){
       preg_match('/([0-9,]+).*?口/is',$result_array[0]['inventory'][$products_key],$inventory_array);
@@ -4612,7 +4610,6 @@ if($game_type == 'FF14'){
     }
   }
 }
-//echo '数据采集完毕。';
 /*get_contents_main end*/
 }
 ?>
