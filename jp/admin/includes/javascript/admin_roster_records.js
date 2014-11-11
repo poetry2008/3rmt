@@ -905,10 +905,21 @@ function change_users_groups(value){
           async : false,
           success: function(data){
              var tmp_msg_arr = data.split('|||'); 
-            $("#show_user_adl").html('');
-            $("#show_user_adl").html(tmp_msg_arr[2]);
-			$(".show_att_titile").html('');
-			$(".show_att_titile").html(tmp_msg_arr[1]);
+             if(tmp_msg_arr[1] != ''){
+             
+               $(".show_att_titile").show();
+               $(".show_att_titile").find("select[name=attendance_detail_id]").html(tmp_msg_arr[1]);
+               if(tmp_msg_arr[2] != ''){
+             
+                 $("#show_user_adl").show();
+                 $("#show_user_adl").html(tmp_msg_arr[2]);
+               }
+             }else{
+               $(".show_att_titile").hide();  
+               $("#show_user_adl").hide();
+             }
+             
+            
             $("#users_groups").html('');
             $("#users_groups").html(tmp_msg_arr[0]);
           }
