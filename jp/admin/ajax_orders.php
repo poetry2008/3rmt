@@ -3520,20 +3520,40 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         $show_group_id = $_POST['gid'];
         $show_group_user = array();
         $show_select_group_user = array();
-        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE gid='".$show_group_id."'";
+        $show_group_sql = "select * from ".TABLE_ATTENDANCE_GROUP_SHOW." WHERE  gid='".$show_group_id."' and operator_id='".$ocertify->auth_user."'";
         $show_group_query = tep_db_query($show_group_sql);
         while($show_group_row = tep_db_fetch_array($show_group_query)){
           $show_group_id = $show_group_row['gid'];
           $show_select_group_user[] = $show_group_row['user_id'];
 		  $show_att_status = $show_group_row['att_status'];
         }
-        if($show_group_id==0){
-         // $user_sql = "select * from ".TABLE_USERS." where status='1'";
-          $user_list_query_raw = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
-          $user_query = tep_db_query($user_list_query_raw);
-          while($user_row = tep_db_fetch_array($user_query)){
-            $show_group_user[] = $user_row['userid'];
-          }
+		if($show_group_id==0){
+           if($ocertify->npermission >=15){
+               // $user_sql = "select * from ".TABLE_USERS." where status='1'";
+               $user_list_query_raw = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
+               $user_query = tep_db_query($user_list_query_raw);
+               while($user_row = tep_db_fetch_array($user_query)){
+                  $show_group_user[] = $user_row['userid'];
+               }
+		   }else{ 
+               //当前用户所在的组
+               $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+                //组长对应的组
+               $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+                //用所有可看到的组
+               if(!empty($is_manage_group)){
+                    $user_group_list = array_merge($user_group_list,$is_manage_group);
+                }
+               //当个人不是root和admin用户的时候显示相应权限的用户
+                $all_users_list ='';
+                foreach($user_group_list as $user_all_group_id){
+                     $user_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$user_all_group_id."' and group_status=1");
+                     $user_row = tep_db_fetch_array($user_query);
+                     $all_users_list .= $user_row['all_users_id'].'|||';
+                }
+               $all_users_tep_array = explode('|||',$all_users_list.'|||'.$ocertify->auth_user);
+               $show_group_user = array_unique($all_users_tep_array);
+		   }
         } else {
           $user_sql = "select * from ".TABLE_GROUPS." 
             where id='".$show_group_id."' and group_status='1'";
@@ -3543,7 +3563,6 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
           }
 
         }
-        
         $group_str = '';
        //用于验证用户是否合法
         $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
@@ -3556,8 +3575,8 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
        
         foreach($show_group_user as $show_list_uid){
           if($show_list_uid!=''){
-		             $tep_array= tep_get_user_info($show_list_uid);
-		             $uname_arr[] = $tep_array['name'];
+		      $tep_array= tep_get_user_info($show_list_uid);
+		      $uname_arr[] = $tep_array['name'];
 
 	      }
         }
@@ -3569,15 +3588,18 @@ echo '<input type="hidden" id="hidd_order_str" value="'.  orders_a($_GET['oid'],
         foreach($group_user_list as $key=>$val) {
 			$i++;
 			if($i>1 && $i%2 ==0 ){
-			   $group_str .= '<tr/><tr>';
+			   $group_str .= '</tr><tr>';
 			}
+			/*
        if($show_group_id==0){
-            if(($ocertify->npermission <15 && $ocertify->auth_user==$key)||$ocertify->npermission >=15){
+		   //普通用户和组长显示有操作权限的用户
+            if(($ocertify->npermission <15 && in_array($key,$all_users_array))||$ocertify->npermission >=15){
                 $display = '';
 	    }else{
                 $display = 'display:none;';
 	    }
        }
+			 */
             $group_str .= '<td width="40%" style="min-width:220px;'.$display.'"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
             if(in_array($key,$show_select_group_user)){
 	            $group_str .= ' checked="checked" ';

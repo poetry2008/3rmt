@@ -9681,6 +9681,33 @@ $action = 'update_show_user';
  $group_content_row_staff = array();
  $user_info = tep_get_user_info($ocertify->auth_user);
         $group_list = tep_get_group_tree();
+/*--------------------------------------------------------------*/
+//当前用户所有可操作的用户(用于权限小于15的)
+//当前用户所在的组
+     $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+//组长对应的组
+     $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+//用所有可看到的组
+     if(!empty($is_manage_group)){
+        $user_group_list = array_merge($user_group_list,$is_manage_group);
+     }
+//当个人不是root和admin用户的时候显示相应权限的用户
+     $all_users_list ='';
+     foreach($user_group_list as $user_all_group_id){
+        $user_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$user_all_group_id."' and group_status=1");
+        $user_row = tep_db_fetch_array($user_query);
+        $all_users_list .= $user_row['all_users_id'].'|||';
+     }
+     $all_users_tep_array = explode('|||',$all_users_list.'|||'.$ocertify->auth_user);
+     $show_group_user_all = array_unique($all_users_tep_array);
+     $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
+     $user_query = tep_db_query($user_sql);
+     while($user_row = tep_db_fetch_array($user_query)){
+        $show_group_user_true[] = $user_row['userid'];
+     }
+     $show_group_user_staff = array_intersect($show_group_user_true,$show_group_user_all);
+
+/*--------------------------------------------------------------*/
         $show_group_id=0;
         $show_checked_user_list = array();
         $show_group_user = array();
@@ -9697,25 +9724,17 @@ $action = 'update_show_user';
           $check_sql = tep_db_query("select * from ".TABLE_GROUPS." where id='".$show_group_id."' and group_status=1");
           $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
 		  //组被禁止||管理员
-		  if((tep_db_num_rows($check_sql)==0 && !empty($user_group_list)) ||($show_group_id==0 &&tep_is_group_manager($ocertify->auth_user))){
-			  if($ocertify->npermission <15){
+		  if(tep_db_num_rows($check_sql)==0 && $show_group_id!=0){ 
                  $has_default = false;
-			  }
-		  }
-		  //设置显示的用户不是空并且组没有被禁止 
-          if(($show_group_row['user_id']!='' && tep_db_num_rows($check_sql)!=0)||$show_group_id==0){
-            $show_select_group_user[] = $show_group_row['user_id'];
-			//没有默认 或者有默认但是组的id不是0并且没有他所在的组
-		  }else if(!$has_default ||($has_default&&$show_group_id!=0&&empty($user_group_list))){
-            $show_select_group_user[] = $ocertify->auth_user;
+				 $show_group_id=0;
+		  }else if($show_group_row['user_id']!=''){
+			  $show_select_group_user[]=$show_group_row['user_id'];
+		  
 		  }
 		  $show_att_status =$show_group_row['att_status'];
+		  $show_type = $show_group_row['show_type'];
         }
         if($has_default){
-            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
-			if(!empty($prent_group) && $ocertify->npermission <15&& tep_db_num_rows($check_sql)==0){
-		       $show_group_id = $prent_group[0];
-			}
           if($show_group_id==0){
            // $user_sql = "select * from ".TABLE_USERS." where status='1'";
             $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
@@ -9745,45 +9764,25 @@ $action = 'update_show_user';
               $show_select_group_user[] = $user_row['userid'];
             }
           }else{
-            $prent_group = tep_get_groups_by_user($ocertify->auth_user);
-            $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
-			//个人所在的组和哪个组的组长
-			$prent_group = array_merge($prent_group,$is_manage_group);
-            if(!empty($prent_group)){
-              $show_group_id = $prent_group[0];
-              if($show_group_id==0){
-             //    $user_sql = "select * from ".TABLE_USERS." where status='1'";
-            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
-                $user_query = tep_db_query($user_sql);
-                while($user_row = tep_db_fetch_array($user_query)){
-                  $show_group_user[] = $user_row['userid'];
-                }
-              } else {
-                $user_sql = "select * from ".TABLE_GROUPS." 
-                   where id='".$show_group_id."' and group_status=1";
-                $user_query = tep_db_query($user_sql);
-                if($user_row = tep_db_fetch_array($user_query)){
-                  $show_group_user = explode('|||',$user_row['all_users_id']);
-                }
-              }
-            }else{
-           //   $user_sql = "select * from ".TABLE_USERS." where status='1'";
-            $user_sql = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1"; 
-              $user_query = tep_db_query($user_sql);
-              while($user_row = tep_db_fetch_array($user_query)){
-                $show_group_user[] = $user_row['userid'];
-              }
-            }
+			  $show_group_user=$show_group_user_staff;
+              $show_select_group_user = $show_group_user_staff;
           }
-          $show_select_group_user[] = $ocertify->auth_user;
+          //$show_select_group_user[] = $ocertify->auth_user;
         }
         $show_select_group_user = array_unique($show_select_group_user);
+		//保证被禁止的组的数据/禁用用户不会显示了
+        if($ocertify->npermission<15){
+            $show_select_group_user= array_intersect($show_group_user_staff,$show_select_group_user);
+			$show_group_user =  array_intersect($show_group_user_staff,$show_group_user);
+        }
 
  $group_str .= '<select name="show_group" onchange="change_user_list(this)">';
 
 //当前用户所在的组
  $user_group_list = tep_get_groups_by_user($ocertify->auth_user);
+ //组长对应的组
 $is_manage_group = tep_is_group_manager($ocertify->auth_user,true);
+//用所有可看到的组
 if(!empty($is_manage_group)){
 $user_group_list = array_merge($user_group_list,$is_manage_group);
 }
@@ -9800,13 +9799,24 @@ $user_group_list = array_merge($user_group_list,$is_manage_group);
      }else{
         $group_parents_list = $user_group_list; 
     }
- if(empty($group_parents_list) ||$ocertify->npermission >=15){
+	 //全
        $group_str .= '<option value="0" ';
        if($show_group_id==0){
          $group_str .= ' selected ';
         }
        $group_str .= ' >'.TEXT_ALL_GROUP.'</option>';
- }
+//当个人不是root和admin用户的时候显示相应权限的用户
+/*--------------------------------------------------------------*/
+ $all_users_list ='';
+foreach($user_group_list as $user_all_group_id){
+    $user_query = tep_db_query("select * from ".TABLE_GROUPS." where id='".$user_all_group_id."' and group_status=1");
+    $user_row = tep_db_fetch_array($user_query);
+    $all_users_list .= $user_row['all_users_id'].'|||';
+}
+$all_users_tep_array = explode('|||',$all_users_list.'|||'.$ocertify->auth_user);
+$all_users_array = array_unique($all_users_tep_array);
+/*--------------------------------------------------------------*/
+	
  foreach($group_list as $group){
     if($ocertify->npermission <15 && in_array($group['id'],$group_parents_list)){
 		if(!in_array($group['id'],$user_group_list)){
@@ -9886,17 +9896,10 @@ $show_group_user = array_intersect($show_group_user,$all_users);
 		
 	    $i=1;
 		foreach($group_user_list as $key=>$val) {
-			$i++;
+	 	    $i++;
 			if($i>1 && $i%2 ==0 ){
-                $user_str .= '<tr/><tr>';
+                $user_str .= '</tr><tr>';
 			}
-            if($show_group_id==0){
-               if(($ocertify->npermission <15 && $ocertify->auth_user==$key)||$ocertify->npermission >=15){
-                  $display = '';
-               }else{
-                   $display = 'display:none;';
-               }
-            }
              $user_str .= '<td width="40%" style="min-width:220px;'.$display.'"><input type="checkbox" name="show_group_user_list[]" onclick="select_all_box(5)" id="'.$key.'"';
              if(in_array($key,$show_select_group_user)){
                 $user_str .= ' checked="checked" ';
@@ -9931,8 +9934,17 @@ $show_group_user = array_intersect($show_group_user,$all_users);
  echo $notice_box->show_notice();
 } else if($_GET['action']=='delete_attendance_info') {
 	$id = $_POST['attendance_id'];
+//删除排班
    $del_sql = "delete from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
    tep_db_query($del_sql);
+//删除排班对应的人或组
+   $del_info = "delete from ".TABLE_ATTENDANCE_DETAIL_DATE." where attendance_detail_id = ".$id;
+   tep_db_query($del_info);
+//删除请假和加班对应的排班
+   $del_replace = "delete from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where attendance_detail_id = ".$id." and replace_attendance_detail_id = ".$id."";
+   tep_db_query($del_replace);
+
+
  echo   mysql_affected_rows();
 }else if($_GET['action']=='change_model_get_time'){
     $id=$_POST['id'];
@@ -10634,6 +10646,28 @@ if($row_array['set_time']==0){
   $operator = $ocertify->auth_user;
   $show_user_id_list = array();
   if($ocertify->npermission >= '15'||tep_is_group_manager($ocertify->auth_user)){
+    //如果权限小于等于10，并且是组长的情况
+    $group_user_array = array($ocertify->auth_user);
+    $groups_id_list_array = array();
+    if($ocertify->npermission <= 10 && tep_is_group_manager($ocertify->auth_user)){
+
+      $groups_id_list_array = tep_is_group_manager($ocertify->auth_user,true);
+      if(count($groups_id_list_array) > 1){
+        $groups_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id in (".implode(',',$groups_id_list_array).")");
+      }else{
+        $groups_query = tep_db_query("select all_users_id from ".TABLE_GROUPS." where id='".$groups_id_list_array[0]."'");
+      }
+      while($groups_array = tep_db_fetch_array($groups_query)){
+
+        $group_user_temp_array = explode('|||',$groups_array['all_users_id']);
+        foreach($group_user_temp_array as $value){
+
+          $group_user_array[] = $value;
+        }
+      }
+      tep_db_free_result($groups_query);
+    }
+    $group_user_array = array_unique($group_user_array);
 	  //选中的
 	$sql_all_check_user = "select user_id as userid from ".TABLE_ATTENDANCE_GROUP_SHOW." where operator_id='". $operator ."' and is_select=1";
     $query_all_check_user = tep_db_query($sql_all_check_user);
@@ -10645,6 +10679,13 @@ if($row_array['set_time']==0){
     $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
     $query_all_user = tep_db_query($sql_all_user);
     while($row_all_user = tep_db_fetch_array($query_all_user)){
+      //如果权限小于等于10，并且是组长的情况
+      if($ocertify->npermission <= 10 && tep_is_group_manager($ocertify->auth_user)){
+        if(!in_array($row_all_user['userid'],$group_user_array)){
+
+          continue;
+        }
+      }
 		//如果没有操作过的用户
       if(in_array($row_all_user['userid'],$show_user_id_list) && tep_db_num_rows($query_all_check_user)>0){
         $all_user[] = $row_all_user;
@@ -11065,8 +11106,8 @@ if($row_array['set_time']==0){
   
   //点排班个人单个排班
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['u_att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['group_id'].'\')"').'</a>'; 
   }
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
@@ -11116,16 +11157,21 @@ if($row_array['set_time']==0){
    krsort($attendance_temp_arr);
    $attendance_dd_arr = $attendance_temp_arr;
 
-  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
-    $show_only = ' disabled="disabled" ';
-    $group_disabled = ' disabled="disabled" ';
-  }
-  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10'  )){
-    $group_disabled = ' disabled="disabled" ';
-  }
-  if(empty($attendance_dd_arr)){
-    $group_disabled = '';
-  }
+  //if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
+    //$show_only = ' disabled="disabled" ';
+    //$group_disabled = ' disabled="disabled" ';
+  //}
+  //if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10'  )){
+    //$group_disabled = ' disabled="disabled" ';
+  //}
+  //if(empty($attendance_dd_arr)){
+    //$group_disabled = '';
+  //}
+   if(!tep_is_group_manager($ocertify->auth_user)){
+
+     $group_disabled = ' disabled="disabled" ';
+     $show_only = ' disabled="disabled" ';
+   }
 
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
   //获得 所有排班表
@@ -11319,6 +11365,9 @@ if($row_array['set_time']==0){
       $has_group_select_hidden = '';
       $default_has_group = '';
       foreach($group_list_select as $group){
+        if(!(in_array($group['id'],$show_manage_group) || $ocertify->npermission>10) && $a_info['group_id'] != $group['id']){
+          continue;
+        }
         if($default_has_group == ''){
         $default_has_group = '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
         }
@@ -11416,7 +11465,7 @@ if($row_array['set_time']==0){
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_i.'\',this,\'\')">'),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input '.$show_only.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_i.'\',this,\'\')">'),
     );
   $as_info_row[]['text'] = array(array('text'=>'&nbsp;'));
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
@@ -11496,7 +11545,7 @@ if($row_array['set_time']==0){
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -11601,6 +11650,23 @@ if($row_array['set_time']==0){
     $change_flag = false;
   }
 
+  if($_GET['uid'] != ''){
+    //判断选择的用户是不是当前登录用户的组员
+    //获取选择用户所属的组
+    $current_user_group_array = tep_get_groups_by_user($_GET['uid']);
+    //如果当前登录用户是组长的话，获取组ID
+    $current_admin_group_array = tep_is_group_manager($ocertify->auth_user,true);
+
+    $group_intersect = array_intersect($current_user_group_array,$current_admin_group_array);
+
+    if(empty($group_intersect)){
+
+      $disabled = ' disabled="disabled" ';
+      $change_flag = false;
+    }
+  }
+
+
   
 
 
@@ -11616,6 +11682,7 @@ if($row_array['set_time']==0){
   }
   $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
+  $replace_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   foreach($replace_att_list as $attendance_info){
     $attendance_select .= '<option value="'.$attendance_info['id'].'"';
     if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$attendance_info['id']){
@@ -11640,7 +11707,7 @@ if($row_array['set_time']==0){
 
     $admin_flag = true;
   }
-  $attendance_select = '<div class="show_att_titile">
+  $attendance_select = '
 	  
 	  
 <select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
@@ -11957,6 +12024,7 @@ if($row_array['set_time']==0){
       $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
+      $all_user_select .= '<option value="">--</option>';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
 		  //没有指定的组
 		  if($_GET['group_id']==0 || $_GET['group_id']==''){
@@ -12014,6 +12082,7 @@ if($row_array['set_time']==0){
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
+      $all_user_select .= '<option value="">--</option>';
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
@@ -12040,11 +12109,11 @@ if($row_array['set_time']==0){
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => strpos($attendance_select,'option')!==false ? $attendance_select : '')
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div class="show_att_titile"'.(substr_count($attendance_select,'option')>=4 ? '' : 'style="display:none;"').'>'.$attendance_select.'</div>')
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl">'.$user_adl.'</div>')
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl"'.(substr_count($attendance_select,'option')>=4 ? '' : 'style="display:none;"').'>'.$user_adl.'</div>')
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 
@@ -12077,7 +12146,7 @@ if($row_array['set_time']==0){
   $current_users_array= array_unique($current_users_array);
   $first_user = current($current_users_array);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value,'.(isset($replace_info_res['allow_status']) ? $replace_info_res['allow_status'] : 0).');">';
+    $allow_user_select = '<select name="allow_user[]" style="width: 150px;" '.$disabled.' onchange="change_users_allow(this.value,'.(isset($replace_info_res['allow_status']) ? $replace_info_res['allow_status'] : 0).');">';
     foreach($current_users_array as $user_info){
       $t_user_info = tep_get_user_info($user_info);
       if($t_user_info['status'] == 1){
@@ -12164,8 +12233,8 @@ if($row_array['set_time']==0){
 	}else{
             $disabled = ' disabled="disabled" ';
 	}
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$_GET['date'].'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['group_id'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   if($ocertify->npermission>10
     ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
@@ -12180,7 +12249,7 @@ if($row_array['set_time']==0){
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,(!isset($replace_info_res['allow_status']) ? ' disabled="disabled" ' : $disabled).'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="return save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
   }

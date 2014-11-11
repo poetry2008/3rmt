@@ -305,6 +305,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id,user){
     gid = '';
   }
 	//check the user if is manager or group leader
+   /*
    $.ajax({
       url: 'ajax.php?action=tep_show_info_attendance',
       data: 'gid='+gid,
@@ -324,6 +325,7 @@ function show_group_attendance_info(ele,date,num,gid,add_id,user){
   if(is_manager==0 && admin_npermission < 15){
 	return false;
   }
+  */
 
   if(!gid){
     gid='';
@@ -466,7 +468,7 @@ function delete_submit(c_permission,type){
   }
 }
 function save_submit(c_permission){
-   hidden_info_box();
+   //hidden_info_box();
   //选择的组
   group_id = '';
   error_default ='';
@@ -537,6 +539,8 @@ function save_submit(c_permission){
    var e_m_r =$("#leave_end_min_r").val();
    var end_time = e_hour+':'+e_m_l+e_m_r;
 if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
+  $("#leave_end_error").html(attendance_select_date_error);
+  $("#leave_end_error").before('<br/>');
   return false;
 }
    var tep_str = $("#use_get_userid").text();
@@ -902,10 +906,21 @@ function change_users_groups(value){
           async : false,
           success: function(data){
              var tmp_msg_arr = data.split('|||'); 
-            $("#show_user_adl").html('');
-            $("#show_user_adl").html(tmp_msg_arr[2]);
-			$(".show_att_titile").html('');
-			$(".show_att_titile").html(tmp_msg_arr[1]);
+             if(tmp_msg_arr[1] != ''){
+             
+               $(".show_att_titile").show();
+               $(".show_att_titile").find("select[name=attendance_detail_id]").html(tmp_msg_arr[1]);
+               if(tmp_msg_arr[2] != ''){
+             
+                 $("#show_user_adl").show();
+                 $("#show_user_adl").html(tmp_msg_arr[2]);
+               }
+             }else{
+               $(".show_att_titile").hide();  
+               $("#show_user_adl").hide();
+             }
+             
+            
             $("#users_groups").html('');
             $("#users_groups").html(tmp_msg_arr[0]);
           }
