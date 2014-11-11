@@ -59,9 +59,9 @@ class Spider {
       }
 
       if(!$contents){
-
-        echo 'error|||'.$this->make_url($this->url,$this->url_mode,$this->current_page);
-        exit;
+        continue;
+        //echo 'error|||'.$this->make_url($this->url,$this->url_mode,$this->current_page);
+       // exit;
       }
 
       $contents = $this->contents_encode($contents);
