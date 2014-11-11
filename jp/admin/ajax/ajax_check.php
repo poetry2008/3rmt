@@ -498,7 +498,48 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
     $allow_user_select .= '<option value="'.$users_value.'">'.$users_info['name'].'</option>';
   }
   $allow_user_select .= '</select>&nbsp;&nbsp;<font color="red" id="allow_user_error"></font>';
-  echo $allow_user_select;
+
+  //获取当前登录用户所属的组
+  $group_id_array = tep_get_groups_by_user($users_id); 
+  $attendance_id_array = array();
+  $attendance_tmp_id_array = array();
+  foreach($group_id_array as $g_list_id){
+    $attendance_array = tep_get_attendance($_POST['date'],$g_list_id,false);
+    $attendance_tmp_id_array = array_merge($attendance_array,$attendance_tmp_id_array);
+  }
+  foreach($attendance_tmp_id_array as $attendance_id_arr){
+    $attendance_id_array[] = $attendance_id_arr['attendance_detail_id'];
+  }
+
+  //个人的排班
+  $attendance_user_id_array = tep_get_attendance_user($_POST['date']);
+  foreach($attendance_user_id_array as $date_attendance_array){
+
+    if($date_attendance_array['user_id'] == $users_id){
+
+      $attendance_id_array[] = $date_attendance_array['attendance_detail_id'];
+    }
+  }
+  $attendance_id_array = array_unique($attendance_id_array);
+  //获取当前用户当天的所有排班
+  $attendance_select = '';
+  $user_adl = '';
+  foreach($attendance_id_array as $val){
+    $all_att_sql = "select * from ".TABLE_ATTENDANCE_DETAIL." where id=".$val;
+    $all_att_query = tep_db_query($all_att_sql);
+    $all_att_row = tep_db_fetch_array($all_att_query);
+    $attendance_select .= '<option value='.$all_att_row['id'].'>'.$all_att_row['title'].'</option>';
+    if($user_adl == ''){
+      if($all_att_row['set_time']==0 && $all_att_row['work_start']!=':'&& $all_att_row['work_end']!=':'){
+        $user_adl = '<span>'.$all_att_row['work_start'].'--'.$all_att_row['work_end'].'</span>'; 
+      }else{
+        $work = $all_att_row['work_hours']+$all_att_row['rest_hours'];
+        $user_adl = '<span>'.$work .TELECOM_UNKNOW_TABLE_TIME. '</span>';
+      }
+    }
+  }
+
+  echo $allow_user_select.'|||'.$attendance_select.'|||'.$user_adl;
 }else if(isset($_GET['action']) && $_GET['action'] == 'open_leftmenu'){
 
   if ($_COOKIE['tarrow'] == 'open') {

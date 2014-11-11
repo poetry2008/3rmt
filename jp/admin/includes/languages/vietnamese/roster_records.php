@@ -82,5 +82,6 @@ define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 define('TEXT_ATTENDANCE_DATE_ERROR', '正しく入力してください');
 define('TEXT_ATTENDANCE_DATE_END', '終了');
 define('TEXT_ATTENDANCE_DATE_END_CONFIRM', '本当に終了しますか？');
+define('TEXT_ATTENDANCE_SELECT_DATE_ERROR', '出勤時間帯を選択してください。');
 ?>
 

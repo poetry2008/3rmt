@@ -83,5 +83,6 @@ define('TEXT_ATTENDANCE_PLAN', '出勤予定');
 define('TEXT_ATTENDANCE_DATE_ERROR', '正しく入力してください');
 define('TEXT_ATTENDANCE_DATE_END', '终止');
 define('TEXT_ATTENDANCE_DATE_END_CONFIRM', '确定要终止吗？');
+define('TEXT_ATTENDANCE_SELECT_DATE_ERROR', '请选择排班时间带。');
 ?>
 
