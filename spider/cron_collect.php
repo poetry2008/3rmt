@@ -1,6 +1,6 @@
-
+#!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/szn/project/3rmt/spider/');
+define('PRO_ROOT_DIR','/home/.sites/132/site21/web/');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
@@ -10,29 +10,29 @@ require_once(PRO_ROOT_DIR."collect.php");
 
 define('LOG_DIR',PRO_ROOT_DIR.'logs/');
 
-define('LOG_FILE_NAME',LOG_DIR.date('Y-m-d',time()).'.log');
-
 define('DB_SERVER', 'localhost'); //服务器名
 define('DB_SERVER_USERNAME', 'root'); //用户名
-define('DB_SERVER_PASSWORD', '123456'); //密码
-define('DB_DATABASE', 'osc_collect'); //数据库名
+define('DB_SERVER_PASSWORD', 'Qz8PYrk60uVg'); //密码
+define('DB_DATABASE', 'osc_collect_test'); //数据库名
 
 function cron_log($collect_info){
   //文件不存在则建立
+  $log_file = LOG_DIR.date('Y-m-d',time()).'.log';
 
-  if(!file_exists(LOG_FILE_NAME)){
+
+  if(!file_exists($log_file)){
      echo 'file not exist ,creating';
-     $handle=fopen(LOG_FILE_NAME,"w"); //创建文件
+     $handle=fopen($log_file,"w"); //创建文件
      fclose($handle);
   }
-  if (!file_exists(LOG_FILE_NAME)){
-    echo 'create file failed'.LOG_FILE_NAME;
+  if (!file_exists($log_file)){
+    echo 'create file failed'.$log_file;
   }else {
     $str_write = '';
     $str_write .=date('H:i:s',time()).str_repeat(' ',5);
     $str_write .= $collect_info."\n";
 
-    $handle=fopen(LOG_FILE_NAME,"a+");
+    $handle=fopen($log_file,"a+");
         //写日志
     echo $str_write;
     if(!fwrite($handle,$str_write)){//写日志失败
@@ -74,6 +74,7 @@ if($run_res = mysql_fetch_array($run_query)){
 //获得是否停止状态
 if($is_run==1){
   $log_str = "the script is run";
+  echo $log_str ."\n";
   exit;
 }
 
@@ -105,6 +106,11 @@ $category_type=array(1=>'buy',0=>'sell');
 $site_query = mysql_query("select site_id,site_name from site order by site_id asc");
 while($site_row = mysql_fetch_array($site_query)){
    $site_array[] =$site_row; 
+}
+if(empty($auto_array)){
+  $auto_array['game_name'] = $category_name_array[0];
+  $auto_array['game_type'] = $category_type[1];
+  $auto_array['site_id'] = $site_array[0]['site_id'];
 }
 
 
@@ -166,4 +172,7 @@ while(true){
       }
     }
   }
+  $auto_array['game_name'] = $category_name_array[0];
+  $auto_array['game_type'] = $category_type[1];
+  $auto_array['site_id'] = $site_array[0]['site_id'];
 }
