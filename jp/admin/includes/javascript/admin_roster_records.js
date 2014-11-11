@@ -540,6 +540,7 @@ function save_submit(c_permission){
    var end_time = e_hour+':'+e_m_l+e_m_r;
 if(s_hour==0 && s_m_l==0 && s_m_r==0 && e_hour==0 && e_m_l==0 && e_m_r==0){
   $("#leave_end_error").html(attendance_select_date_error);
+  $("#leave_end_error").before('<br/>');
   return false;
 }
    var tep_str = $("#use_get_userid").text();
