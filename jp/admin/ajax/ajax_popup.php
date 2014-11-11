@@ -11650,6 +11650,23 @@ if($row_array['set_time']==0){
     $change_flag = false;
   }
 
+  if($_GET['uid'] != ''){
+    //判断选择的用户是不是当前登录用户的组员
+    //获取选择用户所属的组
+    $current_user_group_array = tep_get_groups_by_user($_GET['uid']);
+    //如果当前登录用户是组长的话，获取组ID
+    $current_admin_group_array = tep_is_group_manager($ocertify->auth_user,true);
+
+    $group_intersect = array_intersect($current_user_group_array,$current_admin_group_array);
+
+    if(empty($group_intersect)){
+
+      $disabled = ' disabled="disabled" ';
+      $change_flag = false;
+    }
+  }
+
+
   
 
 
