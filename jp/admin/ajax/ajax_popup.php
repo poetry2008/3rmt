@@ -9934,8 +9934,17 @@ $show_group_user = array_intersect($show_group_user,$all_users);
  echo $notice_box->show_notice();
 } else if($_GET['action']=='delete_attendance_info') {
 	$id = $_POST['attendance_id'];
+//删除排班
    $del_sql = "delete from ".TABLE_ATTENDANCE_DETAIL." where id=".$id;
    tep_db_query($del_sql);
+//删除排班对应的人或组
+   $del_info = "delete from ".TABLE_ATTENDANCE_DETAIL_DATE." where attendance_detail_id = ".$id;
+   tep_db_query($del_info);
+//删除请假和加班对应的排班
+   $del_replace = "delete from ".TABLE_ATTENDANCE_DETAIL_REPLACE." where attendance_detail_id = ".$id." and replace_attendance_detail_id = ".$id."";
+   tep_db_query($del_replace);
+
+
  echo   mysql_affected_rows();
 }else if($_GET['action']=='change_model_get_time'){
     $id=$_POST['id'];
@@ -11097,8 +11106,8 @@ if($row_array['set_time']==0){
   
   //点排班个人单个排班
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['back_attendance_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['u_att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['group_id'].'\')"').'</a>'; 
   }
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
@@ -11528,7 +11537,7 @@ if($row_array['set_time']==0){
   
   //$button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_HISTORY, ' '.$show_only.' onclick="hidden_info_box();"').'</a>'; 
   if($ocertify->npermission > 10 || tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
@@ -12109,7 +12118,7 @@ if($row_array['set_time']==0){
   $current_users_array= array_unique($current_users_array);
   $first_user = current($current_users_array);
   foreach($allow_user_list as $allow_user){
-    $allow_user_select = '<select name="allow_user[]" '.$disabled.' onchange="change_users_allow(this.value,'.(isset($replace_info_res['allow_status']) ? $replace_info_res['allow_status'] : 0).');">';
+    $allow_user_select = '<select name="allow_user[]" style="width: 150px;" '.$disabled.' onchange="change_users_allow(this.value,'.(isset($replace_info_res['allow_status']) ? $replace_info_res['allow_status'] : 0).');">';
     foreach($current_users_array as $user_info){
       $t_user_info = tep_get_user_info($user_info);
       if($t_user_info['status'] == 1){
@@ -12196,8 +12205,8 @@ if($row_array['set_time']==0){
 	}else{
             $disabled = ' disabled="disabled" ';
 	}
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\'\',\''.$_GET['uid'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$_GET['date'].'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['group_id'].'\')"').'</a>'; 
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   if($ocertify->npermission>10
     ||($ocertify->auth_user==$replace_info_res['user']&&$replace_info_res['allow_status'] ==0)
