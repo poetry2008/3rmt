@@ -11157,16 +11157,21 @@ if($row_array['set_time']==0){
    krsort($attendance_temp_arr);
    $attendance_dd_arr = $attendance_temp_arr;
 
-  if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
-    $show_only = ' disabled="disabled" ';
-    $group_disabled = ' disabled="disabled" ';
-  }
-  if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10'  )){
-    $group_disabled = ' disabled="disabled" ';
-  }
-  if(empty($attendance_dd_arr)){
-    $group_disabled = '';
-  }
+  //if($_GET['gid']!=''&&!tep_is_manager_by_gid($ocertify->auth_user,$_GET['gid'])&&$ocertify->npermission<= '10'&&!empty($attendance_dd_arr)){
+    //$show_only = ' disabled="disabled" ';
+    //$group_disabled = ' disabled="disabled" ';
+  //}
+  //if($ocertify->npermission <= '10' || ($_GET['gid'] != '' && $ocertify->npermission <= '10'  )){
+    //$group_disabled = ' disabled="disabled" ';
+  //}
+  //if(empty($attendance_dd_arr)){
+    //$group_disabled = '';
+  //}
+   if(!tep_is_group_manager($ocertify->auth_user)){
+
+     $group_disabled = ' disabled="disabled" ';
+     $show_only = ' disabled="disabled" ';
+   }
 
   include(DIR_FS_ADMIN.DIR_WS_LANGUAGES.$language.'/'.FILENAME_ROSTER_RECORDS);
   //获得 所有排班表
@@ -11360,6 +11365,9 @@ if($row_array['set_time']==0){
       $has_group_select_hidden = '';
       $default_has_group = '';
       foreach($group_list_select as $group){
+        if(!(in_array($group['id'],$show_manage_group) || $ocertify->npermission>10) && $a_info['group_id'] != $group['id']){
+          continue;
+        }
         if($default_has_group == ''){
         $default_has_group = '<input type="hidden" name="has_group_hidden[]" value="'.$group['id'].'">';
         }
@@ -11457,7 +11465,7 @@ if($row_array['set_time']==0){
   $as_info_row[]['text'] = array(
         array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
         array('text'=>''),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_i.'\',this,\'\')">'),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input '.$show_only.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_i.'\',this,\'\')">'),
     );
   $as_info_row[]['text'] = array(array('text'=>'&nbsp;'));
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
@@ -11682,7 +11690,7 @@ if($row_array['set_time']==0){
 
     $admin_flag = true;
   }
-  $attendance_select = '<div class="show_att_titile">
+  $attendance_select = '
 	  
 	  
 <select name="attendance_detail_id" onchange="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',this.value,\''.$_GET['group_id'].'\');"'.($groups_flag == false && $admin_flag == false ? '' : ' disabled="disabled"').'>';
@@ -11999,6 +12007,7 @@ if($row_array['set_time']==0){
       $sql_all_user = 'select u.*, p.permission from ' . TABLE_USERS . ' u, ' .  TABLE_PERMISSIONS . " p where u.userid = p.userid and u.status=1 order by u.name asc"; 
       $query_all_user = tep_db_query($sql_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
+      $all_user_select .= '<option value="">--</option>';
       while($row_all_user = tep_db_fetch_array($query_all_user)){
 		  //没有指定的组
 		  if($_GET['group_id']==0 || $_GET['group_id']==''){
@@ -12056,6 +12065,7 @@ if($row_array['set_time']==0){
       tep_db_free_result($group_show_query);
       $row_all_user = array_unique($row_all_user);
       $all_user_select = '<select name="user_id" '.$disabled.' onchange="change_users_groups(this.value);" class="replace_user">';
+      $all_user_select .= '<option value="">--</option>';
       foreach($row_all_user as $row_all_user_value){
 
         $row_all_user_value_name = tep_get_user_info($row_all_user_value);
@@ -12082,11 +12092,11 @@ if($row_array['set_time']==0){
 
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => substr_count($attendance_select,'option')>=4 ? $attendance_select : '')
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div class="show_att_titile"'.(substr_count($attendance_select,'option')>=4 ? '' : 'style="display:none;"').'>'.$attendance_select.'</div>')
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT_USER_TEXT), 
-    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl">'.$user_adl.'</div>')
+    array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<div id="show_user_adl"'.(substr_count($attendance_select,'option')>=4 ? '' : 'style="display:none;"').'>'.$user_adl.'</div>')
   );
   $as_info_row[]['text'] = array(
     array('align' => 'left', 'params' => 'width="20%" nowrap="nowrap"', 'text' => TEXT_REPLACE_ADL), 
