@@ -11657,6 +11657,7 @@ if($row_array['set_time']==0){
   }
   $replace_select = '<select id ="att_detail_id" name="replace_attendance_detail_id" '.$disabled.' onchange="change_scheduling_time(this.value);">';
   if(!empty($replace_att_list)){
+  $replace_select .= '<option value="0">'.TEXT_LEAVE_ONE_DAY.'</option>';
   foreach($replace_att_list as $attendance_info){
     $attendance_select .= '<option value="'.$attendance_info['id'].'"';
     if(isset($replace_info_res['attendance_detail_id'])&&$replace_info_res['attendance_detail_id']==$attendance_info['id']){
