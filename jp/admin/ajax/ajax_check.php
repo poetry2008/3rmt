@@ -515,14 +515,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   //把采集的商品价格同步到后台
   $cid = $_POST['cid'];
   $pid = $_POST['pid'];
-  $category_query = "select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".CATEGORIES_TABLE." c,".CATEGORIES_DESCRIPTION_TABLE." cd where c.categories_id =cd.categories_id and c.categories_id ='".$pid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1";
+  $category_query = "select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".TABLE_CATEGORIES." c,".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$pid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1";
   $category_name_query= tep_db_query($category_query);
   $category_name_array = tep_db_fetch_array($category_name_query);
   $category_name = $category_name_array['categories_name'];
-  $category_type_query = tep_db_query("select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".CATEGORIES_TABLE." c, ".CATEGORIES_DESCRIPTION_TABLE." cd where c.categories_id =cd.categories_id and c.categories_id ='".$cid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1");
+  $category_type_query = tep_db_query("select * from (select c.categories_id,c.parent_id,cd.site_id,cd.categories_name from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id =cd.categories_id and c.categories_id ='".$cid."' and cd.language_id = '4' ) c where site_id = '0' or site_id ='0'group by categories_id limit 1");
   $category_type_array = tep_db_fetch_array($category_type_query);
   $category_type = (strpos($category_type_array['categories_name'],'販売'))?1:0;
-  mysql_select_db(DBNAME);
+  tep_db_close();
+  tep_db_connect(COLLECT_DB_SERVER,COLLECT_DB_SERVER_USERNAME,COLLECT_DB_SERVER_PASSWORD,COLLECT_DB_DATABASE);
   $game_str_array = array('FF14'=>'FF14',
       'RO'=>'ラグナロク',
       'RS'=>'レッドストーン',
@@ -574,7 +575,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       break;
     }
   }
- $products_id_query  = tep_db_query("select pp.product_name,pp.product_id from ".PRODUCTS_PRICE_TABLE." pp left join ".PRODUCT_TABLE." ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` =".$category_type);
+ $products_id_query  = tep_db_query("select pp.product_name,pp.product_id from products_price  pp left join product ps on pp.product_id = ps.product_id where category_name = '".$name."' and `product_type` =".$category_type);
    while($products_id = tep_db_fetch_array($products_id_query)){
      $products_id_array[] = $products_id ; 
    }
@@ -582,7 +583,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
        $product_price_array = array();
       if(in_array($val['product_id'],array(0,-1))){
         //最安，次点
-        $product_price_query = tep_db_query("select p.product_price from ".PRODUCT_TABLE." p left join ".CATEGORY_TABLE." c on p.category_id =c.category_id where c.category_name = '".$name."' and p.product_name ='".$val['product_name']."' and c.category_type = ".$category_type);
+        $product_price_query = tep_db_query("select p.product_price from product p left join category c on p.category_id =c.category_id where c.category_name = '".$name."' and p.product_name ='".$val['product_name']."' and c.category_type = ".$category_type);
         while($product_price = tep_db_fetch_array($product_price_query)){
              $product_price_array[] = $product_price ;
          }
@@ -601,21 +602,29 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
          }
 
       }else{
-      $products_price_query = tep_db_query("select product_name,product_price from ".PRODUCT_TABLE." where product_id = ".$val['product_id']);
+      $products_price_query = tep_db_query("select product_name,product_price from product where product_id = ".$val['product_id']);
       while($products_price = tep_db_fetch_array($products_price_query)){
          $products_price_array[$key] = $products_price ;
       }
       }
   
   }
-  mysql_select_db(DB_DATABASE);
+  $date_query = mysql_query( "select max(collect_date) as collect_date from catetory");
+  $date_array = mysql_fetch_array($date_query);
+  tep_db_close();
+  tep_db_connect();
+  $update_last_collect_date = "update ".TABLE_CONFIGURATION." set
+    configuration_key='".$date_array['collect_date']."' where configuration_value= 'VALUE_LAST_COLLECT_TIME'";
   foreach($products_price_array as $k=>$v){
-   $sql = "select products_id from ".PRODUCTS_DESCRIPTION_TABLE." where site_id = 0 and language_id = 4 and preorder_status=".$category_type." and products_name like '%".$v['product_name']."%'";
+   $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
+     where site_id = 0 and language_id = 4 
+     and preorder_status=".$category_type." 
+     and replace(products_name,' ','') like '%".$v['product_name']."%'";
    $products_id_query = tep_db_query($sql); 
    $products_id_array = tep_db_fetch_array($products_id_query);
    $products_id = $products_id_array['products_id'];
    if($products_id){
-      $res = tep_db_query("update ".PRODUCTS_TABLE." set collect_price = ".$v['product_price']." where products_id=".$products_id);
+      $res = tep_db_query("update ".TABLE_PRODUCTS." set collect_price = ".$v['product_price']." where products_id=".$products_id);
    }else {
       continue;
    }

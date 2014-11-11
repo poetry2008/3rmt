@@ -2095,7 +2095,7 @@ function update_collect_info(pid,cid){
       async:false, 
       url: 'ajax.php?action=update_collect_info',
       success: function(msg) {
-        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();}, 500);
+        setTimeout(function(){$('body').css('cursor', '');$('#wait').hide();}, 1000);
         window.location.reload();
       }
   }); 
