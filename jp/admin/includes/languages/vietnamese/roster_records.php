@@ -78,10 +78,10 @@ define('TEXT_PARAM_TYPE','Hình thức công việc');
 define('TEXT_PRRAM_ATTENDANCE_NUM','Số thời gian làm việc');
 define('TEXT_ATTENDANCE_SETTING_GROUP_CONFIG', 'Thiết lập nhóm');
 define('TEXT_ATTENDANCE_SELECT_TITLE', 'Nhân viên');
-define('TEXT_ATTENDANCE_PLAN', '出勤予定');
-define('TEXT_ATTENDANCE_DATE_ERROR', '正しく入力してください');
-define('TEXT_ATTENDANCE_DATE_END', '終了');
-define('TEXT_ATTENDANCE_DATE_END_CONFIRM', '本当に終了しますか？');
-define('TEXT_ATTENDANCE_SELECT_DATE_ERROR', '出勤時間帯を選択してください。');
+define('TEXT_ATTENDANCE_PLAN', 'Lịch làm việc');
+define('TEXT_ATTENDANCE_DATE_ERROR', 'Vui lòng nhập chính xác');
+define('TEXT_ATTENDANCE_DATE_END', 'Hoàn tất');
+define('TEXT_ATTENDANCE_DATE_END_CONFIRM', 'Bạn có chắc muốn hoàn tất?');
+define('TEXT_ATTENDANCE_SELECT_DATE_ERROR', 'Hãy chọn thời gian đi làm.');
 ?>
 

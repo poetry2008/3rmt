@@ -10819,7 +10819,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<tr><td class="tr_#line_num_2" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num"></td><td></td><td><input type="hidden" name="line_num_array[]" value="#line_num"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr>';
+  $hidden_div .= '<tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" >&nbsp;</td></tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_SELECT_USER.'</td><td nowrap="nowrap" align="left" >'.$hidden_user_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num"></td><td></td><td><input type="hidden" name="line_num_array[]" value="#line_num"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'#line_num\',this,\'temp_del_group_id\')"></td></tr><tr><td class="tr_#line_num" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\'\',this,\'1\')"></div>';
@@ -10879,7 +10879,7 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
   $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
+        array('align' => 'left', 'params' => 'id="add_start" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
   $show_arr = true;
@@ -10892,6 +10892,38 @@ if($row_array['set_time']==0){
     $attendane_temp_user_list_arr[$kkey][]=$val;
   }
   $line_i = 0;
+  $line_count = count($attendane_temp_user_list_arr);
+
+  //没有个人排班的时候显示新数据 
+  $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_count != 0 ? $line_count+1 : '')), 
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
+      ); 
+  
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
+        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $hidden_user_select)
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '')
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select),
+      );
+  $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => ''), 
+        array('text'=>''), 
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="hidden" name="line_num_array[]" value="'.$line_count.'"><input type="button" '.$disabled.' value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_count.'\',this,\'\')">')
+      );
+   if($line_count>0){
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" nowrap="nowrap" colspan="3"', 'text' => '------------------------------------------------------------------------') 
+      );
+  }
+
   foreach($attendane_temp_user_list_arr as $a_info){
 
     if($a_info[0]['end_date'] != 0 && $a_info[0]['type'] != 0 && $a_info[0]['end_date'] <= $_GET['date']){
@@ -10971,7 +11003,7 @@ if($row_array['set_time']==0){
       );     
     }
     $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_count-$line_i != 1 ? $line_count-$line_i : '')), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
       );
   }
@@ -11054,40 +11086,6 @@ if($row_array['set_time']==0){
   $line_i++;
   }
 		  
-
-
-  //没有个人排班的时候显示新数据
-  if(count($as_info_row)>1){
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'" nowrap="nowrap" colspan="3"', 'text' => '------------------------------------------------------------------------') 
-      );
-  }
-  $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i+1 : '')), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '')
-      ); 
-  
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_SELECT_USER), 
-        array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => $hidden_user_select)
-      );
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '')
-      );
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select),
-      );
-  $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
-        array('text'=>''), 
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input type="hidden" name="line_num_array[]" value="'.$line_i.'"><input type="button" '.$disabled.' value="'.TEXT_DEL_ADL.'" onclick="del_as_group(\''.$line_i.'\',this,\'\')">')
-    );
-
-
-
     $as_info_row[]['text'] = array(array('text'=>'&nbsp;'));
 
   //更新日创建日 更新时间 创建时间
@@ -11107,7 +11105,7 @@ if($row_array['set_time']==0){
   //点排班个人单个排班
   if(($ocertify->npermission>10||tep_is_group_manager($ocertify->auth_user))){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, ' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['u_att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\'\',\''.$_GET['u_att_id'].'\',\''.$_GET['group_id'].'\')"').'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$_GET['date'].'\',\''.$_GET['index'].'\',\''.$_GET['uid'].'\',\''.$_GET['u_att_id'].'\',\''.$_GET['group_id'].'\')"').'</a>'; 
   }
   
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,$disabled.'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'user\');"').'</a>'; 
@@ -11264,7 +11262,7 @@ if($row_array['set_time']==0){
 
   $hidden_div = '<div style="display:none">';
   $hidden_div .= '<table id="add_source">';
-  $hidden_div .= '<td class="tr_#line_num" width="30%" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" colspan="2">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left">&nbsp;</td></tr><tr><td class="tr_#line_num_1" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num_1"></td><td></td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'#line_num_1\',this,\'\')"></td></tr>';
+  $hidden_div .= '<tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ATTENDANCE_PLAN.'#line_num_1</td><td nowrap="nowrap" align="left" colspan="2">&nbsp;</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.COMPANY_SYSTEM_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$hidden_group_select.'</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_ADL_SELECT.'</td><td nowrap="nowrap" align="left">'.$adl_select.'</td><td nowrap="nowrap" align="left">&nbsp;</td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left">'.TEXT_TYPE_SELECT.'</td><td nowrap="nowrap" align="left" colspan="2">'.$type_select.'</td></tr><tr><td class="tr_#line_num"></td><td></td><td nowrap="nowrap" align="left"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'#line_num\',this,\'\')"></td></tr><tr><td class="tr_#line_num" width="30%" nowrap="nowrap" align="left" colspan="3">------------------------------------------------------------------------</td></tr>';
   $hidden_div .= '</table></div>';
   $hidden_date .= '<input id="get_att_date" type="hidden" name="get_date" value="'.$_GET['date'].'">';
   $hidden_date .= '<div id="tep_data" style="display:none;"><input type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\'\',this,\'1\')"></div>';
@@ -11316,9 +11314,42 @@ if($row_array['set_time']==0){
                 </div>
                 </div></td>';
   $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
+        array('align' => 'left', 'params' => 'id="add_start" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_DATE), 
         array('align' => 'left', 'params' => '"nowrap="nowrap"', 'text' => '<table cellspacing="0" cellpadding="0" border="0"><tr><td>'.$date_select_str.'</td><td align="left">'.$date_click_str.'</td></tr></table>')
       );
+
+  $line_count = count($attendance_dd_arr);
+  
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_count != 0 ? $line_count+1 : '')), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '')
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => COMPANY_SYSTEM_SELECT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $group_select)
+      );
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '')
+      ); 
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
+        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select),
+        
+      );
+  $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'" width="30%" nowrap="nowrap"', 'text' => ''), 
+        array('text'=>''),
+        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input '.$show_only.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_count.'\',this,\'\')">'),
+      );
+
+  if($line_count > 0){
+    $as_info_row[]['text'] = array(
+        array('align' => 'left', 'params' => 'class="tr_'.$line_count.'"nowrap="nowrap" colspan="3"', 'text' => '------------------------------------------------------------------------') 
+      );
+  }
+
   //是否有出勤数据
   if(!empty($attendance_dd_arr)){
     //如果当前管理员权限为root，显示全部组 其他权限则显示当前管理员可控制的组
@@ -11342,7 +11373,7 @@ if($row_array['set_time']==0){
         );
       }
       $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i : '')), 
+        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_count-$line_i != 1 ? $line_count-$line_i : '')), 
         array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '')
       );
 
@@ -11438,38 +11469,10 @@ if($row_array['set_time']==0){
       $line_i++;
     }
   }
-  $line_i = $line_i == '' ? 0 : $line_i;
-  if(count($as_info_row) > 1){
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.($line_i-1).'"nowrap="nowrap" colspan="3"', 'text' => '------------------------------------------------------------------------') 
-      );
-  }
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ATTENDANCE_PLAN.($line_i != 0 ? $line_i : '')), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => '')
-      );
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => COMPANY_SYSTEM_SELECT), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $group_select)
-      );
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_ADL_SELECT), 
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => $adl_select),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '')
-      ); 
-    $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => TEXT_TYPE_SELECT), 
-        array('align' => 'left', 'params' => 'colspan="2" nowrap="nowrap"', 'text' => $type_select),
-        
-      );
-  $as_info_row[]['text'] = array(
-        array('align' => 'left', 'params' => 'class="tr_'.$line_i.'" width="30%" nowrap="nowrap"', 'text' => ''), 
-        array('text'=>''),
-        array('align' => 'left', 'params' => 'nowrap="nowrap"', 'text' => '<input '.$show_only.' type="button" value="'.TEXT_DEL_ADL.'" onclick="del_as(\''.$line_i.'\',this,\'\')">'),
-    );
+  
   $as_info_row[]['text'] = array(array('text'=>'&nbsp;'));
   $as_info_row[] = array('params'=> 'id="add_end"','text' => array(
-        array('align' => 'left', 'text' => '<input type="hidden" id="line_num" value="'.($line_i == '' ? 0 : $line_i).'">'.$hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_user_added)?$as_user_added:TEXT_UNSET_DATA)),
+        array('align' => 'left', 'text' => '<input type="hidden" id="line_num" value="'.($line_i+1).'">'.$hidden_date.TEXT_USER_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_user_added)?$as_user_added:TEXT_UNSET_DATA)),
         array('align' => 'left', 'text' => TEXT_DATE_ADDED.'&nbsp;&nbsp;&nbsp;'.(tep_not_null($as_date_added)?$as_date_added:TEXT_UNSET_DATA))
       ));
   $as_info_row[]['text'] = array(
@@ -11548,7 +11551,7 @@ if($row_array['set_time']==0){
     $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, 'onclick="show_user_attendance_info(\'\',\''.$date.'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['gid'].'\')"').'</a>'; 
   }
   if(!isset($_GET['gid'])||$_GET['gid']==''||tep_is_group_manager($ocertify->auth_user)){
-    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
+    $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_CHANGE, 'onclick="show_replace_attendance_info(\'\',\''.$date.'\',\''.$_GET['index'].'\',\''.$_GET['user'].'\',\'\',\''.$_GET['gid'].'\')"'.(empty($current_users_list) ? ' disabled' : '')).'</a>'; 
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, ' '.$show_only.' id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'as\');"').'</a>'; 
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, ' '.$show_only.' id="button_save" onclick="save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
@@ -12232,8 +12235,24 @@ if($row_array['set_time']==0){
 	    $disabled='';
 	}else{
             $disabled = ' disabled="disabled" ';
-	}
-       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$_GET['date'].'\',\'\',\''.$_GET['user'].'\',\'\',\'\',\''.$_GET['group_id'].'\')"').'</a>'; 
+        }
+     
+    if($_GET['uid'] != ''){
+      //判断选择的用户是不是当前登录用户的组员
+      //获取选择用户所属的组
+      $current_user_group_array = tep_get_groups_by_user($_GET['uid']);
+      //如果当前登录用户是组长的话，获取组ID
+      $current_admin_group_array = tep_is_group_manager($ocertify->auth_user,true);
+
+      $group_intersect = array_intersect($current_user_group_array,$current_admin_group_array);
+
+      if(empty($group_intersect)){
+
+        $disabled = ' disabled="disabled" ';
+      }
+    }
+
+       $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_USER, $disabled.'onclick="show_user_attendance_info(\'\',\''.$_GET['date'].'\',\'\',\''.$_GET['uid'].'\',\'\',\''.$_GET['att_id'].'\',\''.$_GET['group_id'].'\')"').'</a>'; 
        $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(TEXT_ATTENDANCE_SETTING_GROUP, $disabled.' onclick="show_group_attendance_info(\'\',\''.$_GET['date'].'\', \''.  $_GET['index'].'\',\''.$_GET['group_id'].'\',\''.$_GET['att_id'].'\',\''.$_GET['uid'].'\')"').'</a>'; 
   }
   if($ocertify->npermission>10
@@ -12249,7 +12268,7 @@ if($row_array['set_time']==0){
   }
   $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE,(!isset($replace_info_res['allow_status']) ? ' disabled="disabled" ' : $disabled).'id="button_delete" onclick="delete_submit(\''.$ocertify->npermission.'\',\'\');"').'</a>'; 
 
-  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'id="button_save" onclick="return save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
+  $button[] = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, $disabled.'id="button_save" onclick="return save_submit(\''.$ocertify->npermission.'\');"').'</a>'; 
   if (!empty($button)) {
     $buttons = array('align' => 'center', 'button' => $button); 
   }

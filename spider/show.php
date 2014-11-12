@@ -279,6 +279,7 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
+      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -324,6 +325,7 @@ function update_products_price(category_name,products_name,products_type,product
     url: 'ajax.php?action=update_products_price',
     success: function(msg) {
       setTimeout('read_time()',1000); 
+      $('body').css('cursor','');
     }
   }); 
 }
@@ -419,7 +421,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 9=>'http://rmt.diamond-gil.jp/game.php/gameid/ff11/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/ff/sale_yoyaku.html',
                                 11=>'http://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=8&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/ffxi.html',
+                                12=>'http://www.rmtsonic.jp/games/ff11.html',
                                 13=>'http://rmt.kakaran.jp/ff11',
                                 14=>'http://rmt.kakaran.jp/ff11',
                                 15=>'http://rmt.kakaran.jp/ff11'
@@ -954,9 +956,9 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/buy/54862123356.html',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/maplestory/',
                                 8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
+                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/maplestory/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
@@ -964,9 +966,9 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  3=>'http://ftb-rmt.jp/', 
                                  4=>'http://www.rmt-wm.com/sale/54862123356.html', 
                                  5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
+                                 6=>'http://rmt.kakaran.jp/maplestory/',
                                  8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
+                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/maplestory/view/sv/',
                                  10=>'http://www.asahi-rmt-service.com/',
                                 ),
                              ),
