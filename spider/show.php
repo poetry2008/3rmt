@@ -179,7 +179,7 @@ echo '<option value="ECO" '.($_GET['game']=='ECO' ? 'selected="selected"' : '').
 echo '<option value="FNO" '.($_GET['game']=='FNO' ? 'selected="selected"' : '').'>FNO</option>';
 echo '<option value="SUN" '.($_GET['game']=='SUN' ? 'selected="selected"' : '').'>SUN</option>';
 echo '<option value="talesweave" '.($_GET['game']=='talesweave' ? 'selected="selected"' : '').'>テイルズウィーバー</option>';
-echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
+//echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
 echo '<option value="MU" '.($_GET['game']=='MU' ? 'selected="selected"' : '').'>MU</option>';
 echo '<option value="MS" '.($_GET['game']=='MS' ? 'selected="selected"' : '').'>メイプルストーリー</option>';
 echo '<option value="cronous" '.($_GET['game']=='cronous' ? 'selected="selected"' : '').'>クロノス</option>';
@@ -196,6 +196,7 @@ echo '<option value="WF" '.($_GET['game']=='WF' ? 'selected="selected"' : '').'>
 echo '<option value="rohan" '.($_GET['game']=='rohan' ? 'selected="selected"' : '').'>ROHAN</option>';
 echo '<option value="ThreeSeven" '.($_GET['game']=='ThreeSeven' ? 'selected="selected"' : '').'>777タウン</option>';
 //echo '<option value="lineage" '.($_GET['game']=='lineage' ? 'selected="selected"' : '').'>リネージュ</option>';
+echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
 echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
@@ -279,7 +280,7 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
-      alert(msg)
+     // alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -1345,7 +1346,7 @@ if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isse
 }
   }
 }
-echo '<td width="5%">最安</td><td width="5%">次点</td></tr>';
+echo '<td width="5%" style="min-width:80px;">最安</td><td width="5%" style="min-width:80px;">次点</td></tr>';
 $product_list_aray = array();
 $product_name_array = array();
 $product_real_array = array();
@@ -1433,6 +1434,7 @@ mysql_free_result($products_price_query);
 //print_r($product_name_array);
 //商品列表
 $type = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
+$i=0;
 foreach($product_name_sort_array as $p_key=>$product_value){
   $even = 'dataTableSecondRow';
   $odd = 'dataTableRow';
@@ -1495,7 +1497,13 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
          $price[] = $val;
        }
     }
-    echo '<td><input id="" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value="">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'</td><td><input id="" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value="">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'</td>';
+$i++;
+if(count($price)>1){
+    echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
+}else{
+
+    echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
+}
     echo '</tr>';
 }
 
