@@ -206,6 +206,12 @@ if(isset($_GET['action'])){
           &&!empty($_POST['attendance_id'])){
         $a_id_arr = $_POST['attendance_id'];
         if(isset($_POST['user'])&&!empty($_POST['user'][1])){
+          $user_arr_temp = $_POST['user'];
+          $user_length = count($user_arr_temp);
+          foreach($user_arr_temp as $key=>$value){
+
+            $_POST['user'][$user_length+1-$key] = $value;
+          }
           $user_arr = $_POST['user'];
         }else{
           $user_arr = $_POST['user_hidden'];

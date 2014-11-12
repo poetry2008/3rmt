@@ -609,7 +609,7 @@ function del_as(num,ele,asl_id,c_permission){
   var line_num = $("#line_num").val();
   line_num = parseInt(line_num);
   num = parseInt(num);
-  if(line_num > 0){
+  if(line_num > 1){
     $(".tr_"+num).parent().remove(); 
     if(num == line_num){
     
@@ -690,7 +690,7 @@ function del_as_group(num,ele,attendance_group,is_new,c_permission){
     $(".tr_"+num).parent().remove(); 
     if(num+1 == line_num){
     
-      $(".tr_"+(num-1)).last().parent().remove(); 
+      //$(".tr_"+(num-1)).last().parent().remove(); 
     }
     if(!($("#add_end").prev().prev().find('input[type=button]').val())){
     
@@ -1153,7 +1153,7 @@ $('#add_source select[id="user_default"]').attr('name','user['+bid+'][]');
   add_str = add_str.replace(/#line_num_1/g,line_num+1);
   add_str = add_str.replace(/#line_num_2/g,line_num-1);
   add_str = add_str.replace(/#line_num/g,line_num);
-  $("#add_end").prev().before(add_str);  
+  $("#add_start").parent().after(add_str);  
 }
 
 //add person
