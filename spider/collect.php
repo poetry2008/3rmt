@@ -742,14 +742,25 @@ $game_type=$game_type;
                         'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">[0-9,]+円<\/td>',
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
-                    array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>.*?円<\/td>',
-                      'price'=>'<td>([0-9,.]*?)円<\/td>.*?<td>.*?PT.*?<\/td>',
-                      'inventory'=>'<td>[0-9,.]*?円<\/span><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>.*?<td class="price"><a href=".*?">.*?<\/a><\/td>' 
-                    ),
+                   array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
+                            'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                            '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
+                            'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
+                        ),
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のマッカ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+                   array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
+                            'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                            '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
+                            'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
+                        ),
+                   array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
+                            'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                            '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
+                            'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
+                        ),
                   );
         break;
         case 'EWD':
@@ -3404,6 +3415,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
              }
             break;
             case 'megaten':
+            if($category_value == 'buy'){
+
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['prices'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory;
+              }else{
+                $price = $result_array[0]['prices'][$product_key]; 
+                $result_inventory = 0;
+              }
+            }else{
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = str_replace(',','',$inventory_array[0]); 
@@ -3412,6 +3434,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
+            }
               $result_str = $price*10;
             break;
             case 'EWD':
@@ -3958,6 +3981,15 @@ break;
                $price = $result_array[0]['prices'][$product_key]; 
                $result_str = $price;
           break;
+          case 'megaten':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['prices'][$product_key]; 
+               $result_str = $price;
+          break;
            }
 
         }else if($site_value == 5) {//カカラン
@@ -4116,6 +4148,16 @@ break;
                $result_str = $price;
           break;
           case 'blade':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['prices'][$product_key]; 
+               $result_str = $price;
+          break;
+          
+          case 'megaten':
              if($inventory_array[0] !=''){
                   $result_inventory = $inventory_array[0];
                 }else{
