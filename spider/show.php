@@ -200,7 +200,7 @@ echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>
 echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
-$site_query = mysql_query("select * from site where site_id!=7 order by sort_order");
+$site_query = mysql_query("select * from site order by sort_order");
 while($site_array = mysql_fetch_array($site_query)){
   $site_temp = unserialize($site_array['is_show']);
   echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
@@ -280,7 +280,6 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
-      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -1311,7 +1310,7 @@ echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" 
 
 //查询当前游戏不是主站商品的信息
 $category_list_array = array();
-$category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp' and site_id!=7");
+$category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp'");
 
 while($category_array = mysql_fetch_array($category_query)){
 
@@ -1378,6 +1377,7 @@ while($product_array = mysql_fetch_array($product_query)){
     }
     $product_real_array[] = $product_array['product_name'];
 }else{
+    $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
     $product_sort_array[] = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));     
   }
 }
