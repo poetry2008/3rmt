@@ -24,15 +24,21 @@ class Spider {
   ---------------------*/
   function __construct($url,$url_mode='',$mode_array,$curl_flag=0,$page_num_mode='',$sum_mode=''){
 
-    $this->url = $url;
-    $this->url_mode = $url_mode;
-    $this->mode_array = $mode_array;
-    $this->page_count = $this->page_count($url,$page_num_mode,$sum_mode);
-    $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1)
-        AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>60));
-    $this->context = stream_context_create($opts);
-    $this->current_page = 1;
-    $this->curl_flag = $curl_flag;
+    if(is_array($url)){
+      foreach($url as $k => $v){
+        $this->page_count[$k] = $this->page_count($v,$page_num_mode,$sum_mode);
+      }
+    }else{
+      $this->page_count = $this->page_count($url,$page_num_mode,$sum_mode);
+    }
+      $this->url = $url;
+      $this->url_mode = $url_mode;
+      $this->mode_array = $mode_array;
+      $this->page_count = $this->page_count($url,$page_num_mode,$sum_mode);
+      $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>10));
+      $this->context = stream_context_create($opts);
+      $this->current_page = 1;
+      $this->curl_flag = $curl_flag;
   }
 
   /*----------------------
