@@ -23,6 +23,8 @@ if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('buy','sell');
+   //采集内容为空或者超时的数据数组
+   $collect_error_array = array();
    get_contents_main($game_type,$category,'',$collect_error_array);
 
    if(!empty($collect_error_array)){
@@ -55,8 +57,6 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array){
   $site_str = array();
   $url_str_array = array();
   $category_id_str_array = array();
-  //采集内容为空或者超时的数据数组
-  $collect_error_array = array();
   /*以下是区分是手动更新的还是后台自动执行更新的判断
    * 买卖是数组是手动更新的,相反就是后台自动更新的
    * */
