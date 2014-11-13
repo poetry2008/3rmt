@@ -1,19 +1,18 @@
 #!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/.sites/132/site21/web/');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
 
-require_once(PRO_ROOT_DIR."class/spider.php");
-require_once(PRO_ROOT_DIR."collect.php");
+require_once("class/spider.php");
+require_once("collect.php");
 
-define('LOG_DIR',PRO_ROOT_DIR.'logs/');
+define('LOG_DIR','logs/');
 
 define('DB_SERVER', 'localhost'); //服务器名
 define('DB_SERVER_USERNAME', 'root'); //用户名
 define('DB_SERVER_PASSWORD', 'Qz8PYrk60uVg'); //密码
-define('DB_DATABASE', 'osc_collect_test'); //数据库名
+define('DB_DATABASE', 'osc_collect'); //数据库名
 
 function cron_log($collect_info){
   //文件不存在则建立
