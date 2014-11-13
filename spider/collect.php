@@ -55,7 +55,6 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array){
   $site_str = array();
   $url_str_array = array();
   $category_id_str_array = array();
-  $url_kaka_array = array();
   //采集内容为空或者超时的数据数组
   $collect_error_array = array();
   /*以下是区分是手动更新的还是后台自动执行更新的判断
