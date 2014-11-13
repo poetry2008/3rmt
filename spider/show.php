@@ -280,7 +280,7 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
-     // alert(msg)
+      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
