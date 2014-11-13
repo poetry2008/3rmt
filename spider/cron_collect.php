@@ -112,7 +112,7 @@ if(empty($auto_array)){
   $auto_array['site_id'] = $site_array[0]['site_id'];
 }
 
-
+$collect_error_array = array();
 while(true){
   foreach($category_name_array as $game){
     if($game != $auto_array['game_name'] && $flag == 1){
@@ -158,7 +158,7 @@ while(true){
         $run_update_sql = "update config set config_value='".$is_run."' where
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
-        $tep = get_contents_main($game,$key,$site['site_id']); 
+        $tep = get_contents_main($game,$key,$site['site_id'],$collect_error_array); 
         explode('|||',$tep);
         if($tep[0]!='error'){
           $write_str =$game.'--'.$category.'--'.$site['site_name'];
@@ -170,6 +170,24 @@ while(true){
         sleep(10);
       }
     }
+  }
+  if(!empty($collect_error_array)){
+   //发送错误邮件
+   $mail_str = '取得失敗詳細'."\n";
+   foreach($collect_error_array as $collect_error_value){
+
+     $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
+     $mail_str .= $collect_error_value['game'].'--';
+     $mail_str .= $collect_error_value['type'].'--';
+     $mail_str .= $collect_error_value['site'].'　　';
+     $mail_str .= $collect_error_value['url']."\n";
+   }
+   $emial = '287499757@qq.com';
+   $admin_email = '287499757@qq.com';
+   $error_subject = '取得失敗エラー';
+   $error_msg = $mail_str;
+   $error_headers = "From: ".$email ."<".$email.">";
+   mail($admin_email,$error_subject,$error_msg,$error_headers);
   }
   $auto_array['game_name'] = $category_name_array[0];
   $auto_array['game_type'] = $category_type[1];

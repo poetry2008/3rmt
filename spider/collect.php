@@ -23,13 +23,32 @@ if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('buy','sell');
-   get_contents_main($game_type,$category,'');
+   get_contents_main($game_type,$category,'',$collect_error_array);
+
+   if(!empty($collect_error_array)){
+     //发送错误邮件
+     $mail_str = '取得失敗詳細'."\n";
+     foreach($collect_error_array as $collect_error_value){
+
+       $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
+       $mail_str .= $collect_error_value['game'].'--';
+       $mail_str .= $collect_error_value['type'].'--';
+       $mail_str .= $collect_error_value['site'].'　　';
+       $mail_str .= $collect_error_value['url']."\n";
+     }
+     $emial = '287499757@qq.com';
+     $admin_email = '287499757@qq.com';
+     $error_subject = '取得失敗エラー';
+     $error_msg = $mail_str;
+     $error_headers = "From: ".$email ."<".$email.">";
+     mail($admin_email,$error_subject,$error_msg,$error_headers);
+   }
 
 }
 
 
 
-function get_contents_main($game_type,$category,$site){
+function get_contents_main($game_type,$category,$site,&$collect_error_array){
   /*
    * jp 游戏各网站采集
    */
@@ -37,6 +56,8 @@ function get_contents_main($game_type,$category,$site){
   $url_str_array = array();
   $category_id_str_array = array();
   $url_kaka_array = array();
+  //采集内容为空或者超时的数据数组
+  $collect_error_array = array();
   /*以下是区分是手动更新的还是后台自动执行更新的判断
    * 买卖是数组是手动更新的,相反就是后台自动更新的
    * */
@@ -1914,9 +1935,17 @@ include_once('collect_match.php');
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
+      if(!$result->collect_flag){
+
+        $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }
     }else{
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
+      if(!$result->collect_flag){
+
+        $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }
    }
     //处理kakaran
     if($result_array[0]['url']){
@@ -1927,6 +1956,10 @@ include_once('collect_match.php');
           if($url==''){continue;}
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[5],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
+          if(!$result_kaka->collect_flag){
+
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+          }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
           $result_array_kaka = array($result_array_kaka[0][0]);
@@ -1996,6 +2029,10 @@ var_dump($result_array);
 
         $result_url = new Spider('http://rmt.kakaran.jp'.$url_value.'?s=bank_transfer','',$url_search_array,1);
         $result_url_array = $result_url->fetch();
+        if(!$result_url->collect_flag){
+
+          $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>'http://rmt.kakaran.jp'.$url_value.'?s=bank_transfer');
+        }
         unset($result_array[0]['url']);
         foreach($result_url_array[0]['site_name'] as $site_name_key=>$site_name_value){
           preg_match_all('/<a.*?>(.*?)<\/a>/is',$site_name_value,$result_site_array);
