@@ -24,6 +24,28 @@ if($flag_check!= ''){
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('buy','sell');
    get_contents_main($game_type,$category,'');
+   //采集内容为空或者超时的数据数组
+   $collect_error_array = array();
+   get_contents_main($game_type,$category,'',$collect_error_array);
+
+   if(!empty($collect_error_array)){
+     //发送错误邮件
+     $mail_str = '取得失敗詳細'."\n";
+     foreach($collect_error_array as $collect_error_value){
+
+       $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
+       $mail_str .= $collect_error_value['game'].'--';
+       $mail_str .= $collect_error_value['type'].'--';
+       $mail_str .= $collect_error_value['site'].'　　';
+       $mail_str .= $collect_error_value['url']."\n";
+     }
+     $email = '287499757@qq.com';
+     $admin_email = '287499757@qq.com';
+     $error_subject = '取得失敗エラー';
+     $error_msg = $mail_str;
+     $error_headers = "From: ".$email ."<".$email.">";
+     mail($admin_email,$error_subject,$error_msg,$error_headers);
+   }
 
 }
 

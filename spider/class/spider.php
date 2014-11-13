@@ -13,7 +13,7 @@ class Spider {
   public $page_count; //总页码
   public $curl_flag; //使用curl采集的标识
   public $collect_time; //采集时间
-  public $collect_flag = true; //采集时间
+  public $collect_flag = true; //采集错误标识
   //private $email = '287499757@qq.com'; //from email 
   //private $admin_email = '287499757@qq.com'; //admin email
 
