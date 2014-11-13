@@ -1,7 +1,7 @@
 <?php
 //采集脚本
-error_reporting(E_ALL);
 ini_set("display_errors", "Off");
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
 //file patch
@@ -88,13 +88,9 @@ if(!is_array($category)){
 }
 /*以下是正式采集*/
 $game_type=$game_type;
-//主站正则
-$iimy_search_array = array('products_name'=>'<name>(.*?)<\/name>',
-                      'price'=>'<price>([0-9,.]+)円<\/price>',
-                      'inventory'=>'<quantity>(.*?)<\/quantity>' 
-                    );
+
   foreach($category_type as $category_value){
-	  /*
+/*
     if($category_value == 'buy'){ 
       $url_array = $url_str_array['buy'];
       $category_id_array = $category_id_str_array['buy'];
@@ -125,8 +121,7 @@ $iimy_search_array = array('products_name'=>'<name>(.*?)<\/name>',
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
-				  ),
-				   $iimy_search_array
+                    ),
                   );
         break;
         case 'RO':
@@ -1902,10 +1897,9 @@ $iimy_search_array = array('products_name'=>'<name>(.*?)<\/name>',
 
     }
   }
- */
+
+*/
 include_once('collect_match.php');
-
-
   //开始采集数据
   $curl_flag = 0;
   foreach($site as $site_value){
@@ -1913,17 +1907,9 @@ include_once('collect_match.php');
  //   if(strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
-
-     $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.100.200',$url_array[$site_value]);
- //   $url_array[$site_value]= 'www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=cll&cpath=457';
-//     $tep_iimy_url_array = parse_url($url_array[$site_value]);
-//	 preg_match('/c-[0-9]+_([0-9]+).*?/is',$tep['path'],$iimy_array_category_id);
- //    $url_array[$site_value]= $iimy_array_category_id[1];
-	 //主站的数据从api中获得
-  //  $url_array[$site_value]= 'www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$iimy_array_category_id[1];
-
- }
-   if(strpos($url_array[$site_value],'pastel-rmt.jp')|| strpos($url_array[$site_value],'www.rmt-king.com')){$curl_flag=0;}else{$curl_flag=1;}
+     $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
+  }
+   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
