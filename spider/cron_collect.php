@@ -182,7 +182,7 @@ while(true){
      $mail_str .= $collect_error_value['site'].'　　';
      $mail_str .= $collect_error_value['url']."\n";
    }
-   $emial = '287499757@qq.com';
+   $email = '287499757@qq.com';
    $admin_email = '287499757@qq.com';
    $error_subject = '取得失敗エラー';
    $error_msg = $mail_str;
