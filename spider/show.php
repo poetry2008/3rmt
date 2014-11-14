@@ -523,6 +523,9 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 6=>'http://rmt.kakaran.jp/nobunaga/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
+                                13=>'http://rmt.kakaran.jp/nobunaga/',
+                                14=>'http://rmt.kakaran.jp/nobunaga/',
+                                15=>'http://rmt.kakaran.jp/nobunaga/',
                                 ),
                                  'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/nobunaga-rmt-kaitori/kaitori/items',
@@ -810,10 +813,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/777town+index.htm',
-                                6=>'http://rmt.kakaran.jp/archeage/',
+                                6=>'http://rmt.kakaran.jp/777town/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/777town/',
+                                14=>'http://rmt.kakaran.jp/777town/',
+                                15=>'http://rmt.kakaran.jp/777town/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/777-rmt-kaitori/kaitori/items', 
@@ -919,6 +925,9 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/mu/',
+                                14=>'http://rmt.kakaran.jp/mu/',
+                                15=>'http://rmt.kakaran.jp/mu/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/mu-rmt-kaitori/kaitori/items', 
@@ -936,10 +945,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/c9/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/c9/',
+                                14=>'http://rmt.kakaran.jp/c9/',
+                                15=>'http://rmt.kakaran.jp/c9/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/c9-rmt-kaitori/kaitori/items', 
@@ -978,17 +990,22 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico17+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/cronous/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                11=>'https://www.rmt-king.com/',
+                                12=>'http://www.rmtsonic.jp/',
+                                13=>'http://rmt.kakaran.jp/cronous/',
+                                14=>'http://rmt.kakaran.jp/cronous/',
+                                15=>'http://rmt.kakaran.jp/cronous/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/cronous-rmt-kaitori/kaitori/items', 
                                  3=>'http://ftb-rmt.jp/', 
                                  4=>'http://www.rmt-wm.com/', 
                                  5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
+                                 6=>'http://rmt.kakaran.jp/cronous/',
                                  8=>'http://pastel-rmt.jp/',
                                  9=>'http://rmt.diamond-gil.jp/',
                                  10=>'http://www.asahi-rmt-service.com/',
@@ -1083,10 +1100,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/fez/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/fezero+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/fez/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/fez/',
+                                14=>'http://rmt.kakaran.jp/fez/',
+                                15=>'http://rmt.kakaran.jp/fez/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/', 
@@ -1104,10 +1124,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/lakatonia/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/lakatonia/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/lakatonia/',
+                                14=>'http://rmt.kakaran.jp/lakatonia/',
+                                15=>'http://rmt.kakaran.jp/lakatonia/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/', 
@@ -1125,10 +1148,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/moe/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/game.php/gameid/moe/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/moe/',
+                                14=>'http://rmt.kakaran.jp/moe/',
+                                15=>'http://rmt.kakaran.jp/moe/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/', 
@@ -1146,10 +1172,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/mabinogi/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/mabinogi/',
+                                14=>'http://rmt.kakaran.jp/mabinogi/',
+                                15=>'http://rmt.kakaran.jp/mabinogi/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/mabinogi-rmt-kaitori/kaitori/items', 
@@ -1167,18 +1196,21 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/elter/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=47&Mode=Sale&',
+                                13=>'http://rmt.kakaran.jp/elter/',
+                                14=>'http://rmt.kakaran.jp/elter/',
+                                15=>'http://rmt.kakaran.jp/elter/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/', 
                                  3=>'http://ftb-rmt.jp/', 
                                  4=>'http://www.rmt-wm.com/', 
                                  5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
+                                 6=>'http://rmt.kakaran.jp/elter/',
                                  8=>'http://pastel-rmt.jp/',
                                  9=>'http://rmt.diamond-gil.jp/',
                                  10=>'http://www.asahi-rmt-service.com/',
@@ -1190,10 +1222,13 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/rohan+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/rohan/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
+                                13=>'http://rmt.kakaran.jp/rohan/',
+                                14=>'http://rmt.kakaran.jp/rohan/',
+                                15=>'http://rmt.kakaran.jp/rohan/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/', 
@@ -1372,9 +1407,9 @@ while($product_array = mysql_fetch_array($product_query)){
   if($product_array['site_id'] != 7){
     if($game == 'PSO2'){
       $product_array['product_name'] = preg_replace('/(．|：)/is','',$product_array['product_name']);
-      $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
+      $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
     }else{
-      $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
+      $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
     }
     if($game == 'PSO2'){
       $product_name_array[] = strtolower(trim(preg_replace('/(．|：)/is','',$product_array['product_name'])));
@@ -1383,7 +1418,7 @@ while($product_array = mysql_fetch_array($product_query)){
     }
     $product_real_array[] = $product_array['product_name'];
 }else{
-    $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
+    $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
     $product_sort_array[] = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));     
   }
 }
@@ -1466,9 +1501,14 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0){
         if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
           if($inventory_flag_array[$game] === 0){
-          //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-          }else{
+          //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>';
+            if($site_value == 7){
+
+            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+            }else{ 
+            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b><input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+         }
+        }else{
            echo '<td>&nbsp;</td>'; 
           }
         }else{ 
@@ -1483,9 +1523,13 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
             // echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr>'.$prices_str.'<td width="40%">&nbsp;</td></tr></table></td>'; 
           // }else{ 
          //echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-         
-          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<label>円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-          // }
+        if($site_value == 7){ 
+          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+        }else{
+
+          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b><input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+
+        }  // }
         }
       }else{
 

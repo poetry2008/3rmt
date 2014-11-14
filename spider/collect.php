@@ -39,19 +39,10 @@ if($flag_check!= ''){
      $mail_str = '取得失敗詳細'."\n";
      foreach($collect_error_array as $collect_error_value){
 
-       if($collect_error_value['type'] == 'buy'){
-
-         $category_type = 1;
-       }else{
-         $category_type = 0;
-       }
-       $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
-       $category_array = mysql_fetch_array($category_query);
-       mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
+       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
        $mail_str .= $collect_error_value['url']."\n";
      }
      $email = '287499757@qq.com';
@@ -180,10 +171,6 @@ require('collect_match.php');
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
-   }
-
-echo $url_array[$site_value];
-var_dump($result_array);
 
     //处理kakaran
     if($result_array[0]['url']){
@@ -192,11 +179,12 @@ var_dump($result_array);
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
           if($url==''){continue;}
+   //       $url = $url.'?s=bank_transfer';
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
           }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
@@ -227,6 +215,11 @@ var_dump($result_array);
      }
 
    }
+
+ }
+
+echo $url_array[$site_value];
+var_dump($result_array);
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
@@ -388,7 +381,7 @@ function tep_get_toher_collect($game_type){
 
       if(mysql_num_rows($search_query) == 1){
 
-        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."',is_error=0 where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
       }else{
 
         $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
@@ -699,6 +692,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   }
               break;
              case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
                 if($category_value == 'buy'){
                   $price = $result_array[0]['price'][$product_key];
                   $result_str = $price;
@@ -1915,6 +1909,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
+            break;
             }
 
         }else if($site_value == 3){//WM
@@ -2419,6 +2424,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               }
               $result_str = $price*10;
             break;
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
+            break;
            }
 
         }else if($site_value == 5) {//カカラン
@@ -2642,6 +2658,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0;
               }
               $result_str = $price*10;
+            break;
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
             break;
           } 
       }else if($site_value == 6){
