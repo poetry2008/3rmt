@@ -55,11 +55,11 @@ if($flag_check!= ''){
          $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
          $category_array['site_id'] = array_search($url_str,$site_url_array); 
        }
-       mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
+       //mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
+       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
        $mail_str .= $collect_error_value['url']."\n";
      }
      $email = '287499757@qq.com';
@@ -204,7 +204,7 @@ require('collect_match.php');
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
           }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
