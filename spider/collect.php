@@ -350,7 +350,7 @@ function tep_get_toher_collect($game_type){
 
       if(mysql_num_rows($search_query) == 1){
 
-        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."',is_error=0 where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
       }else{
 
         $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
@@ -3324,7 +3324,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 $product_new[] = trim($value);
 //有,则更新 没有,则添加
       if(mysql_num_rows($search_query) == 1){
-        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."',is_error=0 where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
         if($value!='' && $result_str!=''){
           $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
