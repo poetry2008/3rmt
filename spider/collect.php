@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
@@ -188,7 +188,6 @@ require('collect_match.php');
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
-   }
 
     //处理kakaran
     if($result_array[0]['url']){
@@ -238,8 +237,6 @@ require('collect_match.php');
 
  }
 
-echo $url_array[$site_value];
-var_dump($result_array);
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
