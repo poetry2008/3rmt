@@ -46,14 +46,12 @@ class Spider {
   ---------------------*/ 
   function fetch(){
 
-    /*
+    $result_array = array();
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
-      exit;
+      $this->collect_flag = false;
+      return $result_array;
     }
-     */
-    $result_array = array();
     while($this->current_page <= $this->page_count){
 
       //开始采集时间戳
@@ -141,7 +139,7 @@ class Spider {
     /*
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
+      $this->collect_flag = false;
       exit;
     }
      */
