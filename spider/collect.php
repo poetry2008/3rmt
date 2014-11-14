@@ -24,12 +24,41 @@ if($flag_check!= ''){
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('buy','sell');
    get_contents_main($game_type,$category,'');
+   //采集内容为空或者超时的数据数组
+   $collect_error_array = array();
+   get_contents_main($game_type,$category,'',$collect_error_array);
+
+   if(!empty($collect_error_array)){
+     //获取所有的网站
+     $site_list_array = array();
+     $site_query = mysql_query("select site_id,site_name from site");
+     while($site_array = mysql_fetch_array($site_query)){
+
+       $site_list_array[$site_array['site_id']] = $site_array['site_name'];
+     }
+     //发送错误邮件
+     $mail_str = '取得失敗詳細'."\n";
+     foreach($collect_error_array as $collect_error_value){
+
+       $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
+       $mail_str .= $collect_error_value['game'].'--';
+       $mail_str .= $collect_error_value['type'].'--';
+       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
+       $mail_str .= $collect_error_value['url']."\n";
+     }
+     $email = '287499757@qq.com';
+     $admin_email = '287499757@qq.com';
+     $error_subject = '取得失敗エラー';
+     $error_msg = $mail_str;
+     $error_headers = "From: ".$email ."<".$email.">";
+     mail($admin_email,$error_subject,$error_msg,$error_headers);
+   }
 
 }
 
 
 
-function get_contents_main($game_type,$category,$site){
+function get_contents_main($game_type,$category,$site,&$collect_error_array){
   /*
    * jp 游戏各网站采集
    */
@@ -131,12 +160,13 @@ require('collect_match.php');
     //处理kakaran
     if($result_array[0]['url']){
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
-      //取出单价
+      //取出单价i
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
           if($url==''){continue;}
-          $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[5],$curl_flag);
+          $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
+
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
           $result_array_kaka = array($result_array_kaka[0][0]);
@@ -161,69 +191,17 @@ require('collect_match.php');
           }
           array_multisort($prices_array, SORT_ASC,$kaka_array);
           $kaka_key = count($url_kaka_array)-1;
-          $result_array[0][prices][] =  $kaka_array[$kaka_key]['price'];
+          $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
           $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
      }
 
    }
-
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
   }
 
-
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id_array[$site_value]."'");
-
-    //kakaran L2处理
-/*
-    if(in_array($url_array[$site_value],$kakaran_array)){
-
-      $url_search_array = array('site_name'=>'<td class="trader">(.*?)<\/td>',
-                                'price'=>'<td class="price sort">(.*?)円<\/td>',
-                                'inventory'=>'<td class="stock">(.*?)<\/td>' 
-                              );
-      //排除10RMT
-      $rmt_name = array('ジャックポット','ゲームマネー','ワールドマネー','itemdepot','カメズ','学園','FF14-RMT','レッドストーン','ゲームプラネット','GM-Exchange');
-      $rmt_url = array('http://www.iimy.co.jp/','http://www.gamemoney.cc/','http://rmt.worldmoney.jp/','http://www.itemdepot.jp/','http://www.rmt-kames.jp/','http://www.rmtgakuen.jp/','http://www.redstone-rmt.com/','http://www.ff14-rmt.com/','http://www.gameplanet.jp/','http://www.gm-exchange.jp/');
-      foreach($result_array[0]['url'] as $url_key=>$url_value){
-
-        $result_url = new Spider('http://rmt.kakaran.jp'.$url_value.'?s=bank_transfer','',$url_search_array,1);
-        $result_url_array = $result_url->fetch();
-        unset($result_array[0]['url']);
-        foreach($result_url_array[0]['site_name'] as $site_name_key=>$site_name_value){
-          preg_match_all('/<a.*?>(.*?)<\/a>/is',$site_name_value,$result_site_array);
-          preg_match_all('/<a href=".*?\?t=(.*?)">.*?<\/a>/is',$site_name_value,$result_site_temp_array);
-          if($result_site_array[1][0] != ''){
-
-            $site_flag = false;
-            foreach($rmt_url as $key=>$value){
-
-              if(strpos($value,$result_site_temp_array[1][0])){
-
-                $site_flag = true; 
-                break;
-              }
-            }
-            if(!in_array($result_site_array[0],$rmt_name) && $site_flag == false){
-
-              $result_array[0]['price'][$url_key] = $result_url_array[0]['price'][$site_name_key];
-              $result_array[0]['inventory'][$url_key] = $result_url_array[0]['inventory'][$site_name_key];
-              break;
-            }
-          }else{
-           
-            if(!in_array($site_name_value,$rmt_name)){
-
-              $result_array[0]['price'][$url_key] = $result_url_array[0]['price'][$site_name_key];
-              $result_array[0]['inventory'][$url_key] = $result_url_array[0]['inventory'][$site_name_key];
-              break;
-            }
-          } 
-        }
-      }
-    }
- */
 
     $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
 //当获取的数据商品名称为空(或这个页面没有数据)
@@ -562,7 +540,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                     $result_inventory = 0; 
                   }
               break;
-             case 'FNO':
+             /*case 'FNO':
                  if($inventory_array[0] >= 1 && $inventory_array[0] <=10){
                    $price = $result_array[0]['1-10'][$product_key]; 
                  }else{
@@ -570,7 +548,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                  } 
                    $result_inventory = $inventory_array[0]*10;
                   $result_str = $price/10;
-              break;
+              break;*/
              case 'SUN':
                    $price = $result_array[0]['price'][$product_key]; 
                  if($inventory_array[0] != ''){
@@ -1050,7 +1028,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 	 case 'blade':
          if($category_value == 'buy'){
 
-              $price = $result_array[0]['prices'][$product_key]; 
+              $price = $result_array[0]['price'][$product_key]; 
               $result_str = $price;
             if($inventory_array[0] != ''){
                 $result_inventory = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
@@ -1129,6 +1107,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               }
          break; 
 	 case 'HR':
+             $value = str_replace('共通サーバー','マビノギ英雄伝',$value); 
               $price = $result_array[0]['price'][$product_key]; 
               $result_str = $price;
               if($inventory_array[0] != ''){
@@ -1168,7 +1147,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
-	case 'SUN':
+/*	case 'SUN':
               preg_match_all("|.*?([0-9,]+).*?口.*?|",$result_array[0]['inventory'][$product_key],$temp_array);
               $price = $result_array[0]['price'][$product_key]; 
               $result_str = $price*10;
@@ -1177,7 +1156,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               }else{
                 $result_inventory = 0; 
 	      }
-         break;
+         break;*/
 	 case 'MU':
            if($category_value == 'buy'){
              $value = $value.'の祝福';
@@ -1321,7 +1300,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 	case 'genshin':
            $inventory_array[0] = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
              if($category_value == 'buy'){
-                $price = $result_array[0]['prices'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
              }else{
                 $price = $result_array[0]['price'][$product_key]; 
              }
@@ -1536,10 +1515,10 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               if($category_value =='buy'){
       
               if($inventory_array[0] != ''){
-                $price = $result_array[0]['prices'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['prices'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
               }else{
@@ -1558,10 +1537,10 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             if($category_value == 'buy'){
 
               if($inventory_array[0] != ''){
-                $price = $result_array[0]['prices'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['prices'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
             }else{
@@ -1577,19 +1556,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             break;
 
             case 'latale':
-             $value = str_replace('ダイア','ダイヤ',$value);
-             if($category_value == 'buy'){
-             
-             if($inventory_array[0] != ''){
-                $price = $result_array[0]['prices'][$product_key]*10; 
-                $result_inventory = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
-                $result_inventory = $result_inventory/10;
-              }else{
-                $price = $result_array[0]['prices'][$product_key]*10; 
-                $result_inventory = 0;
-              }
-              $result_str = $price;
-             }else{ 
+             $value = str_replace('ダイアモンド','ダイヤモンド',$value);
              if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]*10; 
                 $result_inventory = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
@@ -1599,20 +1566,8 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0;
               }
               $result_str = $price;
-             }
             break;
             case 'megaten':
-            if($category_value == 'buy'){
-
-              if($inventory_array[0] != ''){
-                $price = $result_array[0]['prices'][$product_key]; 
-                $result_inventory = str_replace(',','',$inventory_array[0]); 
-                $result_inventory = $result_inventory;
-              }else{
-                $price = $result_array[0]['prices'][$product_key]; 
-                $result_inventory = 0;
-              }
-            }else{
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = str_replace(',','',$inventory_array[0]); 
@@ -1621,8 +1576,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
-            }
-              $result_str = $price*10;
+              $result_str = $price;
             break;
             case 'EWD':
               if($inventory_array[0] != ''){
@@ -1702,7 +1656,20 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $result_str = $price;
              break;
 
-         case 'AION':
+           case 'AION':
+             $value = str_replace('）','',$value);
+             $tep_arr=explode('（',$value);
+             $str_explode = ' ';
+                   $value=$tep_arr[1].$str_explode.$tep_arr[0];
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/100;
+              }else{
+                $result_inventory = 0; 
+              } 
+              break;
+        /* case 'AION':
          if(strpos($result_array[0]['inventory'][$product_key],'img')){
              $inventory_array[0]=0;
           }
@@ -1730,18 +1697,36 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = $inventory_array[0];
               }
 
+         break;*/
+         case 'HR':
+             $value = str_replace('共通サーバー','マビノギ英雄伝',$value); 
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+              } 
          break;
 	  case 'MS':
              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
-            if($category_value == 'buy'){
-             $price = $result_array[0]['price'][$product_key];
-            }else{
 
              $price = $result_array[0]['price'][$product_key];
-             }
               $result_str = $price*10;
              $result_inventory = $inventory_array[0]/10;
  	  break;
+	 case 'MU':
+           if($category_value == 'buy'){
+             $value = $value.'の祝福';
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
             }
 
         }else if($site_value == 3){//WM
@@ -2010,9 +1995,20 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $price = $result_array[0]['1-19'][$product_key]; 
                 $result_inventory = 0;
               }
-$result_str = $price*10;
-break;
+           $result_str = $price*10;
+          break;
 
+        case 'AA':
+            $result_inventory = str_replace(',','',$inventory_array[0]); 
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price*10;
+              if($inventory_array[0] != ''){
+                $result_inventory = $result_inventory/10;
+              }else{
+                $result_inventory = 0; 
+			
+		}
+        break;
           }
         }else if($site_value == 4){//ランキング
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -2147,7 +2143,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'WZ':
@@ -2156,7 +2152,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'blade':
@@ -2165,18 +2161,53 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
-          case 'megaten':
-             if($inventory_array[0] !=''){
-                  $result_inventory = $inventory_array[0];
-                }else{
-                  $result_inventory = 0;
-                }
-               $price = $result_array[0]['prices'][$product_key]; 
-               $result_str = $price;
-          break;
+            case 'megaten':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price;
+            break;
+         case 'HR':
+             $value = str_replace('共通サーバー','マビノギ英雄伝',$value); 
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+              } 
+         break;
+        case 'AA':
+            $result_inventory = str_replace(',','',$inventory_array[0]); 
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price*10;
+              if($inventory_array[0] != ''){
+                $result_inventory = $result_inventory/10;
+              }else{
+                $result_inventory = 0; 
+			
+		}
+        break;
+	 case 'MU':
+           if($category_value == 'buy'){
+             $value = $value.'の祝福';
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
            }
 
         }else if($site_value == 5) {//カカラン
@@ -2199,7 +2230,7 @@ break;
                 $result_inventory = 0;
               }
               if($category_value == 'buy'){
-                $price = $result_array[0]['prices'][$product_key];
+                $price = $result_array[0]['price'][$product_key];
               }else{
               
                 $price = $result_array[0]['price'][$product_key];
@@ -2216,10 +2247,10 @@ break;
                $value = 'DQ10';
                if($category_value=='buy'){
                  if($inventory_array[0] != ''){
-                     $price = $result_array[0]['prices'][$product_key]; 
+                     $price = $result_array[0]['price'][$product_key]; 
                      $result_inventory = $inventory_array[0];
                   }else{
-                     $price = $result_array[0]['prices'][$product_key]; 
+                     $price = $result_array[0]['price'][$product_key]; 
                      $result_inventory = 0;
                   }
                }else{
@@ -2247,7 +2278,7 @@ break;
                   $result_inventory = 0;
                 }
               if($category_value == 'buy'){
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
              }else{ 
                $price = $result_array[0]['price'][$product_key]; 
              } 
@@ -2266,7 +2297,7 @@ break;
                   $result_inventory = 0;
                 }
                 if($category_value == 'buy'){
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                 }else{
 		$price = $result_array[0]['price'][$product_key];  
                 }
@@ -2275,7 +2306,7 @@ break;
 	  case 'RO':
              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
             if($category_value == 'buy'){
-             $price = $result_array[0]['prices'][$product_key];
+             $price = $result_array[0]['price'][$product_key];
             }else{
 
              $price = $result_array[0]['price'][$product_key];
@@ -2287,7 +2318,7 @@ break;
 	  case 'MS':
              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
             if($category_value == 'buy'){
-             $price = $result_array[0]['prices'][$product_key];
+             $price = $result_array[0]['price'][$product_key];
             }else{
 
              $price = $result_array[0]['price'][$product_key];
@@ -2302,17 +2333,18 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
 
           case 'latale':
+             $value = str_replace('ダイアモンド','ダイヤモンド',$value);
              if($inventory_array[0] !=''){
                   $result_inventory = $inventory_array[0]/10;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*10;
           break;
           
@@ -2322,7 +2354,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'WZ':
@@ -2331,7 +2363,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'blade':
@@ -2340,19 +2372,55 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
-          
-          case 'megaten':
-             if($inventory_array[0] !=''){
-                  $result_inventory = $inventory_array[0];
-                }else{
-                  $result_inventory = 0;
-                }
-               $price = $result_array[0]['prices'][$product_key]; 
-               $result_str = $price;
-          break;
+            case 'megaten':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price;
+            break;
+           case 'AION':
+             $value = str_replace('）','',$value);
+             $tep_arr=explode('（',$value);
+             $str_explode = ' ';
+                   $value=$tep_arr[1].$str_explode.$tep_arr[0];
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/100;
+              }else{
+                $result_inventory = 0; 
+              } 
+              break;
+         case 'HR':
+             $value = str_replace('共通サーバー','マビノギ英雄伝',$value); 
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+              } 
+         break;
+	 case 'MU':
+           if($category_value == 'buy'){
+             $value = $value.'の祝福';
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
           } 
       }else if($site_value == 6){
 		  //这个是主站
@@ -2367,12 +2435,13 @@ break;
          switch($game_type){
         
           case 'latale':
+             $value = str_replace('ダイアモンド','ダイヤモンド',$value);
              if($inventory_array[0] !=''){
                   $result_inventory = $inventory_array[0]/10;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*10;
           break;
           case 'L1':
@@ -2381,9 +2450,33 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
+            case 'megaten':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+            break;
+           case 'AION':
+             $value = str_replace('）','',$value);
+             $tep_arr=explode('（',$value);
+             $str_explode = ' ';
+                   $value=$tep_arr[1].$str_explode.$tep_arr[0];
+              $price = $result_array[0]['price'][$product_key];
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/100;
+              }else{
+                $result_inventory = 0; 
+              } 
+              break;
          }
       }else if($site_value == 7){//ぱすてる
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -2458,7 +2551,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*100;
           break;
        }
@@ -2617,7 +2710,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*100;
           break;
          case 'moe':
@@ -2949,7 +3042,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'DQ10':
@@ -2959,7 +3052,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'RS':
@@ -2969,7 +3062,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'L2':
@@ -2978,7 +3071,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
          case 'RO':
@@ -2987,7 +3080,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           }
@@ -3011,7 +3104,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'DQ10':
@@ -3021,7 +3114,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'RS':
@@ -3031,7 +3124,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           case 'L2':
@@ -3040,7 +3133,7 @@ break;
                 }else{
                   $result_inventory = 0;
                 }
-               $price = $result_array[0]['prices'][$product_key]; 
+               $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
           }

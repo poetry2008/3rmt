@@ -280,6 +280,7 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
+      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -342,7 +343,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/ff14/buy/', 
                                 4=>'http://www.rmt-wm.com/buy/ff14.html',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/ff14/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -500,7 +501,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/arad/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/arad/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -519,7 +520,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/nobunaga/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/nobunaga/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -538,7 +539,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pso2+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/pso2/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -606,7 +607,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/aion/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/aion+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/aion/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -625,7 +626,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/cabal/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/aion+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/cabal/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 ),
@@ -767,7 +768,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/heroes/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -851,7 +852,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/fno+index.htm',
-                                6=>'http://rmt.kakaran.jp/eco/',
+                                6=>'http://rmt.kakaran.jp/fno/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -872,7 +873,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico10+index.htm',
-                                6=>'http://rmt.kakaran.jp/eco/',
+                                6=>'http://rmt.kakaran.jp/sun/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -893,7 +894,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico12+index.htm',
-                                6=>'http://rmt.kakaran.jp/eco/',
+                                6=>'http://rmt.kakaran.jp/talesweaver/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -914,7 +915,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico16+index.htm',
-                                6=>'http://rmt.kakaran.jp/eco/',
+                                6=>'http://rmt.kakaran.jp/mu/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -998,7 +999,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/tenjouhi/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/tenjouhi/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1019,7 +1020,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico27+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/rose/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1040,7 +1041,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/harezora+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/milkyrush/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1345,7 +1346,12 @@ if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isse
 }
   }
 }
+if($flag == 'buy'){
 echo '<td width="5%" style="min-width:80px;">最安</td><td width="5%" style="min-width:80px;">次点</td></tr>';
+}else{
+
+echo '<td width="5%" style="min-width:80px;">最高</td><td width="5%" style="min-width:80px;">次点</td></tr>';
+}
 $product_list_aray = array();
 $product_name_array = array();
 $product_real_array = array();
@@ -1490,8 +1496,13 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
       }
     }
     $price_array = array_filter($price_array);
+if($type=='buy'){
     sort($price_array);
-    $price = array();
+}else{
+
+   rsort($price_array);
+}  
+  $price = array();
     foreach($price_array as $val){
        if(!in_array($val,$price)){
          $price[] = $val;

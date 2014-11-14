@@ -12,6 +12,10 @@ class Spider {
   public $current_page; //当前页码
   public $page_count; //总页码
   public $curl_flag; //使用curl采集的标识
+  public $collect_time; //采集时间
+  public $collect_flag = true; //采集错误标识
+  //private $email = '287499757@qq.com'; //from email 
+  //private $admin_email = '287499757@qq.com'; //admin email
 
   /*----------------------
   功能：初始化类
@@ -42,20 +46,36 @@ class Spider {
   ---------------------*/ 
   function fetch(){
 
-    /*
+    $result_array = array();
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
-      exit;
+      $this->collect_flag = false;
+      return $result_array;
     }
-     */
-    $result_array = array();
     while($this->current_page <= $this->page_count){
 
+      //开始采集时间戳
+      $start_time = $this->get_timer();
       if($this->curl_flag == 0){
         $contents = file_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page),false,$this->context);
       }else{
         $contents = $this->curl_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page)); 
+      }
+      //结束采集时间戳
+      $end_time = $this->get_timer();
+      $this->collect_time = $this->get_collect_timer($start_time,$end_time);
+
+      //如果采集的内容为空或者超时,给管理员发送邮件
+      if(!$contents || $this->collect_time > 10){
+
+        $this->collect_flag = false;
+        /* 
+        $error_subject = '错误标题'
+        $error_msg = '错误内容';
+        $error_headers = "From: ".$this->email ."<".$this->email.">";
+
+        mail($this->admin_email,$error_subject,$error_msg,$error_headers);
+         */
       }
 
       if(!$contents){
@@ -119,7 +139,7 @@ class Spider {
     /*
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
+      $this->collect_flag = false;
       exit;
     }
      */
@@ -194,6 +214,28 @@ class Spider {
     $contents = curl_exec($ch);
     curl_close($ch);
     return $contents;
+  }
+
+  /*----------------------
+  功能：开始、结束时间
+  参数：无 
+  返回值：时间戳
+  ---------------------*/
+  function get_timer(){
+
+    return microtime();
+  }
+
+  /*----------------------
+  功能：采集时间
+  参数：无 
+  返回值：时间(秒)
+  ---------------------*/
+  function get_collect_timer($start_time,$end_time){
+
+    $time_start = explode(' ', $start_time);
+    $time_end = explode(' ', $end_time);
+    return number_format(($time_end[1] + $time_end[0] - ($time_start[1] + $time_start[0])), 3);
   }
 }
 ?>
