@@ -172,6 +172,13 @@ while(true){
     }
   }
   if(!empty($collect_error_array)){
+   //获取所有的网站
+   $site_list_array = array();
+   $site_query = mysql_query("select site_id,site_name from site");
+   while($site_array = mysql_fetch_array($site_query)){
+
+     $site_list_array[$site_array['site_id']] = $site_array['site_name'];
+   }
    //发送错误邮件
    $mail_str = '取得失敗詳細'."\n";
    foreach($collect_error_array as $collect_error_value){
@@ -179,7 +186,7 @@ while(true){
      $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
      $mail_str .= $collect_error_value['game'].'--';
      $mail_str .= $collect_error_value['type'].'--';
-     $mail_str .= $collect_error_value['site'].'　　';
+     $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
      $mail_str .= $collect_error_value['url']."\n";
    }
    $email = '287499757@qq.com';
