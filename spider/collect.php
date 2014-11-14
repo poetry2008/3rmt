@@ -23,7 +23,6 @@ if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('buy','sell');
-   get_contents_main($game_type,$category,'');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
    get_contents_main($game_type,$category,'',$collect_error_array);
@@ -157,9 +156,17 @@ require('collect_match.php');
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
+      if(!$result->collect_flag){
+
+        $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }
     }else{
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
+      if(!$result->collect_flag){
+
+        $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }
    }
 /*
 
@@ -182,7 +189,10 @@ require('collect_match.php');
           if($url==''){continue;}
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
+          if(!$result_kaka->collect_flag){
 
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+          }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
           $result_array_kaka = array($result_array_kaka[0][0]);
