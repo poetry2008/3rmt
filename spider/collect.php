@@ -67,7 +67,7 @@ if($flag_check!= ''){
      $error_subject = '取得失敗エラー';
      $error_msg = $mail_str;
      $error_headers = "From: ".$email ."<".$email.">";
-     mail($admin_email,$error_subject,$error_msg,$error_headers);
+     //mail($admin_email,$error_subject,$error_msg,$error_headers);
    }
 
 }
@@ -134,7 +134,11 @@ require('collect_match.php');
   //开始采集数据
   $curl_flag = 0;
   foreach($site as $site_value){
-    if($url_array[$site_value] == ''){continue;}
+    if($url_array[$site_value] == ''){
+      
+      $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      continue;
+    }
  //   if(strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
@@ -159,6 +163,7 @@ require('collect_match.php');
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
+    }
     //处理kakaran
     if($result_array[0]['url']){
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
@@ -205,7 +210,6 @@ require('collect_match.php');
 
    }
 
- }
 
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
