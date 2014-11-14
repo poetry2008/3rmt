@@ -80,7 +80,7 @@ if(!$has_row){
                       );
 }
 if($_GET['action'] == 'get_parent_category'){
-  $result = file_get_contents('http://3jp.szn.200.com/api.php?key=action='.$_GET['action'],false);
+  $result = file_get_contents('http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'],false);
   $result = json_decode($result);
   $insert_category_sort_array = array();
   foreach($game_str_array as $key => $value){

@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
@@ -25,7 +25,7 @@ if($flag_check!= ''){
    $category = array('buy','sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   get_contents_main($game_type,$category,'',$collect_error_array);
+   get_contents_main($game_type,$category,'',$collect_error_array,$flag=false);
 
    if(!empty($collect_error_array)){
      //获取所有的网站
@@ -55,11 +55,11 @@ if($flag_check!= ''){
          $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
          $category_array['site_id'] = array_search($url_str,$site_url_array); 
        }
-       mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
+       //mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
+       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
        $mail_str .= $collect_error_value['url']."\n";
      }
      $email = '287499757@qq.com';
@@ -74,7 +74,7 @@ if($flag_check!= ''){
 
 
 
-function get_contents_main($game_type,$category,$site,&$collect_error_array){
+function get_contents_main($game_type,$category,$site,&$collect_error_array,$flag){
   /*
    * jp 游戏各网站采集
    */
@@ -196,12 +196,14 @@ require('collect_match.php');
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
           if($url==''){continue;}
-   //       $url = $url.'?s=bank_transfer';
+			  if($flag==true){
+			  sleep(3);
+			  }
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
           }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
@@ -235,8 +237,6 @@ require('collect_match.php');
 
  }
 
-echo $url_array[$site_value];
-var_dump($result_array);
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);

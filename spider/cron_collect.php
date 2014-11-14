@@ -156,8 +156,8 @@ while(true){
         $run_update_sql = "update config set config_value='".$is_run."' where
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
-        $tep = get_contents_main($game,$key,$site_arr,$collect_error_array); 
-        sleep(10);
+        $tep = get_contents_main($game,$key,$site_arr,$collect_error_array,true); 
+        sleep(20);
     }
   }
   if(!empty($collect_error_array)){
@@ -189,7 +189,7 @@ while(true){
        $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
        $category_array['site_id'] = array_search($url_str,$site_url_array);
      }
-     mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
+     //mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
      $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
      $mail_str .= $collect_error_value['game'].'--';
      $mail_str .= $collect_error_value['type'].'--';
