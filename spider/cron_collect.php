@@ -1,13 +1,14 @@
 #!/usr/bin/env php
 <?php
+define('PRO_ROOT_DIR','/home/.sites/132/site21/web/');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
 
-require_once("class/spider.php");
-require_once("collect.php");
+require_once(PRO_ROOT_DIR."class/spider.php");
+require_once(PRO_ROOT_DIR."collect.php");
 
-define('LOG_DIR','logs/');
+define('LOG_DIR',PRO_ROOT_DIR.'logs/');
 
 define('DB_SERVER', 'localhost'); //服务器名
 define('DB_SERVER_USERNAME', 'root'); //用户名
@@ -108,8 +109,7 @@ while($site_row = mysql_fetch_array($site_query)){
 }
 if(empty($auto_array)){
   $auto_array['game_name'] = $category_name_array[0];
-  $auto_array['game_type'] = $category_type[1];
-  $auto_array['site_id'] = $site_array[0]['site_id'];
+  $auto_array['game_type'] = 1;
 }
 
 $collect_error_array = array();
@@ -119,18 +119,17 @@ while(true){
       continue;
     }
     foreach($category_type as $key=>$category){
-      if($key != $auto_array['game_type'] && $flag == 1){
+      if($key == $auto_array['game_type']){
+        $flag = 0;
+      }
+      if($flag == 1){
         continue;
       }
       foreach($site_array as $site){
-        if($site['site_id'] == $auto_array['site_id']){
-          $flag = 0;
-          continue;
-        }
-        if($flag == 1){
-          continue;
-        }
-
+        $write_str =$game.'--'.$category.'--'.$site['site_name'];
+        cron_log($write_str);
+        $site_arr = $site['site_id'];
+      }
         $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
         $stop_query = mysql_query($stop_sql);
         if($stop_res = mysql_fetch_array($stop_query)){
@@ -149,7 +148,6 @@ while(true){
         $insert_auto_array = array();
         $insert_auto_array['game_name'] = $game;
         $insert_auto_array['game_type'] = $key;
-        $insert_auto_array['site_id'] = $site['site_id'];
         $insert_auto_str = serialize($insert_auto_array);
         $update_last_data_sql = "update config set config_value = '".$insert_auto_str."' where
           config_key='COLLECT_LAST_DATE'";
@@ -158,17 +156,8 @@ while(true){
         $run_update_sql = "update config set config_value='".$is_run."' where
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
-        $tep = get_contents_main($game,$key,$site['site_id'],$collect_error_array); 
-        explode('|||',$tep);
-        if($tep[0]!='error'){
-          $write_str =$game.'--'.$category.'--'.$site['site_name'];
-          cron_log($write_str);
-        }else{
-          $write_str = 'collect fail'.$game.'-'.$site['site_name'].'<br/>';
-          cron_log($write_str);
-        }
+        $tep = get_contents_main($game,$key,$site_arr,$collect_error_array); 
         sleep(10);
-      }
     }
   }
   if(!empty($collect_error_array)){
@@ -197,6 +186,5 @@ while(true){
    mail($admin_email,$error_subject,$error_msg,$error_headers);
   }
   $auto_array['game_name'] = $category_name_array[0];
-  $auto_array['game_type'] = $category_type[1];
-  $auto_array['site_id'] = $site_array[0]['site_id'];
+  $auto_array['game_type'] = 1;
 }

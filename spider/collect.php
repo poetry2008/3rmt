@@ -101,17 +101,33 @@ if(!is_array($category)){
 	}
     $category_type = array($category_tep);
 	$x=0;
-    $category_query = mysql_query("select * from category where site_id='".$site."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
-    $category_array =  mysql_fetch_array($category_query);
-    foreach($url_str_array[$category_tep] as $k => $v){
-      if($v == $category_array['category_url']){
-        $x= $k;
-        break;
+	if(is_array($site)){
+      foreach($site as $s_id){
+        $category_query = mysql_query("select * from category where site_id='".$s_id."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
+        $category_array =  mysql_fetch_array($category_query);
+        foreach($url_str_array[$category_tep] as $k => $v){
+          if($v == $category_array['category_url']){
+            $x= $k;
+            break;
+          }
+        }
+        $url_str_array[$category_tep][$x] = $category_array['category_url'];
+        $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
+        $site_str[$category_tep][] = $x;
       }
+	}else{
+      $category_query = mysql_query("select * from category where site_id='".$site."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
+      $category_array =  mysql_fetch_array($category_query);
+      foreach($url_str_array[$category_tep] as $k => $v){
+        if($v == $category_array['category_url']){
+          $x= $k;
+          break;
+        }
+      }
+      $url_str_array[$category_tep][$x] = $category_array['category_url'];
+      $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
+      $site_str[$category_tep][] = $x;
     }
-    $url_str_array[$category_tep][$x] = $category_array['category_url'];
-    $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
-    $site_str[$category_tep][] = $x;
 }else{
   $category_type = $category;
 }
