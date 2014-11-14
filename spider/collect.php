@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
@@ -25,24 +25,41 @@ if($flag_check!= ''){
    $category = array('buy','sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   get_contents_main($game_type,$category,'',$collect_error_array);
+   get_contents_main($game_type,$category,'',$collect_error_array,$flag=false);
 
    if(!empty($collect_error_array)){
      //获取所有的网站
      $site_list_array = array();
-     $site_query = mysql_query("select site_id,site_name from site");
+     $site_url_array = array();
+     $site_query = mysql_query("select site_id,site_name,site_url from site");
      while($site_array = mysql_fetch_array($site_query)){
 
        $site_list_array[$site_array['site_id']] = $site_array['site_name'];
+       $site_url_array[$site_array['site_id']] = $site_array['site_url'];
      }
      //发送错误邮件
-     $mail_str = '取得失敗詳細'."\n";
+     $mail_str = '手動更新失敗詳細'."\n";
      foreach($collect_error_array as $collect_error_value){
 
+       if($collect_error_value['type'] == 'buy'){
+
+         $category_type = 1;
+       }else{
+         $category_type = 0;
+       }
+       $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
+       if(mysql_num_rows($category_query) > 0){
+         $category_array = mysql_fetch_array($category_query);
+       }else{
+         $url_array = parse_url($collect_error_value['url']);
+         $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
+         $category_array['site_id'] = array_search($url_str,$site_url_array); 
+       }
+       //mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
+       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
        $mail_str .= $collect_error_value['url']."\n";
      }
      $email = '287499757@qq.com';
@@ -57,7 +74,7 @@ if($flag_check!= ''){
 
 
 
-function get_contents_main($game_type,$category,$site,&$collect_error_array){
+function get_contents_main($game_type,$category,$site,&$collect_error_array,$flag){
   /*
    * jp 游戏各网站采集
    */
@@ -99,34 +116,6 @@ if(!is_array($category)){
 	    $category_tep ='sell';
 	}
     $category_type = array($category_tep);
-	$x=0;
-	if(is_array($site)){
-      foreach($site as $s_id){
-        $category_query = mysql_query("select * from category where site_id='".$s_id."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
-        $category_array =  mysql_fetch_array($category_query);
-        foreach($url_str_array[$category_tep] as $k => $v){
-          if($v == $category_array['category_url']){
-            $x= $k;
-            break;
-          }
-        }
-        $url_str_array[$category_tep][$x] = $category_array['category_url'];
-        $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
-        $site_str[$category_tep][] = $x;
-      }
-	}else{
-      $category_query = mysql_query("select * from category where site_id='".$site."' and category_type=".$category." and category_name='".$game_type."' and game_server='jp'");
-      $category_array =  mysql_fetch_array($category_query);
-      foreach($url_str_array[$category_tep] as $k => $v){
-        if($v == $category_array['category_url']){
-          $x= $k;
-          break;
-        }
-      }
-      $url_str_array[$category_tep][$x] = $category_array['category_url'];
-      $category_id_str_array[$category_tep][$x] = $category_array['category_id'];
-      $site_str[$category_tep][] = $x;
-    }
 }else{
   $category_type = $category;
 }
@@ -151,7 +140,8 @@ require('collect_match.php');
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- $url_array[$site_value]= '192.168.100.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ $url_array[$site_value]= 'www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+//   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
@@ -169,19 +159,6 @@ require('collect_match.php');
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
-   }
-/*
-
-	//ダイアモンドギル	
-	if(strpos($url_array[$site_value],'rmtrank')){
-		foreach($result_array[0]['rmtrank_url'] as $k=>$rmtrank_url){
-           $result_rmtrank = new Spider($rmtrank_url,'',$search_array[5],$curl_flag);
-           $result_array_rmtrank = $result_rmtrank->fetch();
-		}
-	}
- */
-
-
     //处理kakaran
     if($result_array[0]['url']){
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
@@ -189,11 +166,14 @@ require('collect_match.php');
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
           if($url==''){continue;}
+			  if($flag==true){
+			  sleep(3);
+			  }
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
           }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
@@ -224,6 +204,9 @@ require('collect_match.php');
      }
 
    }
+
+ }
+
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
@@ -236,7 +219,164 @@ require('collect_match.php');
 if(empty($result_array[0]['products_name'])){
   mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
 }
-    foreach($result_array[0]['products_name'] as $product_key=>$value){
+
+foreach($result_array[0]['products_name'] as $product_key=>$value){
+  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
+  $value = $price_info['value'];
+  $result_str = $price_info['result_str'];
+  $result_inventory = $price_info['result_inventory'];
+  
+
+//给主站的商品进行排序
+ if(strpos($url_array[$site_value],'www.iimy.co.jp')){
+      $sort_order =10000-$product_key;
+ }else{
+//如果价格是空或是0
+  //  if($result_str==0){
+   //     $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+    //}
+       $sort_order = 0;
+   }
+
+//判断数据库是否存在相同名称相同category_id 的商品
+      $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+
+//最新采集的商品名称
+$product_new[] = trim($value);
+//有,则更新 没有,则添加
+      if(mysql_num_rows($search_query) == 1){
+        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+      }else{
+        if($value!=''){
+          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
+        }
+      }
+      }    
+
+//数据库原有的商品名称
+$search_query = mysql_query("select product_name from product where category_id='".$category_id_array[$site_value]."'");
+$product_old_list[] = array();
+while($row_tep = mysql_fetch_array($search_query)){
+   $product_old_list[] = $row_tep['product_name'];
+}
+//新获取的数据已经不包含数据库的数据,删除
+foreach($product_old_list as $product_old_name){
+    if(!in_array($product_old_name,$product_new)){
+        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
+    }
+}
+
+  }
+  //exit;
+  }
+
+/*
+ * na FF14 游戏采集
+ */
+if($game_type == 'FF14'){
+  tep_get_toher_collect($game_type);
+}
+/*get_contents_main end*/
+}
+function tep_get_toher_collect($game_type){
+  $na_url_array = array();
+  $na_category_id_array = array();
+
+  $na_category_query = mysql_query("select * from category where category_name='FF14' and game_server='na'");
+  while($na_category_array = mysql_fetch_array($na_category_query)){
+
+    $na_url_array[] = $na_category_array['category_url'];
+    $na_category_id_array[] = $na_category_array['category_id'];
+  }
+
+  $na_search_array  = array(array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+)\(.*?\)\-rmt<\/td>',
+                        '1-80'=>'<td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
+                        '81-500'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
+                        'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
+                      ),
+                      array('products_name'=>'<td rowspan="3"><span>([a-zA-Z]+)\(?L?E?G?A?C?Y?.*?\)?<\/span><\/td>',
+                      '1-9'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>',
+                      '10-29'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td>',
+                      '30-'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td>',
+                      'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
+                    ),
+                    array('products_name'=>'<td class="th"><a href=".*?">([a-zA-Z]+)\(?L?E?G?A?C?Y?.*?\)?<\/a><\/td>',
+                      'price'=>'<td>([0-9.,]+)円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>.*?<\/td>',
+                      'inventory'=>'<td>[0-9.,]+円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>(.*?)<\/td>' 
+                    ),
+                    );
+
+  //开始采集数据
+  foreach($na_url_array as $key=>$value){
+
+    if($value == ''){continue;}
+    $result = new Spider($value,'',$na_search_array[$key]);
+    $result_array = $result->fetch();
+    $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
+    //print_r($result_array);
+
+    foreach($result_array[0]['products_name'] as $products_key=>$products_value){
+      preg_match('/([0-9,]+).*?口/is',$result_array[0]['inventory'][$products_key],$inventory_array);
+      if($key == 0){
+
+        if($inventory_array[0] != ''){
+
+          if($inventory_array[0] >= 1 && $inventory_array[0] <= 80){
+
+            $price = $result_array[0]['1-80'][$products_key];
+          }else if($inventory_array[0] >= 81 && $inventory_array[0] <= 500){
+
+            $price = $result_array[0]['81-500'][$products_key];
+          }
+          $result_inventory = $inventory_array[0];
+        }else{
+          $price = $result_array[0]['1-80'][$products_key]; 
+          $result_inventory = 0;
+        }
+      }else if($key == 1){
+
+        if($inventory_array[0] != ''){
+
+          if($inventory_array[0] >= 1 && $inventory_array[0] <= 9){
+
+            $price = $result_array[0]['1-9'][$products_key];
+          }else if($inventory_array[0] >= 10 && $inventory_array[0] <= 29){
+
+            $price = $result_array[0]['10-29'][$products_key];
+          }else{
+             $price = $result_array[0]['30-'][$products_key]; 
+          }
+          $result_inventory = $inventory_array[0];
+        }else{
+          $price = $result_array[0]['1-9'][$products_key]; 
+          $result_inventory = 0;
+        }
+      }else if($key == 2){
+
+          $price = $result_array[0]['price'][$products_key]; 
+          if($inventory_array[0] != ''){
+       
+            $result_inventory = $inventory_array[0];
+          }else{
+        
+            $result_inventory = 0;
+          }
+      }
+
+      //数据入库
+      $search_query = mysql_query("select product_id from product where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+
+      if(mysql_num_rows($search_query) == 1){
+
+        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+      }else{
+
+        $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
+      } 
+    }
+  }
+}
+function tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value){
         if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
@@ -539,6 +679,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   }
               break;
              case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
                 if($category_value == 'buy'){
                   $price = $result_array[0]['price'][$product_key];
                   $result_str = $price;
@@ -1755,6 +1896,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
+            break;
             }
 
         }else if($site_value == 3){//WM
@@ -2236,6 +2388,40 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
+            case 'EWD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory/10;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+            break;
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
+            break;
            }
 
         }else if($site_value == 5) {//カカラン
@@ -2449,6 +2635,28 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+            case 'EWD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory/10;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+            break;
+             case 'ThreeSeven':
+		$value = str_replace('帝愛','',$value);
+            
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price;
+                  if($inventory_array[0] != ''){
+                    $result_inventory = $inventory_array[0];
+                  }else{
+                    $result_inventory = 0; 
+                  }
+            break;
           } 
       }else if($site_value == 6){
 		  //这个是主站
@@ -2505,6 +2713,18 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
               } 
               break;
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
          }
       }else if($site_value == 7){//ぱすてる
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -2582,6 +2802,18 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*100;
           break;
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
        }
       }else if($site_value == 8){//ダイアモンドギル
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -3182,150 +3414,8 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
       $value = preg_replace('/<.*?>/','',$value);
      //echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
       //数据入库
+      $res = array('value'=>$value,'result_str'=>$result_str,'result_inventory'=>$result_inventory);
+      return $res;
 
-//给主站的商品进行排序
- if(strpos($url_array[$site_value],'www.iimy.co.jp')){
-      $sort_order =10000-$product_key;
- }else{
-//如果价格是空或是0
-    if($result_str==0){
-        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-    }
-       $sort_order = 0;
-   }
-
-//判断数据库是否存在相同名称相同category_id 的商品
-      $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-
-//最新采集的商品名称
-$product_new[] = trim($value);
-//有,则更新 没有,则添加
-      if(mysql_num_rows($search_query) == 1){
-        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-      }else{
-        if($value!='' && $result_str!=''){
-          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
-        }
-      }
-      }    
-//数据库原有的商品名称
-$search_query = mysql_query("select product_name from product where category_id='".$category_id_array[$site_value]."'");
-$product_old_list[] = array();
-while($row_tep = mysql_fetch_array($search_query)){
-   $product_old_list[] = $row_tep['product_name'];
-}
-//新获取的数据已经不包含数据库的数据,删除
-foreach($product_old_list as $product_old_name){
-    if(!in_array($product_old_name,$product_new)){
-        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
-    }
-}
-
-  }
-  //exit;
-  }
-
-/*
- * na FF14 游戏采集
- */
-if($game_type == 'FF14'){
-  $na_url_array = array();
-  $na_category_id_array = array();
-
-  $na_category_query = mysql_query("select * from category where category_name='FF14' and game_server='na'");
-  while($na_category_array = mysql_fetch_array($na_category_query)){
-
-    $na_url_array[] = $na_category_array['category_url'];
-    $na_category_id_array[] = $na_category_array['category_id'];
-  }
-
-  $na_search_array  = array(array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+)\(.*?\)\-rmt<\/td>',
-                        '1-80'=>'<td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
-                        '81-500'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
-                        'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
-                      ),
-                      array('products_name'=>'<td rowspan="3"><span>([a-zA-Z]+)\(?L?E?G?A?C?Y?.*?\)?<\/span><\/td>',
-                      '1-9'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>',
-                      '10-29'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td>',
-                      '30-'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td>',
-                      'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
-                    ),
-                    array('products_name'=>'<td class="th"><a href=".*?">([a-zA-Z]+)\(?L?E?G?A?C?Y?.*?\)?<\/a><\/td>',
-                      'price'=>'<td>([0-9.,]+)円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>.*?<\/td>',
-                      'inventory'=>'<td>[0-9.,]+円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>(.*?)<\/td>' 
-                    ),
-                    );
-
-  //开始采集数据
-  foreach($na_url_array as $key=>$value){
-
-    if($value == ''){continue;}
-    $result = new Spider($value,'',$na_search_array[$key]);
-    $result_array = $result->fetch();
-    $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
-    //print_r($result_array);
-
-    foreach($result_array[0]['products_name'] as $products_key=>$products_value){
-      preg_match('/([0-9,]+).*?口/is',$result_array[0]['inventory'][$products_key],$inventory_array);
-      if($key == 0){
-
-        if($inventory_array[0] != ''){
-
-          if($inventory_array[0] >= 1 && $inventory_array[0] <= 80){
-
-            $price = $result_array[0]['1-80'][$products_key];
-          }else if($inventory_array[0] >= 81 && $inventory_array[0] <= 500){
-
-            $price = $result_array[0]['81-500'][$products_key];
-          }
-          $result_inventory = $inventory_array[0];
-        }else{
-          $price = $result_array[0]['1-80'][$products_key]; 
-          $result_inventory = 0;
-        }
-      }else if($key == 1){
-
-        if($inventory_array[0] != ''){
-
-          if($inventory_array[0] >= 1 && $inventory_array[0] <= 9){
-
-            $price = $result_array[0]['1-9'][$products_key];
-          }else if($inventory_array[0] >= 10 && $inventory_array[0] <= 29){
-
-            $price = $result_array[0]['10-29'][$products_key];
-          }else{
-             $price = $result_array[0]['30-'][$products_key]; 
-          }
-          $result_inventory = $inventory_array[0];
-        }else{
-          $price = $result_array[0]['1-9'][$products_key]; 
-          $result_inventory = 0;
-        }
-      }else if($key == 2){
-
-          $price = $result_array[0]['price'][$products_key]; 
-          if($inventory_array[0] != ''){
-       
-            $result_inventory = $inventory_array[0];
-          }else{
-        
-            $result_inventory = 0;
-          }
-      }
-
-      //数据入库
-      $search_query = mysql_query("select product_id from product where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
-
-      if(mysql_num_rows($search_query) == 1){
-
-        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
-      }else{
-
-        $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
-      } 
-    }
-  }
-}
-/*get_contents_main end*/
 }
 ?>

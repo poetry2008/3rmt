@@ -13,7 +13,7 @@ define('LOG_DIR',PRO_ROOT_DIR.'logs/');
 define('DB_SERVER', 'localhost'); //服务器名
 define('DB_SERVER_USERNAME', 'root'); //用户名
 define('DB_SERVER_PASSWORD', 'Qz8PYrk60uVg'); //密码
-define('DB_DATABASE', 'osc_collect'); //数据库名
+define('DB_DATABASE', 'osc_collect_test'); //数据库名
 
 function cron_log($collect_info){
   //文件不存在则建立
@@ -95,10 +95,18 @@ $category_type=array();
 $site_array=array();
 
 //游戏
-$category_query=  mysql_query("select category_name from category_sort order by sort,category_name");
+/*
+$category_query=  mysql_query("select distinct(category_name) from category order by category_id asc");  
 while($row = mysql_fetch_array($category_query)){
     $category_name_array[] = $row['category_name'];
 }
+*/
+
+$category_query=  mysql_query("select * from category_sort order by sort ,  category_name  ");  
+while($row = mysql_fetch_array($category_query)){
+    $category_name_array[] = $row['category_keyword'];
+}
+
 //买卖
 $category_type=array(1=>'buy',0=>'sell');
 
@@ -114,6 +122,7 @@ if(empty($auto_array)){
 
 $collect_error_array = array();
 while(true){
+        $collect_error_array = array();
   foreach($category_name_array as $game){
     if($game != $auto_array['game_name'] && $flag == 1){
       continue;
@@ -124,9 +133,6 @@ while(true){
       }
       if($flag == 1){
         continue;
-      }
-      foreach($site_array as $site){
-        $site_arr[] = $site['site_id'];
       }
         $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
         $stop_query = mysql_query($stop_sql);
@@ -154,7 +160,11 @@ while(true){
         $run_update_sql = "update config set config_value='".$is_run."' where
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
-        $tep = get_contents_main($game,$key,$site_arr,$collect_error_array,true); 
+        $site_arr = array();
+        foreach($site_array as $site){
+          $site_arr[] = $site;     
+        }
+        $tep = get_contents_main($game,$key,$site_arr,$collect_arror_name,true); 
         $collect_error_game = array();
         //获取所有的网站
         $site_list_array = array();
@@ -164,6 +174,7 @@ while(true){
 
           $site_list_array[$site_id_array['site_id']] = $site_id_array['site_name'];
           $site_url_array[$site_id_array['site_id']] = $site_id_array['site_url'];
+
         }
         foreach($collect_error_array as $collect_error_value){
 
@@ -192,7 +203,7 @@ while(true){
             cron_log($write_str);
           }
         }
-        sleep(20);
+        sleep(2);
     }
   }
   if(!empty($collect_error_array)){
