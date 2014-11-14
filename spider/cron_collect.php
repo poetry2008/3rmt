@@ -95,7 +95,7 @@ $category_type=array();
 $site_array=array();
 
 //游戏
-$category_query=  mysql_query("select category_name from category_sort order by sort,category_name";
+$category_query=  mysql_query("select category_name from category_sort order by sort,category_name");
 while($row = mysql_fetch_array($category_query)){
     $category_name_array[] = $row['category_name'];
 }
