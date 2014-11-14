@@ -86,11 +86,11 @@ if($_GET['action'] == 'get_parent_category'){
   $insert_category_sort_array = array();
   foreach($game_str_array as $key => $value){
     $temp_info_array = array();
-    $sort = 0;
+    $sort = 999;
     foreach($result as $res ){
-      $sort++;
-      $search_str = '||'.$res->categories_name;
-      if(strpos(trim($search_str),trim($value))||$res->categories_name == $value){
+      $search_str = $res->categories_name;
+      if($search_str == $value ){
+        $sort = $res->sort_order;
         break;
       }
     }
