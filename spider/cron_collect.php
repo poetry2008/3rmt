@@ -125,11 +125,7 @@ while(true){
       if($flag == 1){
         continue;
       }
-      foreach($site_array as $site){
-        $write_str =$game.'--'.$category.'--'.$site['site_name'];
-        cron_log($write_str);
-        $site_arr[] = $site['site_id'];
-      }
+      
         $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
         $stop_query = mysql_query($stop_sql);
         if($stop_res = mysql_fetch_array($stop_query)){
@@ -157,6 +153,44 @@ while(true){
           config_key='COLLECT_IS_RUN_STATUS'";
         mysql_query($run_update_sql);
         $tep = get_contents_main($game,$key,$site_arr,$collect_error_array,true); 
+        $collect_error_game = array();
+        //获取所有的网站
+        $site_list_array = array();
+        $site_url_array = array();
+        $site_query = mysql_query("select site_id,site_name from site");
+        while($site_array = mysql_fetch_array($site_query)){
+
+          $site_list_array[$site_array['site_id']] = $site_array['site_name'];
+          $site_url_array[$site_array['site_id']] = $site_array['site_url'];
+        }
+        foreach($collect_error_array as $collect_error_value){
+
+          if($collect_error_value['type'] == 'buy'){
+
+            $category_type = 1;
+          }else{
+            $category_type = 0;
+          }
+          $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
+          if(mysql_num_rows($category_query) > 0){
+            $category_array = mysql_fetch_array($category_query);
+          }else{
+
+            $url_array = parse_url($collect_error_value['url']);
+            $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
+            $category_array['site_id'] = array_search($url_str,$site_url_array);
+          }
+          $collect_error_game[] = $collect_error_value['game'].'--'.$collect_error_value['type'].'--'.$category_array['site_id'];
+        }
+
+        //保存日志
+        foreach($site_array as $site){
+          if(!in_array($game.'--'.$category.'--'.$site['site_id'],$collect_error_game)){
+            $write_str =$game.'--'.$category.'--'.$site['site_name'];
+            cron_log($write_str);
+          }
+          $site_arr[] = $site['site_id'];
+        }
         sleep(20);
     }
   }

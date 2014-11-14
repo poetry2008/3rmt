@@ -162,7 +162,11 @@ require('collect_match.php');
   //开始采集数据
   $curl_flag = 0;
   foreach($site as $site_value){
-    if($url_array[$site_value] == ''){continue;}
+    if($url_array[$site_value] == ''){
+         
+      $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      continue;
+    }
  //   if(strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
