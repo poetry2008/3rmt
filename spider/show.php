@@ -280,7 +280,7 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
-alert(msg);
+      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -999,7 +999,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/tenjouhi/buy/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/tenjouhi/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1020,7 +1020,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/pico27+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/rose/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1041,7 +1041,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/harezora+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
+                                6=>'http://rmt.kakaran.jp/milkyrush/',
                                 8=>'http://pastel-rmt.jp/',
                                 9=>'http://rmt.diamond-gil.jp/',
                                 10=>'http://www.asahi-rmt-service.com/',
@@ -1346,7 +1346,12 @@ if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isse
 }
   }
 }
+if($flag == 'buy'){
 echo '<td width="5%" style="min-width:80px;">最安</td><td width="5%" style="min-width:80px;">次点</td></tr>';
+}else{
+
+echo '<td width="5%" style="min-width:80px;">最高</td><td width="5%" style="min-width:80px;">次点</td></tr>';
+}
 $product_list_aray = array();
 $product_name_array = array();
 $product_real_array = array();
@@ -1491,8 +1496,13 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
       }
     }
     $price_array = array_filter($price_array);
+if($type=='buy'){
     sort($price_array);
-    $price = array();
+}else{
+
+   rsort($price_array);
+}  
+  $price = array();
     foreach($price_array as $val){
        if(!in_array($val,$price)){
          $price[] = $val;
