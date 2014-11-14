@@ -565,49 +565,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   $category_type = (strpos($category_type_array['categories_name'],'販売'))?1:0;
   tep_db_close();
   tep_db_connect(COLLECT_DB_SERVER,COLLECT_DB_SERVER_USERNAME,COLLECT_DB_SERVER_PASSWORD,COLLECT_DB_DATABASE);
-  $game_str_array = array('FF14'=>'FF14',
-      'RO'=>'ラグナロク',
-      'RS'=>'レッドストーン',
-      'FF11'=>'FF11',
-      'DQ10'=>'DQ10',
-      'L2'=>'リネージュ2',
-      'ARAD'=>'アラド戦記',
-      'nobunaga'=>'信長の野望',
-      'PSO2'=>'PSO2',
-      'L1'=>'リネージュ',
-      'TERA'=> 'TERA',
-      'AION'=> 'AION',
-      'CABAL'=> 'CABAL',
-      'WZ'=> 'ウィザードリィ',
-      'latale'=> 'ラテール',
-      'blade'=> 'ブレイドアンドソウル',
-      'megaten'=> '女神転生IMAGINE',
-      'EWD'=> 'エルソード',
-      'LH'=> 'ルーセントハート',
-      'HR'=> 'マビノギ英雄伝',
-      'AA'=> 'ArcheAge',
-      'ThreeSeven'=> '777タウン',
-      'ECO'=> 'エミルクロニクル',
-      'FNO'=> 'FNO',
-      'SUN'=> 'SUN',
-      'talesweave'=> 'テイルズウィーバー',
-      'MU'=> 'MU',
-      'C9'=> 'C9',
-      'MS'=> 'メイプルストーリー',
-      'cronous'=> 'クロノス',
-      'tenjouhi'=> '天上碑',
-      'rose'=> 'ローズオンライン',
-      'hzr'=> '晴空物語',
-      'dekaron'=> 'デカロン',
-      'fez'=> 'ファンタジーアースゼロ',
-      'lakatonia'=> 'ラカトニア',
-      'moe'=> 'ラカトニア',
-      'mabinogi'=> 'マビノギ',
-      'WF'=> '戦場のエルタ',
-      'rohan'=> 'ROHAN',
-      'genshin'=> '幻想神域',
-      'lineage'=> 'リネージュ'
-      );
+  $game_str_sql = "select * from category_sort order by sort ,  category_name  ";
+  $game_str_query = mysql_query($game_str_sql);
+  $game_str_array = array();
+  while($game_str_row = mysql_fetch_array($game_str_query)){
+    $game_str_array[$game_str_row['category_keyword']] = $game_str_row['category_name'];
+  }
   // define('CATEGORY_TABLE','category');
  $game_array = array_flip($game_str_array);
   foreach($game_array as $k=>$v){
@@ -656,6 +619,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
   tep_db_connect();
   $update_last_collect_date = "update ".TABLE_CONFIGURATION." set
     configuration_key='".$date_array['collect_date']."' where configuration_value= 'VALUE_LAST_COLLECT_TIME'";
+  tep_db_query($update_last_collect_date);
   foreach($products_price_array as $k=>$v){
    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
      where site_id = 0 and language_id = 4 
