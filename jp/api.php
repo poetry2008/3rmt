@@ -98,4 +98,53 @@ echo "<result>\n";
 <?php
   }
 echo "</result>\n";
+
+
+}
+if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
+  api_log($_GET['keyword']);
+
+  $cpath = $_GET['cpath'];
+  $sql = "select p.* from " . TABLE_PRODUCTS . " as p left jion  " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id where p.products_id in('". $product_id_list ."')";
+
+        $listing_sql = "
+          select * from ( select
+                 p.products_id, 
+                 p.products_price, 
+                 p.products_price_offset, 
+                 p.products_small_sum, 
+                 p.products_tax_class_id, 
+                 p.price_type, 
+                 pd.site_id,
+                 pd.products_name
+                 from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
+                   pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+                   where  p.products_id = p2c.products_id 
+                   and pd.products_id = p2c.products_id 
+                   and p2c.categories_id = '" . $cpath . "' ) p
+                   where site_id = '0'";
+  
+  $result_query = tep_db_query($listing_sql);
+
+header ("content-type: text/xml");
+echo '<?xml version="1.0" encoding="UTF-8" ?><?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>'."\n";
+echo "<result>\n";
+  while ($result = tep_db_fetch_array($result_query)) {
+	  $p_bflag = tep_get_bflag_by_product_id($listing['products_id']);
+?>
+<product>
+  <name><?php echo $result['products_name'];?></name>
+  <price><?php 
+	 echo $currencies->display_price(tep_get_price($listing['products_price'],
+		  $listing['products_price_offset'], $listing['products_small_sum'],
+		  $p_bflag, $listing['price_type']), tep_get_tax_rate($listing['products_tax_class_id']))
+
+?></price>
+  <quantity><?php echo tep_show_quantity(tep_get_quantity($result['products_id'],true))?></quantity>
+</product>
+<?php
+  }
+echo "</result>\n";
+
+
 }

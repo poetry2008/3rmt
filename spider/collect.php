@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
@@ -149,8 +149,12 @@ require('collect_match.php');
  //   if(strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
-     $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
+//    $iimy_url_array= parse_url($url_array[$site_value]);
+ //   preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
+  // $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
+
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
@@ -169,6 +173,8 @@ require('collect_match.php');
       }
    }
 
+echo $url_array[$site_value];
+var_dump($result_array);
 
     //处理kakaran
     if($result_array[0]['url']){
@@ -224,7 +230,39 @@ require('collect_match.php');
 if(empty($result_array[0]['products_name'])){
   mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
 }
-tep_save_collect_res($result_array,$category_value,$game_type,$site_value,$url_array,$category_id_array);
+
+foreach($result_array[0]['products_name'] as $product_key=>$value){
+  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
+  $value = $price_info['value'];
+  $result_str = $price_info['result_str'];
+  $result_inventory = $price_info['result_inventory'];
+  
+
+//给主站的商品进行排序
+ if(strpos($url_array[$site_value],'www.iimy.co.jp')){
+      $sort_order =10000-$product_key;
+ }else{
+//如果价格是空或是0
+  //  if($result_str==0){
+   //     $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+    //}
+       $sort_order = 0;
+   }
+
+//判断数据库是否存在相同名称相同category_id 的商品
+      $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+
+//最新采集的商品名称
+$product_new[] = trim($value);
+//有,则更新 没有,则添加
+      if(mysql_num_rows($search_query) == 1){
+        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+      }else{
+        if($value!=''){
+          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
+        }
+      }
+      }    
 
 //数据库原有的商品名称
 $search_query = mysql_query("select product_name from product where category_id='".$category_id_array[$site_value]."'");
@@ -349,8 +387,7 @@ function tep_get_toher_collect($game_type){
     }
   }
 }
-function tep_save_collect_res($result_array,$category_value,$game_type,$site_value,$url_array,$category_id_array){
-    foreach($result_array[0]['products_name'] as $product_key=>$value){
+function tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value){
         if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
@@ -2350,6 +2387,29 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
+            case 'EWD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory/10;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+            break;
            }
 
         }else if($site_value == 5) {//カカラン
@@ -2563,6 +2623,17 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
 	      }
         break; 
+            case 'EWD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = str_replace(',','',$inventory_array[0]); 
+                $result_inventory = $result_inventory/10;
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price*10;
+            break;
           } 
       }else if($site_value == 6){
 		  //这个是主站
@@ -2619,6 +2690,18 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $result_inventory = 0; 
               } 
               break;
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
          }
       }else if($site_value == 7){//ぱすてる
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -2696,6 +2779,18 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price*100;
           break;
+	case 'FF14':
+           if($category_value == 'buy'){
+             $value = str_replace('(LEGASY)','',$value);
+           }
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0];
+              }else{
+                $result_inventory = 0; 
+	      }
+        break; 
        }
       }else if($site_value == 8){//ダイアモンドギル
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -3296,31 +3391,8 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
       $value = preg_replace('/<.*?>/','',$value);
      //echo "insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."',0)<br>";
       //数据入库
+      $res = array('value'=>$value,'result_str'=>$result_str,'result_inventory'=>$result_inventory);
+      return $res;
 
-//给主站的商品进行排序
- if(strpos($url_array[$site_value],'www.iimy.co.jp')){
-      $sort_order =10000-$product_key;
- }else{
-//如果价格是空或是0
-    if($result_str==0){
-        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-    }
-       $sort_order = 0;
-   }
-
-//判断数据库是否存在相同名称相同category_id 的商品
-      $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-
-//最新采集的商品名称
-$product_new[] = trim($value);
-//有,则更新 没有,则添加
-      if(mysql_num_rows($search_query) == 1){
-        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
-      }else{
-        if($value!='' && $result_str!=''){
-          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
-        }
-      }
-      }    
 }
 ?>
