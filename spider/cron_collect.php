@@ -128,7 +128,7 @@ while(true){
       foreach($site_array as $site){
         $write_str =$game.'--'.$category.'--'.$site['site_name'];
         cron_log($write_str);
-        $site_arr = $site['site_id'];
+        $site_arr[] = $site['site_id'];
       }
         $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
         $stop_query = mysql_query($stop_sql);
