@@ -90,7 +90,7 @@ if($_GET['action'] == 'get_parent_category'){
     foreach($result as $res ){
       $sort++;
       $search_str = '||'.$res->categories_name;
-      if(strpos(trim($search_str),trim($value))){
+      if(strpos(trim($search_str),trim($value))||$res->categories_name == $value){
         break;
       }
     }
