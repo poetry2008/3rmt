@@ -193,50 +193,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
 echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
 echo '<br><span class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
 echo '<select onchange="show_game_info(this.value)">';
-echo '<option value="FF11" '.($_GET['game']=='FF11' ? 'selected="selected"' : '').'>FF11</option>';
-echo '<option value="DQ10" '.($_GET['game']=='DQ10' ? 'selected="selected"' : '').'>DQ10</option>';
-echo '<option value="RS" '.($_GET['game']=='RS' ? 'selected="selected"' : '').'>レッドストーン</option>';
-echo '<option value="L2" '.($_GET['game']=='L2' ? 'selected="selected"' : '').'>リネージュ2</option>';
-echo '<option value="TERA" '.($_GET['game']=='TERA' ? 'selected="selected"' : '').'>TERA</option>';
-echo '<option value="RO" '.($_GET['game']=='RO' ? 'selected="selected"' : '').'>ラグナロク</option>';
-echo '<option value="ARAD" '.($_GET['game']=='ARAD' ? 'selected="selected"' : '').'>アラド戦記</option>';
-echo '<option value="nobunaga" '.($_GET['game']=='nobunaga' ? 'selected="selected"' : '').'>信長の野望</option>';
-echo '<option value="PSO2" '.($_GET['game']=='PSO2' ? 'selected="selected"' : '').'>PSO2</option>';
-echo '<option value="AION" '.($_GET['game']=='AION' ? 'selected="selected"' : '').'>AION</option>';
-echo '<option value="FF14" '.($_GET['game']=='FF14' ? 'selected="selected"' : '').'>FF14</option>';
-echo '<option value="genshin" '.($_GET['game']=='genshin' ? 'selected="selected"' : '').'>幻想神域</option>';
-echo '<option value="latale" '.($_GET['game']=='latale' ? 'selected="selected"' : '').'>ラテール</option>';
-echo '<option value="L1" '.($_GET['game']=='L1' ? 'selected="selected"' : '').'>リネージュ</option>';
-echo '<option value="WZ" '.($_GET['game']=='WZ' ? 'selected="selected"' : '').'>ウィザードリィ</option>';
-echo '<option value="blade" '.($_GET['game']=='blade' ? 'selected="selected"' : '').'>ブレイドアンドソウル</option>';
-echo '<option value="CABAL" '.($_GET['game']=='CABAL' ? 'selected="selected"' : '').'>CABAL</option>';
-echo '<option value="megaten" '.($_GET['game']=='megaten' ? 'selected="selected"' : '').'>女神転生IMAGINE</option>';
-echo '<option value="EWD" '.($_GET['game']=='EWD' ? 'selected="selected"' : '').'>エルソード</option>';
-echo '<option value="LH" '.($_GET['game']=='LH' ? 'selected="selected"' : '').'>ルーセントハート</option>';
-echo '<option value="HR" '.($_GET['game']=='HR' ? 'selected="selected"' : '').'>マビノギ英雄伝</option>';
-echo '<option value="AA" '.($_GET['game']=='AA' ? 'selected="selected"' : '').'>ArcheAge</option>';
-echo '<option value="ECO" '.($_GET['game']=='ECO' ? 'selected="selected"' : '').'>エミルクロニクル</option>';
-echo '<option value="FNO" '.($_GET['game']=='FNO' ? 'selected="selected"' : '').'>FNO</option>';
-echo '<option value="SUN" '.($_GET['game']=='SUN' ? 'selected="selected"' : '').'>SUN</option>';
-echo '<option value="talesweave" '.($_GET['game']=='talesweave' ? 'selected="selected"' : '').'>テイルズウィーバー</option>';
-//echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
-echo '<option value="MU" '.($_GET['game']=='MU' ? 'selected="selected"' : '').'>MU</option>';
-echo '<option value="MS" '.($_GET['game']=='MS' ? 'selected="selected"' : '').'>メイプルストーリー</option>';
-echo '<option value="cronous" '.($_GET['game']=='cronous' ? 'selected="selected"' : '').'>クロノス</option>';
-echo '<option value="tenjouhi" '.($_GET['game']=='tenjouhi' ? 'selected="selected"' : '').'>天上碑</option>';
-echo '<option value="rose" '.($_GET['game']=='rose' ? 'selected="selected"' : '').'>ローズオンライン</option>';
-echo '<option value="hzr" '.($_GET['game']=='hzr' ? 'selected="selected"' : '').'>晴空物語</option>';
-
-echo '<option value="dekaron" '.($_GET['game']=='dekaron' ? 'selected="selected"' : '').'>デカロン</option>';
-echo '<option value="fez" '.($_GET['game']=='fez' ? 'selected="selected"' : '').'>ファンタジーアースゼロ</option>';
-echo '<option value="lakatonia" '.($_GET['game']=='lakatonia' ? 'selected="selected"' : '').'>ラカトニア</option>';
-echo '<option value="moe" '.($_GET['game']=='moe' ? 'selected="selected"' : '').'>マスターオブエピック</option>';
-echo '<option value="mabinogi" '.($_GET['game']=='mabinogi' ? 'selected="selected"' : '').'>マビノギ</option>';
-echo '<option value="WF" '.($_GET['game']=='WF' ? 'selected="selected"' : '').'>戦場のエルタ</option>';
-echo '<option value="rohan" '.($_GET['game']=='rohan' ? 'selected="selected"' : '').'>ROHAN</option>';
-echo '<option value="ThreeSeven" '.($_GET['game']=='ThreeSeven' ? 'selected="selected"' : '').'>777タウン</option>';
-//echo '<option value="lineage" '.($_GET['game']=='lineage' ? 'selected="selected"' : '').'>リネージュ</option>';
-echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
+foreach($game_str_array as $key => $value){
+  echo '<option value="'.$key.'" '.($_GET['game']==$key ? 'selected="selected"' : '').'>'.$value.'</option>';
+}
 echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
@@ -283,7 +242,7 @@ function get_category_sort(){
     url: 'show.php?action=get_parent_category',
     success: function(msg) {
       setTimeout('read_time()',8000);
-//      location.href = location.href
+      location.href = location.href
     }
   });
 }
