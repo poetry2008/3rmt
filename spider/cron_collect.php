@@ -125,7 +125,9 @@ while(true){
       if($flag == 1){
         continue;
       }
-      
+      foreach($site_array as $site){
+        $site_arr[] = $site['site_id'];
+      }
         $stop_sql = "select config_value from config where config_key = 'COLLECT_IS_STOP_STATUS'";
         $stop_query = mysql_query($stop_sql);
         if($stop_res = mysql_fetch_array($stop_query)){
@@ -158,10 +160,10 @@ while(true){
         $site_list_array = array();
         $site_url_array = array();
         $site_query = mysql_query("select site_id,site_name from site");
-        while($site_array = mysql_fetch_array($site_query)){
+        while($site_id_array = mysql_fetch_array($site_query)){
 
-          $site_list_array[$site_array['site_id']] = $site_array['site_name'];
-          $site_url_array[$site_array['site_id']] = $site_array['site_url'];
+          $site_list_array[$site_id_array['site_id']] = $site_id_array['site_name'];
+          $site_url_array[$site_id_array['site_id']] = $site_id_array['site_url'];
         }
         foreach($collect_error_array as $collect_error_value){
 
@@ -189,7 +191,6 @@ while(true){
             $write_str =$game.'--'.$category.'--'.$site['site_name'];
             cron_log($write_str);
           }
-          $site_arr[] = $site['site_id'];
         }
         sleep(20);
     }
@@ -199,10 +200,10 @@ while(true){
    $site_list_array = array();
    $site_url_array = array();
    $site_query = mysql_query("select site_id,site_name from site");
-   while($site_array = mysql_fetch_array($site_query)){
+   while($site_id_array = mysql_fetch_array($site_query)){
 
-     $site_list_array[$site_array['site_id']] = $site_array['site_name'];
-     $site_url_array[$site_array['site_id']] = $site_array['site_url'];
+     $site_list_array[$site_id_array['site_id']] = $site_id_array['site_name'];
+     $site_url_array[$site_id_array['site_id']] = $site_id_array['site_url'];
    }
    //发送错误邮件
    $mail_str = '自動更新失敗詳細'."\n";
