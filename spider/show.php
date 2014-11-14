@@ -34,8 +34,7 @@ while($game_str_row = mysql_fetch_array($game_str_query)){
   $has_row = true;
   $game_str_array[$game_str_row['category_keyword']] = $game_str_row['category_name'];
 }
-if(!$has_row){
-  $game_str_array = array('FF14'=>'FF14',
+  $old_game_str_array = array('FF14'=>'FF14',
                         'RO'=>'ラグナロク',
                         'RS'=>'レッドストーン',
                         'FF11'=>'FF11',
@@ -78,8 +77,11 @@ if(!$has_row){
 			'genshin'=> '幻想神域',
 			'lineage'=> 'リネージュ'
                       );
+if(!$has_row){
+  $game_str_array = $old_game_str_array;
 }
 if($_GET['action'] == 'get_parent_category'){
+  $game_str_array = $old_game_str_array;
   $result = file_get_contents('http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'],false);
   $result = json_decode($result);
   $insert_category_sort_array = array();
