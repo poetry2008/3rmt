@@ -225,7 +225,7 @@ $value_status = '自動更新中止';
 $value_status = '自動更新開始';
 }
 echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data()">&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
-echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="Sort Category">';
+echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
 echo '</tr></table>';
 echo '</form>';
