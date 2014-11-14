@@ -613,18 +613,25 @@ if(isset($_GET['action']) && $_GET['action'] == 'check_file_exists'){
       }
   
   }
-  $date_query = mysql_query( "select max(collect_date) as collect_date from catetory");
+  $date_query = mysql_query( "select max(collect_date) as collect_date from category where category_name='".$name."'");
   $date_array = mysql_fetch_array($date_query);
   tep_db_close();
   tep_db_connect();
+  $tmp_date_arr = array();
+  $sql_last_collect_date = "select configuration_value from ".TABLE_CONFIGURATION." where configuration_key= 'VALUE_LAST_COLLECT_TIME'";
+  $query_last_collect_date = tep_db_query($sql_last_collect_date);
+  if($row_last_collect_date = tep_db_fetch_array($query_last_collect_date)){
+    $tmp_date_arr = unserialize($row_last_collect_date['configuration_value']);
+  }
+  $tmp_date_arr[$cid] = $date_array['collect_date'];
   $update_last_collect_date = "update ".TABLE_CONFIGURATION." set
-    configuration_key='".$date_array['collect_date']."' where configuration_value= 'VALUE_LAST_COLLECT_TIME'";
+    configuration_value='".serialize($tmp_date_arr)."' where configuration_key= 'VALUE_LAST_COLLECT_TIME'";
   tep_db_query($update_last_collect_date);
   foreach($products_price_array as $k=>$v){
    $sql = "select products_id from ".TABLE_PRODUCTS_DESCRIPTION." 
      where site_id = 0 and language_id = 4 
      and preorder_status=".$category_type." 
-     and replace(products_name,' ','') like '%".$v['product_name']."%'";
+     and replace(products_name,' ','') like '%".str_replace(' ','',$v['product_name'])."%'";
    $products_id_query = tep_db_query($sql); 
    $products_id_array = tep_db_fetch_array($products_id_query);
    $products_id = $products_id_array['products_id'];
