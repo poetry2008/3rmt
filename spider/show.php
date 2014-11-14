@@ -70,12 +70,11 @@ while($game_str_row = mysql_fetch_array($game_str_query)){
 			'dekaron'=> 'デカロン',
 			'fez'=> 'ファンタジーアースゼロ',
 			'lakatonia'=> 'ラカトニア',
-			'moe'=> 'ラカトニア',
+			'moe'=> 'マスターオブエピック',
 			'mabinogi'=> 'マビノギ',
 			'WF'=> '戦場のエルタ',
 			'rohan'=> 'ROHAN',
 			'genshin'=> '幻想神域',
-			'lineage'=> 'リネージュ'
                       );
 if(!$has_row){
   $game_str_array = $old_game_str_array;
