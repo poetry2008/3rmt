@@ -25,7 +25,7 @@ if($flag_check!= ''){
    $category = array('buy','sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   get_contents_main($game_type,$category,'',$collect_error_array);
+   get_contents_main($game_type,$category,'',$collect_error_array,$flag=false);
 
    if(!empty($collect_error_array)){
      //获取所有的网站
@@ -66,7 +66,7 @@ if($flag_check!= ''){
 
 
 
-function get_contents_main($game_type,$category,$site,&$collect_error_array){
+function get_contents_main($game_type,$category,$site,&$collect_error_array,$flag){
   /*
    * jp 游戏各网站采集
    */
@@ -182,9 +182,6 @@ require('collect_match.php');
       }
    }
 
-echo $url_array[$site_value];
-var_dump($result_array);
-
     //处理kakaran
     if($result_array[0]['url']){
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
@@ -192,6 +189,9 @@ var_dump($result_array);
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
           if($url==''){continue;}
+			  if($flag==true){
+			  sleep(3);
+			  }
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){

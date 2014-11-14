@@ -1,11 +1,9 @@
 <?php
 
-
-/*$iimy_search_array = array('products_name'=>'<name>(.*?)<\/name>',
-                      'price'=>'<price>([0-9,.]+)円<\/price>',
-                      'inventory'=>'<quantity>(.*?)<\/quantity>' 
+$iimy_search_array =array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
                     );
-*/
 $rmt_url_match = array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
                         'rmtrank_url'=>'<td class="col0"><a href="(.*?)">.*?<\/a><\/td>'  
                     );
@@ -43,11 +41,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+						/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
-                   array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
+						 */
+                   array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
                             'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
@@ -89,10 +93,16 @@ $search_array_match = array(
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
 
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゼニー販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+ */
                    array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
                             'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
@@ -136,10 +146,16 @@ $search_array_match = array(
                         '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                         'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド販売<\/a>',
                         'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                         'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+ */
                     array('products_name'=>'<td class="center">.*?([\sa-zA-Z]+?).*?<\/td> ',
                         'price'=>'<td class="center" nowrap="nowrap" colspan="3">.*?<span style="font-weight: bold;">(.*?)<\/span>.*?<\/td>',
                         'inventory'=>'<td class="center" nowrap="nowrap" colspan="3">.*?<span style="font-weight: bold;">.*?<\/span>.*?<\/td><td class="center" nowrap="nowrap">(.*?)<\/td>'
@@ -210,16 +226,21 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
                    
-                    array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル販売<\/a>',
+/*                    array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
-/*                    array('products_name'=>'<name>(.*?)<\/name>',
-                      'price'=>'<price>([0-9,.]+)円<\/name>',
+ */
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                      'price'=>'<price>([0-9,.]+)円<\/price>',
                       'inventory'=>'<quantity>(.*?)<\/quantity>' 
                     ),
-*/
+
                    array(),
                    array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">([a-zA-Z]+)<\/a>.*?<\/td>',
                       '10-99'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -285,12 +306,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                   array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z0-9]+のゴールド販売)<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
 
-/*                    array('products_name'=>'<name>(.*?)<\/name>',
+                    array('products_name'=>'<name>(.*?)<\/name>',
                       'price'=>'<price>([0-9,.]+)円<\/name>',
                       'inventory'=>'<quantity>(.*?)<\/quantity>' 
                     ),
@@ -368,10 +394,16 @@ $search_array_match = array(
                             '3'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">([0-9,.]+)円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                              ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のアデナ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
 
                     array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?<span style="color: #CC3333; font-weight: bold;">.*?<\/span>.*?<\/td>',                
                           '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>',
@@ -435,10 +467,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金貨販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
       'nobunaga'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -456,10 +494,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の貫販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'PSO2' => array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -475,10 +520,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のメセタ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'L1' => array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">.*?<br>(.*?)<\/font><\/u><\/font><\/a>',
@@ -494,10 +545,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のアデナ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                     array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
                       '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '10-29'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
@@ -525,10 +582,16 @@ $search_array_match = array(
                       'inventory'=>'<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">(.*?)<\/td>.*?<td class="col99"><a href=".*?">.*?<\/a><\/td>' 
                     ),
 
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                   array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'AION'=>array(
 		           array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -546,6 +609,15 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のギーナ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
@@ -554,6 +626,7 @@ $search_array_match = array(
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+*/
                   ),
             'CABAL' => array(
 		            array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -571,10 +644,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のAzl販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
 	  'WZ'=>array(
        		  array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>(.*?)<\/td>',
@@ -591,10 +670,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                    array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
                             'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
@@ -620,10 +706,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のエリー販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<td class="left" style=".*?"><a href=".*?">(.*?)<\/a><\/td>',
                       'price'=>'<td class="left" style=".*?"><a href=".*?">.*?<\/a><\/td>.*?<td style=".*?">([0-9,]+)円<\/td>',
                       'inventory'=>'<td style=".*?">.*?WM<\/td>.*?<td style=".*?">([0-9,]+) 口<\/td>' 
@@ -649,10 +741,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金販売<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">(.*?)<\/a>.*?<\/td>',
                       '1-4'=>'<td align="center">.*?円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '5-9'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -686,10 +784,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のマッカ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
          'EWD'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -705,10 +809,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のED販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'LH'=>array(
 		    array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -726,10 +836,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のスター販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
 	  'HR'=> array(
       		     array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>(.*?)<\/td>',
@@ -746,10 +862,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'AA'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">([a-zA-Z]+).*?<\/font><\/u><\/font><\/a>',
@@ -761,10 +884,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'ThreeSeven'=> array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -775,20 +904,32 @@ $search_array_match = array(
                       'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">(.*?)<\/td>',
                       'inventory'=>'<td class="col2">[0-9]+ WM.*?<\/td>.*?<td class="col2">([0-9]+) 口.*? <\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)販売<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'ECO' => array(
                       array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                       'price'=>'<td><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,]+)円<\/td>',
                       'inventory'=>'<td>.*?円<\/span><\/td>.*?<td>([0-9,]+)<\/span>.*?<\/td>.*?<td class="price">.*?<a href=".*?">.*?<\/a>.*?<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<td align="left" bgcolor="#D6ECFC">(.*?)<\/td>',
                       '10-49'=>'<td align="center">.*?円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '50-99'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -812,10 +953,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'SUN'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -831,10 +978,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+						/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のハイム販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+						 */
                   ),
     'talesweave'=>array(
                     array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
@@ -846,10 +999,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のSeed販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'MU'=>array(
                     array('products_name'=>'<th class="rowheader">(.*?)<\/th>',
@@ -865,20 +1024,33 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<img class="middle" .*?>.*?<a class="bold" href=".*?">(.*?)の宝石販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'C9'=>array(
                   array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                       'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
+
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド販売<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
 	  'MS'=>array(
 		          array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>[0-9,.]+(.*?)<\/td>',
@@ -898,10 +1070,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のメル販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   array('products_name'=>'<td align="left" bgcolor="#D6ECFC"><a href=".*?">[0-9,.]+(.*?)<\/a>.*?<\/td>',
                       '20-49'=>'<td align="center">[0-9]+&nbsp;円<\/td><td align="center">([0-9]+)&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td>',
                       '50-99'=>'<td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">([0-9]+)&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td>',
@@ -923,10 +1101,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<img class="middle" .*?>.*?<a class="bold" href=".*?">(.*?)のクロ販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'tenjouhi'=>array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
@@ -940,10 +1124,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の銀銭販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'rose'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -959,10 +1149,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のジュリー販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
          'hzr'=>array(
                     array('products_name'=>'<td class="col0"><a href=".*?">(.*?)<\/a><\/td>',
@@ -976,10 +1172,16 @@ $search_array_match = array(
                            'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                           'inventorys'=>'<td>([0-9,.]+)<\/span>口<\/td>.*?<td class="price"><a href=".*?">.*?<\/a><\/td>',
                       ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'dekaron'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -995,10 +1197,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のDIL販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'fez'=> array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">([a-zA-Z]+)<br>.*?<\/A><\/td>',
@@ -1016,10 +1224,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
        'lakatonia'=> array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
@@ -1028,16 +1242,28 @@ $search_array_match = array(
                       '5-'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>',
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'moe' => array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">([a-zA-Z]+)<\/a>.*?<\/td>',
                       '5-9'=>'<td align="center">.*?円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '10-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -1050,16 +1276,29 @@ $search_array_match = array(
                       'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のGold販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'WF'=> array(
+
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                     array('products_name'=>'<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
                       '1-24'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '25-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
@@ -1072,10 +1311,16 @@ $search_array_match = array(
                       'price'=>'<td class="col0"><a href=".*?">.*?<\/a><\/td>.*?<td class="col2">(.*?)<\/td>',
                       'inventory'=>'<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">.*?<\/td>.*?<td class="col2">(.*?) 口.*?<\/td>.*?<td class="col99"><a href=".*?">.*?<\/a><\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のクロン販売<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
         'genshin' => array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1087,10 +1332,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+						/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金販売<\/a>',
                       'price'=>'<p>1個([0-9,.]+)円から<\/p>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+						 */
                     array('products_name'=>'<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
                       '1-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '20-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
@@ -1128,10 +1379,16 @@ $search_array_match = array(
                             'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>.*?<td>.*?<\/span>口<\/td>',
                             'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>(.*?)<\/span>口<\/td>'
                        ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
 	   'RO'=>array(
 	               	array(),
@@ -1151,10 +1408,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゼニー買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'RS'=>array(array(),
                     array('products_name'=>'<th class="rowheader">.*?([^>]*?)<br>.*?<\/th>',
@@ -1174,10 +1437,16 @@ $search_array_match = array(
                             'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>.*?<td>.*?<\/span>口<\/td>',
                             'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>(.*?)<\/span>口<\/td>'
                        ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					   /*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z\s]+)のゴールド買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+						*/
                     array('products_name'=>'<td class="center">.*?([\sa-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                             'price'=>'<td class="center" colspan="3">.*?<span style="font-weight: bold;">(.*?)<\/span>.*?<\/td>',
                             'inventory'=>'<td class="center">.*?([\sa-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>'
@@ -1219,10 +1488,16 @@ $search_array_match = array(
                           'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
                          'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のギル買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                     array(),
                     array('products_name'=>'<span class="sell_serverName" style="width:33%">&nbsp;(.*?)<\/span>.*?<span class="sell_serverBlank">&nbsp;<\/span>',
                     '1-4'=>'<span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">[0-9,.]+&nbsp;円<\/span>',   
@@ -1263,10 +1538,16 @@ $search_array_match = array(
                       //'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                       //'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z\s0-9]+のゴールド買取)<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                     array('products_name'=>'<td class="center">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>',
                       '1-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                       '20-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
@@ -1310,10 +1591,16 @@ $search_array_match = array(
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
                       'inventory'=>'<td class="price"><a href=".*?">.*?[0-9]+<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>'
                       ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のアデナ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                     array('products_name'=>'<td class="center" rowspan="3">(.*?)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?<span style=".*?">.*?<\/span>.*?<\/td>',
                          '1-9'=>'<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td>',
                          '10-19'=>'<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*? <\/td><td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*? <\/td>',
@@ -1348,10 +1635,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金貨買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),  
+					 */
                   ), 
         'nobunaga'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1366,10 +1659,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の貫買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),  
+					 */
                   ), 
          'PSO2'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1380,10 +1679,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のメセタ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),  
+					 */
                   ),
         'L1'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">.*?<br>(.*?)<\/font><\/u><\/font><\/a>',
@@ -1394,10 +1699,16 @@ $search_array_match = array(
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                       'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のアデナ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),  
+					 */
                     array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>.*?銀行振込.*?<\/td>',
                      'price'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+)円.*?<\/td>',
                      'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+)&nbsp;口.*?<\/td>' 
@@ -1413,10 +1724,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'AION'=>array(
 		           array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1431,6 +1748,15 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のギーナ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
@@ -1439,6 +1765,7 @@ $search_array_match = array(
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
 
       'CABAL'=>array(
@@ -1454,10 +1781,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のAzl買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'WZ'=>array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1468,10 +1801,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
 
      'latale'=>array(
@@ -1483,10 +1822,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のエリー買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<td class="left"><a href=".*?">(.*?)<\/a><\/td>',
                       'price'=>'<td>([0-9,]+)円<\/td>',
                       'inventory'=>'<td>([0-9,]+) 口<\/td>' 
@@ -1501,10 +1846,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金買取<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<span class="sell_serverName" style="width:33%">&nbsp;([^"]*?)<\/span>',
                       '1-9'=>'<span class="sell_serverPrice" .*?>([0-9,.]+)&nbsp;円<\/span><span class="sell_serverPrice" .*?>.*?円<\/span>',
                       '10-'=>'<span class="sell_serverPrice" .*?>.*?円<\/span><span class="sell_serverPrice" .*?>([0-9,.]+)&nbsp;円<\/span>',
@@ -1520,10 +1871,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のマッカ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'EWD'=>array(
                      array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1534,10 +1891,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のED買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'LH'=>array(
 		          array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1552,10 +1915,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のスター買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
         'HR'=>array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1566,10 +1935,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド買取<\/a>',
                        'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                        'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
       'AA'=> array(
                      array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">([a-zA-Z]+).*?<\/font><\/u><\/font><\/a>',
@@ -1580,41 +1955,65 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のG買取<\/a>',
                       'price'=>'<p>.*?個([0-9,.]+)円から<\/p>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'ThreeSeven'=>array(
                      array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)買取<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                     
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'ECO'=>array(
                     array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
                       'price'=>'<span class="sell_serverPrice" .*?>([0-9,.]+)&nbsp;円<\/span>',
                       'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/li>' 
                     ),
                   ),
        'FNO'=>array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'SUN'=>array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1625,16 +2024,28 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のハイム買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
     'talesweave'=>array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のSeed買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'MU'=>array(
                   array('products_name'=>'<th class="rowheader">(.*?)<\/th>',
@@ -1645,20 +2056,32 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                    array('products_name'=>'<a class="bold" href=".*?">(.*?)の宝石買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'C9'=>array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド買取<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
      'MS'=>array(
                     array('products_name'=>'<td class="th"><a href=".*?">(.*?)<\/a><\/td>',
@@ -1670,10 +2093,16 @@ $search_array_match = array(
                           'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
                          'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のメル買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<span class="sell_serverName" style="width:21%">&nbsp;[1,2,3,4,50-9.]+(.*?)<\/span>',
                       '1-19'=>'<span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">([0-9]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span>',
                       '20-49'=>'<span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">([0-9]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span>',
@@ -1691,10 +2120,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                    array('products_name'=>'<a class="bold" href=".*?">(.*?)のクロ買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'tenjouhi'=>array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
@@ -1705,10 +2140,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の銀銭買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
       'rose'=>array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1719,16 +2160,28 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のジュリー買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'hzr'=>array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                    array('products_name'=>'<a class="bold" href=".*?">(.*?)のG買取<\/a>',
                      'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'dekaron'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1739,10 +2192,16 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のDIL買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'fez'=>array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">([a-zA-Z]+)<br>.*?<\/A><\/td>',
@@ -1753,26 +2212,44 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
                   ),
        'lakatonia' => array(
                     array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
                       'price'=>'<td width="50" class="txt_11" align="center">(.*?)円<\/td>',
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のG買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ), 
+					 */
            ),
        'moe' => array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">([a-zA-Z]+)のゴールド買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
                       'price'=>'<span class="sell_serverPrice" .*?>([0-9,.]+)&nbsp;円<\/span>',
                       'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/li>' 
@@ -1783,16 +2260,28 @@ $search_array_match = array(
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のGold買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
             ),
       'WF'=> array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+		  /*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+		   */
                     array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>',
                       '1-24'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '25-49'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>',
@@ -1801,10 +2290,16 @@ $search_array_match = array(
                     ),
                   ),
       'rohan'=> array(
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のクロン買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                   ),
       'genshin'=> array(
                     array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
@@ -1815,10 +2310,16 @@ $search_array_match = array(
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                       'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)の金買取<\/a>',
                       'price'=>'<span class="productSpecialPrice">([0-9,.]+)円<\/span>&nbsp;から',
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
+					 */
                     array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>',
                      'price'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+)円.*?<\/td>',
                      'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
