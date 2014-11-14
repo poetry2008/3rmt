@@ -67,7 +67,7 @@ if($flag_check!= ''){
      $error_subject = '取得失敗エラー';
      $error_msg = $mail_str;
      $error_headers = "From: ".$email ."<".$email.">";
-     mail($admin_email,$error_subject,$error_msg,$error_headers);
+     //mail($admin_email,$error_subject,$error_msg,$error_headers);
    }
 
 }
