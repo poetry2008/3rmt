@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
