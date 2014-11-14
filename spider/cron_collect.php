@@ -169,7 +169,7 @@ while(true){
      $site_list_array[$site_array['site_id']] = $site_array['site_name'];
    }
    //发送错误邮件
-   $mail_str = '取得失敗詳細'."\n";
+   $mail_str = '自動更新失敗詳細'."\n";
    foreach($collect_error_array as $collect_error_value){
 
      if($collect_error_value['type'] == 'buy'){
