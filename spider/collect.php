@@ -39,10 +39,19 @@ if($flag_check!= ''){
      $mail_str = '取得失敗詳細'."\n";
      foreach($collect_error_array as $collect_error_value){
 
+       if($collect_error_value['type'] == 'buy'){
+
+         $category_type = 1;
+       }else{
+         $category_type = 0;
+       }
+       $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
+       $category_array = mysql_fetch_array($category_query);
+       mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$collect_error_value['site']+1].'　　';
+       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
        $mail_str .= $collect_error_value['url']."\n";
      }
      $email = '287499757@qq.com';
@@ -187,7 +196,7 @@ var_dump($result_array);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"rmt.kakaran.jp".$url);
+            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
           }
           //选三个最小的数据
           $inventorys_array = $result_array_kaka[0]['inventory'];
@@ -379,7 +388,7 @@ function tep_get_toher_collect($game_type){
 
       if(mysql_num_rows($search_query) == 1){
 
-        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."',is_error=0 where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
       }else{
 
         $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
