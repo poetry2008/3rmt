@@ -203,7 +203,7 @@ while(true){
             cron_log($write_str);
           }
         }
-        sleep(2);
+        sleep(20);
     }
   }
   if(!empty($collect_error_array)){
