@@ -13,7 +13,7 @@ class Spider {
   public $page_count; //总页码
   public $curl_flag; //使用curl采集的标识
   public $collect_time; //采集时间
-  public $collect_flag = true; //采集时间
+  public $collect_flag = true; //采集错误标识
   //private $email = '287499757@qq.com'; //from email 
   //private $admin_email = '287499757@qq.com'; //admin email
 
@@ -52,14 +52,12 @@ class Spider {
   ---------------------*/ 
   function fetch(){
 
-    /*
+    $result_array = array();
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
-      exit;
+      $this->collect_flag = false;
+      return $result_array;
     }
-     */
-    $result_array = array();
     while($this->current_page <= $this->page_count){
 
       //开始采集时间戳
@@ -147,7 +145,7 @@ class Spider {
     /*
     if(!$this->is_connect()){
 
-      echo 'url error or network error!';
+      $this->collect_flag = false;
       exit;
     }
      */
