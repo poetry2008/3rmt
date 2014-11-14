@@ -1,6 +1,6 @@
 <?php
 //显示采集的结果
-ini_set("display_errors", "Off");
+ini_set("display_errors", "On");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 header("Content-type: text/html; charset=utf-8");
@@ -24,6 +24,89 @@ mysql_select_db(DB_DATABASE);
 $config_value_query = mysql_query("select config_key,config_value from config where config_key='COLLECT_IS_STOP_STATUS'");
 $config_value_array = mysql_fetch_array($config_value_query);
 $update_status = $config_value_array['config_value'];
+//跟新列表排序
+
+$game_str_sql = "select * from category_sort order by sort ,  category_name  ";
+$game_str_query = mysql_query($game_str_sql);
+$game_str_array = array();
+$has_row = false;
+while($game_str_row = mysql_fetch_array($game_str_query)){
+  $has_row = true;
+  $game_str_array[$game_str_row['category_keyword']] = $game_str_row['category_name'];
+}
+if(!$has_row){
+  $game_str_array = array('FF14'=>'FF14',
+                        'RO'=>'ラグナロク',
+                        'RS'=>'レッドストーン',
+                        'FF11'=>'FF11',
+                        'DQ10'=>'DQ10',
+                        'L2'=>'リネージュ2',
+                        'ARAD'=>'アラド戦記',
+                        'nobunaga'=>'信長の野望',
+                        'PSO2'=>'PSO2',
+                        'L1'=>'リネージュ',
+			'TERA'=> 'TERA',
+			'AION'=> 'AION',
+			'CABAL'=> 'CABAL',
+			'WZ'=> 'ウィザードリィ',
+			'latale'=> 'ラテール',
+			'blade'=> 'ブレイドアンドソウル',
+			'megaten'=> '女神転生IMAGINE',
+			'EWD'=> 'エルソード',
+			'LH'=> 'ルーセントハート',
+			'HR'=> 'マビノギ英雄伝',
+			'AA'=> 'ArcheAge',
+			'ThreeSeven'=> '777タウン',
+			'ECO'=> 'エミルクロニクル',
+			'FNO'=> 'FNO',
+			'SUN'=> 'SUN',
+			'talesweave'=> 'テイルズウィーバー',
+			'MU'=> 'MU',
+			'C9'=> 'C9',
+			'MS'=> 'メイプルストーリー',
+			'cronous'=> 'クロノス',
+			'tenjouhi'=> '天上碑',
+			'rose'=> 'ローズオンライン',
+			'hzr'=> '晴空物語',
+			'dekaron'=> 'デカロン',
+			'fez'=> 'ファンタジーアースゼロ',
+			'lakatonia'=> 'ラカトニア',
+			'moe'=> 'ラカトニア',
+			'mabinogi'=> 'マビノギ',
+			'WF'=> '戦場のエルタ',
+			'rohan'=> 'ROHAN',
+			'genshin'=> '幻想神域',
+			'lineage'=> 'リネージュ'
+                      );
+}
+if($_GET['action'] == 'get_parent_category'){
+  $result = file_get_contents('http://3jp.szn.200.com/api.php?key=action='.$_GET['action'],false);
+  $result = json_decode($result);
+  $insert_category_sort_array = array();
+  foreach($game_str_array as $key => $value){
+    $temp_info_array = array();
+    $sort = 0;
+    foreach($result as $res ){
+      $sort++;
+      $search_str = '||'.$res->categories_name;
+      if(strpos(trim($search_str),trim($value))){
+        break;
+      }
+    }
+    $temp_info_array['keyword'] = $key;
+    $temp_info_array['name'] = $value;
+    $temp_info_array['sort'] = $sort;
+    $insert_category_sort_array[] = $temp_info_array;
+  }
+  //插入排序
+  $sql_clear = "TRUNCATE TABLE category_sort";
+  mysql_query($sql_clear);
+  foreach($insert_category_sort_array as $info_arr){
+    $sql_insert = "INSERT INTO `category_sort`  values (null, '".$info_arr['keyword']."','".$info_arr['name']."','".$info_arr['sort']."')";
+    mysql_query($sql_insert);
+  }
+  exit;
+}
 //更改更新状态
 if($_GET['action'] == 'update_status'){
   $update_status = $_POST['update_status'];
@@ -98,49 +181,6 @@ if($_GET['action'] == 'save'){
 }
 $tep_flag= (isset($_GET['flag']) ? '&flag='.$_GET['flag'].'' : '');
 $product_type = $_GET['flag'] == 'sell' ? '買取' : '購入';
-$game_str_array = array('FF14'=>'FF14',
-                        'RO'=>'ラグナロク',
-                        'RS'=>'レッドストーン',
-                        'FF11'=>'FF11',
-                        'DQ10'=>'DQ10',
-                        'L2'=>'リネージュ2',
-                        'ARAD'=>'アラド戦記',
-                        'nobunaga'=>'信長の野望',
-                        'PSO2'=>'PSO2',
-                        'L1'=>'リネージュ',
-			'TERA'=> 'TERA',
-			'AION'=> 'AION',
-			'CABAL'=> 'CABAL',
-			'WZ'=> 'ウィザードリィ',
-			'latale'=> 'ラテール',
-			'blade'=> 'ブレイドアンドソウル',
-			'megaten'=> '女神転生IMAGINE',
-			'EWD'=> 'エルソード',
-			'LH'=> 'ルーセントハート',
-			'HR'=> 'マビノギ英雄伝',
-			'AA'=> 'ArcheAge',
-			'ThreeSeven'=> '777タウン',
-			'ECO'=> 'エミルクロニクル',
-			'FNO'=> 'FNO',
-			'SUN'=> 'SUN',
-			'talesweave'=> 'テイルズウィーバー',
-			'MU'=> 'MU',
-			'C9'=> 'C9',
-			'MS'=> 'メイプルストーリー',
-			'cronous'=> 'クロノス',
-			'tenjouhi'=> '天上碑',
-			'rose'=> 'ローズオンライン',
-			'hzr'=> '晴空物語',
-			'dekaron'=> 'デカロン',
-			'fez'=> 'ファンタジーアースゼロ',
-			'lakatonia'=> 'ラカトニア',
-			'moe'=> 'ラカトニア',
-			'mabinogi'=> 'マビノギ',
-			'WF'=> '戦場のエルタ',
-			'rohan'=> 'ROHAN',
-			'genshin'=> '幻想神域',
-			'lineage'=> 'リネージュ'
-                      );
 $game = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -153,50 +193,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
 echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
 echo '<br><span class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
 echo '<select onchange="show_game_info(this.value)">';
-echo '<option value="FF11" '.($_GET['game']=='FF11' ? 'selected="selected"' : '').'>FF11</option>';
-echo '<option value="DQ10" '.($_GET['game']=='DQ10' ? 'selected="selected"' : '').'>DQ10</option>';
-echo '<option value="RS" '.($_GET['game']=='RS' ? 'selected="selected"' : '').'>レッドストーン</option>';
-echo '<option value="L2" '.($_GET['game']=='L2' ? 'selected="selected"' : '').'>リネージュ2</option>';
-echo '<option value="TERA" '.($_GET['game']=='TERA' ? 'selected="selected"' : '').'>TERA</option>';
-echo '<option value="RO" '.($_GET['game']=='RO' ? 'selected="selected"' : '').'>ラグナロク</option>';
-echo '<option value="ARAD" '.($_GET['game']=='ARAD' ? 'selected="selected"' : '').'>アラド戦記</option>';
-echo '<option value="nobunaga" '.($_GET['game']=='nobunaga' ? 'selected="selected"' : '').'>信長の野望</option>';
-echo '<option value="PSO2" '.($_GET['game']=='PSO2' ? 'selected="selected"' : '').'>PSO2</option>';
-echo '<option value="AION" '.($_GET['game']=='AION' ? 'selected="selected"' : '').'>AION</option>';
-echo '<option value="FF14" '.($_GET['game']=='FF14' ? 'selected="selected"' : '').'>FF14</option>';
-echo '<option value="genshin" '.($_GET['game']=='genshin' ? 'selected="selected"' : '').'>幻想神域</option>';
-echo '<option value="latale" '.($_GET['game']=='latale' ? 'selected="selected"' : '').'>ラテール</option>';
-echo '<option value="L1" '.($_GET['game']=='L1' ? 'selected="selected"' : '').'>リネージュ</option>';
-echo '<option value="WZ" '.($_GET['game']=='WZ' ? 'selected="selected"' : '').'>ウィザードリィ</option>';
-echo '<option value="blade" '.($_GET['game']=='blade' ? 'selected="selected"' : '').'>ブレイドアンドソウル</option>';
-echo '<option value="CABAL" '.($_GET['game']=='CABAL' ? 'selected="selected"' : '').'>CABAL</option>';
-echo '<option value="megaten" '.($_GET['game']=='megaten' ? 'selected="selected"' : '').'>女神転生IMAGINE</option>';
-echo '<option value="EWD" '.($_GET['game']=='EWD' ? 'selected="selected"' : '').'>エルソード</option>';
-echo '<option value="LH" '.($_GET['game']=='LH' ? 'selected="selected"' : '').'>ルーセントハート</option>';
-echo '<option value="HR" '.($_GET['game']=='HR' ? 'selected="selected"' : '').'>マビノギ英雄伝</option>';
-echo '<option value="AA" '.($_GET['game']=='AA' ? 'selected="selected"' : '').'>ArcheAge</option>';
-echo '<option value="ECO" '.($_GET['game']=='ECO' ? 'selected="selected"' : '').'>エミルクロニクル</option>';
-echo '<option value="FNO" '.($_GET['game']=='FNO' ? 'selected="selected"' : '').'>FNO</option>';
-echo '<option value="SUN" '.($_GET['game']=='SUN' ? 'selected="selected"' : '').'>SUN</option>';
-echo '<option value="talesweave" '.($_GET['game']=='talesweave' ? 'selected="selected"' : '').'>テイルズウィーバー</option>';
-//echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
-echo '<option value="MU" '.($_GET['game']=='MU' ? 'selected="selected"' : '').'>MU</option>';
-echo '<option value="MS" '.($_GET['game']=='MS' ? 'selected="selected"' : '').'>メイプルストーリー</option>';
-echo '<option value="cronous" '.($_GET['game']=='cronous' ? 'selected="selected"' : '').'>クロノス</option>';
-echo '<option value="tenjouhi" '.($_GET['game']=='tenjouhi' ? 'selected="selected"' : '').'>天上碑</option>';
-echo '<option value="rose" '.($_GET['game']=='rose' ? 'selected="selected"' : '').'>ローズオンライン</option>';
-echo '<option value="hzr" '.($_GET['game']=='hzr' ? 'selected="selected"' : '').'>晴空物語</option>';
-
-echo '<option value="dekaron" '.($_GET['game']=='dekaron' ? 'selected="selected"' : '').'>デカロン</option>';
-echo '<option value="fez" '.($_GET['game']=='fez' ? 'selected="selected"' : '').'>ファンタジーアースゼロ</option>';
-echo '<option value="lakatonia" '.($_GET['game']=='lakatonia' ? 'selected="selected"' : '').'>ラカトニア</option>';
-echo '<option value="moe" '.($_GET['game']=='moe' ? 'selected="selected"' : '').'>マスターオブエピック</option>';
-echo '<option value="mabinogi" '.($_GET['game']=='mabinogi' ? 'selected="selected"' : '').'>マビノギ</option>';
-echo '<option value="WF" '.($_GET['game']=='WF' ? 'selected="selected"' : '').'>戦場のエルタ</option>';
-echo '<option value="rohan" '.($_GET['game']=='rohan' ? 'selected="selected"' : '').'>ROHAN</option>';
-echo '<option value="ThreeSeven" '.($_GET['game']=='ThreeSeven' ? 'selected="selected"' : '').'>777タウン</option>';
-//echo '<option value="lineage" '.($_GET['game']=='lineage' ? 'selected="selected"' : '').'>リネージュ</option>';
-echo '<option value="C9" '.($_GET['game']=='C9' ? 'selected="selected"' : '').'>C9</option>';
+foreach($game_str_array as $key => $value){
+  echo '<option value="'.$key.'" '.($_GET['game']==$key ? 'selected="selected"' : '').'>'.$value.'</option>';
+}
 echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
@@ -225,13 +224,28 @@ $value_status = '自動更新中止';
 }else{
 $value_status = '自動更新開始';
 }
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data()">&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');"></td>';
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data()">&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
+echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="Sort Category">';
+echo '</td>';
 echo '</tr></table>';
 echo '</form>';
 ?>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
+function get_category_sort(){
+  $.ajax({
+    type: "POST",
+    data:"",
+    beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
+    async:true,
+    url: 'show.php?action=get_parent_category',
+    success: function(msg) {
+      setTimeout('read_time()',8000);
+      location.href = location.href
+    }
+  });
+}
 var flag_mark='<?php echo $tep_flag;?>';
 function show_game_info(ele){
 window.location.href='show.php?game='+ele+flag_mark;
@@ -280,7 +294,6 @@ function update_data(){
     async:true,
     url: 'collect.php',
     success: function(msg) {
-      alert(msg)
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');

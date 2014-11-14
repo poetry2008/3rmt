@@ -1,6 +1,6 @@
 <?php
 //采集脚本
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 set_time_limit(0);
 
@@ -30,15 +30,32 @@ if($flag_check!= ''){
    if(!empty($collect_error_array)){
      //获取所有的网站
      $site_list_array = array();
-     $site_query = mysql_query("select site_id,site_name from site");
+     $site_url_array = array();
+     $site_query = mysql_query("select site_id,site_name,site_url from site");
      while($site_array = mysql_fetch_array($site_query)){
 
        $site_list_array[$site_array['site_id']] = $site_array['site_name'];
+       $site_url_array[$site_array['site_id']] = $site_array['site_url'];
      }
      //发送错误邮件
-     $mail_str = '取得失敗詳細'."\n";
+     $mail_str = '手動更新失敗詳細'."\n";
      foreach($collect_error_array as $collect_error_value){
 
+       if($collect_error_value['type'] == 'buy'){
+
+         $category_type = 1;
+       }else{
+         $category_type = 0;
+       }
+       $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
+       if(mysql_num_rows($category_query) > 0){
+         $category_array = mysql_fetch_array($category_query);
+       }else{
+         $url_array = parse_url($collect_error_value['url']);
+         $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
+         $category_array['site_id'] = array_search($url_str,$site_url_array); 
+       }
+       mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
        $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
        $mail_str .= $collect_error_value['game'].'--';
        $mail_str .= $collect_error_value['type'].'--';
