@@ -1024,7 +1024,7 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
-                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                    array('products_name'=>'<name>(.*?)販売<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
@@ -2332,15 +2332,15 @@ $search_array_match = array(
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
-                    array('products_name'=>'<name>(.*?)の.*?<\/name>',
-                           'price'=>'<price>([0-9,.]+)円<\/price>',
-                           'inventory'=>'<quantity>(.*?)<\/quantity>'
-                    ),
-					/*
                    array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
+                    array('products_name'=>'<name>(.*?)買取<\/name>',
+                           'price'=>'<price>([0-9,.]+)円<\/price>',
+                           'inventory'=>'<quantity>(.*?)<\/quantity>'
+                    ),
+					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)買取<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
                     
