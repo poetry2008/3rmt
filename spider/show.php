@@ -71,12 +71,11 @@ if(!$has_row){
 			'dekaron'=> 'デカロン',
 			'fez'=> 'ファンタジーアースゼロ',
 			'lakatonia'=> 'ラカトニア',
-			'moe'=> 'ラカトニア',
+			'moe'=> 'マスターオブエピック',
 			'mabinogi'=> 'マビノギ',
 			'WF'=> '戦場のエルタ',
 			'rohan'=> 'ROHAN',
 			'genshin'=> '幻想神域',
-			'lineage'=> 'リネージュ'
                       );
 }
 if($_GET['action'] == 'get_parent_category'){
