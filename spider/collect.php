@@ -22,10 +22,10 @@ $flag_check = $_POST['flag'];
 if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
-   $category = array('buy','sell');
+   $category = array('1'=>'buy','0'=>'sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   foreach($category as $category_type){
+   foreach($category as $category_type => $category_info){
      get_contents_main($game_type,$category_type,'',$collect_error_array,false);
    }
 
