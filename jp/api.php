@@ -93,7 +93,7 @@ echo "<result>\n";
   <price><?php echo
   $currencies->display_price(tep_get_price($result['products_price'],
         $result['products_price_offset'], $result['products_small_sum'],
-        $result['products_bflag'],$result['price_type']), tep_get_tax_rate($result['products_tax_class_id']));?></price>
+        $result['products_bflag']), tep_get_tax_rate($result['products_tax_class_id']));?></price>
 </product>
 <?php
   }
@@ -114,7 +114,6 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                  p.products_price_offset, 
                  p.products_small_sum, 
                  p.products_tax_class_id, 
-                 p.price_type, 
                  pd.site_id,
                  pd.products_name
                  from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
@@ -137,7 +136,7 @@ echo "<result>\n";
   <price><?php 
 	 echo $currencies->display_price(tep_get_price($listing['products_price'],
 		  $listing['products_price_offset'], $listing['products_small_sum'],
-		  $p_bflag, $listing['price_type']), tep_get_tax_rate($listing['products_tax_class_id']))
+		  $p_bflag), tep_get_tax_rate($listing['products_tax_class_id']))
 
 ?></price>
   <quantity><?php echo tep_show_quantity(tep_get_quantity($result['products_id'],true))?></quantity>

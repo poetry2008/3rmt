@@ -1428,6 +1428,10 @@ echo $sql;
 */
 
 while($product_array = mysql_fetch_array($product_query)){
+  $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
+  if(!in_array($temp_name,$product_sort_array)){
+    $product_sort_array[] = $temp_name;     
+  }
   if($product_array['site_id'] != 7){
     if($game == 'PSO2'){
       $product_array['product_name'] = preg_replace('/(．|：)/is','',$product_array['product_name']);
@@ -1443,7 +1447,6 @@ while($product_array = mysql_fetch_array($product_query)){
     $product_real_array[] = $product_array['product_name'];
 }else{
     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
-    $product_sort_array[] = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));     
   }
 }
 
