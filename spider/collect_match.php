@@ -1353,7 +1353,6 @@ $search_array_match = array(
                       'inventory'=>'<p>残り&nbsp;<b>([0-9,]+)<\/b>&nbsp;個<\/p>' 
                     ),
 					 */
-                  ),
         'dekaron'=>array(
                       array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                       'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
@@ -1514,6 +1513,7 @@ $search_array_match = array(
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
 	  ),
+                  ),
 'sell' => array(
 		'FF14'=>array(
 			        array(),
@@ -2486,3 +2486,4 @@ $search_array_match = array(
 
  
 
+  var_dump($search_array_match['buy']['rohan']);
