@@ -2483,7 +2483,3 @@ $search_array_match = array(
   );
 
 
-
- 
-
-  var_dump($search_array_match['buy']['rohan']);
