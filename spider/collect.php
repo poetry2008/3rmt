@@ -137,10 +137,10 @@ require('collect_match.php');
 
   //开始采集数据
   $curl_flag = 0;
+  $index = 0;
   foreach($site as $site_value){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
-      
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       continue;
     }
@@ -155,14 +155,14 @@ require('collect_match.php');
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
-      $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
+      $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
       $result_array = $result->fetch();
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
     }else{
-      $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
+      $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
       $result_array = $result->fetch();
 //echo $url_array[$site_value];
 //print_r($result_array);
@@ -181,7 +181,7 @@ require('collect_match.php');
 			  if($flag==true){
 			  sleep(3);
 			  }
-          $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
+          $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
@@ -279,6 +279,7 @@ foreach($product_old_list as $product_old_name){
     }
 }
 
+    $index++;
   }
   //exit;
   }
