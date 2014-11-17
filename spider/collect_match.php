@@ -2238,10 +2238,6 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
-                   array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
-                    'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
-                    'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
-                    ),
 					/*
                     array('products_name'=>'<a class="bold" href=".*?">(.*?)のゴールド買取<\/a>',
                       'price'=>'<td class="main" align="right">.*?<p>1個([0-9,.]+)円から<\/p>.*?<\/td>',
