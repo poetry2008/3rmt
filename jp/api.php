@@ -115,7 +115,8 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                  p.products_small_sum, 
                  p.products_tax_class_id, 
                  pd.site_id,
-                 pd.products_name
+                 pd.products_name,
+                 p.products_bflag
                  from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
                    pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
                    where  p.products_id = p2c.products_id 
@@ -129,16 +130,43 @@ header ("content-type: text/xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?><?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>'."\n";
 echo "<result>\n";
   while ($result = tep_db_fetch_array($result_query)) {
-	  $p_bflag = tep_get_bflag_by_product_id($listing['products_id']);
+    $p_bflag = tep_get_bflag_by_product_id($listing['products_id']);
+    //根据库存来获取商品价格
+    if (tep_get_special_price($result['products_price'], $result['products_price_offset'], $result['products_small_sum'])) {
+      $pricedef = $result['products_price'];
+      $products_price = $currencies->display_price(tep_get_special_price($result['products_price'], $result['products_price_offset'], $result['products_small_sum']), tep_get_tax_rate($result['products_tax_class_id']));
+    } else {
+      
+      $pricedef = $result['products_price'];
+      $products_price = $currencies->display_price(tep_get_price($result['products_price'], $result['products_price_offset'], tep_get_price($result['products_price'],$result['products_small_sum'], '', $result['products_bflag']), $result['products_bflag']), tep_get_tax_rate($result['products_tax_class_id']));
+    }
+
+    if(tep_not_null($result['products_small_sum'])) {
+      $wari_array = array();
+      $parray = explode(",", $result['products_small_sum']);
+      for($i=0; $i<sizeof($parray); $i++) {
+        $tt = explode(':', $parray[$i]);
+        $wari_array[$tt[0]] = $tt[1];
+      }                    
+      @ksort($wari_array);
+
+      foreach($wari_array as $key => $val) {
+        if(tep_get_quantity($result['products_id'],true) == 0){
+          $products_price = $currencies->display_price(round($pricedef + $val),0);
+          break;
+        }
+
+        if(tep_get_quantity($result['products_id'],true) > $key){
+        
+          $products_price = $currencies->display_price(round($pricedef + $val),0);
+        }
+      }
+    }
+                          
 ?>
 <product>
   <name><?php echo $result['products_name'];?></name>
-  <price><?php 
-	 echo $currencies->display_price(tep_get_price($listing['products_price'],
-		  $listing['products_price_offset'], $listing['products_small_sum'],
-		  $p_bflag), tep_get_tax_rate($listing['products_tax_class_id']))
-
-?></price>
+  <price><?php echo $products_price;?></price>
   <quantity><?php echo tep_show_quantity(tep_get_quantity($result['products_id'],true))?></quantity>
 </product>
 <?php
@@ -164,8 +192,7 @@ $categories_query = tep_db_query("
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
-    where site_id = ".SITE_ID."
-       or site_id = 0
+    where site_id = 0
     group by categories_id
     having c.categories_status != '1' and c.categories_status != '3' 
     order by sort_order, categories_name
