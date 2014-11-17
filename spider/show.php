@@ -251,7 +251,19 @@ echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
 $site_query = mysql_query("select * from site order by sort_order");
-while($site_array = mysql_fetch_array($site_query)){
+$all_site_array = array();
+$index = 0;
+while($site_array_row = mysql_fetch_array($site_query)){
+  $index++;
+  if($site_array_row['site_name']=='ジャックポット'){
+    $all_site_array[0] = $site_array_row;
+  }else{
+    $all_site_array[$index] = $site_array_row;
+  }
+
+}
+ksort($all_site_array);
+foreach($all_site_array as $site_array){
   $site_temp = unserialize($site_array['is_show']);
   echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
 }
@@ -1489,6 +1501,7 @@ while($product_array = mysql_fetch_array($product_query)){
     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
   }
 }
+sort($product_sort_array);
 
 $product_name_array = array_unique($product_name_array);
 if($game == 'DQ10'){
