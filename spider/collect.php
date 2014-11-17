@@ -25,8 +25,9 @@ if($flag_check!= ''){
    $category = array('buy','sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   get_contents_main($game_type,$category,'',$collect_error_array,$flag=false);
+   get_contents_main($game_type,$category,'',$collect_error_array,false);
 
+/*
    if(!empty($collect_error_array)){
      //获取所有的网站
      $site_list_array = array();
@@ -69,6 +70,7 @@ if($flag_check!= ''){
      $error_headers = "From: ".$email ."<".$email.">";
      //mail($admin_email,$error_subject,$error_msg,$error_headers);
    }
+*/
 
 }
 
@@ -134,17 +136,18 @@ require('collect_match.php');
   //开始采集数据
   $curl_flag = 0;
   foreach($site as $site_value){
+//echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       continue;
     }
- //   if(strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
+    //if(!strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- $url_array[$site_value]= 'www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
@@ -159,6 +162,8 @@ require('collect_match.php');
     }else{
       $result = new Spider($url_array[$site_value],'',$search_array[$site_value],$curl_flag);
       $result_array = $result->fetch();
+//echo $url_array[$site_value];
+//print_r($result_array);
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -177,14 +182,15 @@ require('collect_match.php');
           $url = $url.'?s=bank_transfer';
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
-          foreach($result_array_kaka[0]['site_names'] as $vname){
-               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
-               if(!empty($temp_array[1])){
-                   $kaka_name[] = $temp_array[1];
-               }else{
-                   $kaka_name[] = $vname;
-               }
-          }
+        foreach($result_array_kaka[0]['site_names'] as $vname){
+           preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
+           if(!empty($temp_array[1])){
+             $kaka_name[] = $temp_array[1];
+           }else{
+             $kaka_name[] = $vname;
+           }
+        }
+        print_r($result_array_kaka);die;
           if(!$result_kaka->collect_flag){
 
             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
@@ -200,13 +206,13 @@ require('collect_match.php');
                  $kkk =str_replace(',','',$inventorys_array[$keyk]);
                 $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
                 $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
-           }
+               }
           }
           $prices_array = array();
         $kaka_array = array();
           foreach($result_array_kakas as $val){
              foreach($val as $v){
-               if($v['inventory'] !=0){
+               if($v['inventory'] !=0 && !in_array($v['name'],array('ジャックポット','ゲームマネー','カメズ'))){
                      $prices_array[] = $v['price'];
                      $kaka_array[] = $v;
                }
@@ -217,10 +223,13 @@ require('collect_match.php');
           $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
           $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
      }
+//var_dump($result_array);
 
    }
-echo $site_value;
-var_dump($result_array);
+
+//echo $url_array[$site_value];
+//echo $site_value;
+//var_dump($result_array);
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
