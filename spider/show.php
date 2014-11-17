@@ -1443,7 +1443,19 @@ $site_list_array = array();
 //将获取对应网站的信息取出。而不是所有 echo 输出的信息来源的网站名字
 $site_query = mysql_query("select * from site where site_id in($site_str) order by sort_order");  
 
-while($site_array = mysql_fetch_array($site_query)){
+$all_site_array = array();
+$index = 0;
+while($site_array_row = mysql_fetch_array($site_query)){
+  $index++;
+  if($site_array_row['site_name']=='ジャックポット'){
+    $all_site_array[0] = $site_array_row;
+  }else{
+    $all_site_array[$index] = $site_array_row;
+  }
+
+}
+ksort($all_site_array);
+foreach($all_site_array as $site_array){
 
   $site_list_temp = unserialize($site_array['is_show']);
   if($site_list_temp[$game] !== 0 ){
