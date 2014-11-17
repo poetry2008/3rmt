@@ -1489,6 +1489,7 @@ while($product_array = mysql_fetch_array($product_query)){
     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
   }
 }
+sort($product_sort_array);
 
 $product_name_array = array_unique($product_name_array);
 if($game == 'DQ10'){
