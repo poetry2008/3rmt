@@ -147,7 +147,7 @@ require('collect_match.php');
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- $url_array[$site_value]= 'www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ $url_array[$site_value]= '192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
@@ -216,9 +216,11 @@ require('collect_match.php');
 
    }
 //将ip地址重新转换成域名形式
+    /*
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
   }
+   */
 
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id_array[$site_value]."'");
 
@@ -237,7 +239,7 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
   
 
 //给主站的商品进行排序
- if(strpos($url_array[$site_value],'www.iimy.co.jp')){
+ if(strpos($url_array[$site_value],'192.168.160.200')){
       $sort_order =10000-$product_key;
  }else{
 //如果价格是空或是0
