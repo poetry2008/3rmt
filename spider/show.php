@@ -80,6 +80,47 @@ if(!$has_row){
   $game_str_array = $old_game_str_array;
 }
 if($_GET['action'] == 'get_parent_category'){
+  $game_id_array = array('FF14'=>'456',
+      'RO'=>'171',
+      'RS'=>'195',
+      'FF11'=>'168',
+      'DQ10'=>'597',
+      'L2'=>'169',
+      'ARAD'=>'218',
+      'nobunaga'=>'178',
+      'PSO2'=>'591',
+      'L1'=>'170',
+      'TERA'=> '547',
+      'AION'=> '396',
+      'CABAL'=> '200',
+      'WZ'=> '556',
+      'latale'=> '325',
+      'blade'=> '628',
+      'megaten'=> '319',
+      'EWD'=> '462',
+      'LH'=> '250',
+      'HR'=> '571',
+      'AA'=> '623',
+      'ThreeSeven'=> '538',
+      'ECO'=> '299',
+      'FNO'=> '544',
+      'SUN'=> '231',
+      'talesweave'=> '190',
+      'MU'=> '422',
+      'C9'=> '550',
+      'MS'=> '209',
+      'cronous'=> '287',
+      'tenjouhi'=> '337',
+      'rose'=> '331',
+      'hzr'=> '559',
+      'dekaron'=> '302',
+      'fez'=> '436',
+      'lakatonia'=> '565',
+      'moe'=> '322',
+      'mabinogi'=> '179',
+      'WF'=> '431',
+      'rohan'=> '382',
+      'genshin'=> '620');
   $game_str_array = $old_game_str_array;
   $url = '192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
   $ch = curl_init();
@@ -94,18 +135,17 @@ if($_GET['action'] == 'get_parent_category'){
   curl_close($ch);
   $result = json_decode($result);
   $insert_category_sort_array = array();
-  foreach($game_str_array as $key => $value){
+  foreach($game_id_array as $key => $value){
     $temp_info_array = array();
-    $sort = 999;
+    $sort = 9999;
     foreach($result as $res ){
-      $search_str = $res->categories_name;
-      if($search_str == $value ){
+      if($res->categories_id == $value ){
         $sort = $res->sort_order;
         break;
       }
     }
     $temp_info_array['keyword'] = $key;
-    $temp_info_array['name'] = $value;
+    $temp_info_array['name'] = $game_str_array[$key];
     $temp_info_array['sort'] = $sort;
     $insert_category_sort_array[] = $temp_info_array;
   }
