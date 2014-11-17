@@ -1513,7 +1513,6 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
-                  )
 	  ),
 'sell' => array(
 		'FF14'=>array(
