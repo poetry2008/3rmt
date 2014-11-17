@@ -201,7 +201,7 @@ require('collect_match.php');
         $kaka_array = array();
           foreach($result_array_kakas as $val){
              foreach($val as $v){
-               if($v['inventory'] !=0 && !in_array($v['name'],array('ジャックポット','ゲームマネー','カメズ'))){
+               if($v['inventory'] !=0){
                      $prices_array[] = $v['price'];
                      $kaka_array[] = $v;
                }
