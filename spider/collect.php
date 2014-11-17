@@ -174,17 +174,8 @@ require('collect_match.php');
 			  if($flag==true){
 			  sleep(3);
 			  }
-          $url = $url.'?s=bank_transfer';
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_value],$curl_flag);
           $result_array_kaka = $result_kaka->fetch();
-          foreach($result_array_kaka[0]['site_names'] as $vname){
-               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
-               if(!empty($temp_array[1])){
-                   $kaka_name[] = $temp_array[1];
-               }else{
-                   $kaka_name[] = $vname;
-               }
-          }
           if(!$result_kaka->collect_flag){
 
             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
@@ -199,7 +190,6 @@ require('collect_match.php');
                 $result_array_kakas[$k][$keyk]['price'] = $kk;
                  $kkk =str_replace(',','',$inventorys_array[$keyk]);
                 $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
-                $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
            }
           }
           $prices_array = array();
@@ -219,8 +209,6 @@ require('collect_match.php');
      }
 
    }
-echo $site_value;
-var_dump($result_array);
 //将ip地址重新转换成域名形式
   if(strpos($url_array[$site_value],'192.168.160.200')){
      $url_array[$site_value]= str_replace('192.168.160.200','www.iimy.co.jp',$url_array[$site_value]);
