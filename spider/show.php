@@ -1516,6 +1516,8 @@ if($game == 'DQ10'){
       }
     }
   }
+  $diff_name_array = array_keys($replace_name_array);
+  $product_sort_array = array_diff($product_sort_array,$diff_name_array);
 }
 
 $product_name_sort_array = array();
