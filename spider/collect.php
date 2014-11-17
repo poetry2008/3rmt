@@ -240,7 +240,8 @@ require('collect_match.php');
     $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
 //当获取的数据商品名称为空(或这个页面没有数据)
 if(empty($result_array[0]['products_name'])){
-  mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
+  //mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
+  mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
 }
 
 foreach($result_array[0]['products_name'] as $product_key=>$value){
@@ -271,7 +272,7 @@ $product_new[] = trim($value);
         $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
         if($value!=''){
-          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."')");
+          $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."',0)");
         }
       }
       }    
@@ -285,7 +286,7 @@ while($row_tep = mysql_fetch_array($search_query)){
 //新获取的数据已经不包含数据库的数据,删除
 foreach($product_old_list as $product_old_name){
     if(!in_array($product_old_name,$product_new)){
-        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
+        $products_query = mysql_query("update product set is_error=1  where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
     }
 }
 
@@ -394,7 +395,7 @@ function tep_get_toher_collect($game_type){
         $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
       }else{
 
-        $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0)");
+        $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0,0)");
       } 
     }
   }
