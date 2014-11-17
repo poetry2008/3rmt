@@ -251,7 +251,19 @@ echo '</select>';
 echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">表示業者設定</td>';
 $site_query = mysql_query("select * from site order by sort_order");
-while($site_array = mysql_fetch_array($site_query)){
+$all_site_array = array();
+$index = 0;
+while($site_array_row = mysql_fetch_array($site_query)){
+  $index++;
+  if($site_array_row['site_name']=='ジャックポット'){
+    $all_site_array[0] = $site_array_row;
+  }else{
+    $all_site_array[$index] = $site_array_row;
+  }
+
+}
+ksort($all_site_array);
+foreach($all_site_array as $site_array){
   $site_temp = unserialize($site_array['is_show']);
   echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
 }
@@ -275,7 +287,9 @@ $value_status = '自動更新中止';
 }else{
 $value_status = '自動更新開始';
 }
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data()">&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
+$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
+$date_array = mysql_fetch_array($date_query);
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
 echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
 echo '</tr></table>';
@@ -1402,8 +1416,6 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
 		   'genshin'=>'1個あたり  100金',
 		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
-$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
-$date_array = mysql_fetch_array($date_query);
 echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
 echo '<table style="min-width:750px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
@@ -1489,6 +1501,7 @@ while($product_array = mysql_fetch_array($product_query)){
     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id']);
   }
 }
+sort($product_sort_array);
 
 $product_name_array = array_unique($product_name_array);
 if($game == 'DQ10'){
@@ -1516,6 +1529,8 @@ if($game == 'DQ10'){
       }
     }
   }
+  $diff_name_array = array_keys($replace_name_array);
+  $product_sort_array = array_diff($product_sort_array,$diff_name_array);
 }
 
 $product_name_sort_array = array();
