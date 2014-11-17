@@ -25,7 +25,9 @@ if($flag_check!= ''){
    $category = array('buy','sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   get_contents_main($game_type,$category,'',$collect_error_array,false);
+   foreach($category as $category_type){
+     get_contents_main($game_type,$category_type,'',$collect_error_array,false);
+   }
 
 /*
    if(!empty($collect_error_array)){
