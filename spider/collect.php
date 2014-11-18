@@ -125,7 +125,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
   }
   /*以下是正式采集*/
   $game_type=$game_type;
-  require_once('collect_match.php');
+ include('collect_match.php');
   foreach($category_type as $category_value){
 
     $url_array = $url_str_array[$category_value];
@@ -160,7 +160,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
 /*get_contents_main end*/
 }
 
-function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$index,&$collect_error_array){
+function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,&$collect_error_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -171,7 +171,8 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- $url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ //$url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){
