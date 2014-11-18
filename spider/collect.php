@@ -138,7 +138,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
     $curl_flag = 0;
     $index = 0;
     foreach($site as $site_value){
-      save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,$collect_error_array);
+      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$index,$collect_error_array);
       $index++;
     }
   //exit;
@@ -153,7 +153,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
 /*get_contents_main end*/
 }
 
-function save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,&$collect_error_array){
+function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$index,&$collect_error_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -179,6 +179,8 @@ function save_site_res($game_type,$category_value,$site_value,$url_array,$search
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }else{
+      	$collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
     }else{
       $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
@@ -186,10 +188,13 @@ function save_site_res($game_type,$category_value,$site_value,$url_array,$search
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
+      }else{
+        $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
     }
     //处理kakaran
     if($result_array[0]['url']){
+      $collect_res = array();
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
       //取出单价i
       $kaka_array = array();
@@ -215,6 +220,8 @@ function save_site_res($game_type,$category_value,$site_value,$url_array,$search
          $result_array_kaka = $result_kaka->fetch();
          if(!$result_kaka->collect_flag){
            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+         }else{
+           $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
          }
           //选三个最小的数据
          $inventorys_array = $result_array_kaka[0]['inventory'];
@@ -307,7 +314,7 @@ foreach($product_old_list as $product_old_name){
         $products_query = mysql_query("update product set is_error=1  where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
     }
 }
-
+  return $collect_res;
 }
 
 function tep_get_toher_collect($game_type){
