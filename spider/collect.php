@@ -22,10 +22,10 @@ $flag_check = $_POST['flag'];
 if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
-   $category = array('buy','sell');
+   $category = array('1'=>'buy','0'=>'sell');
    //采集内容为空或者超时的数据数组
    $collect_error_array = array();
-   foreach($category as $category_type){
+   foreach($category as $category_type => $category_info){
      get_contents_main($game_type,$category_type,'',$collect_error_array,false);
    }
 
@@ -267,7 +267,7 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
 $product_new[] = trim($value);
 //有,则更新 没有,则添加
       if(mysql_num_rows($search_query) == 1){
-        $products_query = mysql_query("update product set product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
+        $products_query = mysql_query("update product set is_error=0, product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
         if($value!=''){
           $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."',0)");
@@ -391,7 +391,7 @@ function tep_get_toher_collect($game_type){
 
       if(mysql_num_rows($search_query) == 1){
 
-        $products_query = mysql_query("update product set product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
+        $products_query = mysql_query("update product set is_error='0', product_price='".$price."',product_inventory='".$result_inventory."'where category_id='".$na_category_id_array[$key]."' and product_name='".trim($products_value)."'");
       }else{
 
         $products_query = mysql_query("insert into product values(NULL,'".$na_category_id_array[$key]."','".trim($products_value)."','".$price."','".$result_inventory."',0,0)");
