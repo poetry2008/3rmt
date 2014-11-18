@@ -157,7 +157,7 @@ $search_array_match = array(
                           'price'=>'<td class="left" style=".*?"><a href=".*?">.*?<\/a><\/td>.*?<td style=".*?">(.*?)円<\/td>',
                           'inventory'=>'<td style=".*?">.*?WM<\/td>.*?<td style=".*?">(.*?) 口<\/td>'
                        ),
-              'www.rmt-king'=> array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>',
+              'www.rmt-king.com'=> array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>',
                           '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>',
                           '10-29'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>',
                           '30-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9]+)円<br \/>.*?<\/td>',
@@ -228,7 +228,7 @@ $search_array_match = array(
                       'price'=>'<td class="left" .*?><a href=".*?">.*?<\/a>.*?<\/td>.*?<td .*?>([0-9.,]+).*?<\/td>',
                       'inventory'=>'<td style=".*?">.*?WM<\/td>.*?<td style=".*?">.*?([0-9,]+) 口.*?<\/td>' 
                     ),
-               'www.rmt-king'=>array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+               'www.rmt-king.com'=>array('products_name'=>'<tr .*?>.*?<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                       '1-2'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '3-4'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
                       '5-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
@@ -1359,7 +1359,7 @@ $search_array_match = array(
                            'price'=>'<td class="left"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]*?)円<\/td>',
                            'inventory'=>'<td>[0-9,.]*?円.*?<\/td><!-- <td>0 WM<\/td> --><td>([0-9,.]*?) 口<\/td>'                        
                         ),
-              'www.rmt-king'=> array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>',
+              'www.rmt-king.com'=> array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>',
                            '1-9'=>'<td class="center" nowrap="nowrap">.*?([0-9,]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>', 
                            '10-29'=>'<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                            '30-'=>'<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
@@ -1391,7 +1391,7 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
-            'pastel-rmt'=>array(),
+            'pastel-rmt.jp'=>array(),
             'rmt.diamond-gil'=>   array('products_name'=>'<span class="sell_serverName" style="width:33%">&nbsp;(.*?)<\/span>.*?<span class="sell_serverBlank">&nbsp;<\/span>',
                     '1-4'=>'<span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">[0-9,.]+&nbsp;円<\/span>',   
                     '5-'=>'<span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">[0-9,.]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span>',
@@ -1403,7 +1403,7 @@ $search_array_match = array(
                            'inventory'=>'<td>.*?円<\/td>.*?<td>([0-9,]+) 口<\/td>'
                      ),
 
-           'www.rmt-king'=> array('products_name'=>'<tr .*?>.*?<td class="center">.*?([a-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">.*?銀行振込<br \/>',
+           'www.rmt-king.com'=> array('products_name'=>'<tr .*?>.*?<td class="center">.*?([a-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">.*?銀行振込<br \/>',
                       '1-2'=>'<td class="center" nowrap="nowrap">.*?([0-9,]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>',
                       '3-4'=>'<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,]+)円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>',
                       '5-'=>'<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,]+)円<br \/>.*?<\/td>',
