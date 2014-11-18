@@ -245,7 +245,7 @@ while(true){
  */
   if($game_type == 'FF14'){
     tep_get_toher_collect($game_type);
-    $write_str =$game_type.'--NA';
+    $write_str = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--NA';
     cron_log($write_str);
   }
         sleep(20);
