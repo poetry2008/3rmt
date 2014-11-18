@@ -1371,6 +1371,15 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
 
 
 );
+//获取主站的URL
+$main_site_query = mysql_query("select site_id from site where site_name='ジャックポット'");
+$main_site_array = mysql_fetch_array($main_site_query);
+$main_category_query = mysql_query("select * from category where site_id='".$main_site_array['site_id']."'");
+while($main_category_array = mysql_fetch_array($main_category_query)){
+
+  $category_type = $main_category_array['category_type'] == 1 ? 'buy' : 'sell';
+  $url_array[$main_category_array['category_name']][$category_type][$main_site_array['site_id']] = $main_category_array['category_url'];
+}
 echo '<table width="100%"><tr><td'.(!isset($_GET['flag']) || $_GET['flag'] == 'buy' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=buy'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">販売</a></td><td'.($_GET['flag'] == 'sell' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=sell'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">買取</a></td>';
 $game = isset($_GET['game']) ? $_GET['game'] : 'FF11';
 $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
