@@ -181,7 +181,16 @@ require('collect_match.php');
 			  if($flag==true){
 			  sleep(3);
 			  }
+          $url = $url.'?s=bank_transfer';
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
+          foreach($result_array_kaka[0]['site_names'] as $vname){
+               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
+               if(!empty($temp_array[1])){
+                   $kaka_name[] = $temp_array[1];
+               }else{
+                   $kaka_name[] = $vname;
+               }
+          }
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
@@ -197,13 +206,14 @@ require('collect_match.php');
                 $result_array_kakas[$k][$keyk]['price'] = $kk;
                  $kkk =str_replace(',','',$inventorys_array[$keyk]);
                 $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
+                $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
            }
           }
           $prices_array = array();
         $kaka_array = array();
           foreach($result_array_kakas as $val){
              foreach($val as $v){
-               if($v['inventory'] !=0){
+               if($v['inventory'] !=0 && !in_array('ジャックポット','ゲームマネー','カメズ')){
                      $prices_array[] = $v['price'];
                      $kaka_array[] = $v;
                }
@@ -214,7 +224,6 @@ require('collect_match.php');
           $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
           $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
      }
-//var_dump($result_array);
 
    }
 //将ip地址重新转换成域名形式
