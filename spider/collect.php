@@ -136,10 +136,17 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
     $search_array = $search_array_match[$category_value][$game_type];
     //开始采集数据
     $curl_flag = 0;
-    $index = 0;
+    $site_key = '';
     foreach($site as $site_value){
-      save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,$collect_error_array);
-      $index++;
+         if(strpos($url_array[$site_value],'www.iimy.co.jp')||strpos($url_array[$site_value],'192.168.160.200')){
+             $site_key = 'www.iimy.co.jp';
+         }else if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
+             $site_key = 'rmt.kakaran.jp';
+         }else{
+             $site_url_array = parse_url($url_array[$site_value]);
+             $site_key = $site_url_array['host'];
+         }
+      save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
     }
   //exit;
   }
@@ -153,7 +160,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
 /*get_contents_main end*/
 }
 
-function save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,&$collect_error_array){
+function save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$site_key,&$collect_error_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -174,14 +181,14 @@ function save_site_res($game_type,$category_value,$site_value,$url_array,$search
    }
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
-      $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
+      $result = new Spider($url_array[$site_value],'',$search_array[$site_key],$curl_flag);
       $result_array = $result->fetch();
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }
     }else{
-      $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
+      $result = new Spider($url_array[$site_value],'',$search_array[$site_key],$curl_flag);
       $result_array = $result->fetch();
       if(!$result->collect_flag){
 
@@ -201,7 +208,7 @@ function save_site_res($game_type,$category_value,$site_value,$url_array,$search
           sleep(3);
         }
 //          $url = $url.'?s=bank_transfer';
-        $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
+        $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_key],$curl_flag);
           /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
