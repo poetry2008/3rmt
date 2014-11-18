@@ -7,8 +7,17 @@
   error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED);
 // ddos start 
 require(DIR_WS_FUNCTIONS . 'dos.php');
+//不受限制的IP
+define('TRUSTED_IP_LIST','192.168.150.2,192.168.0.101');
 // ip 
 $source_ip = $_SERVER['REMOTE_ADDR'];
+//判断访问IP是否是不受限制IP
+$trusted_ip_list = explode(',',TRUSTED_IP_LIST);
+$trusted_ip_flag = false;
+if(in_array($source_ip,$trusted_ip_list)){
+
+  $trusted_ip_flag = true;
+}
 // host
 $source_host = $_SERVER['HTTP_HOST'];
 // check if sessions are supported, otherwise use the php3 compatible session class
@@ -45,7 +54,7 @@ $source_host = $_SERVER['HTTP_HOST'];
   tep_session_start();
 // 使用SESSION 判断IP 是否被封
   if(in_array($source_ip,$_SESSION['banlist_ip'])&&
-       is_reset_session_blocked_ip($source_ip)){
+       is_reset_session_blocked_ip($source_ip) && $trusted_ip_flag == false){
     session_write_close();
     tep_session_id($old_sid);
     tep_session_start();
@@ -78,7 +87,7 @@ $dsn = 'mysql:host='.DB_SERVER.';dbname='.DB_DATABASE;
 $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 
 if ($pdo_con) {
-  if(is_reset_blocked_ip($pdo_con, $source_ip)){
+  if(is_reset_blocked_ip($pdo_con, $source_ip) && $trusted_ip_flag == false){
     // go to 503
     save_block_ip($pdo_con);
     session_write_close();
@@ -94,7 +103,7 @@ if ($pdo_con) {
   } else {
     // write ip to accresslog 
     write_vlog($pdo_con, $source_ip, $source_host);    
-    if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total)) {
+    if (is_large_visit($pdo_con, $source_ip, $unit_time, $unit_total) && $trusted_ip_flag == false) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
@@ -111,7 +120,7 @@ if ($pdo_con) {
       exit;
     }
    //minite
-    if (is_large_visit($pdo_con, $source_ip, $unit_min_time, $unit_min_total,'i')) {
+    if (is_large_visit($pdo_con, $source_ip, $unit_min_time, $unit_min_total,'i') && $trusted_ip_flag == false) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
@@ -128,7 +137,7 @@ if ($pdo_con) {
       exit;
     }
     //hour
-    if (is_large_visit($pdo_con, $source_ip, $unit_hour_time, $unit_hour_total,'h')) {
+    if (is_large_visit($pdo_con, $source_ip, $unit_hour_time, $unit_hour_total,'h') && $trusted_ip_flag == false) {
       // write ip to banlist prebanlist
       analyze_ban_log($pdo_con, $source_ip);
       // go to 503
