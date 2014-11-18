@@ -220,7 +220,6 @@ while(true){
     $search_array = $search_array_match[$category_value][$game_type];
     //开始采集数据
     $curl_flag = 0;
-    $index = 0;
     foreach($site as $site_value){
       if(strpos($url_array[$site_value],'www.iimy.co.jp')||strpos($url_array[$site_value],'192.168.160.200')){
         $site_key = 'www.iimy.co.jp';
@@ -230,7 +229,7 @@ while(true){
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$index,$collect_error_array);
+      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
       if(is_array($collect_res)){
         $x=1;
         foreach($collect_res as $collect_res_row){
@@ -242,7 +241,6 @@ while(true){
         $write_str = $collect_res.'--'.$site_info[$category_value][$site_value];
         cron_log($write_str);
       }
-      $index++;
     }
   //exit;
   }

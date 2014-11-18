@@ -146,8 +146,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$index,$collect_error_array);
-      $index++;
+      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
     }
   //exit;
   }
