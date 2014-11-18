@@ -149,10 +149,14 @@ require('collect_match.php');
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- $url_array[$site_value]= '192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+ $url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
-   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')||strpos($url_array[$site_value],'192.168.100.200')){$curl_flag=0;}else{$curl_flag=1;}
+   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){
+      $curl_flag=0;
+   }else{
+      $curl_flag=1;
+   }
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
       $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
@@ -164,8 +168,6 @@ require('collect_match.php');
     }else{
       $result = new Spider($url_array[$site_value],'',$search_array[$index],$curl_flag);
       $result_array = $result->fetch();
-//echo $url_array[$site_value];
-//print_r($result_array);
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -181,8 +183,9 @@ require('collect_match.php');
 			  if($flag==true){
 			  sleep(3);
 			  }
-          $url = $url.'?s=bank_transfer';
+//          $url = $url.'?s=bank_transfer';
           $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
+          /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
                if(!empty($temp_array[1])){
@@ -191,6 +194,7 @@ require('collect_match.php');
                    $kaka_name[] = $vname;
                }
           }
+          */
           $result_array_kaka = $result_kaka->fetch();
           if(!$result_kaka->collect_flag){
 
@@ -206,14 +210,14 @@ require('collect_match.php');
                 $result_array_kakas[$k][$keyk]['price'] = $kk;
                  $kkk =str_replace(',','',$inventorys_array[$keyk]);
                 $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
-                $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
+//                $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
            }
           }
           $prices_array = array();
         $kaka_array = array();
           foreach($result_array_kakas as $val){
              foreach($val as $v){
-               if($v['inventory'] !=0 && !in_array('ジャックポット','ゲームマネー','カメズ')){
+               if($v['inventory'] !=0){
                      $prices_array[] = $v['price'];
                      $kaka_array[] = $v;
                }
@@ -733,7 +737,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                     $result_inventory = 0; 
                   }
               break;
-             /*case 'FNO':
+             case 'FNO':
                  if($inventory_array[0] >= 1 && $inventory_array[0] <=10){
                    $price = $result_array[0]['1-10'][$product_key]; 
                  }else{
@@ -741,7 +745,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                  } 
                    $result_inventory = $inventory_array[0]*10;
                   $result_str = $price/10;
-              break;*/
+              break;
              case 'SUN':
                    $price = $result_array[0]['price'][$product_key]; 
                  if($inventory_array[0] != ''){
