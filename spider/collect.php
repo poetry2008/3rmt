@@ -146,7 +146,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
+      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key);
     }
   //exit;
   }
@@ -160,7 +160,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
 /*get_contents_main end*/
 }
 
-function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,&$collect_error_array){
+function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -210,7 +210,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
         if($url==''){
           continue;
         }
-        if($flag==true){
+        if($sleep_flag){
           sleep(3);
         }
 //          $url = $url.'?s=bank_transfer';
