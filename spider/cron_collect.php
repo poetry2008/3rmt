@@ -108,7 +108,7 @@ while($row = mysql_fetch_array($category_query)){
 }
 
 //买卖
-$category_type=array(1=>'buy',0=>'sell');
+$category_type_all=array(1=>'buy',0=>'sell');
 
 //site(网站)
 $site_query = mysql_query("select site_id,site_name from site order by site_id asc");
@@ -127,7 +127,7 @@ while(true){
     if($game != $auto_array['game_name'] && $flag == 1){
       continue;
     }
-    foreach($category_type as $key=>$category){
+    foreach($category_type_all as $key=>$category){
       if($key == $auto_array['game_type']){
         $flag = 0;
       }
@@ -177,6 +177,7 @@ while(true){
   $site_query = mysql_query("select site_id,site_name from site order by site_id asc");
   $i = 0;
   $j = 0;
+  $game_type=$game;
   while($site_array = mysql_fetch_array($site_query)){
 
     $category_query = mysql_query("select * from category where site_id='".$site_array['site_id']."' and category_name='".$game_type."' and game_server='jp'");
@@ -194,18 +195,12 @@ while(true){
         $url_str_array['sell'][$j] = $category_array['category_url'];
         $category_id_str_array['sell'][$j] = $category_array['category_id'];
         $site_str['sell'][] = $j;
-        $site_info['buy'][$j] = $site_array['site_name'];
+        $site_info['sell'][$j] = $site_array['site_name'];
         $j++;
       }
     } 
   }
-  if($key==1){
-    $category_tep = 'buy';
-  }else{
-    $category_tep ='sell';
-  }
-  $category_type = array($category_tep);
-  $game_type=$game;
+  $category_type = array($category);
 //预处理网站结束
 
 //开始处理数据
@@ -229,7 +224,7 @@ while(true){
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
+      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,true);
       if(is_array($collect_res)){
         $x=1;
         foreach($collect_res as $collect_res_row){
