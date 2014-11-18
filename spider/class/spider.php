@@ -60,19 +60,24 @@ class Spider {
     }
     while($this->current_page <= $this->page_count){
 
+      /*
       //开始采集时间戳
       $start_time = $this->get_timer();
+      */
       if($this->curl_flag == 0){
         $contents = file_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page),false,$this->context);
       }else{
         $contents = $this->curl_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page)); 
       }
+      /*
       //结束采集时间戳
       $end_time = $this->get_timer();
       $this->collect_time = $this->get_collect_timer($start_time,$end_time);
+      */
 
       //如果采集的内容为空或者超时,给管理员发送邮件
-      if(!$contents || $this->collect_time > 10){
+      //if(!$contents || $this->collect_time > 10){
+      if(!$contents){
 
         $this->collect_flag = false;
         /* 
