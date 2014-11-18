@@ -23,62 +23,6 @@ if($flag_check!= ''){
   //在show里面点击更新
    $game_type = $game_type == '' ? 'FF11' : $game_type;
    $category = array('1'=>'buy','0'=>'sell');
-   //采集内容为空或者超时的数据数组
-   $collect_error_array = array();
-   foreach($category as $category_type => $category_info){
-     get_contents_main($game_type,$category_type,'',$collect_error_array,false);
-   }
-
-/*
-   if(!empty($collect_error_array)){
-     //获取所有的网站
-     $site_list_array = array();
-     $site_url_array = array();
-     $site_query = mysql_query("select site_id,site_name,site_url from site");
-     while($site_array = mysql_fetch_array($site_query)){
-
-       $site_list_array[$site_array['site_id']] = $site_array['site_name'];
-       $site_url_array[$site_array['site_id']] = $site_array['site_url'];
-     }
-     //发送错误邮件
-     $mail_str = '手動更新失敗詳細'."\n";
-     foreach($collect_error_array as $collect_error_value){
-
-       if($collect_error_value['type'] == 'buy'){
-
-         $category_type = 1;
-       }else{
-         $category_type = 0;
-       }
-       $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
-       if(mysql_num_rows($category_query) > 0){
-         $category_array = mysql_fetch_array($category_query);
-       }else{
-         $url_array = parse_url($collect_error_value['url']);
-         $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
-         $category_array['site_id'] = array_search($url_str,$site_url_array); 
-       }
-       //mysql_query("update product set is_error=1 where category_id='".$category_array['category_id']."'");
-       $mail_str .= date('H:i:s',$collect_error_value['time']).'　　';
-       $mail_str .= $collect_error_value['game'].'--';
-       $mail_str .= $collect_error_value['type'].'--';
-       $mail_str .= $site_list_array[$category_array['site_id']].'　　';
-       $mail_str .= $collect_error_value['url']."\n";
-     }
-     $email = '287499757@qq.com';
-     $admin_email = '287499757@qq.com';
-     $error_subject = '取得失敗エラー';
-     $error_msg = $mail_str;
-     $error_headers = "From: ".$email ."<".$email.">";
-     //mail($admin_email,$error_subject,$error_msg,$error_headers);
-   }
-*/
-
-}
-
-
-
-function get_contents_main($game_type,$category,$site,&$collect_error_array,$flag){
   /*
    * jp 游戏各网站采集
    */
@@ -113,20 +57,11 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
       }
     } 
   }
-  if(!is_array($category)){
-    if($category==1){
-      $category_tep = 'buy';
-    }else{
-      $category_tep ='sell';
-    }
-    $category_type = array($category_tep);
-  }else{
-    $category_type = $category;
-  }
+  $category_type_all = $category;
   /*以下是正式采集*/
   $game_type=$game_type;
- include('collect_match.php');
-  foreach($category_type as $category_value){
+  include('collect_match.php');
+  foreach($category_type_all as $category_value){
 
     $url_array = $url_str_array[$category_value];
     $category_id_array = $category_id_str_array[$category_value];
@@ -157,7 +92,7 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
   if($game_type == 'FF14'){
     tep_get_toher_collect($game_type);
   }
-/*get_contents_main end*/
+
 }
 
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
@@ -171,8 +106,8 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
- //$url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
- $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+   $url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+// $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
    if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){

@@ -28,13 +28,8 @@ class Spider {
   ---------------------*/
   function __construct($url,$url_mode='',$mode_array,$curl_flag=0,$page_num_mode='',$sum_mode=''){
 
-    if(is_array($url)){
-      foreach($url as $k => $v){
-        $this->page_count[$k] = $this->page_count($v,$page_num_mode,$sum_mode);
-      }
-    }else{
+
       $this->page_count = $this->page_count($url,$page_num_mode,$sum_mode);
-    }
       $this->url = $url;
       $this->url_mode = $url_mode;
       $this->mode_array = $mode_array;
@@ -73,23 +68,21 @@ class Spider {
       //结束采集时间戳
       $end_time = $this->get_timer();
       $this->collect_time = $this->get_collect_timer($start_time,$end_time);
-      */
 
       //如果采集的内容为空或者超时,给管理员发送邮件
       //if(!$contents || $this->collect_time > 10){
       if(!$contents){
 
-        $this->collect_flag = false;
-        /* 
         $error_subject = '错误标题'
         $error_msg = '错误内容';
         $error_headers = "From: ".$this->email ."<".$this->email.">";
 
         mail($this->admin_email,$error_subject,$error_msg,$error_headers);
-         */
       }
+         */
 
       if(!$contents){
+        $this->collect_flag = false;
         continue;
         //echo 'error|||'.$this->make_url($this->url,$this->url_mode,$this->current_page);
        // exit;
