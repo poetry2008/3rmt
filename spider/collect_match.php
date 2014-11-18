@@ -1346,11 +1346,11 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
-              'pastel-rmt'=>array('products_name'=>'<td class="center">.*?([\sa-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
+              'pastel-rmt.jp'=>array('products_name'=>'<td class="center">.*?([\sa-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                             'price'=>'<td class="center" colspan="3">.*?<span style="font-weight: bold;">(.*?)<\/span>.*?<\/td>',
                             'inventory'=>'<td class="center">.*?([\sa-zA-Z]+).*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>'
                        ),
-              'rmt.diamond-gil'=> array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
+              'rmt.diamond-gil.jp'=> array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
                           '5-'=>'<span class="sell_serverPrice" title=".*?" style="width:33%"  onmouseover=".*?" onmouseout=".*?">(.*?)&nbsp;円<\/span>',
                           'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/span>'                        
                         ),
@@ -1392,7 +1392,7 @@ $search_array_match = array(
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
             'pastel-rmt.jp'=>array(),
-            'rmt.diamond-gil'=>   array('products_name'=>'<span class="sell_serverName" style="width:33%">&nbsp;(.*?)<\/span>.*?<span class="sell_serverBlank">&nbsp;<\/span>',
+            'rmt.diamond-gil.jp'=>   array('products_name'=>'<span class="sell_serverName" style="width:33%">&nbsp;(.*?)<\/span>.*?<span class="sell_serverBlank">&nbsp;<\/span>',
                     '1-4'=>'<span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">[0-9,.]+&nbsp;円<\/span>',   
                     '5-'=>'<span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">[0-9,.]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:20%"  onmouseover=".*?" onmouseout=".*?">([0-9,.]+)&nbsp;円<\/span>',
                     'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/span>' 
