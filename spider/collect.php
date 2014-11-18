@@ -113,36 +113,51 @@ function get_contents_main($game_type,$category,$site,&$collect_error_array,$fla
       }
     } 
   }
-if(!is_array($category)){
-	if($category==1){
-	    $category_tep = 'buy';
-	}else{
-	    $category_tep ='sell';
-	}
+  if(!is_array($category)){
+    if($category==1){
+      $category_tep = 'buy';
+    }else{
+      $category_tep ='sell';
+    }
     $category_type = array($category_tep);
-}else{
-  $category_type = $category;
-}
-/*以下是正式采集*/
-$game_type=$game_type;
-require('collect_match.php');
+  }else{
+    $category_type = $category;
+  }
+  /*以下是正式采集*/
+  $game_type=$game_type;
+  require_once('collect_match.php');
   foreach($category_type as $category_value){
 
-      $url_array = $url_str_array[$category_value];
-      $category_id_array = $category_id_str_array[$category_value];
-      $site = $site_str[$category_value];
+    $url_array = $url_str_array[$category_value];
+    $category_id_array = $category_id_str_array[$category_value];
+    $site = $site_str[$category_value];
 
-	  //正则
-	      $search_array = $search_array_match[$category_value][$game_type];
+     //正则
+    $search_array = $search_array_match[$category_value][$game_type];
+    //开始采集数据
+    $curl_flag = 0;
+    $index = 0;
+    foreach($site as $site_value){
+      save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,$collect_error_array);
+      $index++;
+    }
+  //exit;
+  }
 
-  //开始采集数据
-  $curl_flag = 0;
-  $index = 0;
-  foreach($site as $site_value){
+/*
+ * na FF14 游戏采集
+ */
+  if($game_type == 'FF14'){
+    tep_get_toher_collect($game_type);
+  }
+/*get_contents_main end*/
+}
+
+function save_site_res($game_type,$category_value,$site_value,$url_array,$search_array,$index,&$collect_error_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
-      continue;
+      return false;
     }
     //if(!strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
@@ -179,12 +194,14 @@ require('collect_match.php');
       //取出单价i
       $kaka_array = array();
       foreach($result_array[0]['url'] as $key=>$url){
-          if($url==''){continue;}
-			  if($flag==true){
-			  sleep(3);
-			  }
+        if($url==''){
+          continue;
+        }
+        if($flag==true){
+          sleep(3);
+        }
 //          $url = $url.'?s=bank_transfer';
-          $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
+        $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$index],$curl_flag);
           /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
@@ -195,38 +212,37 @@ require('collect_match.php');
                }
           }
           */
-          $result_array_kaka = $result_kaka->fetch();
-          if(!$result_kaka->collect_flag){
-
-            $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
-          }
+         $result_array_kaka = $result_kaka->fetch();
+         if(!$result_kaka->collect_flag){
+           $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+         }
           //选三个最小的数据
-          $inventorys_array = $result_array_kaka[0]['inventory'];
-          $result_array_kaka = array($result_array_kaka[0][0]);
+         $inventorys_array = $result_array_kaka[0]['inventory'];
+         $result_array_kaka = array($result_array_kaka[0][0]);
          $result_array_kakas = array();
          foreach($result_array_kaka as $k=>$kaka){
-             foreach($kaka as $keyk=>$kk){
-                $kk =str_replace(',','',$kk);
-                $result_array_kakas[$k][$keyk]['price'] = $kk;
-                 $kkk =str_replace(',','',$inventorys_array[$keyk]);
-                $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
+           foreach($kaka as $keyk=>$kk){
+             $kk =str_replace(',','',$kk);
+             $result_array_kakas[$k][$keyk]['price'] = $kk;
+              $kkk =str_replace(',','',$inventorys_array[$keyk]);
+             $result_array_kakas[$k][$keyk]['inventory'] = $kkk;
 //                $result_array_kakas[$k][$keyk]['name'] = $kaka_name[$keyk];
            }
-          }
-          $prices_array = array();
-        $kaka_array = array();
-          foreach($result_array_kakas as $val){
-             foreach($val as $v){
-               if($v['inventory'] !=0){
-                     $prices_array[] = $v['price'];
-                     $kaka_array[] = $v;
-               }
-            } 
-          }
-          array_multisort($prices_array, SORT_ASC,$kaka_array);
-          $kaka_key = count($url_kaka_array)-1;
-          $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
-          $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
+         }
+         $prices_array = array();
+         $kaka_array = array();
+         foreach($result_array_kakas as $val){
+           foreach($val as $v){
+             if($v['inventory'] !=0){
+               $prices_array[] = $v['price'];
+               $kaka_array[] = $v;
+             }
+           } 
+         }
+         array_multisort($prices_array, SORT_ASC,$kaka_array);
+         $kaka_key = count($url_kaka_array)-1;
+         $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
+         $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
      }
 
    }
@@ -262,7 +278,7 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
    //     $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
     //}
        $sort_order = 0;
-   }
+  }
 
 //判断数据库是否存在相同名称相同category_id 的商品
       $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
@@ -292,19 +308,8 @@ foreach($product_old_list as $product_old_name){
     }
 }
 
-    $index++;
-  }
-  //exit;
-  }
+}
 
-/*
- * na FF14 游戏采集
- */
-if($game_type == 'FF14'){
-  tep_get_toher_collect($game_type);
-}
-/*get_contents_main end*/
-}
 function tep_get_toher_collect($game_type){
   $na_url_array = array();
   $na_category_id_array = array();
