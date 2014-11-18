@@ -7,7 +7,6 @@ error_reporting(E_ALL);
 
 require_once(PRO_ROOT_DIR."class/spider.php");
 require_once(PRO_ROOT_DIR."collect.php");
-require_once(PRO_ROOT_DIR."collect_match.php");
 
 define('LOG_DIR',PRO_ROOT_DIR.'logs/');
 
@@ -30,6 +29,7 @@ function cron_log($collect_info){
     echo 'create file failed'.$log_file;
   }else {
     $str_write = '';
+    $str_write .=date('H:i:s',time()).str_repeat(' ',5);
     $str_write .= $collect_info."\n";
 
     $handle=fopen($log_file,"a+");
@@ -164,95 +164,45 @@ while(true){
         foreach($site_array as $site){
           $site_arr[] = $site;     
         }
-//预处理网站
-  $site_str = array();
-  $url_str_array = array();
-  $category_id_str_array = array();
-  $url_kaka_array = array();
-  $site_info = array();
-  /*以下是区分是手动更新的还是后台自动执行更新的判断
-   * 买卖是数组是手动更新的,相反就是后台自动更新的
-   * */
-  //site
-  $site_query = mysql_query("select site_id,site_name from site order by site_id asc");
-  $i = 0;
-  $j = 0;
-  while($site_array = mysql_fetch_array($site_query)){
+        $tep = get_contents_main($game,$key,$site_arr,$collect_arror_name,true); 
+        $collect_error_game = array();
+        //获取所有的网站
+        $site_list_array = array();
+        $site_url_array = array();
+        $site_query = mysql_query("select site_id,site_name from site");
+        while($site_id_array = mysql_fetch_array($site_query)){
 
-    $category_query = mysql_query("select * from category where site_id='".$site_array['site_id']."' and category_name='".$game_type."' and game_server='jp'");
-    while($category_array = mysql_fetch_array($category_query)){
+          $site_list_array[$site_id_array['site_id']] = $site_id_array['site_name'];
+          $site_url_array[$site_id_array['site_id']] = $site_id_array['site_url'];
 
-      if($category_array['category_type'] == 1){
-
-        $url_str_array['buy'][$i] = $category_array['category_url'];
-        $category_id_str_array['buy'][$i] = $category_array['category_id'];
-        $site_str['buy'][] = $i;
-        $site_info['buy'][$i] = $site_array['site_name'];
-        $i++;
-      }else{
-       
-        $url_str_array['sell'][$j] = $category_array['category_url'];
-        $category_id_str_array['sell'][$j] = $category_array['category_id'];
-        $site_str['sell'][] = $j;
-        $site_info['buy'][$j] = $site_array['site_name'];
-        $j++;
-      }
-    } 
-  }
-  if($key==1){
-    $category_tep = 'buy';
-  }else{
-    $category_tep ='sell';
-  }
-  $category_type = array($category_tep);
-  $game_type=$game;
-//预处理网站结束
-
-//开始处理数据
-
-  foreach($category_type as $category_value){
-
-    $url_array = $url_str_array[$category_value];
-    $category_id_array = $category_id_str_array[$category_value];
-    $site = $site_str[$category_value];
-
-     //正则
-    $search_array = $search_array_match[$category_value][$game_type];
-    //开始采集数据
-    $curl_flag = 0;
-    foreach($site as $site_value){
-      if(strpos($url_array[$site_value],'www.iimy.co.jp')||strpos($url_array[$site_value],'192.168.160.200')){
-        $site_key = 'www.iimy.co.jp';
-      }else if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
-        $site_key = 'rmt.kakaran.jp';
-      }else{
-        $site_url_array = parse_url($url_array[$site_value]);
-        $site_key = $site_url_array['host'];
-      }
-      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$collect_error_array);
-      if(is_array($collect_res)){
-        $x=1;
-        foreach($collect_res as $collect_res_row){
-          $write_str = $collect_res_row.'--'.$site_info[$category_value][$site_value].$x;
-          cron_log($write_str);
-          $x++;
         }
-      }else if($collect_res!=''){
-        $write_str = $collect_res.'--'.$site_info[$category_value][$site_value];
-        cron_log($write_str);
-      }
-    }
-  //exit;
-  }
+        foreach($collect_error_array as $collect_error_value){
 
-/*
- * na FF14 游戏采集
- */
-  if($game_type == 'FF14'){
-    tep_get_toher_collect($game_type);
-    $write_str =$game_type.'--NA';
-    cron_log($write_str);
-  }
+          if($collect_error_value['type'] == 'buy'){
+
+            $category_type = 1;
+          }else{
+            $category_type = 0;
+          }
+          $category_query = mysql_query("select category_id,site_id from category where category_name='".$collect_error_value['game']."' and category_url='".$collect_error_value['url']."' and category_type='".$category_type."'");
+          if(mysql_num_rows($category_query) > 0){
+            $category_array = mysql_fetch_array($category_query);
+          }else{
+
+            $url_array = parse_url($collect_error_value['url']);
+            $url_str = $url_array['scheme'].'://'.$url_array['host'].'/';
+            $category_array['site_id'] = array_search($url_str,$site_url_array);
+          }
+          $collect_error_game[] = $collect_error_value['game'].'--'.$collect_error_value['type'].'--'.$category_array['site_id'];
+        }
+
+        //保存日志
+        foreach($site_array as $site){
+          if(!in_array($game.'--'.$category.'--'.$site['site_id'],$collect_error_game)){
+            $write_str =$game.'--'.$category.'--'.$site['site_name'];
+            cron_log($write_str);
+          }
+        }
         sleep(20);
     }
   }
