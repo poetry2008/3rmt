@@ -122,7 +122,7 @@ if($_GET['action'] == 'get_parent_category'){
       'rohan'=> '382',
       'genshin'=> '620');
   $game_str_array = $old_game_str_array;
-  $url = '192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
+  $url = 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址
   curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时
@@ -138,16 +138,21 @@ if($_GET['action'] == 'get_parent_category'){
   foreach($game_id_array as $key => $value){
     $temp_info_array = array();
     $sort = 9999;
+    $temp_flag = false;
     foreach($result as $res ){
       if($res->categories_id == $value ){
+        $temp_flag = true;
         $sort = $res->sort_order;
         break;
       }
     }
-    $temp_info_array['keyword'] = $key;
-    $temp_info_array['name'] = $game_str_array[$key];
-    $temp_info_array['sort'] = $sort;
-    $insert_category_sort_array[] = $temp_info_array;
+
+    if($temp_flag == true){
+      $temp_info_array['keyword'] = $key;
+      $temp_info_array['name'] = $game_str_array[$key];
+      $temp_info_array['sort'] = $sort;
+      $insert_category_sort_array[] = $temp_info_array;
+    }
   }
   //插入排序
   $sql_clear = "TRUNCATE TABLE category_sort";

@@ -125,6 +125,11 @@ function get_fetch_by_url($url,$search_match,$curl_flag=0){
   $search_array = array();
   foreach($search_match as $key => $value){
     preg_match_all('/'.$value.'/is',$result,$temp_array);
+    foreach($temp_array[1] as $k => $v){ 
+      if($v==''||trim($v)==''){
+        $temp_array[1][$k] = strip_tags($temp_array[0][$k]);
+      }
+    }
     $search_array[$key] = $temp_array[1];
   }
   $result_array[] = $search_array;
