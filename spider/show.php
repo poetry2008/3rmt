@@ -122,7 +122,7 @@ if($_GET['action'] == 'get_parent_category'){
       'rohan'=> '382',
       'genshin'=> '620');
   $game_str_array = $old_game_str_array;
-  $url = '192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
+  $url = 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址
   curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时
