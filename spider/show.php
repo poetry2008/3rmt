@@ -1505,14 +1505,15 @@ echo $sql;
 
 /*处理排序*/
 if($game != 'AION'){
-  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+//主站价格不是0
+  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   while($p_sort_array = mysql_fetch_array($product_query_before)){
      $product_before[]=$p_sort_array['product_name'];
   }
   if(empty($product_before)){
-      $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+      $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   }else{
-     $product_query_behind = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+     $product_query_behind = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   }
   while($p_sort_array = mysql_fetch_array($product_query_behind)){
      $product_behind[]=$p_sort_array['product_name'];
