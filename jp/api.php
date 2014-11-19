@@ -121,8 +121,8 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                    pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
                    where  p.products_id = p2c.products_id 
                    and pd.products_id = p2c.products_id 
-                   and p2c.categories_id = '" . $cpath . "' ) p
-                   where site_id = '0'";
+                   and p2c.categories_id = '" . $cpath . "' and pd.products_status=1) p
+                   where site_id = '0' or site_id = '1'";
   
   $result_query = tep_db_query($listing_sql);
 
@@ -192,9 +192,10 @@ $categories_query = tep_db_query("
         and cd.language_id='" . $languages_id ."' 
       order by site_id DESC
     ) c 
-    where site_id = 0
+    where site_id = '0' 
+    or site_id = '1' 
     group by categories_id
-    having c.categories_status != '1' and c.categories_status != '3' 
+    having c.categories_status = '0' 
     order by sort_order, categories_name
 ");
 while ($category = tep_db_fetch_array($categories_query))  {
