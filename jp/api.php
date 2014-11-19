@@ -116,7 +116,8 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                  p.products_tax_class_id, 
                  pd.site_id,
                  pd.products_name,
-                 p.products_bflag
+                 p.products_bflag,
+                 p.sort_order
                  from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
                    pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
                    where  p.products_id = p2c.products_id 
