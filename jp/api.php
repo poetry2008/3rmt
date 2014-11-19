@@ -122,7 +122,7 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                    where  p.products_id = p2c.products_id 
                    and pd.products_id = p2c.products_id 
                    and p2c.categories_id = '" . $cpath . "' and pd.products_status=1) p
-                   where site_id = '0' or site_id = '1'";
+                   where site_id = '0' or site_id = '1' order by sort_order,products_name,products_id";
   
   $result_query = tep_db_query($listing_sql);
 
