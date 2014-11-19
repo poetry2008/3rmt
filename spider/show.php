@@ -359,13 +359,12 @@ function update_data(){
     async:false,
     url: 'collect.php',
     success: function(msg) {
-alert(msg);
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
         $('body').css('cursor','');
         setTimeout('read_time()',8000);
-        location.href="show.php<?php echo (isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : '').'&';?>error_url="+error_str[1];
+       location.href="show.php<?php echo (isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : '').'&';?>error_url="+error_str[1];
       }else{
         $('body').css('cursor','');
         setTimeout('read_time()',8000); 
@@ -1507,14 +1506,14 @@ echo $sql;
 /*处理排序*/
 if($game != 'AION'){
 //主站价格不是0
-  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
   while($p_sort_array = mysql_fetch_array($product_query_before)){
      $product_before[]=$p_sort_array['product_name'];
   }
   if(empty($product_before)){
       $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   }else{
-     $product_query_behind = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+     $product_query_behind = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
   }
   while($p_sort_array = mysql_fetch_array($product_query_behind)){
      $product_behind[]=$p_sort_array['product_name'];
