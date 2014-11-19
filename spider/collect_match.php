@@ -1018,7 +1018,7 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
-              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
+              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の宝石販売<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
@@ -1812,7 +1812,7 @@ $search_array_match = array(
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
                     'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                     ),
-              'www.iimy.co.jp'=>  array('products_name'=>'<name>(.*?)の.*?<\/name>',
+              'www.iimy.co.jp'=>  array('products_name'=>'<name>(.*?)の宝石買取<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),

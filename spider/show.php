@@ -303,7 +303,7 @@ function get_category_sort(){
     type: "POST",
     data:"",
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'show.php?action=get_parent_category',
     success: function(msg) {
       setTimeout('read_time()',8000);
@@ -356,7 +356,7 @@ function update_data(){
     type: "POST",
     data: 'game=<?php echo isset($_GET['game']) ? $_GET['game'] : 'FF11';?>&flag=<?php echo 'has';?>',
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'collect.php',
     success: function(msg) {
       var error_str = msg.split("|||");
@@ -385,7 +385,7 @@ function update_data_status(update_status){
       $.ajax({
          type: "POST",
          data:"update_status="+update_status,
-         async:true,
+         false:true,
          url: 'show.php?action=update_status',
          success: function(msg) {
          location.href = "show.php<?php echo (isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : '');?>"
@@ -400,7 +400,7 @@ function update_products_price(category_name,products_name,products_type,product
     type: "POST",
     data: 'category_name='+category_name+'&products_name='+products_name+'&products_type='+products_type+'&products_id='+products_id,
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'ajax.php?action=update_products_price',
     success: function(msg) {
       setTimeout('read_time()',1000); 
@@ -1497,17 +1497,44 @@ $product_query = mysql_query("select * from product p,category c where p.categor
 if($game=='AION'){
 //这里面有两个种类的游戏(特别处理。为了区分开)
 $product_query = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.category_id desc, p.sort_order desc");
-
 }
 /*
 $sql ="select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.category_id desc, p.sort_order desc";
 echo $sql;
 */
 
+/*处理排序*/
+if($game != 'AION'){
+//主站价格不是0
+  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+  while($p_sort_array = mysql_fetch_array($product_query_before)){
+     $product_before[]=$p_sort_array['product_name'];
+  }
+  if(empty($product_before)){
+      $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+  }else{
+     $product_query_behind = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+  }
+  while($p_sort_array = mysql_fetch_array($product_query_behind)){
+     $product_behind[]=$p_sort_array['product_name'];
+  }
+  $product_behind = array_unique($product_behind);
+  $product_sort = array_unique(array_merge($product_before,$product_behind));
+  foreach($product_sort as $product_name){
+     $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
+     $product_sort_array[] = $temp_name;
+  }
+}
+/*end 处理排序*/
+
+
 while($product_array = mysql_fetch_array($product_query)){
-  $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
-  if(!in_array($temp_name,$product_sort_array)){
-    $product_sort_array[] = $temp_name;     
+	//AION是两个种商品.排序单独处理了
+  if($game == 'AION'){
+    $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
+    if(!in_array($temp_name,$product_sort_array)){
+      $product_sort_array[] = $temp_name;     
+    }
   }
   if($product_array['site_id'] != 7){
     if($game == 'PSO2'){
@@ -1526,11 +1553,12 @@ while($product_array = mysql_fetch_array($product_query)){
     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
   }
 }
-sort($product_sort_array);
+//sort($product_sort_array);
 
 $product_name_array = array_unique($product_name_array);
 if($game == 'DQ10'){
 
+  $replace_name_array = array('ドラクエ10'=>'dq10');
   $product_name_array = $product_sort_array;
   $product_real_array = $product_sort_array;
   foreach($product_list_aray as $list_key=>$list_value){
@@ -1540,6 +1568,8 @@ if($game == 'DQ10'){
       $product_list_aray[$list_key][$key]['name'] = $product_sort_array[$key]; 
     }
   }
+  $diff_name_array = array_keys($replace_name_array);
+  $product_sort_array = array_diff($product_sort_array,$diff_name_array);
 }else if($game == 'ARAD'){
 
   $replace_name_array = array('diregee'=>'ディレジエ',
