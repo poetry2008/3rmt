@@ -14,7 +14,7 @@ define('LOG_DIR',PRO_ROOT_DIR.'logs/');
 define('DB_SERVER', 'localhost'); //服务器名
 define('DB_SERVER_USERNAME', 'root'); //用户名
 define('DB_SERVER_PASSWORD', 'Qz8PYrk60uVg'); //密码
-define('DB_DATABASE', 'osc_collect_test'); //数据库名
+define('DB_DATABASE', 'osc_collect'); //数据库名
 
 function cron_log($collect_info){
   //文件不存在则建立
@@ -102,10 +102,6 @@ while($row = mysql_fetch_array($category_query)){
 }
 */
 
-$category_query=  mysql_query("select * from category_sort order by sort ,  category_name  ");  
-while($row = mysql_fetch_array($category_query)){
-    $category_name_array[] = $row['category_keyword'];
-}
 
 //买卖
 $category_type_all=array(1=>'buy',0=>'sell');
@@ -115,13 +111,17 @@ $site_query = mysql_query("select site_id,site_name from site order by site_id a
 while($site_row = mysql_fetch_array($site_query)){
    $site_array[] =$site_row; 
 }
+
+$collect_error_array = array();
+while(true){
+$category_query=  mysql_query("select * from category_sort order by sort ,  category_name  ");  
+while($row = mysql_fetch_array($category_query)){
+    $category_name_array[] = $row['category_keyword'];
+}
 if(empty($auto_array)){
   $auto_array['game_name'] = $category_name_array[0];
   $auto_array['game_type'] = 1;
 }
-
-$collect_error_array = array();
-while(true){
         $collect_error_array = array();
   foreach($category_name_array as $game){
     if($game != $auto_array['game_name'] && $flag == 1){
