@@ -99,7 +99,8 @@ function get_fetch_by_url($url,$search_match,$curl_flag=0){
   $result_array = array();
   if($curl_flag == 0 ){
     $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>10));
-    $result = file_get_contents($url,false,$opts);
+    $context = stream_context_create($opts);
+    $result = file_get_contents($url,false,$context);
   }else{
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址 
@@ -261,7 +262,7 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
   
 
 //给主站的商品进行排序
- if(strpos($url_array[$site_value],'192.168.160.200')||strpos($url_array[$site_value],'www.iimy.co.jp')){
+ if(strpos($url_array[$site_value],'192.168.160.200')){
       $sort_order =10000-$product_key;
  }else{
 //如果价格是空或是0
