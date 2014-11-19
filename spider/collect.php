@@ -253,8 +253,9 @@ while($row_tep = mysql_fetch_array($search_query)){
 }
 //新获取的数据已经不包含数据库的数据,删除
 foreach($product_old_list as $product_old_name){
-    if(!in_array($product_old_name,$product_new)){
-        $products_query = mysql_query("update product set is_error=1  where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
+    if(!in_array($product_old_name,$product_new) && !empty($product_new)){
+        $products_query = mysql_query("delete from product where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
+       // $products_query = mysql_query("update product set is_error=1  where category_id='".$category_id_array[$site_value]."' and product_name='".$product_old_name."'");
     }
 }
   return $collect_res;
