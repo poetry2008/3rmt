@@ -6,7 +6,7 @@ set_time_limit(0);
 
 //file patch
 require('includes/configure.php');
-require_once('class/spider.php');
+//require_once('class/spider.php');
 
 //link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
@@ -94,6 +94,42 @@ if($flag_check!= ''){
   }
 
 }
+function get_fetch_by_url($url,$search_match,$curl_flag=0){
+  $result = '';
+  $result_array = array();
+  if($curl_flag == 0 ){
+    $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>10));
+    $result = file_get_contents($url,false,$opts);
+  }else{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址 
+    //curl_setopt($ch,CURLOPT_HEADER,1); //是否显示头部信息
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时  
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间  
+    curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
+    curl_setopt($ch, CURLOPT_REFERER,_REFERER_); //设置 referer 
+    curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回结果
+    $result = curl_exec($ch);
+    curl_close($ch);
+  }
+  if(!$result){
+    return false;
+  }
+  $encode_array = array('UTF-8','EUC-JP','Shift_JIS','ISO-2022-JP');
+  $encode = mb_detect_encoding($result,$encode_array);
+  if(strtolower($encode) != 'UTF-8'){
+      $result = mb_convert_encoding($result,'UTF-8',$encode_array);
+  }
+  $search_array = array();
+  foreach($search_match as $key => $value){
+    preg_match_all('/'.$value.'/is',$result,$temp_array);
+    $search_array[$key] = $temp_array[1];
+  }
+  $result_array[] = $search_array;
+  return $result_array;
+
+}
 
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
 //echo $url_array[$site_value]."\n";
@@ -117,21 +153,19 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
    }
     if($url_array[$site_value]=='//http://rmtrank.com/777town+index.htm'){
       $url_array[$site_value] = str_replace('//http://rmtrank.com/777town+index.htm','http://rmtrank.com/777town+index.htm',$url_array[$site_value]);
+    }
+    if(class_exists('Spider')){
       $result = new Spider($url_array[$site_value],'',$search_array[$site_key],$curl_flag);
       $result_array = $result->fetch();
       if(!$result->collect_flag){
 
         $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       }else{
-      	$collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+        $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
     }else{
-      $result = new Spider($url_array[$site_value],'',$search_array[$site_key],$curl_flag);
-      $result_array = $result->fetch();
-      if(!$result->collect_flag){
-
-        $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
-      }else{
+      $result_array = get_fetch_by_url($url_array[$site_value],$search_array[$site_key],$curl_flag);
+      if($result_array){
         $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
     }
@@ -149,7 +183,8 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
           sleep(3);
         }
 //          $url = $url.'?s=bank_transfer';
-        $result_kaka = new Spider("rmt.kakaran.jp".$url,'',$search_array[$site_key],$curl_flag);
+        if(class_exists('Spider')){
+          $result_kaka = new Spider("http://rmt.kakaran.jp".$url,'',$search_array[$site_key],$curl_flag);
           /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
@@ -160,11 +195,17 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
                }
           }
           */
-         $result_array_kaka = $result_kaka->fetch();
-         if(!$result_kaka->collect_flag){
-           $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+           $result_array_kaka = $result_kaka->fetch();
+           if(!$result_kaka->collect_flag){
+             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+           }else{
+             $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+           }
          }else{
-           $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$search_array[$site_key],$curl_flag);
+           if($result_array_kaka){
+              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+           }
          }
           //选三个最小的数据
          $inventorys_array = $result_array_kaka[0]['inventory'];
