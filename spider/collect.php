@@ -268,6 +268,10 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
 
 //给主站的商品进行排序
  if(strpos($url_array[$site_value],'192.168.160.200')){
+   $value = $value;
+   $result_str = str_replace('円','',$result_array[0]['price'][$product_key]);
+   $result_str = str_replace(',','',$result_str);
+   $result_inventory = str_replace(',','',$result_array[0]['inventory'][$product_key]);
       $sort_order =10000-$product_key;
  }else{
 //如果价格是空或是0
