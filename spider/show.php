@@ -122,7 +122,7 @@ if($_GET['action'] == 'get_parent_category'){
       'rohan'=> '382',
       'genshin'=> '620');
   $game_str_array = $old_game_str_array;
-  $url = '192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
+  $url = 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址
   curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时
@@ -294,7 +294,7 @@ $value_status = '自動更新開始';
 }
 $date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
 $date_array = mysql_fetch_array($date_query);
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*0 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
 echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
 echo '</tr></table>';
@@ -364,6 +364,7 @@ function update_data(){
     async:false,
     url: 'collect.php',
     success: function(msg) {
+alert(msg);
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -1518,7 +1519,7 @@ if($game != 'AION'){
   if(empty($product_before)){
       $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   }else{
-     $product_query_behind = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+     $product_query_behind = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
   }
   while($p_sort_array = mysql_fetch_array($product_query_behind)){
      $product_behind[]=$p_sort_array['product_name'];
@@ -1555,7 +1556,9 @@ while($product_array = mysql_fetch_array($product_query)){
     }
     $product_real_array[] = $product_array['product_name'];
 }else{
-    $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
+     $product_real_array[] = $product_array['product_name'];
+     $product_name_array[] = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
+     $product_list_aray[$product_array['category_id']][] = array('name'=>$product_array['product_name'],'price'=>$product_array['product_price'],'inventory'=>$product_array['product_inventory'],'product_id'=>$product_array['product_id'],'is_error'=>$product_array['is_error']);
   }
 }
 //sort($product_sort_array);
@@ -1699,7 +1702,7 @@ if(count($price)>1){
     echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }else{
 
-    echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
+    echo '<td><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }
     echo '</tr>';
 }

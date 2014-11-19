@@ -126,6 +126,11 @@ class Spider {
     foreach($mode_array as $key=>$value){
 
       preg_match_all('/'.$value.'/is',$contents,$temp_array);
+      foreach($temp_array[1] as $k => $v){ 
+        if($v==''||trim($v)==''){
+          $temp_array[1][$k] = strip_tags($temp_array[0][$k]);
+        }
+      }
       $search_array[$key] = $temp_array[1];
     }
     return $search_array;

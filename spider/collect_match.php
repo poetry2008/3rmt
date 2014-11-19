@@ -440,7 +440,7 @@ $search_array_match = array(
                     ),
                   ),
       'nobunaga'=>array(
-            'www.matubusi.com'=> array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
+            'www.matubusi.com'=> array('products_name'=>'<th class="rowheader">.*?([^<]*).*?<\/th>',
                       'price'=>'<td class="center">([0-9.,]+)円<\/td>.*?<td class="center">[0-9.,]+円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
@@ -1521,7 +1521,7 @@ $search_array_match = array(
                     ),
                   ), 
         'nobunaga'=>array(
-               'www.matubusi.com'=>array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
+               'www.matubusi.com'=>array('products_name'=>'<th class="rowheader">.*?([^<]*).*?<\/th>',
                       'price'=>'<td class="center">(.*?)円<\/td>.*?<td class="center">.*?<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
