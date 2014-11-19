@@ -220,7 +220,7 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
   
 
 //给主站的商品进行排序
- if(strpos($url_array[$site_value],'192.168.160.200')){
+ if(strpos($url_array[$site_value],'192.168.160.200')||strpos($url_array[$site_value],'www.iimy.co.jp')){
       $sort_order =10000-$product_key;
  }else{
 //如果价格是空或是0
