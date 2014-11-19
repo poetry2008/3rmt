@@ -303,7 +303,7 @@ function get_category_sort(){
     type: "POST",
     data:"",
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'show.php?action=get_parent_category',
     success: function(msg) {
       setTimeout('read_time()',8000);
@@ -356,7 +356,7 @@ function update_data(){
     type: "POST",
     data: 'game=<?php echo isset($_GET['game']) ? $_GET['game'] : 'FF11';?>&flag=<?php echo 'has';?>',
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'collect.php',
     success: function(msg) {
       var error_str = msg.split("|||");
@@ -385,7 +385,7 @@ function update_data_status(update_status){
       $.ajax({
          type: "POST",
          data:"update_status="+update_status,
-         async:true,
+         false:true,
          url: 'show.php?action=update_status',
          success: function(msg) {
          location.href = "show.php<?php echo (isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : '');?>"
@@ -400,7 +400,7 @@ function update_products_price(category_name,products_name,products_type,product
     type: "POST",
     data: 'category_name='+category_name+'&products_name='+products_name+'&products_type='+products_type+'&products_id='+products_id,
     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
-    async:true,
+    async:false,
     url: 'ajax.php?action=update_products_price',
     success: function(msg) {
       setTimeout('read_time()',1000); 
