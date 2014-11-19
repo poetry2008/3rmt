@@ -304,10 +304,10 @@ echo '</form>';
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 function get_category_sort(){
+  $('body').css('cursor','wait');$("#wait").show();
   $.ajax({
     type: "POST",
     data:"",
-    beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
     async:false,
     url: 'show.php?action=get_parent_category',
     success: function(msg) {
@@ -357,10 +357,10 @@ function read_time(){
 }
 
 function update_data(){
+  $('body').css('cursor','wait');$("#wait").show();
   $.ajax({
     type: "POST",
     data: 'game=<?php echo isset($_GET['game']) ? $_GET['game'] : 'FF11';?>&flag=<?php echo 'has';?>',
-    beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
     async:false,
     url: 'collect.php',
     success: function(msg) {
@@ -401,10 +401,10 @@ function update_data_status(update_status){
 }
 //update products price
 function update_products_price(category_name,products_name,products_type,products_id){
+  $('body').css('cursor','wait');$("#wait").show();
   $.ajax({
     type: "POST",
     data: 'category_name='+category_name+'&products_name='+products_name+'&products_type='+products_type+'&products_id='+products_id,
-    beforeSend: function(){$('body').css('cursor','wait');$("#wait").show();},
     async:false,
     url: 'ajax.php?action=update_products_price',
     success: function(msg) {
