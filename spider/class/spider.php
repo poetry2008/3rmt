@@ -59,11 +59,7 @@ class Spider {
       //开始采集时间戳
       $start_time = $this->get_timer();
       */
-      if($this->curl_flag == 0){
-        $contents = file_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page),false,$this->context);
-      }else{
-        $contents = $this->curl_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page)); 
-      }
+      $contents = $this->curl_get_contents($this->make_url($this->url,$this->url_mode,$this->current_page)); 
       /*
       //结束采集时间戳
       $end_time = $this->get_timer();
@@ -217,7 +213,7 @@ class Spider {
     curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时  
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间  
     curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
-    curl_setopt($ch, CURLOPT_REFERER,_REFERER_); //设置 referer 
+    curl_setopt($ch, CURLOPT_REFERER,$url); //设置 referer 
     curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回结果
     $contents = curl_exec($ch);

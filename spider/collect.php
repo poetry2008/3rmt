@@ -94,26 +94,20 @@ if($flag_check!= ''){
   }
 
 }
-function get_fetch_by_url($url,$search_match,$curl_flag=0){
+function get_fetch_by_url($url,$search_match){
   $result = '';
   $result_array = array();
-  if($curl_flag == 0 ){
-    $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>10));
-    $context = stream_context_create($opts);
-    $result = file_get_contents($url,false,$context);
-  }else{
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址 
-    //curl_setopt($ch,CURLOPT_HEADER,1); //是否显示头部信息
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时  
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间  
-    curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
-    curl_setopt($ch, CURLOPT_REFERER,_REFERER_); //设置 referer 
-    curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回结果
-    $result = curl_exec($ch);
-    curl_close($ch);
-  }
+  curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址 
+  //curl_setopt($ch,CURLOPT_HEADER,1); //是否显示头部信息
+  curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时  
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间  
+  curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
+  curl_setopt($ch, CURLOPT_REFERER,$url); //设置 referer 
+  curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回结果
+  $result = curl_exec($ch);
+  curl_close($ch);
   if(!$result){
     return false;
   }
@@ -170,7 +164,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
         $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
     }else{
-      $result_array = get_fetch_by_url($url_array[$site_value],$search_array[$site_key],$curl_flag);
+      $result_array = get_fetch_by_url($url_array[$site_value],$search_array[$site_key]);
       if($result_array){
         $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
@@ -208,7 +202,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }else{
-           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$search_array[$site_key],$curl_flag);
+           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$search_array[$site_key]);
            if($result_array_kaka){
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
