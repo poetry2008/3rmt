@@ -1451,6 +1451,12 @@ $category_query = mysql_query("select * from category where category_name='".$ga
 while($category_array = mysql_fetch_array($category_query)){
 
   if($category_array['category_url'] != ''){
+     if($category_array['site_id']==7&& $game=='AION' && $category_array['category_type'] == 1){
+       $tep_aion['buy'][]=$category_array['category_id'];
+     }
+     if($category_array['site_id']==7&& $game=='AION' && $category_array['category_type'] == 0){
+       $tep_aion['sell'][]=$category_array['category_id'];
+     }
     if($category_array['category_type'] == 1){
       $category_list_array[$category_array['site_id']]['buy'] = $category_array['category_id'];
       $category_site_array['buy'][] = $category_array['site_id'];
@@ -1518,6 +1524,9 @@ echo $sql;
 if($game != 'AION'){
 //主站价格不是0
   $product_query_before = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+}else{
+  $product_query_before = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.category_id desc, p.sort_order desc");
+}
   while($p_sort_array = mysql_fetch_array($product_query_before)){
      $product_before[]=$p_sort_array['product_name'];
   }
@@ -1534,18 +1543,19 @@ if($game != 'AION'){
      $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
      $product_sort_array[] = $temp_name;
   }
-}
 /*end 处理排序*/
 
 
 while($product_array = mysql_fetch_array($product_query)){
 	//AION是两个种商品.排序单独处理了
+/*
   if($game == 'AION'){
     $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
     if(!in_array($temp_name,$product_sort_array)){
       $product_sort_array[] = $temp_name;     
     }
   }
+*/
   if($product_array['site_id'] != 7){
     if($game == 'PSO2'){
       $product_array['product_name'] = preg_replace('/(．|：)/is','',$product_array['product_name']);
@@ -1625,6 +1635,10 @@ mysql_free_result($products_price_query);
 //商品列表
 $type = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 $i=0;
+//AION有两种,需要合并一下
+if($game=='AION'){
+   $product_list_aray[$tep_aion[$type][1]]=array_merge($product_list_aray[$tep_aion[$type][1]],$product_list_aray[$tep_aion[$type][0]]);
+}
 foreach($product_name_sort_array as $p_key=>$product_value){
   $even = 'dataTableSecondRow';
   $odd = 'dataTableRow';
