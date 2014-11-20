@@ -131,6 +131,12 @@ function get_fetch_by_url($url,$search_match){
 
 }
 
+//过滤逗号
+function my_filter($value){
+
+  return str_replace(',','',$value); 
+}
+
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
@@ -182,7 +188,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
         if($sleep_flag){
           sleep(3);
         }
-//          $url = $url.'?s=bank_transfer';
+        $url = $url.'?s=bank_transfer';
         if(class_exists('Spider')){
           $result_kaka = new Spider("http://rmt.kakaran.jp".$url,'',$search_array[$site_key],$curl_flag);
           /*
@@ -207,6 +213,31 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }
+         //过滤RMT网站数据
+         $kaka_name = array(); 
+         foreach($result_array_kaka[0]['site_names'] as $vname){
+               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
+               if(!empty($temp_array[1])){
+                   $kaka_name[] = $temp_array[1][0];
+               }else{
+                   $kaka_name[] = $vname;
+               }
+         }
+          $rmt_array = array();
+          $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
+          foreach($kaka_name as $kaka_key=>$kaka_value){
+
+            foreach($rmt_name as $rmt_key=>$rmt_value){
+
+              if(strpos($kaka_value,$rmt_value)!==false){
+
+                $rmt_array[] = $kaka_key;
+              }
+            }
+          }
+/*
+
+
           //选三个最小的数据
          $inventorys_array = $result_array_kaka[0]['inventory'];
          $result_array_kaka = array($result_array_kaka[0][0]);
@@ -232,8 +263,57 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          }
          array_multisort($prices_array, SORT_ASC,$kaka_array);
          $kaka_key = count($url_kaka_array)-1;
-         $result_array[0][price][] =  $kaka_array[$kaka_key]['price'];
-         $result_array[0][inventory][] = $kaka_array[$kaka_key]['inventory'];
+ */
+         //根据游戏分类来获取网站名称
+         $category_site_query = mysql_query("select * from category where category_id='".$category_id_array[$site_value]."'");
+         $category_site_array = mysql_fetch_array($category_site_query);
+         $site_name_query = mysql_query("select * from site where site_id='".$category_site_array['site_id']."'");
+         $site_name_array = mysql_fetch_array($site_name_query);
+         $result_price = $result_array_kaka[0][0]; 
+         foreach($rmt_array as $rmt_value){
+
+           unset($result_price[$rmt_value]);
+         }
+         $result_price = array_map("my_filter",$result_price);
+
+         $result_inventory = $result_array_kaka[0]['inventory'];
+         //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
+         asort($result_price);
+
+         $i = 0;
+         foreach($result_price as $key=>$value){
+
+           if($i == 0){
+              $frist_price_value = $value;
+              $frist_inventory_value = $result_inventory[$key];
+           }
+           if($i == 1){
+              $two_price_value = $value;
+              $two_inventory_value = $result_inventory[$key];
+           }
+           if($i == 2){
+              $three_price_value = $value;
+              $three_inventory_value = $result_inventory[$key];
+           }
+           $i++;
+           if($i == 3){
+
+            break;
+           }
+         }
+         //根据不同的网站，来获取相对应的商品价格及库存
+         if($site_name_array['site_name'] == 'カカラン1'){
+           $result_array[0]['price'][] =  $frist_price_value;
+           $result_array[0]['inventory'][] = $frist_inventory_value;
+         }
+         if($site_name_array['site_name'] == 'カカラン2'){
+           $result_array[0]['price'][] =  $two_price_value;
+           $result_array[0]['inventory'][] = $two_inventory_value;
+         }
+         if($site_name_array['site_name'] == 'カカラン3'){
+           $result_array[0]['price'][] =  $three_price_value;
+           $result_array[0]['inventory'][] = $three_inventory_value;
+         }
      }
 
    }

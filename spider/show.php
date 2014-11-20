@@ -174,7 +174,7 @@ if($_GET['action'] == 'save'){
   $inventory_show = $_POST['inventory_show'];
   $inventory_flag = $_POST['inventory_flag'];
   $site = $_POST['site'];
-  $game_name = !isset($_GET['game']) ? 'DQ10' : $_GET['game'];
+  $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
 
   $site_id_array = array();
   $site_all_query = mysql_query("select site_id from site order by sort_order");
@@ -246,59 +246,12 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
   <title>'.$game_str_array[$_GET['game']].'</title>
   </head>
   <body>';
-echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
 echo '<br><span class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
 echo '<select onchange="show_game_info(this.value)">';
 foreach($game_str_array as $key => $value){
   echo '<option value="'.$key.'" '.($_GET['game']==$key ? 'selected="selected"' : '').'>'.$value.'</option>';
 }
 echo '</select>';
-echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
-echo '<tr><td width="12%">表示業者設定</td>';
-$site_query = mysql_query("select * from site order by sort_order");
-$all_site_array = array();
-$index = 0;
-while($site_array_row = mysql_fetch_array($site_query)){
-  $index++;
-  if($site_array_row['site_name']=='ジャックポット'){
-    $all_site_array[0] = $site_array_row;
-  }else{
-    $all_site_array[$index] = $site_array_row;
-  }
-
-}
-ksort($all_site_array);
-foreach($all_site_array as $site_array){
-  $site_temp = unserialize($site_array['is_show']);
-  echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
-}
-echo '<td><input type="button" name="button1" value="全てチェック・解除" onclick="check_all();">&nbsp;&nbsp;<input type="hidden" name="num1" id="num" value="1"></td></tr></table>';
-echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
-echo '<tr><td width="12%">オプション</td>';
-$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
-while($config_array = mysql_fetch_array($config_query)){
-  if($config_array['config_value'] != ''){
-    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
-      $inventory_show_array = unserialize($config_array['config_value']);
-    }else{
-      $inventory_flag_array = unserialize($config_array['config_value']);
-    }
-  }
-}
-echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
-echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
-if($update_status==0){
-$value_status = '自動更新中止';
-}else{
-$value_status = '自動更新開始';
-}
-$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
-$date_array = mysql_fetch_array($date_query);
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
-echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
-echo '</td>';
-echo '</tr></table>';
-echo '</form>';
 ?>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 <script type="text/javascript" src="js/jquery.js"></script>
@@ -1451,6 +1404,12 @@ $category_query = mysql_query("select * from category where category_name='".$ga
 while($category_array = mysql_fetch_array($category_query)){
 
   if($category_array['category_url'] != ''){
+     if($category_array['site_id']==7&& $game=='AION' && $category_array['category_type'] == 1){
+       $tep_aion['buy'][]=$category_array['category_id'];
+     }
+     if($category_array['site_id']==7&& $game=='AION' && $category_array['category_type'] == 0){
+       $tep_aion['sell'][]=$category_array['category_id'];
+     }
     if($category_array['category_type'] == 1){
       $category_list_array[$category_array['site_id']]['buy'] = $category_array['category_id'];
       $category_site_array['buy'][] = $category_array['site_id'];
@@ -1517,36 +1476,39 @@ echo $sql;
 /*处理排序*/
 if($game != 'AION'){
 //主站价格不是0
-  $product_query_before = mysql_query("select * from product p,category c where p.product_price!=0 and c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+  $product_query_before = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+}else{
+  $product_query_before = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.category_id asc, p.sort_order desc");
+}
   while($p_sort_array = mysql_fetch_array($product_query_before)){
      $product_before[]=$p_sort_array['product_name'];
   }
   if(empty($product_before)){
-      $product_query_behind = mysql_query("select * from product p,category c where p.product_price=0 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+      $product_query_behind = mysql_query("select * from product p,category c where  p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.product_name asc");
+     while($p_sort_array = mysql_fetch_array($product_query_behind)){
+       $product_behind[]=$p_sort_array['product_name'];
+     }
+     $product_sort = array_unique($product_behind);
   }else{
-     $product_query_behind = mysql_query("select * from product p,category c where c.site_id=7 and p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+       $product_sort = array_unique($product_before);
   }
-  while($p_sort_array = mysql_fetch_array($product_query_behind)){
-     $product_behind[]=$p_sort_array['product_name'];
-  }
-  $product_behind = array_unique($product_behind);
-  $product_sort = array_unique(array_merge($product_before,$product_behind));
   foreach($product_sort as $product_name){
      $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
      $product_sort_array[] = $temp_name;
   }
-}
 /*end 处理排序*/
 
 
 while($product_array = mysql_fetch_array($product_query)){
 	//AION是两个种商品.排序单独处理了
+/*
   if($game == 'AION'){
     $temp_name = strtolower(trim(preg_replace('/\s+/is','',$product_array['product_name'])));
     if(!in_array($temp_name,$product_sort_array)){
       $product_sort_array[] = $temp_name;     
     }
   }
+*/
   if($product_array['site_id'] != 7){
     if($game == 'PSO2'){
       $product_array['product_name'] = preg_replace('/(．|：)/is','',$product_array['product_name']);
@@ -1626,6 +1588,10 @@ mysql_free_result($products_price_query);
 //商品列表
 $type = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 $i=0;
+//AION有两种,需要合并一下
+if($game=='AION'){
+   $product_list_aray[$tep_aion[$type][1]]=array_merge($product_list_aray[$tep_aion[$type][1]],$product_list_aray[$tep_aion[$type][0]]);
+}
 foreach($product_name_sort_array as $p_key=>$product_value){
   $even = 'dataTableSecondRow';
   $odd = 'dataTableRow';
@@ -1686,7 +1652,9 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
         echo '<td>&nbsp;</td>';
       }
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0 && !($inventory_flag_array[$game] !== 0 && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0)){
+if($site_value!=7){
         $price_array[] = $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'];
+}
       }
     }
     $price_array = array_filter($price_array);
@@ -1706,8 +1674,12 @@ $i++;
 if(count($price)>1){
     echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }else{
-
-    echo '<td><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
+   if(count($price)==0){
+     $hidden_style = 'type="hidden"';
+  }else{
+     $hidden_style = 'type="radio"';
+  }
+    echo '<td><input '.$hidden_style.'  id="zui_'.$i.'"  '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? number_format($price[0]).'円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }
     echo '</tr>';
 }
@@ -1793,6 +1765,60 @@ foreach($product_list_aray[$key] as $product_key=>$product_value){
     echo '</tr>';
 }
 echo '</table>';
+
+/*设定开始*/
+echo '<br/>';
+echo '<br/>';
+echo '<br/>';
+echo '<br/>';
+echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
+echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
+echo '<tr><td width="12%">表示業者設定</td>';
+$site_query = mysql_query("select * from site order by sort_order");
+$all_site_array = array();
+$index = 0;
+while($site_array_row = mysql_fetch_array($site_query)){
+  $index++;
+  if($site_array_row['site_name']=='ジャックポット'){
+    $all_site_array[0] = $site_array_row;
+  }else{
+    $all_site_array[$index] = $site_array_row;
+  }
+
+}
+ksort($all_site_array);
+foreach($all_site_array as $site_array){
+  $site_temp = unserialize($site_array['is_show']);
+  echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
+}
+echo '<td><input type="button" name="button1" value="全てチェック・解除" onclick="check_all();">&nbsp;&nbsp;<input type="hidden" name="num1" id="num" value="1"></td></tr></table>';
+echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
+echo '<tr><td width="12%">オプション</td>';
+$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
+while($config_array = mysql_fetch_array($config_query)){
+  if($config_array['config_value'] != ''){
+    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
+      $inventory_show_array = unserialize($config_array['config_value']);
+    }else{
+      $inventory_flag_array = unserialize($config_array['config_value']);
+    }
+  }
+}
+echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
+echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
+if($update_status==0){
+$value_status = '自動更新中止';
+}else{
+$value_status = '自動更新開始';
+}
+$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
+$date_array = mysql_fetch_array($date_query);
+echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
+echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
+echo '</td>';
+echo '</tr></table>';
+echo '</form>';
+/*end*/
 ?>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>
