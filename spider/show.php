@@ -66,6 +66,7 @@ function get_iimy_data(){
 
 //插入数据库
       foreach($search_array['products_name'] as $key=>$value){
+          $search_array['price'][$key] = str_replace(',','',$search_array['price'][$key]);
           $sort_order= 10000-$key;
           $search_query = mysql_query("select product_id from product where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
           if(mysql_num_rows($search_query) == 1){
