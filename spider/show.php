@@ -21,6 +21,78 @@ $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_query('set names utf8');
 mysql_select_db(DB_DATABASE);
 
+/**
+打开页面自动通过api自动获取主站数据
+  */
+get_iimy_data();
+function get_iimy_data(){
+    $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
+    $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
+
+    $category_query = mysql_query("select * from category where category_name='".$game_name."' and category_type='".$category_type."' and site_id='7'");
+    while($category_row = mysql_fetch_array($category_query)){
+       $iimy_url_array= parse_url($category_row['category_url']);
+       preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
+       $url= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+       //$url= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
+       $ch = curl_init();
+       curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址
+       curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时
+       curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间
+       curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
+       curl_setopt($ch, CURLOPT_REFERER,$url); //设置 referer
+       curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回结果
+       $contents = curl_exec($ch);
+       curl_close($ch);
+//正则
+       if($game_name == 'MU'){
+            $mode_array =array('products_name'=>'<name>(.*?)の宝石.*?<\/name>',
+                   'price'=>'<price>([0-9,.]+)円<\/price>',
+                   'inventory'=>'<quantity>(.*?)<\/quantity>'
+             );
+        }else{
+             $mode_array =array('products_name'=>'<name>(.*?)の.*?<\/name>',
+                   'price'=>'<price>([0-9,.]+)円<\/price>',
+                   'inventory'=>'<quantity>(.*?)<\/quantity>'
+             );
+        }
+//匹配数据
+       $search_array = array();
+       foreach($mode_array as $key=>$value){
+          preg_match_all('/'.$value.'/is',$contents,$temp_array);
+          $search_array[$key] = $temp_array[1];
+       }
+
+//插入数据库
+      foreach($search_array['products_name'] as $key=>$value){
+          $sort_order= 10000-$key;
+          $search_query = mysql_query("select product_id from product where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
+          if(mysql_num_rows($search_query) == 1){
+              $products_query = mysql_query("update product set is_error=0, product_price='".$search_array['price'][$key]."',product_inventory='".$search_array['inventory'][$key]."',sort_order='".$sort_order."' where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
+          }else{
+             if($value!=''){
+               $products_query = mysql_query("insert into product values(NULL,'".$category_row['category_id']."','".$value."','".$search_array['price'][$key]."','".$search_array['inventory'][$key]."','".$sort_order."',0)");
+             }
+          }
+       }
+
+      //数据库原有的商品名称
+       $search_query = mysql_query("select product_name from product where category_id='".$category_row['category_id']."'");
+       $product_old_list[] = array();
+       while($row_tep = mysql_fetch_array($search_query)){
+         $product_old_list[] = $row_tep['product_name'];
+      }
+     //新获取的数据已经不包含数据库的数据,删除
+      foreach($product_old_list as $product_old_name){
+         if(!in_array($product_old_name,$search_array['products_name']) && !empty($search_array['products_name'])){
+            $products_query = mysql_query("delete from product where category_id='".$category_row['category_id']."' and product_name='".$product_old_name."'");
+         }
+      }
+   }
+}
+
+
 $config_value_query = mysql_query("select config_key,config_value from config where config_key='COLLECT_IS_STOP_STATUS'");
 $config_value_array = mysql_fetch_array($config_value_query);
 $update_status = $config_value_array['config_value'];
@@ -256,6 +328,7 @@ echo '</select>';
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
+
 function get_category_sort(){
   $('body').css('cursor','wait');$("#wait").show();
   setTimeout(function(){
@@ -320,6 +393,7 @@ function update_data(){
     async:false,
     url: 'collect.php',
     success: function(msg) {
+alert(msg);
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
@@ -1393,8 +1467,18 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
 		   'genshin'=>'1個あたり  100金',
 		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
-$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
+$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."' and site_id!=7");
 $date_array = mysql_fetch_array($date_query);
+$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
+while($config_array = mysql_fetch_array($config_query)){
+  if($config_array['config_value'] != ''){
+    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
+      $inventory_show_array = unserialize($config_array['config_value']);
+    }else{
+      $inventory_flag_array = unserialize($config_array['config_value']);
+    }
+  }
+}
 echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
 echo '<table style="min-width:750px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
@@ -1627,8 +1711,8 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
             echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
          }
         }else{
-           echo '<td>&nbsp;</td>'; 
-          }
+          echo '<td>&nbsp;</td>'; 
+        }
         }else{ 
       //   if(strpos($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'],'-')){
         //     $prices_array = explode('-',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']);
@@ -1687,7 +1771,7 @@ if(count($price)>1){
 }
 
 //na ff14 游戏商品列表
-
+/*
 $start_buy_id = '';
 $start_sell_id = '';
 $category_list_array = array();
@@ -1766,6 +1850,7 @@ foreach($product_list_aray[$key] as $product_key=>$product_value){
  //  echo '<td>'.(number_format($price_array[0]) != 0 ? number_format($price_array[0]).'円' : '&nbsp;').'</td><td>'.(number_format($price_array[1]) != 0 ? number_format($price_array[1]).'円' : '&nbsp;').'</td>';
     echo '</tr>';
 }
+*/
 echo '</table>';
 
 /*设定开始*/
@@ -1796,16 +1881,6 @@ foreach($all_site_array as $site_array){
 echo '<td><input type="button" name="button1" value="全てチェック・解除" onclick="check_all();">&nbsp;&nbsp;<input type="hidden" name="num1" id="num" value="1"></td></tr></table>';
 echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">オプション</td>';
-$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
-while($config_array = mysql_fetch_array($config_query)){
-  if($config_array['config_value'] != ''){
-    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
-      $inventory_show_array = unserialize($config_array['config_value']);
-    }else{
-      $inventory_flag_array = unserialize($config_array['config_value']);
-    }
-  }
-}
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
 echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
 if($update_status==0){
