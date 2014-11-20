@@ -117,13 +117,14 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                  pd.site_id,
                  pd.products_name,
                  p.products_bflag,
-                 p.sort_order
+                 p.sort_order,
+                 pd.products_status
                  from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
                    pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
                    where  p.products_id = p2c.products_id 
                    and pd.products_id = p2c.products_id 
-                   and p2c.categories_id = '" . $cpath . "' and pd.products_status=1) p
-                   where site_id = '0' or site_id = '1' order by sort_order,products_name,products_id";
+                   and p2c.categories_id = '" . $cpath . "' order by pd.site_id desc) p
+                   where site_id = '0' or site_id = '1' group by products_id having p.products_status=1 order by sort_order,products_name,products_id";
   
   $result_query = tep_db_query($listing_sql);
 
