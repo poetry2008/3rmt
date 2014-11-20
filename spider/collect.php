@@ -219,6 +219,28 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }
+         //过滤RMT网站数据
+         $kaka_name = array(); 
+         foreach($result_array_kaka[0]['site_names'] as $vname){
+               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
+               if(!empty($temp_array[1])){
+                   $kaka_name[] = $temp_array[1][0];
+               }else{
+                   $kaka_name[] = $vname;
+               }
+         }
+          $rmt_array = array();
+          $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
+          foreach($kaka_name as $kaka_key=>$kaka_value){
+
+            foreach($rmt_name as $rmt_key=>$rmt_value){
+
+              if(strpos($kaka_value,$rmt_value)!==false){
+
+                $rmt_array[] = $kaka_key;
+              }
+            }
+          }
 /*
 
 
@@ -254,6 +276,10 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          $site_name_query = mysql_query("select * from site where site_id='".$category_site_array['site_id']."'");
          $site_name_array = mysql_fetch_array($site_name_query);
          $result_price = $result_array_kaka[0][0]; 
+         foreach($rmt_array as $rmt_value){
+
+           unset($result_price[$rmt_value]);
+         }
          $result_price = array_map("my_filter",$result_price);
 
          $result_inventory = $result_array_kaka[0]['inventory'];
