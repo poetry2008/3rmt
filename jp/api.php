@@ -151,7 +151,7 @@ echo "<result>\n";
       }                    
       @krsort($wari_array);
 
-      $products_price = $currencies->display_price(round($pricedef + $wari_array[0]),0); 
+      $products_price = $currencies->display_price(round($pricedef + current($wari_array)),0); 
     }
                           
 ?>
