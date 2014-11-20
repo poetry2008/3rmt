@@ -1393,6 +1393,8 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
 		   'genshin'=>'1個あたり  100金',
 		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
+$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
+$date_array = mysql_fetch_array($date_query);
 echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
 echo '<table style="min-width:750px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
@@ -1811,8 +1813,6 @@ $value_status = '自動更新中止';
 }else{
 $value_status = '自動更新開始';
 }
-$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."'");
-$date_array = mysql_fetch_array($date_query);
 echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
 echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
