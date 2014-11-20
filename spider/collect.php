@@ -137,6 +137,12 @@ function get_fetch_by_url($url,$search_match,$curl_flag=0){
 
 }
 
+//过滤逗号
+function my_filter($value){
+
+  return str_replace(',','',$value); 
+}
+
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
@@ -247,7 +253,9 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          $category_site_array = mysql_fetch_array($category_site_query);
          $site_name_query = mysql_query("select * from site where site_id='".$category_site_array['site_id']."'");
          $site_name_array = mysql_fetch_array($site_name_query);
-         $result_price = $result_array_kaka[0][0];
+         $result_price = $result_array_kaka[0][0]; 
+         $result_price = array_map("my_filter",$result_price);
+
          $result_inventory = $result_array_kaka[0]['inventory'];
          //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
          asort($result_price);
