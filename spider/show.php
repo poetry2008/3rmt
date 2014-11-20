@@ -174,7 +174,7 @@ if($_GET['action'] == 'save'){
   $inventory_show = $_POST['inventory_show'];
   $inventory_flag = $_POST['inventory_flag'];
   $site = $_POST['site'];
-  $game_name = !isset($_GET['game']) ? 'DQ10' : $_GET['game'];
+  $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
 
   $site_id_array = array();
   $site_all_query = mysql_query("select site_id from site order by sort_order");
