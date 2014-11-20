@@ -149,19 +149,9 @@ echo "<result>\n";
         $tt = explode(':', $parray[$i]);
         $wari_array[$tt[0]] = $tt[1];
       }                    
-      @ksort($wari_array);
+      @krsort($wari_array);
 
-      foreach($wari_array as $key => $val) {
-        if(tep_get_quantity($result['products_id'],true) == 0){
-          $products_price = $currencies->display_price(round($pricedef + $val),0);
-          break;
-        }
-
-        if(tep_get_quantity($result['products_id'],true) > $key){
-        
-          $products_price = $currencies->display_price(round($pricedef + $val),0);
-        }
-      }
+      $products_price = $currencies->display_price(round($pricedef + $wari_array[0]),0); 
     }
                           
 ?>
