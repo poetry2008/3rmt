@@ -74,7 +74,8 @@ if($flag_check!= ''){
     $site_key = '';
     foreach($site as $site_value){
       if(strpos($url_array[$site_value],'www.iimy.co.jp')||strpos($url_array[$site_value],'192.168.160.200')){
-        $site_key = 'www.iimy.co.jp';
+        continue;
+//        $site_key = 'www.iimy.co.jp';
       }else if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
         $site_key = 'rmt.kakaran.jp';
       }else{
