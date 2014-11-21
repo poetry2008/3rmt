@@ -165,7 +165,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
     $iimy_url_array= parse_url($url_array[$site_value]);
    preg_match_all("|[0-9]+_([0-9]+)|",$iimy_url_array['path'],$temp_category_id);
    $url_array[$site_value]= 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
-   continue;
+   return false;
 // $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
