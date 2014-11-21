@@ -67,6 +67,7 @@ function get_iimy_data(){
 //插入数据库
       foreach($search_array['products_name'] as $key=>$value){
           $search_array['price'][$key] = str_replace(',','',$search_array['price'][$key]);
+          $search_array['inventory'][$key] = str_replace(',','',$search_array['inventory'][$key]);
           $sort_order= 10000-$key;
           $search_query = mysql_query("select product_id from product where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
           if(mysql_num_rows($search_query) == 1){
@@ -394,7 +395,6 @@ function update_data(){
     async:false,
     url: 'collect.php',
     success: function(msg) {
-alert(msg);
       var error_str = msg.split("|||");
       if(error_str[0] == 'error'){ 
         alert('URL：'+error_str[1]+'\n更新が失敗しましたので、しばらくもう一度お試しください。');
