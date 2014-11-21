@@ -287,6 +287,12 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
          asort($result_price);
 
+         $frist_price_value = '';
+         $frist_inventory_value = '';
+         $two_price_value = '';
+         $two_inventory_value = '';
+         $three_price_value = '';
+         $three_inventory_value = '';
          $i = 0;
          foreach($result_price as $key=>$value){
 
