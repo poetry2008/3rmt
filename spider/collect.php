@@ -139,6 +139,20 @@ function my_filter($value){
   return str_replace(',','',$value); 
 }
 
+//通过值取键名
+function value_key($value,$array){
+
+  $key = array();
+  foreach($array as $k=>$v){
+
+    if($value == $v){
+
+      $key[] = $k;
+    }
+  }
+  sort($key);
+  return $key;
+}
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false,$other_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
@@ -319,19 +333,26 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          $three_price_value = '';
          $three_inventory_value = '';
          $i = 0;
+         $keys = array();
          foreach($result_price as $key=>$value){
 
            if($i == 0){
-              $frist_price_value = $value;
-              $frist_inventory_value = $result_inventory[$key];
+              $keys = value_key($value,$result_price);
+              $frist_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $frist_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 1){
-              $two_price_value = $value;
-              $two_inventory_value = $result_inventory[$key];
+              $keys = value_key($value,$result_price);
+              $two_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $two_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 2){
-              $three_price_value = $value;
-              $three_inventory_value = $result_inventory[$key];
+              $keys = value_key($value,$result_price);
+              $three_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $three_inventory_value = $result_inventory[$keys[0]];
            }
            $i++;
            if($i == 3){
