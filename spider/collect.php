@@ -533,6 +533,8 @@ function tep_get_toher_collect($game_type){
   }
 }
 function tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value){
+             $value = str_replace('：',' ',$value);
+             $value = str_replace('．',' ',$value);
         if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
@@ -739,6 +741,9 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                  $result_str = $price*10;
 
              }else{
+                 if($value=='†Liberal†'){
+                   $value='リベラル';
+                 }
                $price = $result_array[0]['price'][$product_key];
                $result_str = $price;
                $result_inventory = $result_array[0]['inventory'][$product_key]/10;
@@ -1319,6 +1324,9 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
          break; 
 	 case 'WZ':
               if($category_value == 'buy'){
+                 if($value=='†Liberal†'){
+                   $value='リベラル';
+                 }
                  $result_inventory = str_replace(',','',$inventory_array[0]); 
                  $price = $result_array[0]['price'][$product_key]; 
                  $result_str = $price;
