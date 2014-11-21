@@ -34,7 +34,7 @@ class Spider {
       $this->url_mode = $url_mode;
       $this->mode_array = $mode_array;
       $this->page_count = $this->page_count($url,$page_num_mode,$sum_mode);
-      $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>10));
+      $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30','timeout'=>20));
       $this->context = stream_context_create($opts);
       $this->current_page = 1;
       $this->curl_flag = $curl_flag;
@@ -210,8 +210,8 @@ class Spider {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url); //设置访问的url地址 
     //curl_setopt($ch,CURLOPT_HEADER,1); //是否显示头部信息
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10); //设置超时  
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); //设置连接等待时间  
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20); //设置超时  
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); //设置连接等待时间  
     curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_); //用户访问代理 User-Agent
     curl_setopt($ch, CURLOPT_REFERER,$url); //设置 referer 
     curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1); //跟踪301
