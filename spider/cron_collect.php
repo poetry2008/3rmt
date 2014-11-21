@@ -228,7 +228,7 @@ if(empty($auto_array)){
       if(is_array($collect_res)){
         $x=1;
         foreach($collect_res as $collect_res_row){
-          $write_str = $collect_res_row.'--'.$site_info[$category_value][$site_value].$x;
+          $write_str = $collect_res_row.'--'.$site_info[$category_value][$site_value].'-'.$x;
           cron_log($write_str);
           $x++;
         }
