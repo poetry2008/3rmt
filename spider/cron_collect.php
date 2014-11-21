@@ -213,7 +213,7 @@ if(empty($auto_array)){
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
-    $other_array = $other_array_match[$category_value][$game_type];
+    $other_array = $other_array_match[$category_value];
     //开始采集数据
     $curl_flag = 0;
     foreach($site as $site_value){
