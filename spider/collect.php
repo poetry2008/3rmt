@@ -371,13 +371,23 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
 //判断数据库是否存在相同名称相同category_id 的商品
       $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
 
+//当前游戏主站所有商品名称
+$c_type = $category_value=='buy'?'1':'0';
+    $product_all_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game_type."' and category_type='".$c_type."' and c.game_server='jp' and c.site_id=7");
+while($product_row = mysql_fetch_array($product_all_sql)){
+    $product_name_list_array[]=$product_row['product_name'];
+}
+$allow_insert_mark = 0;
+if(in_array(trim($value),$product_name_list_array) && !empty($product_name_list_array)){
+    $allow_insert_mark = 1;
+}
 //最新采集的商品名称
 $product_new[] = trim($value);
 //有,则更新 没有,则添加
-      if(mysql_num_rows($search_query) == 1){
+      if(mysql_num_rows($search_query) == 1 && $allow_insert_mark == 1){
         $products_query = mysql_query("update product set is_error=0, product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
-        if($value!=''){
+        if($value!='' && $allow_insert_mark = 1){
           $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."',0)");
         }
       }
