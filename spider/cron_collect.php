@@ -213,6 +213,7 @@ if(empty($auto_array)){
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
+    $other_array = $other_array_match[$category_value][$game_type];
     //开始采集数据
     $curl_flag = 0;
     foreach($site as $site_value){
@@ -224,7 +225,7 @@ if(empty($auto_array)){
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,true);
+      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,true,$other_array);
       if(is_array($collect_res)){
         $x=1;
         foreach($collect_res as $collect_res_row){
