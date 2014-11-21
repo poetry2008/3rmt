@@ -69,6 +69,7 @@ if($flag_check!= ''){
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
+    $other_array = $other_array_match[$category_value][$game_type];
     //开始采集数据
     $curl_flag = 0;
     $site_key = '';
@@ -82,7 +83,7 @@ if($flag_check!= ''){
         $site_url_array = parse_url($url_array[$site_value]);
         $site_key = $site_url_array['host'];
       }
-      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key);
+      save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,false,$other_array);
     }
   //exit;
   }
@@ -138,7 +139,7 @@ function my_filter($value){
   return str_replace(',','',$value); 
 }
 
-function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false){
+function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false,$other_array){
 //echo $url_array[$site_value]."\n";
     if($url_array[$site_value] == ''){
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
@@ -177,6 +178,30 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
       }
     }
     //处理kakaran
+/*
+    //过滤对应非主站的商品
+    //获取对应主站的商品
+    $products_name_array = array();
+    $main_site_name_query = mysql_query("select product_name from product where category_id='".$category_id_array[$site_value]."' group by product_name");
+    while($main_site_name_array = mysql_fetch_array($main_site_name_query)){
+
+      foreach($result_array[0]['products_name'] as $products_name_key=>$products_name_value){
+
+        if(strtolower(preg_replace('/\s+/','',$main_site_name_array['product_name'])) == strtolower(preg_replace('/\s+/','',$products_name_value))){
+
+          $products_name_array[] = $products_name_key;
+          break;
+        }
+      }
+    }
+    foreach($result_array[0]['url'] as $url_keys=>$url_values){
+
+      if(!in_array($url_keys,$products_name_array)){
+
+        unset($result_array[0]['url'][$url_keys]);
+      }
+    }
+*/
     if($result_array[0]['url']){
       $collect_res = array();
       $url_kaka_array[] = 'rmt.kakaran.jp'.$site_value;
@@ -191,7 +216,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
         }
         $url = $url.'?s=bank_transfer';
         if(class_exists('Spider')){
-          $result_kaka = new Spider("http://rmt.kakaran.jp".$url,'',$search_array[$site_key],$curl_flag);
+          $result_kaka = new Spider("http://rmt.kakaran.jp".$url,'',$other_array[$site_key],$curl_flag);
           /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
@@ -209,7 +234,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }else{
-           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$search_array[$site_key]);
+           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$other_array[$site_key]);
            if($result_array_kaka){
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
@@ -277,7 +302,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
              $rmt_array[] = $result_inventory_key;
            }
          }
-         $result_price = $result_array_kaka[0][0]; 
+         $result_price = $result_array_kaka[0]['price']; 
          foreach($rmt_array as $rmt_value){
 
            unset($result_price[$rmt_value]);
@@ -371,13 +396,23 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
 //判断数据库是否存在相同名称相同category_id 的商品
       $search_query = mysql_query("select product_id from product where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
 
+//当前游戏主站所有商品名称
+$c_type = $category_value=='buy'?'1':'0';
+    $product_all_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game_type."' and category_type='".$c_type."' and c.game_server='jp' and c.site_id=7");
+while($product_row = mysql_fetch_array($product_all_sql)){
+    $product_name_list_array[]=$product_row['product_name'];
+}
+$allow_insert_mark = 0;
+if(in_array(trim($value),$product_name_list_array) && !empty($product_name_list_array)){
+    $allow_insert_mark = 1;
+}
 //最新采集的商品名称
 $product_new[] = trim($value);
 //有,则更新 没有,则添加
-      if(mysql_num_rows($search_query) == 1){
+      if(mysql_num_rows($search_query) == 1 && $allow_insert_mark == 1){
         $products_query = mysql_query("update product set is_error=0, product_price='".$result_str."',product_inventory='".$result_inventory."',sort_order='".$sort_order."' where category_id='".$category_id_array[$site_value]."' and product_name='".trim($value)."'");
       }else{
-        if($value!=''){
+        if($value!='' && $allow_insert_mark = 1){
           $products_query = mysql_query("insert into product values(NULL,'".$category_id_array[$site_value]."','".trim($value)."','".$result_str."','".$result_inventory."','".$sort_order."',0)");
         }
       }
@@ -498,6 +533,8 @@ function tep_get_toher_collect($game_type){
   }
 }
 function tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value){
+             $value = str_replace('：',' ',$value);
+             $value = str_replace('．',' ',$value);
         if($site_value == 0){//夢幻
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
@@ -704,6 +741,9 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                  $result_str = $price*10;
 
              }else{
+                 if($value=='†Liberal†'){
+                   $value='リベラル';
+                 }
                $price = $result_array[0]['price'][$product_key];
                $result_str = $price;
                $result_inventory = $result_array[0]['inventory'][$product_key]/10;
@@ -1284,6 +1324,9 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
          break; 
 	 case 'WZ':
               if($category_value == 'buy'){
+                 if($value=='†Liberal†'){
+                   $value='リベラル';
+                 }
                  $result_inventory = str_replace(',','',$inventory_array[0]); 
                  $price = $result_array[0]['price'][$product_key]; 
                  $result_str = $price;
