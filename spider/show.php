@@ -1746,8 +1746,8 @@ $price = explode('.',$product_list_aray[$category_list_array[$site_value][$type]
 if($price[1]=='00'){
     $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] = $price[0];
 }
-      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
-//      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0){
+//      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
+      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0){
         if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
           if($inventory_flag_array[$game] === 0){
           //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>';
