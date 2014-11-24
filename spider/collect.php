@@ -227,12 +227,13 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
           continue;
         }
         if($sleep_flag){
-          sleep(3);
+          sleep(2);
         }
         if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
           $url = $url.'?s=bank_transfer';
           $search_url = "http://rmt.kakaran.jp".$url;
         }else if(strpos($url_array[$site_value],'rmtrank.com')){
+          sleep(1);
 
           $search_url = preg_replace('/\.htm$/','+sort+price.htm',$url);
           if($category_value=='sell'){
