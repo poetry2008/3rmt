@@ -1436,6 +1436,19 @@ foreach($kk_res as $kk_site){
        $url_array[$kk_category_array['category_name']][$category_type][$kk_site] = $kk_category_array['category_url'];
     }
 }
+//rank网站url
+$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%'");
+while($rank_row = mysql_fetch_array($rank_site_query)){
+  $rank_res[]=$rank_row['site_id'];
+}
+foreach($rank_res as $rank_site){
+   $rank_category_query = mysql_query("select * from category where site_id='".$rank_site."'");
+    while($rank_category_array = mysql_fetch_array($rank_category_query)){
+       $category_type = $rank_category_array['category_type'] == 1 ? 'buy' : 'sell';
+       $url_array[$rank_category_array['category_name']][$category_type][$rank_site] = $rank_category_array['category_url'];
+    }
+}
+
 
 echo '<table width="100%"><tr><td'.(!isset($_GET['flag']) || $_GET['flag'] == 'buy' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=buy'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">販売</a></td><td'.($_GET['flag'] == 'sell' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=sell'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">買取</a></td>';
 $game = isset($_GET['game']) ? $_GET['game'] : 'FF11';

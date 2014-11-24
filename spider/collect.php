@@ -170,7 +170,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
 // $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
-   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){
+   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com') || strpos($url_array[$site_value],'rmt1')){
       $curl_flag=0;
    }else{
       $curl_flag=1;
@@ -336,7 +336,12 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          $result_price = array_map("my_filter",$result_price);
 
          //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
-         asort($result_price);
+         if($category_value=='buy'){
+           asort($result_price);
+         }else if($category_value=='sell'){
+
+           arsort($result_price);
+         }
 
          $frist_price_value = '';
          $frist_inventory_value = '';
@@ -3601,7 +3606,44 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $result_str = $price;
           break;
           }
-        } else{
+        }else if($site_value == 17){
+          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+          switch($game_type){
+	 case 'DQ10':
+             if($product_key != 0){
+               $value = '';
+	     }else{
+               $value = 'DQ10';
+                if($category_value == 'buy'){
+                 if($inventory_array[0] != ''){
+                     if($inventory_array[0] >= 10){
+                        $price = $result_array[0]['10-'][$product_key]; 
+                     }else if($inventory_array[0] >= 5 && $inventory_array[0] <=9){
+                        $price = $result_array[0]['5-9'][$product_key]; 
+                     }else{
+                        $price = $result_array[0]['1-4'][$product_key]; 
+                     }
+                     $result_inventory = $inventory_array[0];
+                  }else{
+                     $price = $result_array[0]['1-4'][$product_key]; 
+                     $result_inventory = 0;
+                  }
+                $result_str = $price;
+                }else{
+                    $value = 'DQ10';
+                  if($inventory_array[0] !=''){
+                     $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0;
+                }
+                  $price = $result_array[0]['1-4'][$product_key]; 
+                  $result_str = $price;
+                }
+              }
+		 break;
+          }    
+
+        }else{
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
             $result_inventory = $result_array[0]['inventory'][$product_key];
