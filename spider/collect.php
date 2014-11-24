@@ -2020,7 +2020,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $price = $result_array[0]['price'][$product_key];
               $result_str = $price;
               if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/100;
+                $result_inventory = $inventory_array[0];
               }else{
                 $result_inventory = 0; 
               } 
@@ -2704,7 +2704,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 }
                $result_str = $price;
          break;
-	  case 'RO':
+          case 'RO':
              $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
             if($category_value == 'buy'){
              $price = $result_array[0]['price'][$product_key];
@@ -2795,7 +2795,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $price = $result_array[0]['price'][$product_key];
               $result_str = $price;
               if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/100;
+                $result_inventory = $inventory_array[0];
               }else{
                 $result_inventory = 0; 
               } 
@@ -2895,7 +2895,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $price = $result_array[0]['price'][$product_key];
               $result_str = $price;
               if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/100;
+                $result_inventory = $inventory_array[0];
               }else{
                 $result_inventory = 0; 
               } 
