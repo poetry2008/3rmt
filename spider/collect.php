@@ -3624,7 +3624,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $result_str = $price;
           break;
           }
-        }else if($site_value == 17){
+        }else if($site_value == 16){
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
           switch($game_type){
 	 case 'DQ10':
