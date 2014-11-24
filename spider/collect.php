@@ -3254,16 +3254,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
            }
             $price = $result_array[0]['price'][$product_key];
             $result_str = $price;
-            break;
-         case 'RO':
-            if($inventory_array[0] !=''){
-               $result_inventory = $inventory_array[0]/100;
-            }else{
-               $result_inventory = 0;
-            }
-            $price = $result_array[0]['price'][$product_key]; 
-            $result_str = $price*100;
-            break;
+         break;
 		 }
 	  }
       else if($site_value == 10){//KING
