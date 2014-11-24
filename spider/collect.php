@@ -229,9 +229,18 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
         if($sleep_flag){
           sleep(3);
         }
-        $url = $url.'?s=bank_transfer';
+        if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
+          $url = $url.'?s=bank_transfer';
+          $search_url = "http://rmt.kakaran.jp".$url;
+        }else if(strpos($url_array[$site_value],'rmtrank.com')){
+
+          $search_url = preg_replace('/\.htm$/','+sort+price.htm',$url);
+          if($category_value=='sell'){
+            $search_url = str_replace('content_id+1','content_id+2',$search_url);
+          }
+        }
         if(class_exists('Spider')){
-          $result_kaka = new Spider("http://rmt.kakaran.jp".$url,'',$other_array[$site_key],$curl_flag);
+          $result_kaka = new Spider($search_url,'',$other_array[$site_key],$curl_flag);
           /*
           foreach($result_array_kaka[0]['site_names'] as $vname){
                preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
@@ -244,12 +253,12 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
           */
            $result_array_kaka = $result_kaka->fetch();
            if(!$result_kaka->collect_flag){
-             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>"http://rmt.kakaran.jp".$url);
+             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$search_url);
            }else{
              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }else{
-           $result_array_kaka = get_fetch_by_url("http://rmt.kakaran.jp".$url,$other_array[$site_key]);
+           $result_array_kaka = get_fetch_by_url($search_url,$other_array[$site_key]);
            if($result_array_kaka){
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
