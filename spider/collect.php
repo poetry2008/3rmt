@@ -123,7 +123,7 @@ function get_fetch_by_url($url,$search_match){
     preg_match_all('/'.$value.'/is',$result,$temp_array);
     foreach($temp_array[1] as $k => $v){ 
       if($v==''||trim($v)==''){
-        $temp_array[1][$k] = strip_tags($temp_array[0][$k]);
+        $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
       }
     }
     $search_array[$key] = $temp_array[1];
@@ -159,6 +159,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       return false;
     }
+
     //if(!strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
@@ -403,6 +404,9 @@ if(empty($result_array[0]['products_name'])){
   mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
 }
 foreach($result_array[0]['products_name'] as $product_key=>$value){
+  if($game_type=='DQ10'){
+    $value = 'DQ10';
+  }
   $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
   $value = $price_info['value'];
   $result_str = $price_info['result_str'];
