@@ -409,10 +409,14 @@ if(empty($result_array[0]['products_name'])){
   mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
 }
 foreach($result_array[0]['products_name'] as $product_key=>$value){
-  if(preg_match('/ランキング/',$site_name_array['site_name'])){
-    $site_value = 4;
+  $t_site_value = $site_value;
+  if($site_name_array['site_name'] == 'ランキング1'||$site_name_array['site_name'] == 'ランキング2'||$site_name_array['site_name'] == 'ランキング3'){
+    $t_site_value = 4;
   }
-  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
+  if($site_name_array['site_name'] == 'カカラン1'||$site_name_array['site_name'] == 'カカラン2'||$site_name_array['site_name'] == 'カカラン3'){
+    $t_site_value = 5;
+  }
+  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
   $value = $price_info['value'];
   $result_str = $price_info['result_str'];
   $result_inventory = $price_info['result_inventory'];
