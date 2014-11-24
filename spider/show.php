@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-get_iimy_data();
+//get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -1760,6 +1760,8 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
 $price = explode('.',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']);
 if($price[1]=='00'){
     $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] = $price[0];
+}else if(substr($price[1], -1)=='0'){
+	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
 }
 //      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0){
