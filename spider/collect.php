@@ -653,6 +653,10 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $result_str = $price;
               break;
             case 'RO':
+              if(strpos($result_array[0]['inventory'][$product_key],'a')){
+                  $inventory_array[0]=0;
+              }
+
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 100 && $inventory_array[0] <=9999){
 
