@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-get_iimy_data();
+//get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -571,7 +571,6 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 13=>'http://rmt.kakaran.jp/dqx',
                                 14=>'http://rmt.kakaran.jp/dqx',
                                 15=>'http://rmt.kakaran.jp/dqx',
-                                18=>'https://rmt1.jp/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=101&Mode=Sale&',
                                 ),
                                  'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/dq10-rmt-kaitori/kaitori/items',
@@ -584,7 +583,6 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  10=>'http://www.asahi-rmt-service.com/dqx/purchase.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=161&Mode=Buy&',
                                  12=>'http://www.rmtsonic.jp/',
-                                 18=>'https://rmt1.jp/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=101&Mode=Buy&',
                                 ),
                               ),
                   'L2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Lineage2.html',
@@ -1439,7 +1437,7 @@ foreach($kk_res as $kk_site){
     }
 }
 //rank网站url
-$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%'");
+$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%' or site_name like '%エルモ%'");
 while($rank_row = mysql_fetch_array($rank_site_query)){
   $rank_res[]=$rank_row['site_id'];
 }
@@ -1760,6 +1758,8 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
 $price = explode('.',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']);
 if($price[1]=='00'){
     $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] = $price[0];
+}else if(substr($price[1], -1)=='0'){
+	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
 }
 //      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0){
