@@ -335,7 +335,12 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
          $result_price = array_map("my_filter",$result_price);
 
          //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
-         asort($result_price);
+         if($category_value=='buy'){
+           asort($result_price);
+         }else if($category_value=='sell'){
+
+           arsort($result_price);
+         }
 
          $frist_price_value = '';
          $frist_inventory_value = '';
