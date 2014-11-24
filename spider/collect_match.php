@@ -58,7 +58,7 @@ $search_array_match = array(
                         ),
                   ),
             'RO' => array(
-				  'www.mugenrmt.com'=>array('border03 border04products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+?)<\/td>',
+				  'www.mugenrmt.com'=>array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+?)<\/td>',
                         '10-99'=>'<td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
                         '100-9999'=>'<td class=\'border03 border04\'>[0-9,.]*?円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td><td class=\'border03 border04\'>([0-9,.]*?)円<span style=\'margin-right:5px\'><\/span>[0-9,.]*?WM<\/td>', 
                         'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
