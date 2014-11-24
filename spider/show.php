@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-//get_iimy_data();
+get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
