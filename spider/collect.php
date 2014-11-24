@@ -377,15 +377,15 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
            }
          }
          //根据不同的网站，来获取相对应的商品价格及库存
-         if($site_name_array['site_name'] == 'カカラン1'){
+         if($site_name_array['site_name'] == 'カカラン1'||$site_name_array['site_name'] == 'ランキング1'){
            $result_array[0]['price'][] =  $frist_price_value;
            $result_array[0]['inventory'][] = $frist_inventory_value;
          }
-         if($site_name_array['site_name'] == 'カカラン2'){
+         if($site_name_array['site_name'] == 'カカラン2'||$site_name_array['site_name'] == 'ランキング2'){
            $result_array[0]['price'][] =  $two_price_value;
            $result_array[0]['inventory'][] = $two_inventory_value;
          }
-         if($site_name_array['site_name'] == 'カカラン3'){
+         if($site_name_array['site_name'] == 'カカラン3'||$site_name_array['site_name'] == 'ランキング3'){
            $result_array[0]['price'][] =  $three_price_value;
            $result_array[0]['inventory'][] = $three_inventory_value;
          }
@@ -407,7 +407,6 @@ if(empty($result_array[0]['products_name'])){
   //mysql_query("delete from product where category_id='".$category_id_array[$site_value]."'");
   mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
 }
-
 foreach($result_array[0]['products_name'] as $product_key=>$value){
   $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
   $value = $price_info['value'];

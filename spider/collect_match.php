@@ -37,7 +37,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
                     ),
            'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
         'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -80,7 +80,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
                     ),
                 'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+)\(?.*?\)?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -123,7 +123,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
                     ),
                  'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
 
                'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
@@ -194,7 +194,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
                     ),
                    'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                    ),
                   'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -261,7 +261,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">.*?([0-9,]+口).*?<br\/>.*?<a .*?>.*?<img.*?>.*?<\/td>' 
                     ),
                 'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ), 
                 'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -332,7 +332,7 @@ $search_array_match = array(
                            'inventory'=>'<td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td><td>[0-9.,]+円<\/td>.*?<td rowspan="3">([0-9,.]+)口<br\/>'
                       ),
                   'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                          ),
                   'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -398,7 +398,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
               'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ), 
              'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -430,7 +430,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ), 
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -456,7 +456,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
              'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ), 
              'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -482,7 +482,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
               'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ), 
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -514,7 +514,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
 		        'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -546,7 +546,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -582,7 +582,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -613,7 +613,7 @@ $search_array_match = array(
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                       ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -639,7 +639,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
                   'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                 'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -669,7 +669,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">.*?([0-9,]+).*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -707,7 +707,7 @@ $search_array_match = array(
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                       ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -733,7 +733,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
              'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -765,7 +765,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -796,7 +796,7 @@ $search_array_match = array(
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                       ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -822,7 +822,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -848,7 +848,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
               'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)販売<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -862,7 +862,7 @@ $search_array_match = array(
                     ),
                 */
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                  'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -896,7 +896,7 @@ $search_array_match = array(
                         'inventory'=>'<td class=\'border03 border04\' style=\'color:Red;font-weight:bold;\'>.*?<\/td><td class=\'border03 border04\'>(.*?)<\/td>'
                       ),
          'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -922,7 +922,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -944,7 +944,7 @@ $search_array_match = array(
                   ),
     'talesweave'=>array(
            'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -970,7 +970,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
              'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -1014,7 +1014,7 @@ $search_array_match = array(
                       'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -1046,7 +1046,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
                 'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -1068,7 +1068,7 @@ $search_array_match = array(
                   ),
       'tenjouhi'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'ftb-rmt.jp'=>array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
                       '1-49'=>'<td width="70" class="txt_12" align="center">(.*?)円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>',
@@ -1087,7 +1087,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
               'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'www.iimy.co.jp'=>  array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1096,7 +1096,7 @@ $search_array_match = array(
                   ),
          'hzr'=>array(
                'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                   'www.iimy.co.jp'=>  array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1109,7 +1109,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
                'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                  'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1124,7 +1124,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="85" class="txt_12" align="center">.*?WM<\/td>.*?<td width="60".*?>(.*?)<\/td>' 
                     ),
              'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1149,7 +1149,7 @@ $search_array_match = array(
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.diamond-gil.jp'=>array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">([a-zA-Z]+)<\/a>.*?<\/td>',
                       '5-9'=>'<td align="center">.*?円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
@@ -1164,7 +1164,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1186,7 +1186,7 @@ $search_array_match = array(
                   ),
         'rohan' => array(
                'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                   'www.iimy.co.jp'=>  array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1245,7 +1245,7 @@ $search_array_match = array(
 		   */
 		   
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'rmt.kakaran.jp'=>array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                           'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
@@ -1271,7 +1271,7 @@ $search_array_match = array(
                       'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>(.*?)<\/td>' 
                     ),
               'rmtrank.com'=> array( 'url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                           'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
@@ -1297,7 +1297,7 @@ $search_array_match = array(
                       'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>(.*?)<\/td>' 
                     ),
                'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=> array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>',
                             'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>.*?<td>.*?<\/span>口<\/td>',
@@ -1344,7 +1344,7 @@ $search_array_match = array(
                       'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'rmt.kakaran.jp'=>array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                           'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
@@ -1389,7 +1389,7 @@ $search_array_match = array(
                       'inventory'=>'<td>[0-9,.]+?円<\/td>.*?<td>[0-9,.]+?Pt<\/td>.*?<td>([0-9,.]+ 口).*?<\/td>' 
                     ),
 	       	  'rmtrank.com'=>  array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>   array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1438,7 +1438,7 @@ $search_array_match = array(
                           'inventory'=>'<td>[0-9,.]+Pt<\/td>.*?<td>([0-9,.]+) 口.*?<\/a><\/td>'
                       ),
                'rmtrank.com'=> array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                       ),
                'rmt.kakaran.jp'=> array('products_name'=>'<tr>.*?<td><a href=".*?">(.*?)<\/a><\/td>',
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
@@ -1479,7 +1479,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1500,7 +1500,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                 'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1517,7 +1517,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ), 
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                 'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1534,7 +1534,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ), 
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=>  array('products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                       'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1555,7 +1555,7 @@ $search_array_match = array(
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
 
             'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
@@ -1577,7 +1577,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1603,7 +1603,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
           'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1620,7 +1620,7 @@ $search_array_match = array(
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">.*?([0-9,]+).*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1638,7 +1638,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1659,7 +1659,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?([0-9,.]+).*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1681,7 +1681,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?([0-9,.]+).*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=>array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1698,7 +1698,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?([0-9,.]+).*?M募集.*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=>array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1719,7 +1719,7 @@ $search_array_match = array(
                       'inventory'=>'<td width="60" class="txt_11" align="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1736,7 +1736,7 @@ $search_array_match = array(
                         'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">.*?([0-9,]+).*?<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1753,7 +1753,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1770,7 +1770,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'www.iimy.co.jp'=>array('products_name'=>'<name>(.*?)買取<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1780,7 +1780,7 @@ $search_array_match = array(
                   ),
       'ECO'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'rmt.kakaran.jp'=>array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1797,7 +1797,7 @@ $search_array_match = array(
                   ),
        'FNO'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
                'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1810,7 +1810,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1823,7 +1823,7 @@ $search_array_match = array(
                   ),
     'talesweave'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
             'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1836,7 +1836,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1859,7 +1859,7 @@ $search_array_match = array(
                   ),
      'MS'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.rmt-wm.com'=>array('products_name'=>'<td class="th"><a href=".*?">(.*?)<\/a><\/td>',
                       'price'=>'<td>([0-9,.]+)円<\/td>',
@@ -1891,7 +1891,7 @@ $search_array_match = array(
                      'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'rmt.kakaran.jp'=> array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                     'price'=>'<td class="price"><a href=".*?">.*?([0-9,.]+)<\/a>.*?<\/td>',
@@ -1904,7 +1904,7 @@ $search_array_match = array(
                   ),
       'tenjouhi'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'ftb-rmt.jp'=>array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
                       'price'=>'<td width="50" class="txt_11" align="center">(.*?)円<\/td>',
@@ -1917,7 +1917,7 @@ $search_array_match = array(
                   ),
       'rose'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'www.matubusi.com'=>array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
@@ -1930,7 +1930,7 @@ $search_array_match = array(
                   ),
       'hzr'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1939,7 +1939,7 @@ $search_array_match = array(
                   ),
       'dekaron'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.matubusi.com'=>array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
@@ -1952,7 +1952,7 @@ $search_array_match = array(
                   ),
       'fez'=>array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
            'ftb-rmt.jp'=>array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">([a-zA-Z]+)<br>.*?<\/A><\/td>',
                       'price'=>'<td width="50" class="txt_11" align="center">(.*?)円<\/td>',
@@ -1975,7 +1975,7 @@ $search_array_match = array(
            ),
        'moe' => array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -1988,7 +1988,7 @@ $search_array_match = array(
            ),
       'mabinogi'=> array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
               'www.matubusi.com'=>array('products_name'=>'<a href=".*?"><font style="color:black;"><u><font style="color:black;">(.*?)<\/font><\/u><\/font><\/a>',
                      'price'=>'<th class="rowheader">.*?<\/th>.*?<td class="center">(.*?)円<\/td>',
@@ -2013,7 +2013,7 @@ $search_array_match = array(
                   ),
       'rohan'=> array(
             'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
-                        'name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
@@ -2051,7 +2051,7 @@ $other_array_match = array(
                         ),
         'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
                         'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*\(<font[^>]*>[^<]*<\/font>\)[^<]*<\/td>',
-                        'inventory' => '<td class="colb2\w{0,}"><span class="nobr">(\d+)[^<]*口<\/span><\/td>'
+                        'inventory' => '<td class="colb2\w{0,}"><span class="nobr">(\d+)[^<]*口'
                         ), 
          ),
 'sell' => array(
@@ -2059,7 +2059,7 @@ $other_array_match = array(
                          'price'=>'<td class="price"><a href=".*?">.*?([0-9]+)<\/a><\/td>',
                          'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                        ),
-            'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
+            'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
                          'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*円',
                          'inventory' => '<td class="colb2\w{0,}">(\d+)[^<]*口'
                         ), 
