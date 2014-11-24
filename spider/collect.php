@@ -422,6 +422,9 @@ foreach($result_array[0]['products_name'] as $product_key=>$value){
   if($site_name_array['site_name'] == 'カカラン1'||$site_name_array['site_name'] == 'カカラン2'||$site_name_array['site_name'] == 'カカラン3'){
     $t_site_value = 5;
   }
+  if($site_name_array['site_name'] == 'エルモ'){
+     $t_site_value = 16;
+  }
   $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
   $value = $price_info['value'];
   $result_str = $price_info['result_str'];
