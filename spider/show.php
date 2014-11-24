@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-//get_iimy_data();
+get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -1527,7 +1527,6 @@ $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 * 1.价格不能是0
 * 2.网站内是否有和主站相同的数据
 */
-/*
 $game_type = $_GET['flag'] == 'sell' ? 0 : 1;
 //主站的商品名
 $product_name_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' and c.site_id=7");
@@ -1549,8 +1548,7 @@ foreach($category_site_array[$flag] as $value){
 }
 //要显示的所有网站
 $site_str =trim($site_str,',');
-*/
-$site_str = implode(',',$category_site_array[$flag]);
+//$site_str = implode(',',$category_site_array[$flag]);
 
 $site_list_array = array();
 //将获取对应网站的信息取出。而不是所有 echo 输出的信息来源的网站名字
@@ -1785,8 +1783,8 @@ if($price[1]=='00'){
         }
       }else{
 
-          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">-円</td><td align="right" style="min-width:45px">-個</td><td width="10%">&nbsp;</td></tr></table></td>'; 
-         // echo '<td>&nbsp;</td>';
+//          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">-円</td><td align="right" style="min-width:45px">-個</td><td width="10%">&nbsp;</td></tr></table></td>'; 
+  echo '<td>&nbsp;</td>';
       }
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0 && !($inventory_flag_array[$game] !== 0 && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0)){
 if($site_value!=7){
