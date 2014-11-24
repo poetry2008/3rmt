@@ -123,7 +123,7 @@ function get_fetch_by_url($url,$search_match){
     preg_match_all('/'.$value.'/is',$result,$temp_array);
     foreach($temp_array[1] as $k => $v){ 
       if($v==''||trim($v)==''){
-        $temp_array[1][$k] = strip_tags($temp_array[0][$k]);
+        $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
       }
     }
     $search_array[$key] = $temp_array[1];
@@ -159,6 +159,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
       $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$url_array[$site_value]);
       return false;
     }
+
     //if(!strpos($url_array[$site_value],'www.iimy.co.jp')){continue;}
 //将网站转换成主站地址,方便gamelife 测试使用
   if(strpos($url_array[$site_value],'www.iimy.co.jp')){
@@ -169,7 +170,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
 // $url_array[$site_value]= 'http://www.iimy.co.jp/api.php?key=testkey1_98ufgo48d&action=clt&cpath='.$temp_category_id[1][0];
 //   $url_array[$site_value]= str_replace('www.iimy.co.jp','192.168.160.200',$url_array[$site_value]);
   }
-   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com')){
+   if(strpos($url_array[$site_value],'pastel-rmt.jp')||strpos($url_array[$site_value],'www.rmt-king.com') || strpos($url_array[$site_value],'rmt1')){
       $curl_flag=0;
    }else{
       $curl_flag=1;
@@ -408,6 +409,9 @@ if(empty($result_array[0]['products_name'])){
   mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
 }
 foreach($result_array[0]['products_name'] as $product_key=>$value){
+  if($game_type=='DQ10'){
+    $value = 'DQ10';
+  }
   $price_info = tep_get_price_info($result_array,$category_value,$game_type,$site_value,$product_key,$value);
   $value = $price_info['value'];
   $result_str = $price_info['result_str'];
@@ -3602,7 +3606,44 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $result_str = $price;
           break;
           }
-        } else{
+        }else if($site_value == 17){
+          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+          switch($game_type){
+	 case 'DQ10':
+             if($product_key != 0){
+               $value = '';
+	     }else{
+               $value = 'DQ10';
+                if($category_value == 'buy'){
+                 if($inventory_array[0] != ''){
+                     if($inventory_array[0] >= 10){
+                        $price = $result_array[0]['10-'][$product_key]; 
+                     }else if($inventory_array[0] >= 5 && $inventory_array[0] <=9){
+                        $price = $result_array[0]['5-9'][$product_key]; 
+                     }else{
+                        $price = $result_array[0]['1-4'][$product_key]; 
+                     }
+                     $result_inventory = $inventory_array[0];
+                  }else{
+                     $price = $result_array[0]['1-4'][$product_key]; 
+                     $result_inventory = 0;
+                  }
+                $result_str = $price;
+                }else{
+                    $value = 'DQ10';
+                  if($inventory_array[0] !=''){
+                     $result_inventory = $inventory_array[0];
+                }else{
+                  $result_inventory = 0;
+                }
+                  $price = $result_array[0]['1-4'][$product_key]; 
+                  $result_str = $price;
+                }
+              }
+		 break;
+          }    
+
+        }else{
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
             $result_inventory = $result_array[0]['inventory'][$product_key];

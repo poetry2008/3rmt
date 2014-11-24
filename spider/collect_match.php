@@ -308,6 +308,12 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+                 'rmt1.jp'=> array('products_name'=>'<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
+                      '1-4'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '5-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '10-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?([0-9,.]+).*?<\/td>' 
+                    ),
                   ),
        'L2'=> array(
                  'www.mugenrmt.com'=> array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>[0-9１２３４５鯖]+(.*?)rmt<\/td>',
@@ -1452,6 +1458,13 @@ $search_array_match = array(
                       '150-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
                       'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
                     ),
+            'www.rmtsonic.jp'=>array(),
+            'www.rmt-king.com'=>array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>',
+                      '1-4'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '5-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      '10-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
+                      'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
+                    ),
                   ),
      'L2'=>array(
                'www.mugenrmt.com'=>array(),
@@ -2086,8 +2099,8 @@ $other_array_match = array(
                         'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
         'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
-                        'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*\(<font[^>]*>[^<]*<\/font>\)[^<]*<\/td>',
-                        'inventory' => '<td class="colb2\w{0,}"><span class="nobr">(\d+)[^<]*口'
+                        'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*\(<font[^>]*>[^<]*<\/font>\)[^<]*<\/td>|<td class="colb2\w{0,}"><font[^>]*>(\d+)[^<]*<font[^>]*>[^<]*<\/font>\)[^<]*<\/font>[^<]*<\/td>',
+                        'inventory' => '<td class="colb2\w{0,}"><span class="nobr">(\d+)[^<]*口|<td class="colb2\w{0,}"><span class="nobr"><font[^>]*>(\d+)[^<]*口'
                         ), 
          ),
 'sell' => array(
@@ -2096,7 +2109,7 @@ $other_array_match = array(
                          'inventory'=>'<td class="price"><a href=".*?">.*?<\/a><\/td>.*?<td>([0-9,.]+)<\/span>口<\/td>' 
                        ),
             'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
-                         'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*円',
+                         'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*円|<td class="colb2\w{0,}"><font[^>]*>(\d+)[^<]*円',
                          'inventory' => '<td class="colb2\w{0,}">(\d+)[^<]*口'
                         ), 
                      )
