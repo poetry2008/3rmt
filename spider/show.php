@@ -571,7 +571,6 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 13=>'http://rmt.kakaran.jp/dqx',
                                 14=>'http://rmt.kakaran.jp/dqx',
                                 15=>'http://rmt.kakaran.jp/dqx',
-                                18=>'https://rmt1.jp/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=101&Mode=Sale&',
                                 ),
                                  'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/dq10-rmt-kaitori/kaitori/items',
@@ -584,7 +583,6 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                  10=>'http://www.asahi-rmt-service.com/dqx/purchase.html',
                                  11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=161&Mode=Buy&',
                                  12=>'http://www.rmtsonic.jp/',
-                                 18=>'https://rmt1.jp/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=101&Mode=Buy&',
                                 ),
                               ),
                   'L2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Lineage2.html',
@@ -1439,7 +1437,7 @@ foreach($kk_res as $kk_site){
     }
 }
 //rank网站url
-$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%'");
+$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%' or site_name like '%エルモ%'");
 while($rank_row = mysql_fetch_array($rank_site_query)){
   $rank_res[]=$rank_row['site_id'];
 }
