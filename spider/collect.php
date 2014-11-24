@@ -231,6 +231,12 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
           sleep(2);
         }
         if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
+          if($sleep_flag){
+            sleep(1);
+          }
+          if($category_value=='sell'){
+            $url = str_replace('buy','sell',$url);
+          }
           $url = $url.'?s=bank_transfer';
           $search_url = "http://rmt.kakaran.jp".$url;
         }else if(strpos($url_array[$site_value],'rmtrank.com')){
