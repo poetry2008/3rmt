@@ -1144,7 +1144,7 @@ $search_array_match = array(
              'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*<\/a><\/td>',
                         'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*)<\/a><\/td>'
                     ),
-            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+            'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+)\(?.*?\)?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                         ),
              'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
