@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/.sites/132/site21/web/');
+define('PRO_ROOT_DIR','/home/.sites/28/site1/web/spider/');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //file patch
@@ -187,17 +187,15 @@ if(empty($auto_array)){
     while($category_array = mysql_fetch_array($category_query)){
 
       if($category_array['category_type'] == 1){
-
         $url_str_array['buy'][$i] = $category_array['category_url'];
         $category_id_str_array['buy'][$i] = $category_array['category_id'];
-        $site_str['buy'][] = $i;
+        $site_str['buy'][$i] = $url_info['host'];
         $site_info['buy'][$i] = $site_array['site_name'];
         $i++;
       }else{
-       
         $url_str_array['sell'][$j] = $category_array['category_url'];
         $category_id_str_array['sell'][$j] = $category_array['category_id'];
-        $site_str['sell'][] = $j;
+        $site_str['sell'][$j] = $url_info['host']; 
         $site_info['sell'][$j] = $site_array['site_name'];
         $j++;
       }
@@ -213,35 +211,185 @@ if(empty($auto_array)){
     $url_array = $url_str_array[$category_value];
     $category_id_array = $category_id_str_array[$category_value];
     $site = $site_str[$category_value];
+    $site_n = $site_info[$category_value];
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
     $other_array = $other_array_match[$category_value];
     //开始采集数据
     $curl_flag = 0;
-    foreach($site as $site_value){
-      if(strpos($url_array[$site_value],'www.iimy.co.jp')||strpos($url_array[$site_value],'192.168.160.200')){
-        $site_key = 'www.iimy.co.jp';
-      }else if(strpos($url_array[$site_value],'rmt.kakaran.jp')){
-        $site_key = 'rmt.kakaran.jp';
-      }else{
-        $site_url_array = parse_url($url_array[$site_value]);
-        $site_key = $site_url_array['host'];
+    $site_key = '';
+    $search_url = array();
+    $search_host = array();
+    $collect_site_value = array();
+    $log_str = '';
+    foreach($site as $site_key => $site_value){
+      if($site_value == null || $site_value ==''){
+        continue;
       }
-      $collect_res = save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,true,$other_array);
-      if(is_array($collect_res)){
-        $x=1;
-        foreach($collect_res as $collect_res_row){
-          $write_str = $collect_res_row.'--'.$site_info[$category_value][$site_value].'-'.$x;
-          cron_log($write_str);
-          $x++;
+      if($site_value == 'www.iimy.co.jp'||$site_value == '192.168.160.200'){
+        continue;
+      }
+      foreach($collect_site as $c_site){
+        if($site_value == $c_site){
+          $collect_site_value[$c_site][] = $site_key;
         }
-      }else if($collect_res!=''){
-        $write_str = $collect_res.'--'.$site_info[$category_value][$site_value];
-        cron_log($write_str);
+      }
+      if(!in_array($site_value,$search_host)&&$url_array[$site_key]!=''){
+        $search_host[] = $site_value;
+        $search_url[$site_value] = $url_array[$site_key];
+      }
+      $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$site_key]."\n";
+    }
+    cron_log($log_str);
+    //采集所有网站的数据
+    $all_result = get_all_result($search_url);
+    //通过正则获得所有网站的数据
+    $all_site_info_array = get_info_array($all_result,$search_array);
+    //处理数据并存储到数据库
+    $collect_res_url = array();
+    $collect_res_name = array();
+    foreach($all_site_info_array as $site_info_key => $site_info_arr){
+      $temp_product_name = array();
+      foreach($site_info_arr['products_name'] as $p_name){
+      	//处理产品名
+        $temp_product_name[] = $p_name;
+      }
+      $site_info_arr['products_name'] = $temp_product_name;
+      if(in_array($site_info_key,$collect_site)){
+      	$collect_res_url[$site_info_key]['url'] = $site_info_arr['url'];
+      	$collect_res_url[$site_info_key]['products_name'] =  $site_info_arr['products_name'];
+        continue;
+      }
+      $site_value = array_search($site_info_key,$site);
+      $category_id = $category_id_array[$site_value];
+      save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+    }
+    //采集网站的特殊处理
+    //处理网站名
+    
+    
+    //获得rmt 需要采集的产品数量 
+    $product_sql =  "select * from product where 
+       category_id = (select category_id from category where 
+         site_id=(select site_id from site where 
+           site_url like 'http://www.iimy.co.jp%' ) 
+       and category_name='".$game_type."' 
+       and game_server='jp' 
+       and category_type = '".($category_value=='buy'?1:0)."')
+       order by sort_order, product_name";
+    $product_query = mysql_query($product_sql);
+    $product_name_arr = array();
+    while($product_row = mysql_fetch_array($product_query)){
+      $product_name_arr[] = $product_row['product_name'];
+    }
+
+    $search_url_list = array();
+    $search_name_list = array();
+    foreach($collect_res_url as $site_key => $site_product_url){
+      foreach($site_product_url['url'] as $product_index => $url){
+      	if(!in_array($collect_res_url[$site_key]['products_name'][$product_index],$product_name_arr)){
+      	  continue;
+      	}
+        if($site_key=='rmt.kakaran.jp'){
+          if($category_value=='sell'){
+            $url = str_replace('buy','sell',$url);
+          }
+          $url = $url.'?s=bank_transfer';
+          $search_url = "http://rmt.kakaran.jp".$url;
+        }
+        if($site_key=='rmtrank.com'){
+          $search_url = preg_replace('/\.htm$/','+sort+price.htm',$url);
+          if($category_value=='sell'){
+            $search_url = str_replace('content_id+1','content_id+2',$search_url);
+          }
+        }
+        $search_url_list[$product_index][$site_key] = $search_url;
+        $search_name_list[$product_index][$site_key] = $collect_res_url[$site_key]['products_name'][$product_index];
       }
     }
-  //exit;
+    $i = 0;
+    foreach($search_url_list as $sk => $sv){
+      $tmp_url = array();
+      foreach($sv as $s_k => $s_v){
+        $tmp_url[] = $s_v;
+      }
+      $i++;
+      if($i%2==0){
+        sleep(2);
+      }
+      $all_result = get_all_result($tmp_url);
+      //通过正则获得所有网站的数据
+      $all_site_info_array = get_info_array($all_result,$other_array);
+      foreach($all_site_info_array as $site_key => $site_info){
+        $con = count($site_info['price']);
+        $con_arr = $site_info['price'];
+        if($con > count($site_info['site_names'])){
+          $con = count($site_info['site_names']);
+          $con_arr = $site_info['site_names'];
+        }
+        if($con > count($site_info['inventory'])){
+          $con = count($site_info['inventory']);
+          $con_arr = $site_info['inventory'];
+        }
+        $t_price = array();
+        $t_inventory = array();
+        $price = array();
+        $inventory = array();
+        $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
+        foreach($con_arr as $con_key => $con_value){
+          if(in_array($site_info['site_names'][$con_key],$rmt_name)){
+            continue;
+          }
+          $price[] = $site_info['price'][$con_key];
+          $inventory[] = $site_info['inventory'][$con_key];
+        }
+        if($category_value =='sell'){
+          $pos = array_search(max($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+          $pos = array_search(max($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+          $pos = array_search(max($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+        }else{
+          $pos = array_search(min($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+          $pos = array_search(min($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+          $pos = array_search(min($price), $price);
+          $t_price[] = $price[$pos];
+          $t_inventory[] = $inventory[$pos];
+          unset($price[$pos]);
+          unset($inventory[$pos]);
+        }
+        foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
+          $site_info_arr = array();
+          $site_info_arr = array('products_name'=> array($search_name_list[$sk][$site_key]),
+          	  'price' => array($t_price[$t_key]),
+          	  'inventory' => array($t_inventory[$t_key]));
+          $category_id = $category_id_array[$s_site_value];
+          $log_str = date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$s_site_value].'='.$i."\n";
+          save2db($category_id,$s_site_value,$site_info_arr,$category_value,$game_type,$site_key);
+          cron_log($cron_log);
+        }
+      }
+    }
+
   }
 
 /*
