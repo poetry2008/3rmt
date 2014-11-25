@@ -1513,7 +1513,11 @@ echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" 
 
 //查询当前游戏不是主站商品的信息
 $category_list_array = array();
-$category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp'");
+if($game == 'FF14'){
+  $category_query = mysql_query("select * from category where category_name='".$game."'");
+}else{
+  $category_query = mysql_query("select * from category where category_name='".$game."' and game_server='jp'");
+}
 
 while($category_array = mysql_fetch_array($category_query)){
 
@@ -1605,6 +1609,10 @@ $product_real_array = array();
 $product_sort_array = array();
 $game_type = $_GET['flag'] == 'sell' ? 0 : 1;
 $product_query = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.sort_order desc");
+if($game == 'FF14'){
+
+  $product_query = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' order by p.sort_order desc");
+}
 if($game=='AION'){
 //这里面有两个种类的游戏(特别处理。为了区分开)
 $product_query = mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' order by p.category_id desc, p.sort_order desc");
