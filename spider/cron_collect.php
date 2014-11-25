@@ -186,6 +186,7 @@ if(empty($auto_array)){
     $category_query = mysql_query("select * from category where site_id='".$site_array['site_id']."' and category_name='".$game_type."' and game_server='jp'");
     while($category_array = mysql_fetch_array($category_query)){
 
+      $url_info = parse_url($category_array['category_url']);
       if($category_array['category_type'] == 1){
         $url_str_array['buy'][$i] = $category_array['category_url'];
         $category_id_str_array['buy'][$i] = $category_array['category_id'];
@@ -201,6 +202,7 @@ if(empty($auto_array)){
       }
     } 
   }
+  $collect_site = array('rmt.kakaran.jp','rmtrank.com');
   $category_type = array($category);
 //预处理网站结束
 
@@ -238,8 +240,8 @@ if(empty($auto_array)){
       if(!in_array($site_value,$search_host)&&$url_array[$site_key]!=''){
         $search_host[] = $site_value;
         $search_url[$site_value] = $url_array[$site_key];
+        $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$site_key]."\n";
       }
-      $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$site_key]."\n";
     }
     cron_log($log_str);
     //采集所有网站的数据
@@ -253,7 +255,7 @@ if(empty($auto_array)){
       $temp_product_name = array();
       foreach($site_info_arr['products_name'] as $p_name){
       	//处理产品名
-        $temp_product_name[] = $p_name;
+        $temp_product_name[] = match_data_iimy($game_type,$category_value,$url_array[$site_value],$p_name);
       }
       $site_info_arr['products_name'] = $temp_product_name;
       if(in_array($site_info_key,$collect_site)){
@@ -315,9 +317,7 @@ if(empty($auto_array)){
         $tmp_url[] = $s_v;
       }
       $i++;
-      if($i%2==0){
-        sleep(2);
-      }
+      sleep(3);
       $all_result = get_all_result($tmp_url);
       //通过正则获得所有网站的数据
       $all_site_info_array = get_info_array($all_result,$other_array);
@@ -383,9 +383,8 @@ if(empty($auto_array)){
           	  'price' => array($t_price[$t_key]),
           	  'inventory' => array($t_inventory[$t_key]));
           $category_id = $category_id_array[$s_site_value];
-          $log_str = date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$s_site_value].'='.$i."\n";
+          $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$s_site_value].'-'.$i."\n";
           save2db($category_id,$s_site_value,$site_info_arr,$category_value,$game_type,$site_key);
-          cron_log($cron_log);
         }
       }
     }
@@ -395,6 +394,7 @@ if(empty($auto_array)){
 /*
  * na FF14 游戏采集
  */
+  cron_log($log_str);
   if($game_type == 'FF14'){
     tep_get_toher_collect($game_type);
     $write_str = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--NA';
