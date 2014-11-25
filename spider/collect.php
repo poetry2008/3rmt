@@ -3741,8 +3741,9 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
          if(strpos($fix_url,'rmtrank')){
             $product_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
-            $product_real_name = strtolower(trim(preg_replace('/<br>/is','',$product_name)));
-            if($get_tep_name==$iimy_tep_name){
+            $product_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
+            $iimy_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_row['product_name'])));
+            if($$product_tep_name==$iimy_tep_name){
                 $product_real_name =  $product_row['product_name'];	
             }
          }
