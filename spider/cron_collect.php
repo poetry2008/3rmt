@@ -243,7 +243,6 @@ if(empty($auto_array)){
         $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$site_key]."\n";
       }
     }
-    cron_log($log_str);
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
     //通过正则获得所有网站的数据
@@ -377,15 +376,17 @@ if(empty($auto_array)){
           unset($price[$pos]);
           unset($inventory[$pos]);
         }
+        $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
           $site_info_arr = array();
           $site_info_arr = array('products_name'=> array($search_name_list[$sk][$site_key]),
           	  'price' => array($t_price[$t_key]),
           	  'inventory' => array($t_inventory[$t_key]));
+          $log_name[] = $site_n[$s_site_value];
           $category_id = $category_id_array[$s_site_value];
-          $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.$site_n[$s_site_value].'-'.$i."\n";
           save2db($category_id,$s_site_value,$site_info_arr,$category_value,$game_type,$site_key);
         }
+        $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.implode(',',$log_name).'-'.$i."\n";
       }
     }
 
