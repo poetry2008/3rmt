@@ -386,7 +386,7 @@ if(empty($auto_array)){
           $category_id = $category_id_array[$s_site_value];
           save2db($category_id,$s_site_value,$site_info_arr,$category_value,$game_type,$site_key);
         }
-        $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.implode(',',$log_name).'-'.$i."\n";
+        $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game.'--'.$category.'--'.str_replace('1','',$log_name[0]).'-'.$i."\n";
       }
     }
 
