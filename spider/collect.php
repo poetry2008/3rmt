@@ -520,6 +520,7 @@ foreach($product_old_list as $product_old_name){
 }
 
 function tep_get_toher_collect($game_type){
+  require_once('class/spider.php');
   $na_url_array = array();
   $na_category_id_array = array();
 
