@@ -106,7 +106,8 @@ if($flag_check!= ''){
       $temp_product_name = array();
       foreach($site_info_arr['products_name'] as $p_name){
       	//处理产品名
-        $temp_product_name[] = $p_name;
+        $temp_product_name[] = match_data_iimy($game_type,$category_value,$url_array[$site_value],$p_name);
+        //$temp_product_name[] = $p_name;
       }
       $site_info_arr['products_name'] = $temp_product_name;
       if(in_array($site_info_key,$collect_site)){
@@ -375,7 +376,11 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
     if($site_name == 'rmt.kakaran.jp'){
       $t_site_value = 5;
     }
-    $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
+$value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
+if($value!=''){
+  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
+}
+//    $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
     $value = $price_info['value'];
     $result_str = $price_info['result_str'];
     $result_inventory = $price_info['result_inventory'];
@@ -404,7 +409,7 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
       }
     }
   }
-  if($site_name!=''){
+  if($site_name==''){
   //数据库原有的商品名称
   $search_query = mysql_query("select product_name from product where category_id='".$category_id."'");
   $product_old_list[] = array();
@@ -3734,6 +3739,13 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                  $product_real_name = 'Twilight';
               }	
            }
+         if(strpos($fix_url,'rmtrank')){
+            $product_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
+            $product_real_name = strtolower(trim(preg_replace('/<br>/is','',$product_name)));
+            if($get_tep_name==$iimy_tep_name){
+                $product_real_name =  $product_row['product_name'];	
+            }
+         }
 		}
 		//2.PSO2
          if($game_type=='PSO2'){
@@ -3863,7 +3875,6 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
     return $product_real_name;
 }
 
-//$test =  match_data_iimy('FF11','buy','','Asura');
 
 
 ?>
