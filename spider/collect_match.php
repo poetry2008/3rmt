@@ -248,7 +248,7 @@ $search_array_match = array(
                       'price'=>'<td class="center">(.*?)円<\/td>.*?<td class="center">.*?円<\/td>',
                       'inventory'=>'<td class="center">.*?円<\/td>.*?<td class="center">.*?円<\/td>.*?<td class="center">(.*?)<\/td>' 
                     ),
-                 'ftb-rmt.jp'=> array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">(.*?)<\/A><\/td>',
+                 'ftb-rmt.jp'=> array('products_name'=>'<td width="110" class="txt_11" align="center"><a href=".*?">.*?\((.*?)\)<\/A><\/td>',
                       '1-49'=>'<td width="70" class="txt_12" align="center">(.*?)円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>',
                       '50-99'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>',
                       '100-'=>'<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">.*?円<\/td>.*?<td width="70" class="txt_12" align="center">(.*?)円<\/td>',

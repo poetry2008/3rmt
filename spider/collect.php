@@ -3677,4 +3677,178 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
       return $res;
 
 }
+//处理数据
+/*@date 20141125
+ * param1=> $game_type(FF11)游戏分类
+ *param2=> $c_type 买卖
+ *param3=> $fix_url 商品所在网站的url
+ *param4=> $product_name要处理的商品名
+ *result=> 商品名与主站相同
+ */
+function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
+   //主站当前分类的商品名
+   if($c_type=='buy'){
+      $c_type = 1;
+   }else{
+     $c_type = 0;
+   }
+   //主站商品名
+    $product_iimy_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game_type."' and category_type='".$c_type."' and c.game_server='jp' and c.site_id=7");
+    while($product_row = mysql_fetch_array($product_iimy_sql)){
+		if($product_name == $product_row['product_name']){
+	        $product_real_name = $product_row['product_name'];	
+		}
+		//1.单词一致最多只差大小写和空格(RS)
+	       $iimy_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_row['product_name'])));
+	       $get_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
+	       if($get_tep_name==$iimy_tep_name){
+	          return $product_row['product_name'];	
+		   }
+		   //RS拼写错误
+		 if($game_type=='RS'){
+			if(strpos($fix_url,'mugenrmt')){
+				if($product_name=='Ecplise'){
+			       $product_real_name = 'Eclipse';	
+				}
+			}
+			if(strpos($fix_url,'rmt-king')){
+				if($product_name=='RedEmrald')
+			       $product_real_name = 'RedEmerald';	
+            }
+			if(strpos($fix_url,'rmtsonic')){
+		      if($product_name=='Twlight'){
+                  $product_real_name = 'Twilight';
+			  }	
+			}
+		}
+		//2.PSO2
+		if($game_type=='PSO2'){
+			if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran')){
+		      $product_real_name = str_replace('：',' ',$product_name);
+			}else{
+               $product_real_name = str_replace('．',' ',$product_name);
+			}
+		}
+		//3.DQ10
+		if($game_type=='DQ10'){
+          $array_dq = array('普通取引','ドラゴンクエスト10・ゴールド','PC','全サーバー共通','ゴールド','Windows版');
+	         if(strpos($fix_url,'diamond')){
+		  	    if($product_name=='全サーバー共通'){
+                   $product_real_name = 'DQ10';
+			    }else{
+					$product_real_name = '';
+			    }
+		    }else if(in_array($product_name,$array_dq)){
+                $product_real_name = 'DQ10';
+		    }else{
+				$product_real_name = '';
+		    }
+	   }
+		//L2
+		if($game_type=='L2'){
+			if($product_name=='キャスディエン'){
+				$product_real_name = 'キャスティエン';
+	     	}
+       }
+      //AION
+		if($game_type=='AION'){
+			if(strpos($fix_url,'matubusi')||strpos($fix_url,'kakaran')){
+               $product_name = str_replace('）','',$product_name);
+               $tep_arr=explode('（',$product_name);
+			   $product_tep_name=$tep_arr[1].$tep_arr[0];
+			}else if(strpos($fix_url,'ftb-rmt')){
+				$tep_arr=explode('_',$product_name);
+				$product_tep_name=$tep_arr[1].$tep_arr[0];
+			}
+
+	           $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
+	           $get_tep_name = trim(preg_replace('/\s+/is','',$product_tep_name));
+			   if($iimy_tep_name == $get_tep_name){
+			       $product_real_name =  $product_row['product_name']; 
+			   }
+		}
+		if($game_type=='WZ'){
+           if(strpos($fix_url,'matubusi')){
+              if($product_name=='†Liberal†'){
+                  $product_real_name = 'リベラル';
+			  }
+           }
+		}
+        if($game_type=='latale'){
+			if($product_name=='ダイア'){
+                $product_real_name= str_replace('ダイア','ダイヤ',$product_name);
+			}else if($product_name=='ァイヤ'){
+                $product_real_name = str_replace('ァイヤ','ァイア',$product_name);
+			}
+		}
+		if($game_type=='HR'){
+		    $product_real_name = str_replace('共通サーバー','マビノギ英雄伝',$product_name);
+		}
+		if($game_type=='rose'){
+			if(strpos($fix_url,'rmtrank')){
+			   if($product_name=='デネブ'){
+                  $product_real_name = str_replace('デネブ','Deneb',$product_name);
+			   }else{
+                  $product_real_name = str_replace('ベガ','Vega',$product_name);
+			   }
+			}
+		}
+		if($game_type=='fez'){
+			if(strpos($fix_url,'rmtrank')){
+		      if($product_name=='ケテル'){	
+                 $product_real_name = str_replace('ケテル','Kether',$product_name);
+			  }else if($product_name=='イシュルド'){
+                 $product_real_name = str_replace('イシュルド','Ishuld',$product_name);
+			  }else if($product_name=='エレミア'){
+                  $product_real_name = str_replace('エレミア','Jeremiah',$product_name);
+			  }
+			}
+		}
+		if($game_type=='blade'){
+            if(strpos($fix_url,'diamond')){
+              $product_real_name = str_replace('こはく','琥珀',$product_name);
+			}
+		}
+		if($game_type=='FF14'){
+           if(strpos($fix_url,'mugenrmt')){
+		      $product_real_name = str_replace('(LEGASY)','',$product_name);
+		  }
+		}
+		if($game_type=='MU'){
+			if(strpos($fix_url,'matubusi')){
+                preg_match_all("|<a.*?><font.*?><u.*?><font .*?>(.*?)<\/font><\/u><\/font><\/a>|",$product_name,$temp_array);
+                if(!empty($temp_array[1][0])){
+                    $product_real_name = $temp_array[1][0].'の'.$temp_array[1][1];
+                }else{
+                    $product_real_name = str_replace('祝福','の祝福',$product_name);
+                } 
+            }
+			if(strpos($fix_url,'kakaran') && $product_name!=''){
+               $product_real_name = $product_name.'の祝福';           
+			}
+		}
+		if($game_type=='ECO'){
+			if(strpos($fix_url,'diamond')){
+		        preg_match_all("|<a .*?>([a-zA-Z]+).*?<\/a>|",$product_name,$temp_array);	
+                if($temp_array[1][0]==''){
+                }else{
+                    $product_real_name=$temp_array[1][0];
+                }
+			}
+		
+		}
+		if($game_type=='cronous'){
+           preg_match_all("|<a.*?><font.*?><u.*?><font .*?>(.*?)<\/font><\/u><\/font><\/a>|",$product_name,$temp_array);
+             if($temp_array[0][0]!=''){
+                $product_real_name=  'アルテミス';
+             }
+        }
+
+	}
+    return $product_real_name;
+}
+
+//$test =  match_data_iimy('FF11','buy','','Asura');
+
+
 ?>
