@@ -409,7 +409,7 @@ if($value!=''){
       }
     }
   }
-  if($site_name!=''){
+  if($site_name==''){
   //数据库原有的商品名称
   $search_query = mysql_query("select product_name from product where category_id='".$category_id."'");
   $product_old_list[] = array();
