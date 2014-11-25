@@ -187,10 +187,42 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
       }else{
         $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
       }
+      //处理NA区kakaran
+      if($game_type == 'FF14' && strpos($url_array[$site_value],'rmt.kakaran.jp')){
+
+        $result_na = new Spider('http://rmt.kakaran.jp/ff14_naeu/','',$search_array[$site_key],$curl_flag);
+        $result_array_na = $result_na->fetch();
+        if(!$result_na->collect_flag){
+
+          $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>'http://rmt.kakaran.jp/ff14_naeu/');
+        }else{
+          $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+        }
+        foreach($result_array_na[0]['products_name'] as $result_na_key=>$result_na_value){
+
+
+          $result_array[0]['products_name'][] = $result_na_value;
+          $result_array[0]['url'][] = $result_array_na[0]['url'][$result_na_key];
+        }
+      }
     }else{
       $result_array = get_fetch_by_url($url_array[$site_value],$search_array[$site_key]);
       if($result_array){
         $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+      }
+      //处理NA区kakaran
+      if($game_type == 'FF14' && strpos($url_array[$site_value],'rmt.kakaran.jp')){
+
+        $result_array_na = get_fetch_by_url('http://rmt.kakaran.jp/ff14_naeu/',$search_array[$site_key]);
+        if($result_array_na){
+          $collect_res = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+        }
+        foreach($result_array_na[0]['products_name'] as $result_na_key=>$result_na_value){
+
+
+          $result_array[0]['products_name'][] = $result_na_value;
+          $result_array[0]['url'][] = $result_array_na[0]['url'][$result_na_key];
+        }
       }
     }
     //处理kakaran
