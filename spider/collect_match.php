@@ -2115,7 +2115,7 @@ $other_array_match = array(
          ),
 'sell' => array(
             'rmt.kakaran.jp'=>  array( 
-                        'site_names'=>'<td class="position-relative">(.*?)<\/td><td class="compare"><span>.*?<\/span><\/td><td class="price sort">([0-9,.]+)円<\/td><td class="price">.*?<\/td>', 
+                        'site_names'=>'<td class="position-relative">(.*?)<\/td><td class="compare"><span>.*?<\/span>', 
                         'price'=>'<td class="price sort">([0-9,.]+)円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                         'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),    
