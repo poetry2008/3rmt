@@ -388,7 +388,7 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
   $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
   //当获取的数据商品名称为空(或这个页面没有数据)
   if(empty($result_array[0]['products_name'])){
-    mysql_query("update product set is_error=1 where category_id='".$category_id_array[$site_value]."'");
+    mysql_query("update product set is_error=1 where category_id='".$category_id."'");
   }
   foreach($result_array[0]['products_name'] as $product_key=>$value){
     $t_site_value = $site_value;
@@ -3938,8 +3938,8 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                }
             }
             if(strpos($fix_url,'rmt-king')){
-               if($product_name=='RedEmrald')
-                 $product_real_name = 'RedEmerald';	
+               if(trim($product_name)=='RedEmrald')
+                 $product_real_name = 'Red Emerald';	
             }
            if(strpos($fix_url,'rmtsonic')){
               if($product_name=='Twlight'){
