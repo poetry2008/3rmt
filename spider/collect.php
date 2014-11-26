@@ -208,7 +208,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
           if($site_info['inventory'][$con_key] == 0){
             continue;
           }
-          $price[] = $site_info['price'][$con_key];
+          $price[] = str_replace(',','',$site_info['price'][$con_key]);
           $inventory[] = $site_info['inventory'][$con_key];
         }
         if($category_value =='sell'){
@@ -869,22 +869,22 @@ function tep_get_toher_collect($game_type){
            if($i == 0){
               $keys = value_key($val,$result_price);
               $frist_price_value = $result_price[$keys[0]];
-              $result_price = delete_keys($keys,$result_price);
-              //unset($result_price[$keys[0]]);
+              //$result_price = delete_keys($keys,$result_price);
+              unset($result_price[$keys[0]]);
               $frist_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 1){
               $keys = value_key($val,$result_price);
               $two_price_value = $result_price[$keys[0]];
-              $result_price = delete_keys($keys,$result_price);
-              //unset($result_price[$keys[0]]);
+              //$result_price = delete_keys($keys,$result_price);
+              unset($result_price[$keys[0]]);
               $two_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 2){
               $keys = value_key($val,$result_price);
               $three_price_value = $result_price[$keys[0]];
-              $result_price = delete_keys($keys,$result_price);
-              //unset($result_price[$keys[0]]);
+              //$result_price = delete_keys($keys,$result_price);
+              unset($result_price[$keys[0]]);
               $three_inventory_value = $result_inventory[$keys[0]];
            }
            $i++;
