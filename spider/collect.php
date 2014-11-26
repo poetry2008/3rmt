@@ -678,12 +678,24 @@ function tep_get_toher_collect($game_type){
   require_once('class/spider.php');
   $na_url_array = array();
   $na_category_id_array = array();
+  $na_category_type_array = array();
+  $jp_category_array = array();
+  $site_category_array = array();
 
   $na_category_query = mysql_query("select * from category where category_name='FF14' and game_server='na'");
   while($na_category_array = mysql_fetch_array($na_category_query)){
 
     $na_url_array[] = $na_category_array['category_url'];
     $na_category_id_array[] = $na_category_array['category_id'];
+    $na_category_type_array[] = $na_category_array['category_type'] == 1 ? 'buy' : 'sell';
+    $site_category_array[] = $na_category_array['site_id'];
+  }
+  //FF14 jp
+  $jp_categorys_query = mysql_query("select * from category where category_url='http://rmt.kakaran.jp/ff14/'");
+  while($jp_categorys_array = mysql_fetch_array($jp_categorys_query)){
+
+    $jp_categorys_array['category_type'] = $jp_categorys_array['category_type'] == 1 ? 'buy' : 'sell';
+    $jp_category_array[$jp_categorys_array['site_id']][$jp_categorys_array['category_type']] = $jp_categorys_array['category_id'];
   }
 
   $na_search_array  = array(array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+)\(.*?\)\-rmt<\/td>',
@@ -701,19 +713,172 @@ function tep_get_toher_collect($game_type){
                       'price'=>'<td>([0-9.,]+)円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>.*?<\/td>',
                       'inventory'=>'<td>[0-9.,]+円<\/td>.*?<td>[0-9.,]+Pt<\/td>.*?<td>(.*?)<\/td>' 
                     ),
+                  );
+  $kakaran_array = array('buy'=>array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+)\(?.*?\)?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                        'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                      ),
+                      'sell'=>array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+)\(?.*?\)?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                        'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                        ) 
+                      );
+  $other_array = array('buy'=>array( 
+                        'site_names'=>'<td class="position-relative">(.*?)<\/td><td class="compare"><span>.*?<\/span><\/td><td class="price sort">([0-9,.]+)円<\/td><td class="price">.*?<\/td>', 
+                        'price'=>'<td class="price sort">([0-9,.]+)円<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
+                        'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
+                      ),
+                      'sell'=>array( 
+                        'site_names'=>'<td class="position-relative">(.*?)<\/td><td class="compare"><span>.*?<\/span>', 
+                        'price'=>'<td class="price sort">([0-9,.]+)円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
+                        'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
+                        )  
                     );
 
   //开始采集数据
   foreach($na_url_array as $key=>$value){
 
     if($value == ''){continue;}
-    $result = new Spider($value,'',$na_search_array[$key]);
+    if(strpos($value,'rmt.kakaran.jp')){
+       
+      $result = new Spider($value,'',$kakaran_array[$na_category_type_array[$key]]);
+    }else{
+      $result = new Spider($value,'',$na_search_array[$key]);
+    }
     $result_array = $result->fetch();
+    //start
+    if($result_array[0]['url']){
+      $collect_res = array();
+      foreach($result_array[0]['url'] as $k=>$url){
+        if($url==''){
+          continue;
+        }
+        if(strpos($value,'rmt.kakaran.jp')){
+          if($na_category_type_array[$key]=='sell'){
+            $url = str_replace('buy','sell',$url);
+          }
+          $url = $url.'?s=bank_transfer';
+          $search_url = "http://rmt.kakaran.jp".$url;
+        }
+        if(class_exists('Spider')){
+           $result_kaka = new Spider($search_url,'',$other_array[$na_category_type_array[$key]]);
+           $result_array_kaka = $result_kaka->fetch();
+           if(!$result_kaka->collect_flag){
+             $collect_error_array[] = array('time'=>time(),'game'=>$game_type,'type'=>$category_value,'site'=>$site_value,'url'=>$search_url);
+           }else{
+             $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+           }
+         }else{
+           $result_array_kaka = get_fetch_by_url($search_url,$na_category_type_array[$key]);
+           if($result_array_kaka){
+              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
+           }
+         }
+         //过滤RMT网站数据
+         $kaka_name = array(); 
+         foreach($result_array_kaka[0]['site_names'] as $vname){
+               preg_match_all("#(?:<img .*?>){0,1}<a .*?>(.*?)<\/a>#",$vname,$temp_array);
+               if(!empty($temp_array[1])){
+                   $kaka_name[] = $temp_array[1][0];
+               }else{
+                   $kaka_name[] = $vname;
+               }
+         }
+          $rmt_array = array();
+          $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
+          foreach($kaka_name as $kaka_key=>$kaka_value){
+
+            foreach($rmt_name as $rmt_key=>$rmt_value){
+
+              if(strpos($kaka_value,$rmt_value)!==false){
+
+                $rmt_array[] = $kaka_key;
+              }
+            }
+          }
+
+         //根据游戏分类来获取网站名称
+         $category_site_query = mysql_query("select * from category where category_id='".$jp_category_array[$site_category_array[$key]][$na_category_type_array[$key]]."'");
+         $category_site_array = mysql_fetch_array($category_site_query);
+         $site_name_query = mysql_query("select * from site where site_id='".$category_site_array['site_id']."'");
+         $site_name_array = mysql_fetch_array($site_name_query);
+         $result_inventory = $result_array_kaka[0]['inventory'];
+         foreach($result_inventory as $result_inventory_key=>$result_inventory_value){
+
+           if(trim($result_inventory_value) == '' || $result_inventory_value == 0){
+             $rmt_array[] = $result_inventory_key;
+           }
+         }
+         $result_price = $result_array_kaka[0]['price']; 
+         foreach($rmt_array as $rmt_value){
+
+           unset($result_price[$rmt_value]);
+         }
+         $result_price = array_map("my_filter",$result_price);
+
+         //根据商品价格正排序，来获取前3个商品价格及对应的商品库存
+         if($na_category_type_array[$key]=='buy'){
+           asort($result_price);
+         }else if($na_category_type_array[$key]=='sell'){
+
+           arsort($result_price);
+         }
+
+         $frist_price_value = '';
+         $frist_inventory_value = '';
+         $two_price_value = '';
+         $two_inventory_value = '';
+         $three_price_value = '';
+         $three_inventory_value = '';
+         $i = 0;
+         $keys = array();
+         foreach($result_price as $kk=>$val){
+
+           if($i == 0){
+              $keys = value_key($val,$result_price);
+              $frist_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $frist_inventory_value = $result_inventory[$keys[0]];
+           }
+           if($i == 1){
+              $keys = value_key($val,$result_price);
+              $two_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $two_inventory_value = $result_inventory[$keys[0]];
+           }
+           if($i == 2){
+              $keys = value_key($val,$result_price);
+              $three_price_value = $result_price[$keys[0]];
+              unset($result_price[$keys[0]]);
+              $three_inventory_value = $result_inventory[$keys[0]];
+           }
+           $i++;
+           if($i == 3){
+
+            break;
+           }
+         }
+         //根据不同的网站，来获取相对应的商品价格及库存
+         if($site_name_array['site_name'] == 'カカラン1'){
+           $result_array[0]['price'][] =  $frist_price_value;
+           $result_array[0]['inventory'][] = $frist_inventory_value;
+         }
+         if($site_name_array['site_name'] == 'カカラン2'){
+           $result_array[0]['price'][] =  $two_price_value;
+           $result_array[0]['inventory'][] = $two_inventory_value;
+         }
+         if($site_name_array['site_name'] == 'カカラン3'){
+           $result_array[0]['price'][] =  $three_price_value;
+           $result_array[0]['inventory'][] = $three_inventory_value;
+         }
+     }
+     $na_category_id_array[$key] = $jp_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
+    } 
+    //end
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
-    //print_r($result_array);
 
     foreach($result_array[0]['products_name'] as $products_key=>$products_value){
-      preg_match('/([0-9,]+).*?口/is',$result_array[0]['inventory'][$products_key],$inventory_array);
+      if($key <=2){
+        preg_match('/([0-9,]+).*?口/is',$result_array[0]['inventory'][$products_key],$inventory_array);
+      }
       if($key == 0){
 
         if($inventory_array[0] != ''){
@@ -758,6 +923,15 @@ function tep_get_toher_collect($game_type){
         
             $result_inventory = 0;
           }
+      }else{
+        $price = $result_array[0]['price'][$products_key]; 
+          if($result_array[0]['inventory'][$products_key] != ''){
+       
+            $result_inventory = str_replace(',','',$result_array[0]['inventory'][$products_key]);
+          }else{
+        
+            $result_inventory = 0;
+          } 
       }
 
       //数据入库
