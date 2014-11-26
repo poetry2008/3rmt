@@ -202,7 +202,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $inventory = array();
         $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
         foreach($con_arr as $con_key => $con_value){
-          if(in_array(strtolower(trim($site_info['site_names'][$con_key])),$rmt_name)){
+          if(in_array(strtolower(trim(strip_tags($site_info['site_names'][$con_key]))),$rmt_name)){
             continue;
           }
           if($site_info['inventory'][$con_key] == 0){
@@ -215,34 +215,52 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
         }else{
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
         }
         $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
@@ -464,6 +482,15 @@ function value_key($value,$array){
   }
   sort($key);
   return $key;
+}
+//通过键名的数组删除相应的值
+function delete_keys($keys,$array){
+
+  foreach($keys as $value){
+
+    unset($array[$value]);
+  }
+  return $array;
 }
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false,$other_array){
   if($url_array[$site_value] == ''){
@@ -842,19 +869,22 @@ function tep_get_toher_collect($game_type){
            if($i == 0){
               $keys = value_key($val,$result_price);
               $frist_price_value = $result_price[$keys[0]];
-              unset($result_price[$keys[0]]);
+              $result_price = delete_keys($keys,$result_price);
+              //unset($result_price[$keys[0]]);
               $frist_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 1){
               $keys = value_key($val,$result_price);
               $two_price_value = $result_price[$keys[0]];
-              unset($result_price[$keys[0]]);
+              $result_price = delete_keys($keys,$result_price);
+              //unset($result_price[$keys[0]]);
               $two_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 2){
               $keys = value_key($val,$result_price);
               $three_price_value = $result_price[$keys[0]];
-              unset($result_price[$keys[0]]);
+              $result_price = delete_keys($keys,$result_price);
+              //unset($result_price[$keys[0]]);
               $three_inventory_value = $result_inventory[$keys[0]];
            }
            $i++;
@@ -883,7 +913,7 @@ function tep_get_toher_collect($game_type){
     $na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     }
     //end
-    $na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
+    //$na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
 
     foreach($result_array[0]['products_name'] as $products_key=>$products_value){

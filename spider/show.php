@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-get_iimy_data();
+//get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -1815,8 +1815,11 @@ if($price[1]=='00'){
         }
       }else{
 
-        echo '<td><table width="100%" cellspacing="0" cellpadding="0" border="0" class="dataTableContent_right"><tr><td width="50%" nowrap="nowrap" align="right"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>-<span style="margin-left: 2px;">円</span></label></b></td><td align="right" style="min-width:45px">-個</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-        //echo '<td>&nbsp;</td>';
+        if($inventory_flag_array[$game] === 0){
+          echo '<td><table width="100%" cellspacing="0" cellpadding="0" border="0" class="dataTableContent_right"><tr><td width="50%" nowrap="nowrap" align="right"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>-<span style="margin-left: 2px;">円</span></label></b></td><td align="right" style="min-width:45px">'.($inventory_show_array[$game] !== 0 ? '-個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+        }else{
+          echo '<td>&nbsp;</td>';
+        }
       }
       if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0 && !($inventory_flag_array[$game] !== 0 && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0)){
 if($site_value!=7){
@@ -1846,7 +1849,7 @@ if(count($price)>1){
   }else{
      $hidden_style = 'type="radio"';
   }
-    echo '<td><input '.$hidden_style.'  id="zui_'.$i.'"  '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : '-円').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : '-円').'<label></td>';
+    echo '<td><input '.$hidden_style.'  id="zui_'.$i.'"  '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td>';
 }
     echo '</tr>';
 }
