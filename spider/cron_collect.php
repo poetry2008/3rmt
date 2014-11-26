@@ -171,7 +171,7 @@ if(empty($auto_array)){
 //预处理网站
    $game_type = $game;
    $category = array($category);
-   $log_str = get_collect_res($game_type,$category,$other_array_match,$search_array_match,true);
+   $log_str = get_collect_res($game_type,$category,$other_array_match,$search_array_match,false);
 /*
  * na FF14 游戏采集
  */

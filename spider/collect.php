@@ -179,11 +179,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $tmp_url[] = $s_v;
       }
       $i++;
-      if($show_log){
-        if($i%2==0){
-          sleep(1);
-        }
-      }else{
+      if($i%2==0){
         sleep(1);
       }
       $all_result = get_all_result($tmp_url);
