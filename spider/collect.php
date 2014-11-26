@@ -671,12 +671,20 @@ function tep_get_toher_collect($game_type){
     $na_category_type_array[] = $na_category_array['category_type'] == 1 ? 'buy' : 'sell';
     $site_category_array[] = $na_category_array['site_id'];
   }
-  //FF14 jp
+  //FF14 kakaran jp
   $jp_categorys_query = mysql_query("select * from category where category_url='http://rmt.kakaran.jp/ff14/'");
   while($jp_categorys_array = mysql_fetch_array($jp_categorys_query)){
 
     $jp_categorys_array['category_type'] = $jp_categorys_array['category_type'] == 1 ? 'buy' : 'sell';
     $jp_category_array[$jp_categorys_array['site_id']][$jp_categorys_array['category_type']] = $jp_categorys_array['category_id'];
+  }
+  $wm_category_array = array();
+  //FF14 夢幻 WM
+  $na_categorys_query = mysql_query("select * from category where `category_name`='FF14' and `game_server`='jp' and `site_id` in (1,4)");
+  while($na_categorys_array = mysql_fetch_array($na_categorys_query)){
+
+    $na_categorys_array['category_type'] = $na_categorys_array['category_type'] == 1 ? 'buy' : 'sell';
+    $wm_category_array[$na_categorys_array['site_id']][$na_categorys_array['category_type']] = $na_categorys_array['category_id'];
   }
 
   $na_search_array  = array(array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>([a-zA-Z]+)\(.*?\)\-rmt<\/td>',
@@ -854,6 +862,7 @@ function tep_get_toher_collect($game_type){
      $na_category_id_array[$key] = $jp_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     } 
     //end
+    $na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
 
     foreach($result_array[0]['products_name'] as $products_key=>$products_value){
