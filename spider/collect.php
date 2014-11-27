@@ -2859,7 +2859,8 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
            if(strpos($result_array[0]['inventory'][$product_key],'span')){
              $inventory_array[0]=0;
             }
-            if($inventory_array[0] != ''){
+           if($inventory_array[0] != ''){
+                /*
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
 
                   $price = $result_array[0]['1-9'][$product_key]; 
@@ -2868,9 +2869,11 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 }else {
                   $price = $result_array[0]['30-'][$product_key];
                 } 
+                */
+                $price = $result_array[0]['price'][$product_key];
                 $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['1-9'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
              $result_str = $price;
@@ -4175,7 +4178,15 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            if($temp_array[0][0]!=''){
               $product_real_name=  'アルテミス';
            }
-      }
+       }
+       if($game_type=='AA'){
+         $name_mode_array = array('タヤン','ジン','キープローザ','ルシウス','エアンナ','アーランゼブ');
+         $name_replace_array = array('Tahyang','Gene','Kyprosa','Lucius','Eanna','Aranzeb');
+         if(strpos($fix_url,'rmtrank')){
+
+           $product_real_name = str_replace($name_mode_array,$name_replace_array,$product_name);
+         }
+       }
 
    }
    $product_real_name = str_replace('<br />','',$product_real_name);
