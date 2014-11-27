@@ -66,7 +66,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     } 
   }
   $collect_site = array('rmt.kakaran.jp','rmtrank.com');
-  $rate_diff_site = array('www.mugenrmt.com');
+  $rate_diff_site = array('');
   $category_type_all = $category;
   /*以下是正式采集*/
   $game_type=$game_type;
