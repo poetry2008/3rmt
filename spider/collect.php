@@ -3622,7 +3622,6 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             }
          break;
         case 'nobunaga':
-echo $value;
               if($category_value == 'buy'){
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 0 && $inventory_array[0] <=49){
@@ -4318,15 +4317,16 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
             }
         }
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
-              if(strpos($result_array[0]['inventory'][$product_key],'span')){
-                  $inventory_array[0]=0;
-              }
+        $inventory_str = str_replace(',','',$result_array[0]['inventory'][$product_key]);
+        preg_match('/\d{0,}/',$inventory_str,$inventory_array);
               if($category_value == 'buy'){
+                  $result_inventory = $inventory_array[0];
                   if($inventory_array[0]!=''){
+                       $i=0;
                        foreach($result_array[0]['price'] as $section=> $value_array){
-                          if($inventory_array[0]>$section){
+                          if($inventory_array[0]>$section||$i==0){
                               $price = $result_array[0]['price'][$section][$product_key];
-                              $result_inventory = $inventory_array[0];
+                              $i++;
                           }
                         }
                     }else{
@@ -4347,7 +4347,9 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
                  } 
           if($game_type=='RO'){
               $price = $price*100;
-              $result_inventory = $result_inventory/100;
+              if($result_inventory!=0){
+                $result_inventory = $result_inventory/100;
+              }
           }
           $result_str=$price;
     }
