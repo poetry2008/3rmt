@@ -2903,6 +2903,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
              $inventory_array[0]=0;
             }
             if($inventory_array[0] != ''){
+                /*
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
 
                   $price = $result_array[0]['1-9'][$product_key]; 
@@ -2911,9 +2912,11 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 }else {
                   $price = $result_array[0]['30-'][$product_key];
                 } 
+                */
+                $price = $result_array[0]['price'][$product_key];
                 $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['1-9'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
              $result_str = $price;
