@@ -163,7 +163,6 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 if($site_info_key=='rmt.diamond-gil.jp'){
            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
 
-	 }else{
 }else{
              save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
       }
