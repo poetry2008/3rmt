@@ -127,7 +127,25 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       	$collect_res_url[$site_info_key]['products_name'] =  $site_info_arr['products_name'];
         continue;
       }
-      save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+      $site_value = array_search($site_info_key,$site);
+      $category_id = $category_id_array[$site_value];
+	  //如果是rmt1需要特殊处理
+	  if($site_info_key=='rmt1.jp'){ 
+              $site_info_arr['price'][$site_info_arr['section_1']['0']]= $site_info_arr['price_1'];
+              unset($site_info_arr['section_1']);
+              unset($site_info_arr['price_1']);
+            if($category_value == 'buy'){
+                $site_info_arr['price'][$site_info_arr['section_2']['0']]= $site_info_arr['price_2'];
+                unset($site_info_arr['section_2']);
+                unset($site_info_arr['price_2']);
+                $site_info_arr['price'][$site_info_arr['section_3']['0']]= $site_info_arr['price_3'];
+                unset($site_info_arr['section_3']);
+                unset($site_info_arr['price_3']);
+            }
+           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
+	 }else{
+             save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+      }
     }
     //采集网站的特殊处理
     //处理网站名
@@ -179,11 +197,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $tmp_url[] = $s_v;
       }
       $i++;
-      if($show_log){
-        if($i%2==0){
-          sleep(1);
-        }
-      }else{
+      if($i%2==0){
         sleep(1);
       }
       $all_result = get_all_result($tmp_url);
@@ -206,47 +220,65 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $inventory = array();
         $rmt_name = array('ジャックポット','ゲームマネー','カメズ','学園','FF14-RMT','RedStone-RMT','GM-Exchange','ワールドマネー','Itemdepot','GM-Exchange');
         foreach($con_arr as $con_key => $con_value){
-          if(in_array(strtolower(trim($site_info['site_names'][$con_key])),$rmt_name)){
+          if(in_array(strtolower(trim(strip_tags($site_info['site_names'][$con_key]))),$rmt_name)){
             continue;
           }
           if($site_info['inventory'][$con_key] == 0){
             continue;
           }
-          $price[] = $site_info['price'][$con_key];
+          $price[] = str_replace(',','',$site_info['price'][$con_key]);
           $inventory[] = $site_info['inventory'][$con_key];
         }
         if($category_value =='sell'){
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(max($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
         }else{
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
           $pos = array_search(min($price), $price);
           $t_price[] = $price[$pos];
           $t_inventory[] = $inventory[$pos];
-          unset($price[$pos]);
-          unset($inventory[$pos]);
+          $key_temp = value_key($price[$pos],$price);
+          $price = delete_keys($key_temp,$price);
+          $inventory = delete_keys($key_temp,$inventory);
+          //unset($price[$pos]);
+          //unset($inventory[$pos]);
         }
         $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
@@ -399,8 +431,11 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
       $t_site_value = 5;
     }
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
-if($value!=''){
-  $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
+//rmt1
+if($value!='' && $site_name=='rmt1.jp'){
+   $price_info = get_price_info_new($result_array,$category_value,$game_type,$site_name,$product_key,$value);
+}else if($value!='' && $site_name!='rmt1.jp'){
+   $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
 }
 //    $price_info = tep_get_price_info($result_array,$category_value,$game_type,$t_site_value,$product_key,$value);
     $value = $price_info['value'];
@@ -468,6 +503,15 @@ function value_key($value,$array){
   }
   sort($key);
   return $key;
+}
+//通过键名的数组删除相应的值
+function delete_keys($keys,$array){
+
+  foreach($keys as $value){
+
+    unset($array[$value]);
+  }
+  return $array;
 }
 function save_site_res($game_type,$category_value,$category_id_array,$site_value,$url_array,$search_array,$site_key,$sleep_flag=false,$other_array){
   if($url_array[$site_value] == ''){
@@ -693,7 +737,7 @@ function tep_get_toher_collect($game_type){
     $na_category_type_array[] = $na_category_array['category_type'] == 1 ? 'buy' : 'sell';
     $site_category_array[] = $na_category_array['site_id'];
   }
-  //FF14 jp
+  //FF14 kakaran jp
   $jp_categorys_query = mysql_query("select * from category where category_url='http://rmt.kakaran.jp/ff14/'");
   while($jp_categorys_array = mysql_fetch_array($jp_categorys_query)){
 
@@ -846,18 +890,21 @@ function tep_get_toher_collect($game_type){
            if($i == 0){
               $keys = value_key($val,$result_price);
               $frist_price_value = $result_price[$keys[0]];
+              //$result_price = delete_keys($keys,$result_price);
               unset($result_price[$keys[0]]);
               $frist_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 1){
               $keys = value_key($val,$result_price);
               $two_price_value = $result_price[$keys[0]];
+              //$result_price = delete_keys($keys,$result_price);
               unset($result_price[$keys[0]]);
               $two_inventory_value = $result_inventory[$keys[0]];
            }
            if($i == 2){
               $keys = value_key($val,$result_price);
               $three_price_value = $result_price[$keys[0]];
+              //$result_price = delete_keys($keys,$result_price);
               unset($result_price[$keys[0]]);
               $three_inventory_value = $result_inventory[$keys[0]];
            }
@@ -887,6 +934,7 @@ function tep_get_toher_collect($game_type){
     $na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     }
     //end
+    //$na_category_id_array[$key] = $wm_category_array[$site_category_array[$key]][$na_category_type_array[$key]];
     $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$na_category_id_array[$key]."'");
 
     foreach($result_array[0]['products_name'] as $products_key=>$products_value){
@@ -3930,18 +3978,26 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
 	       if($get_tep_name==$iimy_tep_name){
 	          return $product_row['product_name'];	
 		   }
-		   //RS拼写错误
+         preg_match('/'.$iimy_tep_name.'/is',$get_tep_name,$seach_product);
+         if(!empty($seach_product)){
+             $product_real_name = $product_row['product_name'];
+         }
+
+         $product_name = trim(preg_replace('/\s+/is','',$product_name));
+
+	   //RS拼写错误
           if($game_type=='RS'){
             if(strpos($fix_url,'mugenrmt')){
                if($product_name=='Ecplise'){
                   $product_real_name = 'Eclipse';	
                }
             }
-            if(strpos($fix_url,'rmt-king')){
+            if(strpos($fix_url,'rmt-king') || strpos($fix_url,'kakaran')){
                if(trim($product_name)=='RedEmrald')
                  $product_real_name = 'Red Emerald';	
             }
-           if(strpos($fix_url,'rmtsonic')){
+           //ダイアモンドギル
+           if(strpos($fix_url,'rmtsonic') || strpos($fix_url,'diamond-gil')){
               if($product_name=='Twlight'){
                  $product_real_name = 'Twilight';
               }	
@@ -3950,7 +4006,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
             $product_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
             $product_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
             $iimy_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_row['product_name'])));
-            if($$product_tep_name==$iimy_tep_name){
+            if($product_tep_name==$iimy_tep_name){
                 $product_real_name =  $product_row['product_name'];	
             }
          }
@@ -4105,6 +4161,62 @@ function tep_get_rate($str){
   }
 }
 
+/*@20141126
+ *param1 $result_array 采集的数据
+ *param2 $category_value 
+ *param3 $game_type 游戏
+ * param4 $site_name 网站
+ * 商品index
+ */ 
+
+function get_price_info_new($result_array,$category_value,$game_type,$site_name,$product_key,$value){ 
+   if($site_name == 'rmt1.jp'){
+        $min=0;
+        foreach($result_array[0]['price'] as $key=>$sec){
+            if($key < $min){
+              $min = $key;
+            }
+        }
+         preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+              if($category_value == 'buy'){
+                  if($inventory_array[0]!=''){
+                       foreach($result_array[0]['price'] as $section=> $value_array){
+                          if($inventory_array[0]>$section){
+                              $price = $result_array[0]['price'][$section][$product_key];
+                              $result_inventory = $inventory_array[0];
+                          }
+                        }
+                    }else{
+                       $price = $result_array[0]['price'][$min][$product_key];    
+                       $result_inventory=0;
+                    }         
+                }else{
+                    if($inventory_array[0]!=''){
+                         foreach($result_array[0]['price'] as $section=> $value_array){
+                             $price = $result_array[0]['price'][$section][$product_key];
+                             $result_inventory = $inventory_array[0];
+                         }
+                     }else{
+                         $price = $result_array[0]['price'][$min][$product_key];    
+                         $result_inventory=0;
+                     } 
+
+                 }
+          $result_str=$price;
+    }
+      
+
+      $value = str_replace('<br />','',$value);
+      $result_str = str_replace(',','',$result_str);
+      $result_inventory = str_replace(',','',$result_inventory);
+      $value = preg_replace('/<.*?>/','',$value);
+      //数据入库
+      $res = array('value'=>$value,'result_str'=>$result_str,'result_inventory'=>$result_inventory);
+      return $res;
+
+
+
+}
 
 
 ?>
