@@ -169,7 +169,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     
     //获得rmt 需要采集的产品数量 
     $product_sql =  "select * from product where 
-       category_id = (select category_id from category where 
+       category_id in (select category_id from category where 
          site_id=(select site_id from site where 
            site_url like 'http://www.iimy.co.jp%' ) 
        and category_name='".$game_type."' 
