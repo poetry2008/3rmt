@@ -3342,6 +3342,10 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
         break; 
        }
       }else if($site_value == 8){//ダイアモンドギル
+        if($game_type == 'L2'){
+
+          $result_array[0]['inventory'][$product_key] = strip_tags($result_array[0]['inventory'][$product_key]);
+        }
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
          $price = $result_array[0]['price'][$product_key]; 
            $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
@@ -4038,6 +4042,9 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
         if($game_type=='L2'){
             if($product_name=='キャスディエン'){
                $product_real_name = 'キャスティエン';
+            }
+            if(strpos($fix_url,'diamond-gil')){
+              $product_real_name = strip_tags($product_name);
             }
         }
       //AION
