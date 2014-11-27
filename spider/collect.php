@@ -159,11 +159,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
                 unset($site_info_arr['price_3']);
             }
            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
-	 }
-if($site_info_key=='rmt.diamond-gil.jp'){
-           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
-
-}else{
+          }else{
              save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
       }
     }
@@ -483,10 +479,6 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
     if($site_name == 'rmt.kakaran.jp'){
       $t_site_value = 5;
     }
-if($site_name=='rmt.diamond-gil.jp' && $game_type=='ECO'){
-      $t_site_value = 2;
-
-}
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
 //rmt1
 if($value!='' && $site_name=='rmt1.jp'){
@@ -3629,6 +3621,26 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
              $result_str = $price*10;
             }
          break;
+        case 'nobunaga':
+echo $value;
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 0 && $inventory_array[0] <=49){
+
+                    $price = $result_array[0]['1-49'][$product_key]; 
+                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                    $price = $result_array[0]['50-99'][$product_key]; 
+                  }else{
+             
+                    $price = $result_array[0]['100-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $result_inventory = 0;
+                }
+              }
+       break;
 	 }
 	}
       else if($site_value == 9){//アサヒ
@@ -4306,6 +4318,9 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
             }
         }
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+              if(strpos($result_array[0]['inventory'][$product_key],'span')){
+                  $inventory_array[0]=0;
+              }
               if($category_value == 'buy'){
                   if($inventory_array[0]!=''){
                        foreach($result_array[0]['price'] as $section=> $value_array){
