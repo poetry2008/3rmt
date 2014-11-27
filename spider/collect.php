@@ -4084,6 +4084,26 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
    $product_real_name = preg_replace('/<.*?>/','',$product_real_name);
    return $product_real_name;
 }
+function SBC2DBC($str) {
+  $arr = array(
+      '１','２','３','４','５','６','７','８','９','０','＋','－','％','＝'
+      );
+  $arr2 = array(
+      '1','2','3','4','5','6','7','8','9','0','+','-','%','='
+      );
+  return str_replace($arr, $arr2, $str);
+}
+function tep_get_rate($str){
+  $str = str_replace('あたり','=',$str);
+  $str = str_replace(',','',$str);
+  $str = str_replace('万','0000',$str);
+  $str = str_replace('億','00000000',$str);
+  if(preg_match('/1口=(\d+)M[^M\d]+(\d+)M=(\d+)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1口=(\d+)/',$str,$arr)){
+    return $arr;
+  }
+}
 
 
 
