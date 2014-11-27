@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-get_iimy_data();
+//get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -1779,7 +1779,7 @@ if($price[1]=='00'){
 	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
 }
 //      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
-      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])){
+      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] != -1){
         if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
           if($inventory_flag_array[$game] === 0){
           //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>';
@@ -1828,6 +1828,12 @@ if($site_value!=7){
       }
     }
     $price_array = array_filter($price_array);
+    foreach($price_array as $price_key=>$price_value){
+
+      if($price_value == -1){
+        unset($price_array[$price_key]);
+      }
+    }
 if($type=='buy'){
     sort($price_array);
 }else{

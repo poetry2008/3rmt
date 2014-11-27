@@ -301,6 +301,20 @@ if($site_info_key=='rmt.diamond-gil.jp'){
           //unset($price[$pos]);
           //unset($inventory[$pos]);
         }
+        foreach($t_price as $t_price_key=>$t_price_value){
+
+          if($t_price_value == ''){
+
+            $t_price[$t_price_key] = -1;
+          }
+        }
+        foreach($t_inventory as $t_inventory_key=>$t_inventory_value){
+
+          if($t_inventory_value == ''){
+
+            $t_inventory[$t_inventory_key] = -1;
+          }
+        }
         $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
           $site_info_arr = array();
