@@ -450,7 +450,7 @@ function get_all_result($urls) {
 //根据 category id 和 获得的结果 把数据存储到数据库
 function save2db($category_id,$site_value,$result_str,$category_value,$game_type,$site_name=''){
   $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id."'");
-  $rate_arr = tep_get_rate(SBC2DBC($result_array['rate'][0]);
+  $rate_arr = tep_get_rate(SBC2DBC($result_array['rate'][0]));
   $result_array[0] = $result_str;
   $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
   //当获取的数据商品名称为空(或这个页面没有数据)
