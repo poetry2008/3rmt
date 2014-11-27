@@ -4140,7 +4140,15 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            if($temp_array[0][0]!=''){
               $product_real_name=  'アルテミス';
            }
-      }
+       }
+       if($game_type=='AA'){
+         $name_mode_array = array('タヤン','ジン','キープローザ','ルシウス','エアンナ','アーランゼブ');
+         $name_replace_array = array('Tahyang','Gene','Kyprosa','Lucius','Eanna','Aranzeb');
+         if(strpos($fix_url,'rmtrank')){
+
+           $product_real_name = str_replace($name_mode_array,$name_replace_array,$product_name);
+         }
+       }
 
    }
    $product_real_name = str_replace('<br />','',$product_real_name);
