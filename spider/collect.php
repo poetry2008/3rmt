@@ -121,7 +121,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
     //通过正则获得所有网站的数据
-    $all_site_info_array = get_info_array($all_result,$search_array);
+    $all_site_info_array = get_info_array($all_result,$search_array,$rate_diff_site);
     //处理数据并存储到数据库
     $collect_res_url = array();
     $collect_res_name = array();
@@ -160,7 +160,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
             }
            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
 	 }else{
-             save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
       }
     }
     //采集网站的特殊处理
@@ -219,7 +219,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       }
       $all_result = get_all_result($tmp_url);
       //通过正则获得所有网站的数据
-      $all_site_info_array = get_info_array($all_result,$other_array);
+      $all_site_info_array = get_info_array($all_result,$other_array,$rate_diff_site);
       foreach($all_site_info_array as $site_key => $site_info){
         $con = count($site_info['price']);
         $con_arr = $site_info['price'];
@@ -324,7 +324,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
   return $log_str;
 }
 //通过采集结果获得相关信息 返回数组 key = url_host value=array（价格等）
-function get_info_array($curl_results,$search_array){
+function get_info_array($curl_results,$search_array,$rate_diff_site){
   $url_info_array = array();
   $searched_url = array();
   foreach($curl_results as $result){
@@ -349,7 +349,7 @@ function get_info_array($curl_results,$search_array){
     foreach($search_info_array as $key => $value){
       preg_match_all('/'.$value.'/is',$res,$temp_array);
       if($key == 'rate'){
-        $res_search_array[$key] = strip_tags($temp_array[0][0]);
+        $res_search_array[$key] = strip_tags($temp_array[0][count($temp_array[0])-1]);
       }else{
         foreach($temp_array[1] as $k => $v){ 
           if($v==''||trim($v)==''||strip_tags($temp_array[1][$k])==''){
@@ -450,7 +450,7 @@ function get_all_result($urls) {
 //根据 category id 和 获得的结果 把数据存储到数据库
 function save2db($category_id,$site_value,$result_str,$category_value,$game_type,$site_name=''){
   $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id."'");
-  $rate_str = $result_array['rate'][0];
+  $rate_arr = tep_get_rate(SBC2DBC($result_array['rate'][0]);
   $result_array[0] = $result_str;
   $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
   //当获取的数据商品名称为空(或这个页面没有数据)
