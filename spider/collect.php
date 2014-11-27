@@ -3964,11 +3964,12 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                   $product_real_name = 'Eclipse';	
                }
             }
-            if(strpos($fix_url,'rmt-king')){
+            if(strpos($fix_url,'rmt-king') || strpos($fix_url,'kakaran')){
                if(trim($product_name)=='RedEmrald')
                  $product_real_name = 'Red Emerald';	
             }
-           if(strpos($fix_url,'rmtsonic')){
+           //ダイアモンドギル
+           if(strpos($fix_url,'rmtsonic') || strpos($fix_url,'diamond-gil')){
               if($product_name=='Twlight'){
                  $product_real_name = 'Twilight';
               }	
@@ -3977,7 +3978,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
             $product_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
             $product_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_name)));
             $iimy_tep_name = strtolower(trim(preg_replace('/\s+/is','',$product_row['product_name'])));
-            if($$product_tep_name==$iimy_tep_name){
+            if($product_tep_name==$iimy_tep_name){
                 $product_real_name =  $product_row['product_name'];	
             }
          }
