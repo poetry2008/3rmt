@@ -66,6 +66,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     } 
   }
   $collect_site = array('rmt.kakaran.jp','rmtrank.com');
+  $rate_diff_site = array('www.mugenrmt.com');
   $category_type_all = $category;
   /*以下是正式采集*/
   $game_type=$game_type;
@@ -100,6 +101,20 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       if(!in_array($site_value,$search_host)&&$url_array[$site_key]!=''){
         $search_host[] = $site_value;
         $search_url[$site_value] = $url_array[$site_key];
+        if(in_array($site_value,$rate_diff_site)){
+          $tmp_url_arr = parse_url($url_array[$site_key]);
+          $patch_arr = explode('&',$tmp_url_arr['query']);
+          $file_name = '';
+          foreach($patch_arr as $p_val){
+            $tmp_patch_arr = explode('=',$p_val);
+            if($tmp_patch_arr[0] == 'gamefilename'){
+              $file_name = $tmp_patch_arr[1];
+            }
+          }
+          if($file_name != ''){
+            $search_url[$site_value.'_rate'] = $tmp_url_arr['scheme'].'://'.$tmp_url_arr['host'].'/rmt/'.$file_name.'html';
+          }
+        }
         $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value.'--'.$site_n[$site_key]."\n";
       }
     }
@@ -125,6 +140,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       if(in_array($site_info_key,$collect_site)){
       	$collect_res_url[$site_info_key]['url'] = $site_info_arr['url'];
       	$collect_res_url[$site_info_key]['products_name'] =  $site_info_arr['products_name'];
+      	$collect_res_url[$site_info_key]['rate'] =  $site_info_arr['rate'];
         continue;
       }
       $site_value = array_search($site_info_key,$site);
@@ -188,6 +204,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         }
         $search_url_list[$product_index][$site_key] = $search_url;
         $search_name_list[$product_index][$site_key] = $collect_res_url[$site_key]['products_name'][$product_index];
+        $search_rate_list[$product_index][$site_key] = $collect_res_url[$site_key]['rate'][$product_index];
       }
     }
     $i = 0;
@@ -309,10 +326,19 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 //通过采集结果获得相关信息 返回数组 key = url_host value=array（价格等）
 function get_info_array($curl_results,$search_array){
   $url_info_array = array();
+  $searched_url = array();
   foreach($curl_results as $result){
     $url_info = parse_url($result['info']['url']);
     $search_key = $url_info['host'];
-    $res = $result['results'];
+    if(in_array($search_key,$rate_diff_site)&&!in_array($search_key,$searched_url)){
+      $searched_url[] = $search_key;
+      $res = $result['results'];
+      continue;
+    }else if(in_array($search_key,$searched_url)){
+      $res .= $result['results'];
+    }else{
+      $res = $result['results'];
+    }
     $encode_array = array('UTF-8','EUC-JP','Shift_JIS','ISO-2022-JP');
     $encode = mb_detect_encoding($res,$encode_array);
     if(strtolower($encode) != 'UTF-8'){
@@ -322,12 +348,16 @@ function get_info_array($curl_results,$search_array){
     $res_search_array = array();
     foreach($search_info_array as $key => $value){
       preg_match_all('/'.$value.'/is',$res,$temp_array);
-      foreach($temp_array[1] as $k => $v){ 
-        if($v==''||trim($v)==''||strip_tags($temp_array[1][$k])==''){
-          $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
+      if($key == 'rate'){
+        $res_search_array[$key] = strip_tags($temp_array[0][0]);
+      }else{
+        foreach($temp_array[1] as $k => $v){ 
+          if($v==''||trim($v)==''||strip_tags($temp_array[1][$k])==''){
+            $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
+          }
         }
+        $res_search_array[$key] = $temp_array[1];
       }
-      $res_search_array[$key] = $temp_array[1];
     }
     $url_info_array[$search_key] = $res_search_array;
   }
@@ -360,12 +390,16 @@ function get_fetch_by_url($url,$search_match){
   $search_array = array();
   foreach($search_match as $key => $value){
     preg_match_all('/'.$value.'/is',$result,$temp_array);
-    foreach($temp_array[1] as $k => $v){ 
-      if($v==''||trim($v)==''){
-        $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
+    if($key == 'rate'){
+      $search_array[$key] = strip_tags($temp_array[0][0]);
+    }else{
+      foreach($temp_array[1] as $k => $v){ 
+        if($v==''||trim($v)==''){
+          $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
+        }
       }
+      $search_array[$key] = $temp_array[1];
     }
-    $search_array[$key] = $temp_array[1];
   }
   $result_array[] = $search_array;
   return $result_array;
@@ -416,6 +450,7 @@ function get_all_result($urls) {
 //根据 category id 和 获得的结果 把数据存储到数据库
 function save2db($category_id,$site_value,$result_str,$category_value,$game_type,$site_name=''){
   $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id."'");
+  $rate_str = $result_array['rate'][0];
   $result_array[0] = $result_str;
   $result_array[0]['products_name'] = array_unique($result_array[0]['products_name']);
   //当获取的数据商品名称为空(或这个页面没有数据)
