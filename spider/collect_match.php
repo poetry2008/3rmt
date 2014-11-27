@@ -171,6 +171,16 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
+	       'rmt1.jp'=> array(
+                       'section_1'=>'<tr>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                       'section_2'=>'<tr>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                       'section_3'=>'<tr>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>',
+                      'products_name'=>'<td class="center" rowspan="4">\s*([^<>]*)\s*<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
+                      'price_1'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'price_2'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'price_3'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?([0-9,.]+).*?<\/td>' 
+                )
                   ),
       'FF11' =>  array(  
                   'www.mugenrmt.com'=> array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>\s*?([\sa-zA-Z]+?) rmt*?<\/td>',
@@ -308,12 +318,17 @@ $search_array_match = array(
                             '0'=>'<td class="price">([0-9,.]+)円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                             'inventory'=>'<td class="price">[0-9,.]+円<\/td><td class="price">[0-9,.]+PT<\/td><td class="price">.*?[0-9,.]+<\/td><td class="price">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                     ),
-                 'rmt1.jp'=> array('products_name'=>'<td class="center" rowspan="4">(.*?)<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
-                      '1-4'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
-                      '5-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
-                      '10-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+	       'rmt1.jp'=> array(
+                       'section_1'=>'<tr>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                       'section_2'=>'<tr>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                       'section_3'=>'<tr>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>',
+                      'products_name'=>'<td class="center" rowspan="4">\s*([^<>]*)\s*<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?<\/td>',
+                      'price_1'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'price_2'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'price_3'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
                       'inventory'=>'<td class="center" rowspan="4">.*?<\/td>.*?<td class="center" rowspan="4" nowrap="nowrap">.*?([0-9,.]+).*?<\/td>' 
-                    ),
+                )
+
                   ),
        'L2'=> array(
                  'www.mugenrmt.com'=> array('products_name'=>'<td height=\'24\' class=\'border03 border04\'>[0-9１２３４５鯖]+(.*?)rmt<\/td>',
@@ -1365,7 +1380,13 @@ $search_array_match = array(
                            '30-'=>'<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?[0-9,]+円<br \/>.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>',
                            'inventory'=>'<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,.]*?)&nbsp;口.*?<\/td>'
                         ),
-                    array(),
+         'www.rmtsonic.jp'=>array(),
+              'rmt1.jp'=> array(
+                      'section_1'=>'<tr>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                      'products_name'=>'<td class="center">\s*([^<]*)<\/td>\s*<td class="center" nowrap="nowrap">\s*銀行振込.*?<\/td>\s*<td class="center" nowrap="nowrap">.*?<\/td>',
+                      'price_1'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'inventory'=>'<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
+            )
                   ),
     'FF11'=>array(
                     array(),
@@ -1460,12 +1481,12 @@ $search_array_match = array(
                       'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
                     ),
             'www.rmtsonic.jp'=>array(),
-            'rmt1'=>array('products_name'=>'<tr .*?>.*?<td class="center">(.*?)<\/td>.*?<td .*?>',
-                      '1-4'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
-                      '5-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>',
-                      '10-'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?円.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>',
-                      'inventory'=>'<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
-                    ),
+              'rmt1.jp'=> array(
+                      'section_1'=>'<tr>.*?<th class="center" nowrap="nowrap">([0-9,]+)&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>.*?<th class="center" nowrap="nowrap">[0-9,]+&nbsp;口～<\/th>',
+                      'products_name'=>'<td class="center">\s*([^<]*)<\/td>\s*<td class="center" nowrap="nowrap">\s*銀行振込.*?<\/td>\s*<td class="center" nowrap="nowrap">.*?<\/td>',
+                      'price_1'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9.,]+)円.*?<\/td>.*?<td .*?>.*?<\/td>.*?<td .*?>.*?<\/td>',
+                      'inventory'=>'<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?([0-9,.]+&nbsp;口).*?<\/td>' 
+              )
                   ),
      'L2'=>array(
                'www.mugenrmt.com'=>array(),
