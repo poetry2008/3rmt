@@ -159,8 +159,13 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
                 unset($site_info_arr['price_3']);
             }
            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
+	 }
+if($site_info_key=='rmt.diamond-gil.jp'){
+           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
+
 	 }else{
-           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+}else{
+             save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
       }
     }
     //采集网站的特殊处理
@@ -465,6 +470,10 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
     if($site_name == 'rmt.kakaran.jp'){
       $t_site_value = 5;
     }
+if($site_name=='rmt.diamond-gil.jp' && $game_type=='ECO'){
+      $t_site_value = 2;
+
+}
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
 //rmt1
 if($value!='' && $site_name=='rmt1.jp'){
@@ -1154,14 +1163,24 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $result_str = $price*100;
               break;
              case 'ARAD':
-              $price = $result_array[0]['price'][$product_key];
-              $result_str = $price;
+             if($category_value =='buy'){
               if($inventory_array[0] != ''){
-                $result_inventory = $inventory_array[0]/10;
+                if($inventory_array[0] >= 101){
+
+                  $price = $result_array[0]['101-1000'][$product_key]; 
+                }else if($inventory_array[0] >= 21&&$inventory_array[0] <100){
+                  $price = $result_array[0]['21-100'][$product_key]; 
+                }else{
+                  $price = $result_array[0]['5-20'][$product_key]; 
+                } 
+                $result_inventory = $inventory_array[0];
               }else{
-                $result_inventory = 0; 
-              }
-              break;
+                $price = $result_array[0]['5-20'][$product_key]; 
+                $result_inventory = 0;
+               }
+              $result_str = $price;
+          }
+         break;
              case 'nobunaga':
               $price = $result_array[0]['price'][$product_key];
               if($category_value == 'sell'){
@@ -1259,14 +1278,22 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   }
               break;
              case 'blade':
-                  $price = $result_array[0]['price'][$product_key];
-                  $result_str = $price*10;
-                  if($result_array[0]['inventory'][$product_key] != ''){
-                    $result_inventory = $result_array[0]['inventory'][$product_key]/10;
-                  }else{
-                    $result_inventory = 0; 
-                  }
-              break;
+             if($category_value == 'buy'){
+
+               if($inventory_array[0] != ''){
+                if($inventory_array[0] >= 41){
+                  $price = $result_array[0]['41-9999'][$product_key]; 
+                }else{
+                  $price = $result_array[0]['41-9999'][$product_key]; 
+                } 
+                 $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $price = $result_array[0]['1-40'][$product_key]; 
+                  $result_inventory = 0;
+                }
+                $result_str = $price*10;
+              }
+                break;
              case 'megaten':
              if($category_value == 'buy'){
 
@@ -1667,31 +1694,14 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               $result_inventory = $inventory_array[0]/10;
             break;
           case 'ARAD':
-         if(strpos($result_array[0]['inventory'][$product_key],'img')){
-             $inventory_array[0]=0;
-          }
-              if($category_value == 'buy'){
-                if($inventory_array[0] != ''){
-                  if($inventory_array[0] >= 1 && $inventory_array[0] <=24){
-
-                    $price = $result_array[0]['1-24'][$product_key]; 
-                  }else if($inventory_array[0] >= 25 && $inventory_array[0] <=49){
-                    $price = $result_array[0]['25-49'][$product_key]; 
-                  }else{
-             
-                    $price = $result_array[0]['50-'][$product_key]; 
-                  } 
-                  $result_inventory = $inventory_array[0];
-                }else{
-                  $price = $result_array[0]['1-24'][$product_key]; 
-                  $result_inventory = 0;
-                }
-              }else{
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
-              }
+              $price = $result_array[0]['price'][$product_key];
               $result_str = $price;
-           break;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0; 
+              }
+              break;
            case 'nobunaga':
          if(strpos($result_array[0]['inventory'][$product_key],'img')){
              $inventory_array[0]=0;
@@ -1836,7 +1846,14 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
          break; 
 	 case 'blade':
          if($category_value == 'buy'){
-
+                  $price = $result_array[0]['price'][$product_key];
+                  $result_str = $price*10;
+                  if($result_array[0]['inventory'][$product_key] != ''){
+                    $result_inventory = $result_array[0]['inventory'][$product_key]/10;
+                  }else{
+                    $result_inventory = 0; 
+                  }
+/*
               $price = $result_array[0]['price'][$product_key]; 
               $result_str = $price;
             if($inventory_array[0] != ''){
@@ -1845,6 +1862,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               }else{
                 $result_inventory = 0; 
 	      }
+*/
          }else{
               $price = $result_array[0]['price'][$product_key]; 
               $result_str = $price;
@@ -2278,15 +2296,31 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             }
           break;
             case 'ARAD':
-              if($inventory_array[0] != ''){
-                $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
+         if(strpos($result_array[0]['inventory'][$product_key],'img')){
+             $inventory_array[0]=0;
+          }
+              if($category_value == 'buy'){
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=24){
+
+                    $price = $result_array[0]['1-24'][$product_key]; 
+                  }else if($inventory_array[0] >= 25 && $inventory_array[0] <=49){
+                    $price = $result_array[0]['25-49'][$product_key]; 
+                  }else{
+             
+                    $price = $result_array[0]['50-'][$product_key]; 
+                  } 
+                  $result_inventory = $inventory_array[0];
+                }else{
+                  $price = $result_array[0]['1-24'][$product_key]; 
+                  $result_inventory = 0;
+                }
               }else{
                 $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = 0;
+                $result_inventory = $inventory_array[0];
               }
               $result_str = $price;
-            break;
+           break;
             case 'nobunaga':
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
@@ -2693,6 +2727,15 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               break;
               case 'blade':
 	    if($category_value == 'buy'){
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price;
+            if($inventory_array[0] != ''){
+                $result_inventory = str_replace(',','',$result_array[0]['inventory'][$product_key]); 
+                $result_inventory = $result_inventory;
+              }else{
+                $result_inventory = 0; 
+	      }
+/*
               $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 1 && $inventory_array[0] <=4){
@@ -2709,10 +2752,11 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 }
 
               $result_str = $price*10;
+*/
 			 }else{
               if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
-                  $price = $result_array[0]['1-9'][$product_key]; 
+			$price = $result_array[0]['1-9'][$product_key]; 
                 }else{
                   $price = $result_array[0]['10-'][$product_key]; 
                 } 
@@ -2859,8 +2903,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
            if(strpos($result_array[0]['inventory'][$product_key],'span')){
              $inventory_array[0]=0;
             }
-           if($inventory_array[0] != ''){
-                /*
+            if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=9){
 
                   $price = $result_array[0]['1-9'][$product_key]; 
@@ -2869,17 +2912,23 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 }else {
                   $price = $result_array[0]['30-'][$product_key];
                 } 
-                */
-                $price = $result_array[0]['price'][$product_key];
+                $result_inventory = $inventory_array[0];
+              }else{
+                $price = $result_array[0]['1-9'][$product_key]; 
+                $result_inventory = 0;
+              }
+             $result_str = $price;
+         break;
+         case 'ARAD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = $inventory_array[0];
               }else{
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
-             $result_str = $price;
-         break;
-         case 'rohan':
-         break;
+              $result_str = $price;
+            break;
           case 'MS':
            if($category_value == 'buy'){
             if($inventory_array[0] != ''){
@@ -3193,6 +3242,16 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
               }else{
                 $result_inventory = 0; 
               } 
+              break;
+              case 'ARAD':
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = $inventory_array[0];
+              }else{
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = 0;
+              }
+              $result_str = $price;
               break;
          case 'HR':
               $price = $result_array[0]['price'][$product_key];
@@ -4254,7 +4313,11 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
                          $result_inventory=0;
                      } 
 
-                 }
+                 } 
+          if($game_type=='RO'){
+              $price = $price*100;
+              $result_inventory = $result_inventory/100;
+          }
           $result_str=$price;
     }
       
