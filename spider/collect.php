@@ -483,6 +483,9 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
 if($site_name != 'rmt.kakaran.jp' && $t_site_value == 5 && $game_type=='nobunaga'){
     $t_site_value=8;
 }
+if($site_name != 'rmtrank.com' && $t_site_value == 4 && $game_type=='L1'){
+    $t_site_value=10;
+}
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
 //rmt1
 if($value!='' && $site_name=='rmt1.jp'){
@@ -3671,6 +3674,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   $result_inventory = 0;
                 }
               }
+             $result_str = $price*10;
               break;
               case 'MS':
                if($category_value == 'buy'){
@@ -3912,6 +3916,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                         $result_inventory = 0;
                     } 
                  }
+                  $result_str = $price;
                 break;
 		 }
 	  }
