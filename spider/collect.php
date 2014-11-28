@@ -3007,20 +3007,15 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             break;
           case 'MS':
            if($category_value == 'buy'){
-            if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
-
-                  $price = $result_array[0]['20-49'][$product_key]; 
-                }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
-                  $price = $result_array[0]['50-99'][$product_key]; 
-                }else {
-                  $price = $result_array[0]['100-'][$product_key];
-                } 
-                $result_inventory = $inventory_array[0]/10;
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['20-49'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
+              $result_str = $price;
+
            }else{
             if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
@@ -4296,14 +4291,24 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
 		}
 //ARAD
           if($game_type=='ARAD'){
-              preg_match('/mugenrmt/',$fix_url,$seach_url);
-              if(!empty($seach_url)){
+              preg_match('/mugenrmt/',$fix_url,$seach_url_mug);
+              if(!empty($seach_url_mug)){
                    preg_match('/ディレジェ/is',$product_name,$tep_array);
                    if(!empty($tep_array)){
                        $product_real_name='ディレジエ';
                    }
                }
+             preg_match('/rmtrank/',$fix_url,$seach_url_rank);
+             if(!empty($seach_url_rank)){
+                 if($product_name=='Diregee'){
+                      $product_real_name = 'ディレジエ';
+                  }
+                  if($product_name=='Kain'){
+                      $product_real_name = 'カイン';
+                  }
+             }
            }
+
         if($game_type=='WZ'){
            if(strpos($fix_url,'matubusi')){
                if($product_name=='†Liberal†'){
@@ -4321,7 +4326,11 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          }
        }
        if($game_type=='HR'){
-           $product_real_name = str_replace('共通サーバー','マビノギ英雄伝',$product_name);
+              $product_real_name = str_replace('共通サーバー','マビノギ英雄伝',$product_name);
+              preg_match('/rmtrank/',$fix_url,$seach_url);
+              if(!empty($seach_url)){
+                 $product_real_name = str_replace('共通','マビノギ英雄伝',$product_name);
+              }
        }
        if($game_type=='rose'){
           if(strpos($fix_url,'rmtrank')){
@@ -4362,7 +4371,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                     $product_real_name = str_replace('祝福','の祝福',$product_name);
                 } 
              }
-            if(strpos($fix_url,'kakaran') && $product_name!=''){
+
+             preg_match('/rmtrank/',$fix_url,$seach_url_rank);
+             preg_match('/kakaran/',$fix_url,$seach_url_kaka);
+            if((!empty($seach_url_rank) ||!empty($seach_url_kaka)) &&$product_name!=''){
                 $product_real_name = $product_name.'の祝福';           
             }
          }
