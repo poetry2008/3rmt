@@ -851,17 +851,18 @@ function tep_get_toher_collect($game_type){
 
       if(class_exists('Spider')){   
         $result = new Spider($value,'',$kakaran_array[$na_category_type_array[$key]]);
+        $result_array = $result->fetch();
       }else{
         $result_array = get_fetch_by_url($value,$kakaran_array[$na_category_type_array[$key]]);
       }
     }else{
       if(class_exists('Spider')){
         $result = new Spider($value,'',$na_search_array[$key]);
+        $result_array = $result->fetch();
       }else{
         $result_array = get_fetch_by_url($value,$na_search_array[$key]);
       }
     }
-    $result_array = $result->fetch();
     //start
     if($result_array[0]['url']){
       $collect_res = array();
