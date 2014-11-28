@@ -3009,7 +3009,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
            if($category_value == 'buy'){
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
-                $result_inventory = $inventory_array[0];
+                $result_inventory = $inventory_array[0]/10;
               }else{
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
@@ -4242,7 +4242,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
 		}
 		//2.PSO2
          if($game_type=='PSO2'){
-            if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran')){
+            if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran') || strpos($fix_url,'matubusi')){
                $product_real_name = str_replace('：',' ',$product_name);
             }else{
                $product_real_name = str_replace('．',' ',$product_name);
