@@ -3007,20 +3007,15 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             break;
           case 'MS':
            if($category_value == 'buy'){
-            if($inventory_array[0] != ''){
-                if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
-
-                  $price = $result_array[0]['20-49'][$product_key]; 
-                }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
-                  $price = $result_array[0]['50-99'][$product_key]; 
-                }else {
-                  $price = $result_array[0]['100-'][$product_key];
-                } 
-                $result_inventory = $inventory_array[0]/10;
+              if($inventory_array[0] != ''){
+                $price = $result_array[0]['price'][$product_key]; 
+                $result_inventory = $inventory_array[0];
               }else{
-                $price = $result_array[0]['20-49'][$product_key]; 
+                $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
+              $result_str = $price;
+
            }else{
             if($inventory_array[0] != ''){
                 if($inventory_array[0] >= 1 && $inventory_array[0] <=19){
