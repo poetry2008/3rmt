@@ -463,6 +463,7 @@ function get_all_result($urls) {
 
 //根据 category id 和 获得的结果 把数据存储到数据库
 function save2db($category_id,$site_value,$result_str,$category_value,$game_type,$site_name=''){
+  $c_type = $category_value=='buy'?'1':'0';
   $category_update_query = mysql_query("update category set collect_date=now() where category_id='".$category_id."'");
   $rate_arr = tep_get_rate(SBC2DBC($result_array['rate'][0]));
   $result_array[0] = $result_str;
@@ -495,7 +496,6 @@ if($value!='' && $site_name=='rmt1.jp'){
     $search_query = mysql_query("select product_id from product where category_id='".$category_id."' and product_name='".trim($value)."'");
   
   //当前游戏主站所有商品名称
-    $c_type = $category_value=='buy'?'1':'0';
     $product_all_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game_type."' and category_type='".$c_type."' and c.game_server='jp' and c.site_id=7");
     while($product_row = mysql_fetch_array($product_all_sql)){
       $product_name_list_array[]=strtolower(trim($product_row['product_name']));
@@ -4298,6 +4298,46 @@ function tep_get_rate($str){
   }else if(preg_match('/1口=(\d+)/',$str,$arr)){
     return $arr;
   }
+}
+
+function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate){
+  $this_price = 0;
+  $inventory_str = str_replace(',','',$result_arr['inventory'][$index]);
+  if(preg_match('/[0-9]+/',$inventory_str,$inv_arr)){
+    $inventory = $inv_arr[0];
+  }else{
+    $inventory = 0;
+  }
+  foreach($result_arr as $key => $value){
+    if(preg_match('/(\d{0,})-(\d{0,})/',$key[$index],$match_arr)){
+      if(isset($match_arr[2])&&isset($match_arr[1])){
+        if($inventory >= $match_arr[1] && $inventory <= $match_arr[2]){
+          $this_price = $value[$index];
+        }
+      }else if(!isset($match_arr[1])){
+        $this_price = $value[$index];
+      }else if(!isset($match_arr[2])){
+        if($inventory >= $match_arr[1]){
+          $this_price = $value[$index];
+        }
+      }else{
+        $this_price = $value[$index];
+      }
+    }
+  }
+  $this_price = str_replace(',','',$this_price);
+  if(count($this_rate)>2){
+    $inventory = $inventory/$this_rate[2];
+  }
+  $this_inventory = $inventory;
+  $res_rate = 1;
+  if($host_rate!=''&&$host_rate!=0&&empty($this_rate)){
+    $this_price = $this_price*$host_rate/$this_rate[count($this_rate)-1];
+    $this_inventory = $this_inventory*$host_rate/$this_rate[count($this_rate)-1];
+    $res_rate = $this_rate[count($this_rate)-1];
+  }
+  $res = array('value'=>$value,'result_str'=>$this_price,'result_inventory'=>$this_inventory,'res_rate'=>$res_rate);
+  return $res;
 }
 
 /*@20141126
