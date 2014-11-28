@@ -2855,9 +2855,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 300){
-
-
-                    $result_str = $result_array[0]['300-'][$product_key]; 
+                    $result_str = $result_array[0]['300-'][$product_key]*10; 
                   }else if($inventory_array[0] >= 100 && $inventory_array[0] <=299){
                     $result_str = $result_array[0]['100-299'][$product_key]*10; 
                   }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
