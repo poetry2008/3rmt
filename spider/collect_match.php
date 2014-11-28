@@ -1212,12 +1212,12 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
-                 'rmt.diamond-gil.jp'=> array('products_name'=>'<td align="left" bgcolor="#D6ECFC"><a href=".*?">[0-9,.]+(.*?)<\/a>.*?<\/td>',
+                 'rmt.diamond-gil.jp'=> array('products_name'=>'<td align="left" bgcolor="#D6ECFC">[0-9]+\.?(.*?)<\/td>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
-                      '20-49'=>'<td align="center">[0-9]+&nbsp;円<\/td><td align="center">([0-9]+)&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td>',
-                      '50-99'=>'<td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">([0-9]+)&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td>',
-                      '100-'=>'<td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">[0-9]+&nbsp;円<\/td><td align="center">([0-9]+&nbsp;)円<\/td>',
-                      'inventory'=>'<td align="center"><a href=".*?"><b style=".*?">([0-9,.]+)&nbsp;口<\/b><\/a><\/td>'
+                      '20-49'=>'<td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">([0-9,.]+)&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td>',
+                      '50-99'=>'<td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">([0-9,.]+)&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td>',
+                      '100-'=>'<td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">[0-9,.]+&nbsp;円<\/td><td align="center">([0-9,.]+)&nbsp;円<\/td>',
+                      'inventory'=>'<td align="left" bgcolor="#D6ECFC">.*?<\/td><td align="center">(.*?)<\/td>'
                       ),
                    array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+).*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>', 
                             'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
@@ -2240,7 +2240,15 @@ $search_array_match = array(
                'www.iimy.co.jp'=> array('products_name'=>'<name>(.*?)の.*?<\/name>',
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
-                    ),
+                         ),
+               'rmt.diamond-gil.jp'=> array('products_name'=>'<span class="sell_serverName" .*?>&nbsp;[0-9,.]+.?(.*?)<\/span>',
+                      'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                      '1-19'=>'<span class="sell_serverPrice" title="1口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '20-49'=>'<span class="sell_serverPrice" title="20口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '50-99'=>'<span class="sell_serverPrice" title="50口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '100-'=>'<span class="sell_serverPrice" title="100口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      'inventory'=>'<span class="sell_serverTotal" .*?>(.*?)<\/span>'
+                      ),
 					/*
                     array('products_name'=>'<span class="sell_serverName" style="width:21%">&nbsp;[1,2,3,4,50-9.]+(.*?)<\/span>',
                       '1-19'=>'<span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">([0-9]+)&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span><span class="sell_serverPrice" title=".*?" style="width:13%"  onmouseover=".*?" onmouseout=".*?">[0-9]+&nbsp;円<\/span>',

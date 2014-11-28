@@ -3673,8 +3673,43 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   $result_inventory = 0;
                 }
               }
-             $result_str = $price*10;
-       break;
+              break;
+              case 'MS':
+               if($category_value == 'buy'){
+                 if($inventory_array[0] != ''){
+                     if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                        $price = $result_array[0]['50-99'][$product_key]; 
+                     }else if($inventory_array[0] >= 100){
+                        $price = $result_array[0]['100-'][$product_key]; 
+                     }else{
+                        $price = $result_array[0]['20-49'][$product_key]; 
+                     } 
+                     $result_inventory = $inventory_array[0];
+                 }else{
+                     $price = $result_array[0]['20-49'][$product_key]; 
+                     $result_inventory = 0;
+                 }
+                 $result_str = $price;
+               }else{
+                  if($inventory_array[0] != ''){
+                     if($inventory_array[0] >= 20 && $inventory_array[0] <=49){
+                        $price = $result_array[0]['20-49'][$product_key]; 
+                     }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                       $price = $result_array[0]['50-99'][$product_key]; 
+                     }else if($inventory_array[0] >= 100){
+                       $price = $result_array[0]['100-'][$product_key];
+                     }else{
+                        $price = $result_array[0]['1-19'][$product_key]; 
+                     } 
+                     $result_inventory = $inventory_array[0];
+                 }else{
+                     $price = $result_array[0]['1-19'][$product_key]; 
+                     $result_inventory = 0;
+                 }   
+                 $result_str = $price;
+
+               }
+              break;
 	 }
 	}
       else if($site_value == 9){//アサヒ
