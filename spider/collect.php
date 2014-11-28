@@ -886,7 +886,7 @@ function tep_get_toher_collect($game_type){
              $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
          }else{
-           $result_array_kaka = get_fetch_by_url($search_url,$na_category_type_array[$key]);
+           $result_array_kaka = get_fetch_by_url($search_url,$other_array[$na_category_type_array[$key]]);
            if($result_array_kaka){
               $collect_res[] = date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value;
            }
