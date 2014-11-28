@@ -1383,12 +1383,12 @@ $search_array_match = array(
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                         ),
-              'rmt.diamond-gil.jp'=>array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">([a-zA-Z]+)<\/a>.*?<\/td>',
+              'rmt.diamond-gil.jp'=>array('products_name'=>'<td align="left" bgcolor="#D6ECFC">(.*?)<\/td>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                       '5-9'=>'<td align="center">.*?円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '10-49'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td>',
                       '50-'=>'<td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">[0-9.,]+&nbsp;円<\/td><td align="center">([0-9.,]+)&nbsp;円<\/td>',
-                      'inventory'=>'<td align="left" bgcolor="#D6ECFC"><a href=".*?">.*?<\/td>.*?<td align="center"><a href=".*?"><b .*?>(.*?)&nbsp;口<\/b><\/a><\/td>' 
+                      'inventory'=>'<td align="left" bgcolor="#D6ECFC">.*?<\/td><td align="center">(.*?)<\/td>' 
                     ),
                   ),
        'mabinogi' => array(
@@ -2241,12 +2241,12 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                          ),
-               'rmt.diamond-gil.jp'=> array('products_name'=>'<span class="sell_serverName" .*?>&nbsp;[0-9,.]+.?(.*?)<\/span>',
+               'rmt.diamond-gil.jp'=> array('products_name'=>'<span class="sell_serverName" .*?>&nbsp;[0-9,.]+\.?(.*?)<\/span>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
-                      '1-19'=>'<span class="sell_serverPrice" title="1口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
-                      '20-49'=>'<span class="sell_serverPrice" title="20口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
-                      '50-99'=>'<span class="sell_serverPrice" title="50口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
-                      '100-'=>'<span class="sell_serverPrice" title="100口～" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '1-19'=>'<span class="sell_serverPrice" title="1口.*?" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '20-49'=>'<span class="sell_serverPrice" title="20口.*?" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '50-99'=>'<span class="sell_serverPrice" title="50口.*?" .*?>([0-9,.]+)&nbsp;円<\/span>',
+                      '100-'=>'<span class="sell_serverPrice" title="100口.*?" .*?>([0-9,.]+)&nbsp;円<\/span>',
                       'inventory'=>'<span class="sell_serverTotal" .*?>(.*?)<\/span>'
                       ),
 					/*
@@ -2396,10 +2396,10 @@ $search_array_match = array(
                            'price'=>'<price>([0-9,.]+)円<\/price>',
                            'inventory'=>'<quantity>(.*?)<\/quantity>'
                     ),
-                 'rmt.diamond-gil.jp' => array('products_name'=>'<span class="sell_serverName" style="width:40%">&nbsp;(.*?)<\/span>',
+                 'rmt.diamond-gil.jp' => array('products_name'=>'<span class="sell_serverName" .*?>&nbsp;(.*?)<\/span>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                       'price'=>'<span class="sell_serverPrice" .*?>([0-9,.]+)&nbsp;円<\/span>',
-                      'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/li>' 
+                      'inventory'=>'<span class="sell_serverTotal" style="width:20%">(.*?)<\/span>' 
                     ),
            ),
       'mabinogi'=> array(
