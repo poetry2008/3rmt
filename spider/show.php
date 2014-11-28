@@ -646,7 +646,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 5=>'http://rmtrank.com/',
                                 6=>'http://rmt.kakaran.jp/nobunaga/',
                                 8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
+                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/nobunaga/view/sv/',
                                 13=>'http://rmt.kakaran.jp/nobunaga/',
                                 14=>'http://rmt.kakaran.jp/nobunaga/',
                                 15=>'http://rmt.kakaran.jp/nobunaga/',

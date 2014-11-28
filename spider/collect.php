@@ -2854,19 +2854,18 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
 
                 if($inventory_array[0] != ''){
-                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
-
-                    $result_str = $result_array[0]['10-49'][$product_key]; 
-                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
-                    $result_str = $result_array[0]['50-99'][$product_key]*10; 
+                  if($inventory_array[0] >= 300){
+                    $result_str = $result_array[0]['300-'][$product_key]*10; 
                   }else if($inventory_array[0] >= 100 && $inventory_array[0] <=299){
                     $result_str = $result_array[0]['100-299'][$product_key]*10; 
+                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                    $result_str = $result_array[0]['50-99'][$product_key]*10; 
                   }else{
-                    $result_str = $result_array[0]['300-'][$product_key]*10; 
+                    $result_str = $result_array[0]['10-49'][$product_key]*10; 
                   } 
                   $result_inventory = $inventory_array[0]/10;
                 }else{
-                  $result_str = $result_array[0]['1-49'][$product_key]*10; 
+                  $result_str = $result_array[0]['10-49'][$product_key]*10; 
                   $result_inventory = 0;
                  }
                  }
@@ -4257,6 +4256,18 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                $product_real_name =  $product_row['product_name']; 
 		  }
 		}
+//ARAD
+          if($game_type=='ARAD'){
+              preg_match('/mugenrmt/',$fix_url,$seach_url);
+              if(!empty($seach_url)){
+                   preg_match('/ディレジェ/is',$product_name,$tep_array);
+                   if(!empty($tep_array)){
+                       $product_real_name='ディレジエ';
+                   }
+               }
+           }
+
+
         if($game_type=='WZ'){
            if(strpos($fix_url,'matubusi')){
                if($product_name=='†Liberal†'){
