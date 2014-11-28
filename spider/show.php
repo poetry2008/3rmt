@@ -24,7 +24,7 @@ mysql_select_db(DB_DATABASE);
 /**
 打开页面自动通过api自动获取主站数据
   */
-//get_iimy_data();
+get_iimy_data();
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
     $category_type = $_GET['flag'] == 'sell' ? '0' : '1';
@@ -49,12 +49,14 @@ function get_iimy_data(){
        if($game_name == 'MU'){
             $mode_array =array('products_name'=>'<name>(.*?)の宝石.*?<\/name>',
                    'price'=>'<price>([0-9,.]+)円<\/price>',
-                   'inventory'=>'<quantity>(.*?)<\/quantity>'
+                   'inventory'=>'<quantity>(.*?)<\/quantity>',
+                   'rate'=>'<rate>([0-9,.]+)<\/rate>',
              );
         }else{
              $mode_array =array('products_name'=>'<name>(.*?)の.*?<\/name>',
                    'price'=>'<price>([0-9,.]+)円<\/price>',
-                   'inventory'=>'<quantity>(.*?)<\/quantity>'
+                   'inventory'=>'<quantity>(.*?)<\/quantity>',
+                   'rate'=>'<rate>([0-9,.]+)<\/rate>',
              );
         }
 //匹配数据
@@ -71,10 +73,10 @@ function get_iimy_data(){
           $sort_order= 10000-$key;
           $search_query = mysql_query("select product_id from product where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
           if(mysql_num_rows($search_query) == 1){
-              $products_query = mysql_query("update product set is_error=0, product_price='".$search_array['price'][$key]."',product_inventory='".$search_array['inventory'][$key]."',sort_order='".$sort_order."' where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
+              $products_query = mysql_query("update product set is_error=0, product_price='".$search_array['price'][$key]."',product_inventory='".$search_array['inventory'][$key]."',sort_order='".$sort_order."',rate='".$search_array['rate'][$key]."' where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
           }else{
              if($value!=''){
-               $products_query = mysql_query("insert into product values(NULL,'".$category_row['category_id']."','".$value."','".$search_array['price'][$key]."','".$search_array['inventory'][$key]."','".$sort_order."',0)");
+               $products_query = mysql_query("insert into product values(NULL,'".$category_row['category_id']."','".$value."','".$search_array['price'][$key]."','".$search_array['inventory'][$key]."','".$sort_order."',0,'".$search_array['rate'][$key]."')");
              }
           }
        }
