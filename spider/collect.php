@@ -777,7 +777,7 @@ function save_site_res($game_type,$category_value,$category_id_array,$site_value
 }
 
 function tep_get_toher_collect($game_type){
-  require_once('class/spider.php');
+  //require_once('class/spider.php');
   $na_url_array = array();
   $na_category_id_array = array();
   $na_category_type_array = array();
@@ -848,10 +848,18 @@ function tep_get_toher_collect($game_type){
 
     if($value == ''){continue;}
     if(strpos($value,'rmt.kakaran.jp')){
-       
-      $result = new Spider($value,'',$kakaran_array[$na_category_type_array[$key]]);
+
+      if(class_exists('Spider')){   
+        $result = new Spider($value,'',$kakaran_array[$na_category_type_array[$key]]);
+      }else{
+        $result_array = get_fetch_by_url($value,$kakaran_array[$na_category_type_array[$key]]);
+      }
     }else{
-      $result = new Spider($value,'',$na_search_array[$key]);
+      if(class_exists('Spider')){
+        $result = new Spider($value,'',$na_search_array[$key]);
+      }else{
+        $result_array = get_fetch_by_url($value,$na_search_array[$key]);
+      }
     }
     $result_array = $result->fetch();
     //start
