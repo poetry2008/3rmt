@@ -158,9 +158,9 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
                 unset($site_info_arr['section_3']);
                 unset($site_info_arr['price_3']);
             }
-           save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
+            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
           }else{
-             save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
       }
     }
     //采集网站的特殊处理
@@ -4312,9 +4312,8 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
    if($site_name == 'rmt1.jp'){
         $min=0;
         foreach($result_array[0]['price'] as $key=>$sec){
-            if($key < $min){
-              $min = $key;
-            }
+          $min = $key;
+          break;
         }
          preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
         $inventory_str = str_replace(',','',$result_array[0]['inventory'][$product_key]);
@@ -4337,7 +4336,6 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
                     if($inventory_array[0]!=''){
                          foreach($result_array[0]['price'] as $section=> $value_array){
                              $price = $result_array[0]['price'][$section][$product_key];
-                             $result_inventory = $inventory_array[0];
                          }
                      }else{
                          $price = $result_array[0]['price'][$min][$product_key];    
