@@ -480,6 +480,9 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
     if($site_name == 'rmt.kakaran.jp'){
       $t_site_value = 5;
     }
+if($site_name != 'rmt.kakaran.jp' && $t_site_value == 5 && $game_type=='nobunaga'){
+    $t_site_value=8;
+}
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
 //rmt1
 if($value!='' && $site_name=='rmt1.jp'){
@@ -2838,6 +2841,36 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
 			
 		}
         break;
+         case 'ECO':
+
+            if($category_value == 'buy'){
+               //商品库存
+                preg_match_all("|<b .*?>([0-9,]+).*?<\/b>|",$result_array[0]['inventory'][$product_key],$temp_array);
+                if($temp_array[1][0]==''){
+                    $inventory_array[0]=0;
+                }else{
+                   $inventory_array[0]=$temp_array[1][0];
+                }
+                $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
+
+                if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 1 && $inventory_array[0] <=49){
+
+                    $result_str = $result_array[0]['10-49'][$product_key]; 
+                  }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
+                    $result_str = $result_array[0]['50-99'][$product_key]*10; 
+                  }else if($inventory_array[0] >= 100 && $inventory_array[0] <=299){
+                    $result_str = $result_array[0]['100-299'][$product_key]*10; 
+                  }else{
+                    $result_str = $result_array[0]['300-'][$product_key]*10; 
+                  } 
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $result_str = $result_array[0]['1-49'][$product_key]*10; 
+                  $result_inventory = 0;
+                 }
+                 }
+            break;
           }
         }else if($site_value == 4){//ランキング
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -3626,7 +3659,7 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                 if($inventory_array[0] != ''){
                   if($inventory_array[0] >= 0 && $inventory_array[0] <=49){
 
-                    $price = $result_array[0]['1-49'][$product_key]; 
+                    $price = $result_array[0]['5-49'][$product_key]; 
                   }else if($inventory_array[0] >= 50 && $inventory_array[0] <=99){
                     $price = $result_array[0]['50-99'][$product_key]; 
                   }else{
@@ -3635,10 +3668,11 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                   } 
                   $result_inventory = $inventory_array[0]/10;
                 }else{
-                  $price = $result_array[0]['1-49'][$product_key]; 
+                  $price = $result_array[0]['5-49'][$product_key]; 
                   $result_inventory = 0;
                 }
               }
+             $result_str = $price*10;
        break;
 	 }
 	}
