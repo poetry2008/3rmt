@@ -480,7 +480,7 @@ function save2db($category_id,$site_value,$result_str,$category_value,$game_type
     if($site_name == 'rmt.kakaran.jp'){
       $t_site_value = 5;
     }
-if($site_name != 'rmt.kakaran.jp' && $t_site_value == 5 && $game_type=='nobunaga'){
+if($site_name != 'rmt.kakaran.jp' && $t_site_value == 5 && ($game_type=='nobunaga' || $game_type == 'MS')){
     $t_site_value=8;
 }
 $value=match_data_iimy($game_type,$category_value,$url_array[$site_value],$value);
@@ -2560,7 +2560,12 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
             }
 
         }else if($site_value == 3){//WM
+          if($game_type == 'moe'){
+
+            $result_array[0]['inventory'][$product_key] = strip_tags($result_array[0]['inventory'][$product_key]);
+          }
           preg_match('/([0-9,]+)\s*?(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
+
            $inventory_array[0] = str_replace(',','',$inventory_array[0]); 
           $price = $result_array[0]['price'][$product_key]; 
           if($result_array[0]['inventory'][$product_key] != ''){
@@ -2870,6 +2875,25 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                  }
                  }
             break;
+            case 'moe':
+           if($category_value == 'buy'){
+              if($inventory_array[0] != ''){
+                  if($inventory_array[0] >= 5 && $inventory_array[0] <=9){
+		        $price = $result_array[0]['5-9'][$product_key];
+		  }else if($inventory_array[0] >= 10 && $inventory_array[0] <=49){
+ 		      $price = $result_array[0]['10-49'][$product_key];
+                  }else{
+		      $price = $result_array[0]['50-'][$product_key];
+                  }
+                 $result_inventory = $inventory_array[0]/10;
+ 
+              }else{
+ 		$price = $result_array[0]['5-9'][$product_key];
+                $result_inventory = 0;
+              }
+             $result_str = $price*10;
+            }
+         break;
           }
         }else if($site_value == 4){//ランキング
           preg_match('/[0-9,]+(口|M|万|枚| 口|ゴールド|金|&nbsp;口)?/is',$result_array[0]['inventory'][$product_key],$inventory_array);
@@ -4266,8 +4290,6 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                    }
                }
            }
-
-
         if($game_type=='WZ'){
            if(strpos($fix_url,'matubusi')){
                if($product_name=='†Liberal†'){
