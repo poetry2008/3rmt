@@ -3974,6 +3974,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
           if(strpos($fix_url,'mugenrmt')){
              $product_real_name = str_replace('(LEGASY)','',$product_name);
            }
+          preg_match('/kakaran/',$fix_url,$seach_url_kk);
+          if(!empty($seach_url_kk)){
+             $product_real_name = str_replace('Valefor','Valefora',$product_name);
+          }
        }
        if($game_type=='MU'){
           if(strpos($fix_url,'matubusi')){
