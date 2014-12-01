@@ -4041,9 +4041,11 @@ function tep_get_rate($str){
   $str = str_replace('個','000000',$str);
   if(preg_match('/1口=(\d+)M[^M\d]+(\d+)M=(\d+)/',$str,$arr)){
     return $arr;
-  }else if(preg_match('/1口=(\d+)/',$str,$arr)){
+  }else if(preg_match('/1口=(\d+M)/',$str,$arr)){
     return $arr;
   }else if(preg_match('/1ロ=(\d+M)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1口=(\d+)/',$str,$arr)){
     return $arr;
   }
 }
