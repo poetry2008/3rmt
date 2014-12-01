@@ -66,7 +66,6 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     } 
   }
   $collect_site = array('rmt.kakaran.jp','rmtrank.com');
-  $other_rate_site = array('www.rmtsonic.jp','www.mugenrmt.com');
   $category_type_all = $category;
   /*以下是正式采集*/
   $game_type=$game_type;
@@ -105,10 +104,13 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       }
     }
 
-    $search_url['rmt.kakaran.jp_ff14_naeu']= 'http://rmt.kakaran.jp/ff14_naeu/';
+    if($game_type == 'FF14'){
+      $search_url['rmt.kakaran.jp_ff14_naeu']= 'http://rmt.kakaran.jp/ff14_naeu/';
+    }
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
     //处理特殊网站的汇率
+    $other_rate_site = array('www.rmtsonic.jp','www.mugenrmt.com');
     $rate_all_site_info_array = get_other_rate($other_rate_site,$game_type);
     //通过正则获得所有网站的数据
     $all_site_info_array = get_info_array($all_result,$search_array);
@@ -307,13 +309,8 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
           $site_info_arr = array();
-          if(is_array($search_rate_list[$sk])){
-            $rate = $search_rate_list[$sk][0];
-          }else{
-            $rate = $search_rate_list[$sk];
-          }
           $site_info_arr = array(
-                  'rate'=> $rate,
+                  'rate'=> $search_rate_list[$sk][$site_key],
                   'products_name'=> array($search_name_list[$sk][$site_key]),
           	  'price' => array($t_price[$t_key]),
           	  'inventory' => array($t_inventory[$t_key]));
@@ -360,7 +357,11 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
     foreach($search_info_array as $key => $value){
       preg_match_all('/'.$value.'/is',$res,$temp_array);
       if($key == 'rate'){
-        $res_search_array[$key] = strip_tags($temp_array[0][count($temp_array[0])-1]);
+        if(preg_match('/=|＝/',strip_tags($temp_array[0][count($temp_array[0])-1]))){
+          $res_search_array[$key] = strip_tags($temp_array[0][count($temp_array[0])-1]);
+        }else{
+          $res_search_array[$key] = strip_tags($temp_array[0][0]);
+        }
       }else{
         foreach($temp_array[1] as $k => $v){ 
           if($v==''||trim($v)==''||strip_tags($temp_array[1][$k])==''){
@@ -4456,6 +4457,7 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
 }
 function get_other_rate($site_key_arr,$game_type){
   $site_rate_url = array(
+    'FF11' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ff11.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ff11.html'),
     'DQ10' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wii.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dqx.html'),
     'TERA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/TERA.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tera.html'),
     'RO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ro.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ro.html'),
