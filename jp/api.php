@@ -109,6 +109,8 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
 
         $listing_sql = "
           select * from ( select
+                 p.products_attention_1_3,
+                 p.products_attention_1_4,
                  p.products_id, 
                  p.products_price, 
                  p.products_price_offset, 
@@ -154,12 +156,16 @@ echo "<result>\n";
 
       $products_price = $currencies->display_price(round($pricedef + current($wari_array)),0); 
     }
+    $rate = $result['products_attention_1_3'];
+    $rate_other  = $result['products_attention_1_4'];
                           
 ?>
 <product>
   <name><?php echo $result['products_name'];?></name>
   <price><?php echo $products_price;?></price>
   <quantity><?php echo tep_show_quantity(tep_get_quantity($result['products_id'],true))?></quantity>
+  <rate><?php echo $rate;?></rate>
+  <rate_other><?php echo $rate_other;?></rate_other>
 </product>
 <?php
   }
