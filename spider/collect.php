@@ -2856,34 +2856,98 @@ if(strpos($result_array[0]['inventory'][$product_key],'a')){
                $price = $result_array[0]['price'][$product_key]; 
                $result_str = $price;
           break;
+         case 'TERA':
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price*10;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0; 
+			
+	      }
+         break; 
+         case 'nobunaga':
+              $price = $result_array[0]['price'][$product_key]; 
+              $result_str = $price*10;
+              if($inventory_array[0] != ''){
+                $result_inventory = $inventory_array[0]/10;
+              }else{
+                $result_inventory = 0; 
+			
+	      }
+         break; 
           case 'WZ':
              if($inventory_array[0] !=''){
-                  $result_inventory = $inventory_array[0];
+                  $result_inventory = $inventory_array[0]/10;
                 }else{
                   $result_inventory = 0;
                 }
                $price = $result_array[0]['price'][$product_key]; 
-               $result_str = $price;
+               $result_str = $price*10;
           break;
           case 'blade':
              if($inventory_array[0] !=''){
-                  $result_inventory = $inventory_array[0];
+                  $result_inventory = $inventory_array[0]/10;
                 }else{
                   $result_inventory = 0;
                 }
                $price = $result_array[0]['price'][$product_key]; 
-               $result_str = $price;
+               $result_str = $price*10;
           break;
+          case 'LH':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['price'][$product_key]; 
+               $result_str = $price*10;
+          break;
+          case 'ECO':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['price'][$product_key]; 
+               $result_str = $price*10;
+          break;
+          case 'FNO':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['price'][$product_key]; 
+               $result_str = $price*10;
+          break;
+          case 'SUN':
+             if($inventory_array[0] !=''){
+                  $result_inventory = $inventory_array[0]/10;
+                }else{
+                  $result_inventory = 0;
+                }
+               $price = $result_array[0]['price'][$product_key]; 
+               $result_str = $price*10;
+          break;
+             case 'cronous':
+                if($inventory_array[0] != ''){
+                     $result_inventory = $inventory_array[0]/10000;
+                }else{
+                     $result_inventory = 0;
+                } 
+                   $result_str = $result_array[0]['price'][$product_key]*10;
+              break;
             case 'megaten':
               if($inventory_array[0] != ''){
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = str_replace(',','',$inventory_array[0]); 
-                $result_inventory = $result_inventory;
+                $result_inventory = $result_inventory/10;
               }else{
                 $price = $result_array[0]['price'][$product_key]; 
                 $result_inventory = 0;
               }
-              $result_str = $price;
+              $result_str = $price*10;
             break;
          case 'HR':
               $price = $result_array[0]['price'][$product_key];
