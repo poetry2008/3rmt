@@ -4034,9 +4034,12 @@ function tep_get_rate($str){
   $str = str_replace(',','',$str);
   $str = str_replace('万','0000',$str);
   $str = str_replace('億','00000000',$str);
+  $str = str_replace('個','000000',$str);
   if(preg_match('/1口=(\d+)M[^M\d]+(\d+)M=(\d+)/',$str,$arr)){
     return $arr;
   }else if(preg_match('/1口=(\d+)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1ロ=(\d+M)/',$str,$arr)){
     return $arr;
   }
 }
@@ -4086,7 +4089,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
           $this_price = $temp_price;
           break;
         }else{
-          if($invenorry >= $match_arr[2]){
+          if($inventory >= $match_arr[2]){
             $this_price = $temp_price;
             break;
           }
@@ -4108,7 +4111,13 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   $this_inventory = $inventory;
   $res_rate = 1;
   if($host_rate!=''&&$host_rate!=0&&!empty($this_rate)){
-    $add_sub = $host_rate/$this_rate[count($this_rate)-1];
+    if(preg_match('/M/',$this_rate[count($this_rate)-1])){
+      $this_rate[count($this_rate)-1] = str_replace('M','000000',$this_rate[count($this_rate)-1]);
+      $add_sub = $host_rate/$this_rate[count($this_rate)-1];
+     
+    }else{
+      $add_sub = $host_rate/$this_rate[count($this_rate)-1];
+    }
     $this_price = $this_price*$add_sub;
     $this_inventory = $this_inventory/$add_sub;
     if(preg_match('/万/',$inventory_str)||preg_match('/億/',$inventory_str)){
@@ -4229,7 +4238,7 @@ function get_other_rate($site_key_arr,$game_type){
     'tartaros' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Tartaros.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tartaros.html'),
 	'atlantica' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/atlantica.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/atlantica.html'),
   );
-  $rate_match = array('rate'=>'((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}');
+  $rate_match = array('rate'=>'((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}(口|ロ)(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}');
   $search_url = array();
   foreach($site_key_arr as $site_key){
     if(isset($site_rate_url[$game_type][$site_key])){
