@@ -51,12 +51,14 @@ function get_iimy_data(){
                    'price'=>'<price>([0-9,.]+)円<\/price>',
                    'inventory'=>'<quantity>(.*?)<\/quantity>',
                    'rate'=>'<rate>([0-9,.]+)<\/rate>',
+                   'rate_other'=>'<rate_other>([^<]*)<\/rate_other>',
              );
         }else{
              $mode_array =array('products_name'=>'<name>(.*?)の.*?<\/name>',
                    'price'=>'<price>([0-9,.]+)円<\/price>',
                    'inventory'=>'<quantity>(.*?)<\/quantity>',
                    'rate'=>'<rate>([0-9,.]+)<\/rate>',
+                   'rate_other'=>'<rate_other>([^<]*)<\/rate_other>',
              );
         }
 //匹配数据
@@ -72,6 +74,24 @@ function get_iimy_data(){
           $search_array['inventory'][$key] = str_replace(',','',$search_array['inventory'][$key]);
           $sort_order= 10000-$key;
           $search_query = mysql_query("select product_id from product where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
+          $rate_other = str_replace(',','',$search_array['rate_other'][$key]);
+          $rate_other_value = 1;
+          $rate_add = 1;
+          if(preg_match('/千/',$rate_other)){
+            $rate_add = 1000;
+          }
+          if(preg_match('/万/',$rate_other)){
+            $rate_add = 10000;
+          }
+          if(preg_match('/億/',$rate_other)){
+            $rate_add = 100000000;
+          }
+          if(preg_match('/\d+/',$rate_other,$arr)){
+            $rate_other_value = $arr[0];
+          }
+          if($search_array['rate'][$key]<($rate_other_value*$rate_add)){
+            $search_array['rate'][$key] = ($rate_other_value*$rate_add);
+          }
           if(mysql_num_rows($search_query) == 1){
               $products_query = mysql_query("update product set is_error=0, product_price='".$search_array['price'][$key]."',product_inventory='".$search_array['inventory'][$key]."',sort_order='".$sort_order."',rate='".$search_array['rate'][$key]."' where category_id='".$category_row['category_id']."' and product_name='".trim($value)."'");
           }else{
