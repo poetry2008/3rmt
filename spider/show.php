@@ -1651,9 +1651,9 @@ foreach($all_site_array as $site_array){
 
 $url_arr = parse_url($_GET['error_url']);
 if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isset($_GET['error_url'])) || strpos($url_array[$game][$flag][$site_array['site_id']],$url_arr['host'])){
-    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
+    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
 }else{
-        echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
+        echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
 }
   }
 }

@@ -1589,7 +1589,7 @@ $search_array_match = array(
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                         'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
                         ), 
-                 'pastel-rmt.jp'=>array('products_name'=>'<td class="center">.*?([^>]*?)<\/td>',
+                'pastel-rmt.jp'=> array('products_name'=>'<td class="center" rowspan="3">([^<]*)<\/td>.*?<td class="center" rowspan="3" nowrap="nowrap">.*?銀行振込.*?<\/td>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                       '1-9'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
                       '10-19'=>'<td class="center" nowrap="nowrap">.*?銀行振込.*?<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>.*?<td class="center" nowrap="nowrap">(.*?)<\/td>.*?<td class="center" nowrap="nowrap">.*?<\/td>',
