@@ -1884,7 +1884,7 @@ if($site_value!=7){
     $price_array = array_filter($price_array);
     foreach($price_array as $price_key=>$price_value){
 
-      if($price_value == -1){
+      if($price_value < 0){
         unset($price_array[$price_key]);
       }
     }
