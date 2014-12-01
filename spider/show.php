@@ -157,6 +157,8 @@ while($game_str_row = mysql_fetch_array($game_str_query)){
 			'mabinogi'=> 'マビノギ',
 			'WF'=> '戦場のエルタ',
 			'rohan'=> 'ROHAN',
+                        'tartaros'=> 'タルタロス',
+                        'atlantica'=> 'アトランティカ',
 			'genshin'=> '幻想神域',
                       );
 if(!$has_row){
@@ -203,6 +205,8 @@ if($_GET['action'] == 'get_parent_category'){
       'mabinogi'=> '179',
       'WF'=> '431',
       'rohan'=> '382',
+      'tartaros'=> '450',
+      'atlantica'=> '278',
       'genshin'=> '620');
   $game_str_array = $old_game_str_array;
   $url = 'http://192.168.160.200/api.php?key=testkey1_98ufgo48d&action='.$_GET['action'];
@@ -1781,7 +1785,8 @@ if($price[1]=='00'){
 	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
 }
 //      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
-      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] != -1){
+      //if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] != -1){
+      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] >=0){
         if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
           if($inventory_flag_array[$game] === 0){
           //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>';
