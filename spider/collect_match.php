@@ -1520,7 +1520,7 @@ $search_array_match = array(
                           '1-49'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
                           '50-99'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
                           '100-299'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
-                          '300-'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td>',
+                          '300-'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td>',
                       'inventory'=>'([0-9.,]+)&nbsp;口|在庫切れ' 
                     ),
                'www.asahi-rmt-service.com'=>array('products_name'=>'<td class="left" style=".*?"><a href=".*?">(.*?)<\/a><\/td>',
@@ -1598,10 +1598,10 @@ $search_array_match = array(
                     ),
                'rmt.diamond-gil.jp'=>array('products_name'=>'<td align="left" bgcolor="#D6ECFC">.*?<a href=".*?">(.*?)<\/a>.*?<\/td>',
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
-                          '5-9'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
+                          '1-9'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
                           '10-19'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
                           '20-29'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td>',
-                          '30-'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td>',
+                          '30-'=>'<td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">[0-9,]+&nbsp;円<\/td><td align="center">([0-9,]+)&nbsp;円<\/td>',
                       'inventory'=>'([0-9.,]+)&nbsp;口|在庫切れ' 
                     ),
                'www.asahi-rmt-service.com'=>array('products_name'=>'<td class="left" style=".*?"><a href=".*?">(.*?)<\/a><\/td>',
