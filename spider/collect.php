@@ -106,10 +106,17 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 
     if($game_type == 'FF14'){
       $search_url['rmt.kakaran.jp_ff14_naeu']= 'http://rmt.kakaran.jp/ff14_naeu/';
+      if($category_value == 'buy'){
+        $search_url['www.mugenrmt.com_ff14_naeu']= 'http://www.mugenrmt.com/getDataDispWeb.ashx?parmType=gamemoneydisp&gameid=381&gamefilename=FF14NAEUrmt';
+        $search_url['www.rmt-wm.com_ff14_naeu']= 'http://www.rmt-wm.com/buy/finalfantasyxiv|eu.html';
+      }else{
+        $search_url['www.rmt-wm.com_ff14_naeu']= 'http://www.rmt-wm.com/sale/finalfantasyxiv%7Ceu.html';
+      }	
     }
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
     //处理特殊网站的汇率
+    sleep(1);
     $other_rate_site = array('www.rmtsonic.jp','www.mugenrmt.com');
     $rate_all_site_info_array = get_other_rate($other_rate_site,$game_type);
     //通过正则获得所有网站的数据
@@ -370,6 +377,21 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
       $search_key_arr[] = $search_key;
       $url_info_array[$search_key] = $res_search_array;
     }else{
+      $t_arr = array();
+      foreach($url_info_array[$search_key] as $arr_key => $arr_v){
+        $t_arr[$arr_key] = array();
+      }
+      foreach($url_info_array[$search_key]['products_name'] as $p_key => $p_name){
+        foreach($t_arr as $t_key => $t_value){
+          $t_arr[$t_key][] = $url_info_array[$search_key][$t_key][$p_key];
+        }
+      }
+      foreach($res_search_array['products_name'] as $p_key => $p_name){
+        foreach($t_arr as $t_key => $t_value){
+          $t_arr[$t_key][] = $res_search_array[$t_key][$p_key];
+        }
+      }
+      /*
       $temp_search_arr = array();
       $temp_search_url = array();
       $temp_search_name = array();
@@ -383,6 +405,8 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
       }
       $temp_search_arr = array('products_name'=>$temp_search_name,'rate'=>$url_info_array[$search_key]['rate'],'url'=>$temp_search_url);
       $url_info_array[$search_key] = $temp_search_arr;
+      */
+      $url_info_array[$search_key] = $t_arr;
     }
   }
   return $url_info_array;
@@ -4075,7 +4099,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
       }
     }
   }
-  if($inventory == 0){
+  if($inventory == 0&&!empty($inv_price_arr)){
     $this_price = min($inv_price_arr);
   }
   if(count($this_rate)>2){
