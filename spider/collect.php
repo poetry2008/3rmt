@@ -506,7 +506,7 @@ if($value==''){
 }
    $rate_host_sql = "select * from product p,category c 
       where p.category_id=c.category_id and p.product_name='".trim($value)."'
-      and c.category_type='".$c_type."' and c.site_id=(select site_id from site where site_url like 'http://www.iimy.co.jp%')";
+      and c.category_name='".$game_type."' and c.category_type='".$c_type."' and c.site_id=(select site_id from site where site_url like 'http://www.iimy.co.jp%')";
    $rate_host_query = mysql_query($rate_host_sql);
    if($rate_host_row = mysql_fetch_array($rate_host_query)){
       $host_rate = $rate_host_row['rate'];
@@ -4033,6 +4033,10 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   if(preg_match('/(\d+)億/',$this_rate,$add_arr)){
     $rate_add = $add_arr[1];
   }
+  $sub_rate = 1;
+  if(preg_match('/(\d+)銀/',$this_rate,$add_arr)){
+    $sub_rate = $add_arr[1];
+  }
   $this_rate = tep_get_rate($this_rate);
   $temp_price = 0;
   $inv_price_arr = array();
@@ -4087,6 +4091,10 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
       $this_inventory = $this_inventory/$rate_add;
     }
     $res_rate = $this_rate[count($this_rate)-1];
+  }
+  if($sub_rate!=1){
+    $this_price = $this_price*$sub_rate;
+    $this_inventory = $this_inventory/$sub_rate;
   }
   $res = array('value'=>$value,'result_str'=>$this_price,'result_inventory'=>$this_inventory,'rate'=>$res_rate);
   return $res;
@@ -4159,6 +4167,7 @@ function get_price_info_new($result_array,$category_value,$game_type,$site_name,
 function get_other_rate($site_key_arr,$game_type){
   $site_rate_url = array(
     'FF11' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ff11.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ff11.html'),
+    'RS' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/redstone.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/RedStone.html'),
     'DQ10' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wii.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dqx.html'),
     'TERA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/TERA.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tera.html'),
     'RO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ro.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ro.html'),
@@ -4192,7 +4201,7 @@ function get_other_rate($site_key_arr,$game_type){
     'fez' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/fez.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fez.html'),
     'moe' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/senmado.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/moe.html'),
     'mabinogi' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Mabinogi.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogi.html'),
-    'rohan' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rohan.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rohan.html')
+    'rohan' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rohan.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rohan.html'),
     'tartaros' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Tartaros.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tartaros.html'),
   );
   $rate_match = array('rate'=>'((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}');
