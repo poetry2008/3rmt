@@ -307,8 +307,13 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $log_name = array();
         foreach($collect_site_value[$site_key] as $t_key => $s_site_value){
           $site_info_arr = array();
+          if(is_array($search_rate_list[$sk])){
+            $rate = $search_rate_list[$sk][0];
+          }else{
+            $rate = $search_rate_list[$sk];
+          }
           $site_info_arr = array(
-                  'rate'=> $search_rate_list[$sk],
+                  'rate'=> $rate,
                   'products_name'=> array($search_name_list[$sk][$site_key]),
           	  'price' => array($t_price[$t_key]),
           	  'inventory' => array($t_inventory[$t_key]));
@@ -369,7 +374,19 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
       $search_key_arr[] = $search_key;
       $url_info_array[$search_key] = $res_search_array;
     }else{
-      $url_info_array[$search_key] =  array_merge($url_info_array[$search_key],$res_search_array);
+      $temp_search_arr = array();
+      $temp_search_url = array();
+      $temp_search_name = array();
+      foreach($url_info_array[$search_key]['products_name'] as $p_key => $p_name){
+        $temp_search_name[] = $p_name;
+        $temp_search_url[] = $url_info_array[$search_key]['url'][$p_key];
+      }
+      foreach($res_search_array['products_name'] as $p_key => $p_name){
+        $temp_search_name[] = $p_name;
+        $temp_search_url[] = $res_search_array['url'][$p_key];
+      }
+      $temp_search_arr = array('products_name'=>$temp_search_name,'rate'=>$url_info_array[$search_key]['rate'],'url'=>$temp_search_url);
+      $url_info_array[$search_key] = $temp_search_arr;
     }
   }
   return $url_info_array;
