@@ -1428,7 +1428,32 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 9=>'http://rmt.diamond-gil.jp/game.php/gameid/Tartraos/view/sv/',
                                 10=>'http://www.asahi-rmt-service.com/',
                                 11=>'https://www.rmt-king.com/',
-                                11=>'http://www.rmtsonic.jp/games/Tartaros.html',
+                                12=>'http://www.rmtsonic.jp/games/Tartaros.html',
+                                ),
+                                'sell'=>array(1=>'http://www.mugenrmt.com/',
+                                 2=>'http://www.matubusi.com/system/pc/cart/tartarosrebirth-rmt-kaitori/kaitori/items', 
+                                 3=>'http://ftb-rmt.jp/', 
+                                 4=>'http://www.rmt-wm.com/', 
+                                 5=>'http://rmtrank.com/',
+                                 6=>'http://rmt.kakaran.jp/',
+                                 8=>'http://pastel-rmt.jp/',
+                                 9=>'http://rmt.diamond-gil.jp/',
+                                 10=>'http://www.asahi-rmt-service.com/',
+                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=3&Mode=Buy&',
+                                ),
+                             ),
+                             'atlantica'=>array('buy'=>array(
+                                1=>'http://www.mugenrmt.com/rmt/atlantica.html',
+                                2=>'http://www.matubusi.com/', 
+                                3=>'http://ftb-rmt.jp/atlantica/buy/', 
+                                4=>'http://www.rmt-wm.com/buy/atlantica.html',
+                                5=>'http://rmtrank.com/',
+                                6=>'http://rmt.kakaran.jp/',
+                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=22&Mode=Sale&',
+                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/atlantica/view/sv/',
+                                10=>'http://www.asahi-rmt-service.com/atlantica/sale.html',
+                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=31&Mode=Sale&',
+                                12=>'http://www.rmtsonic.jp/games/atlantica.html',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
                                  2=>'http://www.matubusi.com/system/pc/cart/tartarosrebirth-rmt-kaitori/kaitori/items', 
@@ -1626,9 +1651,9 @@ foreach($all_site_array as $site_array){
 
 $url_arr = parse_url($_GET['error_url']);
 if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isset($_GET['error_url'])) || strpos($url_array[$game][$flag][$site_array['site_id']],$url_arr['host'])){
-    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
+    echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$site_array['site_name'].'</a><span id="enable_img" ><img src="images/icon_alarm_log.gif"></span></td>';
 }else{
-        echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_black">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
+        echo '<td class="dataTableHeadingContent_order"><a href="'.$url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$site_array['site_name'].'</a><span id="enable_img" style="display:none;"><img src="images/icon_alarm_log.gif"></span></td>';
 }
   }
 }
