@@ -104,6 +104,8 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $log_str .= date('H:i:s',time()).str_repeat(' ',5).$game_type.'--'.$category_value.'--'.$site_n[$site_key]."\n";
       }
     }
+
+    $search_url['rmt.kakaran.jp_ff14_naeu']= 'http://rmt.kakaran.jp/ff14_naeu/';
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
     //处理特殊网站的汇率
@@ -323,7 +325,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 /*
  * na FF14 游戏采集
  */
-  if($show_log){
+  if($show_log&&false){
     if($game_type == 'FF14'){
       tep_get_toher_collect($game_type);
     }
@@ -334,6 +336,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 function get_info_array($curl_results,$search_array,$rate_only=false){
   $url_info_array = array();
   $searched_url = array();
+  $search_key_arr = array();
   foreach($curl_results as $result){
     $url_info = parse_url($result['info']['url']);
     $search_key = $url_info['host'];
@@ -362,7 +365,12 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
         $res_search_array[$key] = $temp_array[1];
       }
     }
-    $url_info_array[$search_key] = $res_search_array;
+    if(!in_array($search_key,$search_key_arr)){
+      $search_key_arr[] = $search_key;
+      $url_info_array[$search_key] = $res_search_array;
+    }else{
+      $url_info_array[$search_key] =  array_merge($url_info_array[$search_key],$res_search_array);
+    }
   }
   return $url_info_array;
 }
