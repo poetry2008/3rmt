@@ -1884,7 +1884,7 @@ if($site_value!=7){
     $price_array = array_filter($price_array);
     foreach($price_array as $price_key=>$price_value){
 
-      if($price_value == -1){
+      if($price_value < 0){
         unset($price_array[$price_key]);
       }
     }
@@ -1901,7 +1901,7 @@ if($type=='buy'){
        }
     }
 $i++;
-if(count($price)>1){
+if(count($price)>=1){
     echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : '&nbsp;').'<label></td><td><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }else{
    if(count($price)==0){
