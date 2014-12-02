@@ -357,10 +357,18 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
     }
     $res_search_array = array();
     foreach($search_info_array as $key => $value){
-      preg_match_all('/'.$value.'/is',$res,$temp_array);
+      if($search_key == 'rmtrank.com'&&($key=='price'||$key=='site_names'||$key=='inventory')){
+        preg_match_all('/'.$value.'/i',$res,$temp_array);
+      }else{
+        preg_match_all('/'.$value.'/is',$res,$temp_array);
+      }
       if($key == 'rate'){
         if(preg_match('/=|＝/',strip_tags($temp_array[0][count($temp_array[0])-1]))){
-          $res_search_array[$key] = strip_tags($temp_array[0][count($temp_array[0])-1]);
+          if($search_key == 'rmt.kakaran.jp'){
+            $res_search_array[$key] = strip_tags($temp_array[0][0]);
+          }else{
+            $res_search_array[$key] = strip_tags($temp_array[0][count($temp_array[0])-1]);
+          }
         }else{
           $res_search_array[$key] = strip_tags($temp_array[0][0]);
         }
@@ -368,6 +376,11 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
         foreach($temp_array[1] as $k => $v){ 
           if($v==''||trim($v)==''||strip_tags($temp_array[1][$k])==''){
             $temp_array[1][$k] = strip_tags($temp_array[2][$k]);
+          }else if(strip_tags($temp_array[1][$k])!=''){
+            $temp_array[1][$k] = strip_tags($temp_array[1][$k]);
+          }
+          if($temp_array[1][$k] == '--'){
+            $temp_array[1][$k] = 0;
           }
         }
         $res_search_array[$key] = $temp_array[1];

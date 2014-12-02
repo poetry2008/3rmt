@@ -2647,9 +2647,10 @@ $other_array_match = array(
                         'price'=>'<td class="price sort">([0-9,.]+)円<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                         'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="price">.*?<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),
-        'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
-                        'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*\(<font[^>]*>[^<]*<\/font>\)[^<]*<\/td>|<td class="colb2\w{0,}"><font[^>]*>(\d+)[^<]*<font[^>]*>[^<]*<\/font>\)[^<]*<\/font>[^<]*<\/td>',
-                        'inventory' => '<td class="colb2\w{0,}"><span class="nobr">(\d+)[^<]*口|<td class="colb2\w{0,}"><span class="nobr"><font[^>]*>(\d+)[^<]*口'
+        'rmtrank.com'=> array(
+                        'site_names' => '<td class="colb0\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'price' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>',
                         ), 
          ),
 'sell' => array(
@@ -2658,9 +2659,10 @@ $other_array_match = array(
                         'price'=>'<td class="price sort">([0-9,.]+)円<\/td><td class="stock"><span class="number">[0-9,.]+<\/span>口<\/td>',
                         'inventory'=>'<td class="price sort">[0-9,.]+円<\/td><td class="stock"><span class="number">([0-9,.]+)<\/span>口<\/td>', 
                         ),    
-            'rmtrank.com'=> array('site_names'=>'<td class="colb0\w{0,}"><a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>|<td class="colb0\w{0,}"><img[^>]*\/>\s{0,}<a href="[^"]*"[^>]*>([^<]*)<\/a><\/td>',
-                         'price'=> '<td class="colb2\w{0,}">(\d+)[^<]*円|<td class="colb2\w{0,}"><font[^>]*>(\d+)[^<]*円',
-                         'inventory' => '<td class="colb2\w{0,}">(\d+)[^<]*口'
+            'rmtrank.com'=> array(
+                        'site_names' => '<td class="colb0\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'price' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
                         ), 
                      )
 );
