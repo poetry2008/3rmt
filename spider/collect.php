@@ -4094,6 +4094,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   $this_rate = tep_get_rate($this_rate);
   $temp_price = 0;
   $inv_price_arr = array();
+  $temp_inv = 0;
   foreach($result_arr as $key => $val){
     if($key == 'inventory'||$key=='products_name'||$key=='rate'){
       continue;
@@ -4117,14 +4118,16 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
           break;
         }else{
           if($inventory >= $match_arr[2]){
+            if($match_arr[2] < $temp_inv){
+              break;
+            }
             $this_price = $temp_price;
-            break;
+            $temp_inv = $match_arr[2];
           }
         }
       }else if($match_arr[2]==''){
         if($inventory >= $match_arr[1]){
           $this_price = $temp_price;
-          break;
         }
       }
     }
@@ -4163,12 +4166,14 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
     $this_inventory = $this_inventory/$sub_rate;
   }
   //预约库存处理
+/*
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
     if(preg_match('/予約受付中/',$inventory_str)){
       $this_inventory = 999;
     }
   }
+*/
   $res = array('value'=>$value,'result_str'=>$this_price,'result_inventory'=>$this_inventory,'rate'=>$res_rate);
   return $res;
 }
