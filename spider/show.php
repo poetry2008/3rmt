@@ -1756,22 +1756,6 @@ if($game == 'DQ10'){
   }
   $diff_name_array = array_keys($replace_name_array);
   $product_sort_array = array_diff($product_sort_array,$diff_name_array);
-}else if($game == 'ARAD'){
-
-  $replace_name_array = array('diregee'=>'ディレジエ',
-                              'kain'=>'カイン' 
-                            );
-  foreach($product_list_aray as $list_key=>$list_value){
-
-    foreach($list_value as $key=>$value){
-
-      if(array_key_exists(strtolower($value['name']),$replace_name_array)){
-        $product_list_aray[$list_key][$key]['name'] = $replace_name_array[strtolower($value['name'])]; 
-      }
-    }
-  }
-  $diff_name_array = array_keys($replace_name_array);
-  $product_sort_array = array_diff($product_sort_array,$diff_name_array);
 }
 
 $product_name_sort_array = array();
