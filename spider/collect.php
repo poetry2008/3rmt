@@ -242,7 +242,10 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
           if(in_array(strtolower(trim(strip_tags($site_info['site_names'][$con_key]))),$rmt_name)){
             continue;
           }
-          if($site_info['inventory'][$con_key] == 0){
+          if($site_info['inventory'][$con_key] == 0 || $site_info['inventory'][$con_key] == '--'){
+            continue;
+          }
+          if($site_info['price'][$con_key] == '--'){
             continue;
           }
           $price[] = str_replace(',','',$site_info['price'][$con_key]);
