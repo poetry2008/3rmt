@@ -4038,7 +4038,6 @@ function tep_get_rate($str){
   $str = str_replace(',','',$str);
   $str = str_replace('万','0000',$str);
   $str = str_replace('億','00000000',$str);
-  $str = str_replace('個','000000',$str);
   if(preg_match('/1口=(\d+)M[^M\d]+(\d+)M=(\d+)/',$str,$arr)){
     return $arr;
   }else if(preg_match('/1口=(\d+M)/',$str,$arr)){
@@ -4070,6 +4069,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   if(preg_match('/(\d+)銀/',$this_rate,$add_arr)){
     $sub_rate = $add_arr[1];
   }
+  $old_rate = $this_rate;
   $this_rate = tep_get_rate($this_rate);
   $temp_price = 0;
   $inv_price_arr = array();
@@ -4116,6 +4116,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   }
   $this_inventory = $inventory;
   $res_rate = 1;
+  // M 個 枚 特殊处理
   if($host_rate!=''&&$host_rate!=0&&!empty($this_rate)){
     if(preg_match('/M/',$this_rate[count($this_rate)-1])){
       $this_rate[count($this_rate)-1] = str_replace('M','000000',$this_rate[count($this_rate)-1]);
@@ -4123,6 +4124,11 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
      
     }else{
       $add_sub = $host_rate/$this_rate[count($this_rate)-1];
+    }
+    if($add_sub >= 1000000){
+      if(preg_match('/(個|枚|M)/',$old_rate)){
+        $add_sub = $add_sub/1000000;
+      }
     }
     $this_price = $this_price*$add_sub;
     $this_inventory = $this_inventory/$add_sub;
@@ -4134,6 +4140,13 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   if($sub_rate!=1){
     $this_price = $this_price*$sub_rate;
     $this_inventory = $this_inventory/$sub_rate;
+  }
+  //预约库存处理
+  if($this_inventory==0){
+    //マツブシ http://www.matubusi.com 库存处理
+    if(preg_match('/予約受付中/',$inventory_str)){
+      $this_inventory = 999;
+    }
   }
   $res = array('value'=>$value,'result_str'=>$this_price,'result_inventory'=>$this_inventory,'rate'=>$res_rate);
   return $res;
