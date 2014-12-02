@@ -379,9 +379,6 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
           }else if(strip_tags($temp_array[1][$k])!=''){
             $temp_array[1][$k] = strip_tags($temp_array[1][$k]);
           }
-          if($temp_array[1][$k] == '--'){
-            $temp_array[1][$k] = 0;
-          }
         }
         $res_search_array[$key] = $temp_array[1];
       }
