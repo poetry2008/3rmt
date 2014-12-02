@@ -3901,7 +3901,18 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            if($iimy_tep_name == $get_tep_name){
                $product_real_name =  $product_row['product_name']; 
 		  }
-		}
+          preg_match('/rmtrank/',$fix_url,$seach_url_rr);
+          if(!empty($seach_url_rr)){
+              $pname_len = mb_strlen($product_name,'UTF8');
+              $str_len = $pname_len-2;
+              $pro1 = mb_substr($product_name,0,$str_len,'utf-8');
+              $pro2 = mb_substr($product_name,-2,2,'utf-8');
+              $product_name_tep = $pro2.$pro1;
+              if($product_name_tep==$iimy_tep_name){
+                   $product_real_name =  $product_row['product_name'];
+              }
+          }
+       }
 //ARAD
           if($game_type=='ARAD'){
               preg_match('/mugenrmt/',$fix_url,$seach_url_mug);
