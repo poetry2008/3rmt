@@ -2666,3 +2666,24 @@ $other_array_match = array(
                         ), 
                      )
 );
+
+$search_array_match_new = array(
+	'buy'=> array(
+             'www.matubusi.com'=>  array( 
+                   'products_name'=>'<th class="rowheader">(.*?)<\/th>',
+                    'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                    'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">[0-9,]+円<\/td>',
+                    'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>'
+                        ),
+         ),
+       'sell'=> array(
+		   'www.matubusi.com'=>array(
+                     'products_name'=>'<th class="rowheader">(.*?)<\/th>',
+                     'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                     'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">.*?<\/td>',
+                     'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>'
+             ),
+
+         )
+
+);

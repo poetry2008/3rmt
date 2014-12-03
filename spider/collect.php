@@ -27,9 +27,9 @@ if($flag_check!= ''){
    * jp 游戏各网站采集
    */
    include('collect_match.php');
-   get_collect_res($game_type,$category,$other_array_match,$search_array_match);
+   get_collect_res($game_type,$category,$other_array_match,$search_array_match,$search_array_match_new);
 }
-function get_collect_res($game_type,$category,$other_array_match,$search_array_match,$show_log=true){
+function get_collect_res($game_type,$category,$other_array_match,$search_array_match,$search_array_match_new,$show_log=true){
   $site_str = array();
   $url_str_array = array();
   $category_id_str_array = array();
@@ -78,6 +78,15 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
+   foreach($search_array as $key=>$match_array){
+            if(isset($search_array_match_new[$category_value][$key])&&!empty($search_array_match_new[$category_value][$key])){
+               $search_array[$key]=$search_array_match_new[$category_value][$key];
+            }else{
+               $search_array[$key]=$match_array;
+               
+            }
+   }
+
     $other_array = $other_array_match[$category_value];
     //开始采集数据
     $curl_flag = 0;
@@ -4169,14 +4178,14 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
     $this_inventory = $this_inventory/$sub_rate;
   }
   //预约库存处理
-/*
+
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
     if(preg_match('/予約受付中/',$inventory_str)){
       $this_inventory = 999;
     }
   }
-*/
+
   $res = array('value'=>$value,'result_str'=>$this_price,'result_inventory'=>$this_inventory,'rate'=>$res_rate);
   return $res;
 }
