@@ -78,15 +78,6 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
 
      //正则
     $search_array = $search_array_match[$category_value][$game_type];
-   foreach($search_array as $key=>$match_array){
-            if(isset($search_array_match_new[$category_value][$key])&&!empty($search_array_match_new[$category_value][$key])){
-               $search_array[$key]=$search_array_match_new[$category_value][$key];
-            }else{
-               $search_array[$key]=$match_array;
-               
-            }
-   }
-
     $other_array = $other_array_match[$category_value];
     //开始采集数据
     $curl_flag = 0;
@@ -124,6 +115,18 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     }
     //采集所有网站的数据
     $all_result = get_all_result($search_url);
+   foreach($all_result as $result){
+        $url_info_tep = parse_url($result['info']['url']);
+        $url_host[] = $url_info_tep['host'];
+    }
+   foreach($url_host as $key=>$host){
+            if(isset($search_array_match_new[$category_value][$host])&&!empty($search_array_match_new[$category_value][$host])){
+               $search_array[$host]=$search_array_match_new[$category_value][$host];
+            }else{
+               $search_array[$host]=$search_array[$host];
+               
+            }
+   }
     //处理特殊网站的汇率
     sleep(1);
     $other_rate_site = array('www.rmtsonic.jp','www.mugenrmt.com');
