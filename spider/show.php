@@ -983,7 +983,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 ),
                              ),
             'ECO'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
-                                2=>'http://www.matubusi.com/', 
+                                2=>'http://www.matubusi.com/system/pc/cart/eco-rmt-hanbai/hanbai/items', 
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/',
@@ -993,7 +993,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 10=>'http://www.asahi-rmt-service.com/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
+                                 2=>'http://www.matubusi.com/system/pc/cart/eco-rmt-kaitori/kaitori/items', 
                                  3=>'http://ftb-rmt.jp/', 
                                  4=>'http://www.rmt-wm.com/', 
                                  5=>'http://rmtrank.com/',
@@ -1004,7 +1004,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 ),
                              ),
                              'FNO'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/fno.html',
-                                2=>'http://www.matubusi.com/', 
+                                2=>'http://www.matubusi.com/system/pc/cart/fno-rmt-hanbai/hanbai/items', 
                                 3=>'http://ftb-rmt.jp/', 
                                 4=>'http://www.rmt-wm.com/',
                                 5=>'http://rmtrank.com/fno+index.htm',
@@ -1014,7 +1014,7 @@ $url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff
                                 10=>'http://www.asahi-rmt-service.com/',
                                 ),
                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
+                                 2=>'http://www.matubusi.com/system/pc/cart/fno-rmt-kaitori/kaitori/items', 
                                  3=>'http://ftb-rmt.jp/', 
                                  4=>'http://www.rmt-wm.com/', 
                                  5=>'http://rmtrank.com/',
@@ -1603,6 +1603,7 @@ $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 /*判断网站数据是否存在
 * 1.价格不能是0
 * 2.网站内是否有和主站相同的数据
+ */
 $game_type = $_GET['flag'] == 'sell' ? 0 : 1;
 //主站的商品名
 $product_name_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' and c.site_id=7");
@@ -1610,7 +1611,7 @@ while($product_row = mysql_fetch_array($product_name_sql)){
     $product_name_list[]=$product_row['product_name'];
 }
 //筛选价格不为0的商品的网站
-    $category_default= mysql_query("select * from product p,category c where p.category_id=c.category_id and p.product_price!=0 and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp'");
+    $category_default= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp'");
 $category_list = array();
 while($category_row = mysql_fetch_array($category_default)){
      if(in_array($category_row['product_name'],$product_name_list) && !empty($product_name_list)){
@@ -1624,8 +1625,7 @@ foreach($category_site_array[$flag] as $value){
 }
 //要显示的所有网站
 $site_str =trim($site_str,',');
-*/
-$site_str = implode(',',$category_site_array[$flag]);
+//$site_str = implode(',',$category_site_array[$flag]);
 
 $site_list_array = array();
 //将获取对应网站的信息取出。而不是所有 echo 输出的信息来源的网站名字
