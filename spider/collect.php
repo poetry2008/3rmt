@@ -599,7 +599,7 @@ if($value!='' && $site_name=='rmt1.jp'){
       }
     }
   }
-  if($site_name==''){
+  if($site_name!='rmt.kakaran.jp'&&$site_name!='rmtrank.com'){
   //数据库原有的商品名称
   $search_query = mysql_query("select product_name from product where category_id='".$category_id."'");
   $product_old_list[] = array();
@@ -4061,18 +4061,20 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
 }
 function SBC2DBC($str) {
   $arr = array(
-      '１','２','３','４','５','６','７','８','９','０','＋','－','％','＝'
+      '１','２','３','４','５','６','７','８','９','０','＋','－','％','＝','Ｍ'
       );
   $arr2 = array(
-      '1','2','3','4','5','6','7','8','9','0','+','-','%','='
+      '1','2','3','4','5','6','7','8','9','0','+','-','%','=','M'
       );
   return str_replace($arr, $arr2, $str);
 }
-function tep_get_rate($str){
+function tep_get_rate($str,$flag=true){
   $str = str_replace('あたり','=',$str);
+if($flag){
   $str = str_replace(',','',$str);
   $str = str_replace('万','0000',$str);
   $str = str_replace('億','00000000',$str);
+}
   if(preg_match('/1口=(\d+)M[^M\d]+(\d+)M=(\d+)/',$str,$arr)){
     return $arr;
   }else if(preg_match('/1口=(\d+M)/',$str,$arr)){
@@ -4084,7 +4086,7 @@ function tep_get_rate($str){
   }
 }
 
-function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate){
+function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,$site_key){
   $this_price = 0;
   $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
   $inventory_str = str_replace(',','',$result_arr['inventory'][$index]);
@@ -4149,9 +4151,6 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
   if($inventory == 0&&!empty($inv_price_arr)){
     $this_price = min($inv_price_arr);
   }
-  if(count($this_rate)>2){
-    $inventory = $inventory/$this_rate[2];
-  }
   $this_inventory = $inventory;
   $res_rate = 1;
   // M 個 枚 特殊处理
@@ -4168,10 +4167,16 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate)
         $add_sub = $add_sub/1000000;
       }
     }
+    if($site_key == 'www.matubusi.com'){
+      $old_rate = tep_get_rate($old_rate,false);
+      $this_inventory = $this_inventory/$old_rate[1];
+    }
     $this_price = $this_price*$add_sub;
     $this_inventory = $this_inventory/$add_sub;
     if(preg_match('/万/',$inventory_str)||preg_match('/億/',$inventory_str)){
-      $this_inventory = $this_inventory/$rate_add;
+      if($site_key != 'www.matubusi.com'){
+        $this_inventory = $this_inventory/$rate_add;
+      }
     }
     $res_rate = $this_rate[count($this_rate)-1];
   }
