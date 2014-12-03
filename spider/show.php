@@ -1742,21 +1742,6 @@ while($product_array = mysql_fetch_array($product_query)){
 //sort($product_sort_array);
 
 $product_name_array = array_unique($product_name_array);
-if($game == 'DQ10'){
-
-  $replace_name_array = array('ドラクエ10'=>'dq10');
-  $product_name_array = $product_sort_array;
-  $product_real_array = $product_sort_array;
-  foreach($product_list_aray as $list_key=>$list_value){
-
-    foreach($list_value as $key=>$value){
-
-      $product_list_aray[$list_key][$key]['name'] = $product_sort_array[$key]; 
-    }
-  }
-  $diff_name_array = array_keys($replace_name_array);
-  $product_sort_array = array_diff($product_sort_array,$diff_name_array);
-}
 
 $product_name_sort_array = array();
 foreach($product_sort_array as $sort_key=>$sort_value){
