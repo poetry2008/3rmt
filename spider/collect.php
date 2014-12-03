@@ -27,9 +27,9 @@ if($flag_check!= ''){
    * jp 游戏各网站采集
    */
    include('collect_match.php');
-   get_collect_res($game_type,$category,$other_array_match,$search_array_match,$search_array_match_new);
+   get_collect_res($game_type,$category,$other_array_match,$search_array_match);
 }
-function get_collect_res($game_type,$category,$other_array_match,$search_array_match,$search_array_match_new,$show_log=true){
+function get_collect_res($game_type,$category,$other_array_match,$search_array_match,$show_log=true){
   $site_str = array();
   $url_str_array = array();
   $category_id_str_array = array();
@@ -77,7 +77,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     $site_n = $site_info[$category_value];
 
      //正则
-    $search_array = $search_array_match[$category_value][$game_type];
+    $search_array = $search_array_match['old'][$category_value][$game_type];
     $other_array = $other_array_match[$category_value];
     //开始采集数据
     $curl_flag = 0;
@@ -120,12 +120,11 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
         $url_host[] = $url_info_tep['host'];
     }
    foreach($url_host as $key=>$host){
-            if(isset($search_array_match_new[$category_value][$host])&&!empty($search_array_match_new[$category_value][$host])){
-               $search_array[$host]=$search_array_match_new[$category_value][$host];
-            }else{
-               $search_array[$host]=$search_array[$host];
-               
-            }
+       if(isset($search_array_match['new'][$category_value][$host])&&!empty($search_array_match['new'][$category_value][$host])){
+           $search_array[$host]=$search_array_match['new'][$category_value][$host];
+        }else{
+           $search_array[$host]=$search_array[$host];
+        }
    }
     //处理特殊网站的汇率
     sleep(1);
