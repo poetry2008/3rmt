@@ -3891,7 +3891,9 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
               $product_real_name = str_replace('：',' ',$product_name);
             }else if(strpos($fix_url,'mugenrmt')){
               $product_real_name = preg_replace('/(.*?)([0-9]+):(.*?)\(即時取引\)/i','$1$2 $3',$product_name);
-              $product_real_name = preg_replace('/([1-9]+)/i','0$1',$product_real_name);
+              if(strpos($product_real_name,'10') == false){
+                $product_real_name = preg_replace('/([1-9]+)/i','0$1',$product_real_name);
+              }
             }else{
                $product_real_name = str_replace('．',' ',$product_name);
             }
