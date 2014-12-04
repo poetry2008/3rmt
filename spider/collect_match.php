@@ -2646,7 +2646,14 @@ $search_array_match = array(
                     'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                     'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">[0-9,]+円<\/td>',
                     'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>'
-                        ),
+                  ),
+             'www.mugenrmt.com'=>  array(
+                   'title'=>"<td[^>]*>サーバー名<\/td>[^<]*((<td class='border03 border04 bgd'>([^<]*)<\/td>[^<]*){1,})(<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*){3}[^<]*<\/tr>",
+                   'match_title'=>"<td[^>]*>サーバー名<\/td>title_sum[^<]*<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*[^<]*<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*[^<]*<td class='border03 border04 bgd'>.*<\/td>[^<]*<\/tr>[^<]*<tr>[^<]*",
+                   'price_title'=>"<td class='border03 border04 bgd'>([^<]*)<\/td>",
+                   'match_info'=>"<td[^<]*class='border03 border04'[^<]*>([^<]*)<\/td>price_sum[^<]*<td[^<]*class='border03 border04'[^<]*>.*<\/td>[^<]*<td[^<]*class='border03 border04'[^<]*>(.*)<\/td>[^<]*<td[^<]*class='border03 border04'[^<]*>.*<\/td>[^<]*<\/tr>",
+                   'match_price'=>"[^<]*<td[^<]*class='border03 border04'[^<]*>([0-9,\.]*)円.*<\/td>",
+                  ),
          ),
        'sell'=> array(
 		   'www.matubusi.com'=>array(

@@ -373,6 +373,7 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
     //根据正则数组获得数据
     if($rate_only==false&&$search_key=='www.mugenrmt.com'){
       //调用获得 梦幻网站数据的方法
+      $res_search_array = tep_get_mugenrmt_info($res,$search_info_array);
     }else{
     foreach($search_info_array as $key => $value){
       if($search_key == 'rmtrank.com'&&($key=='price'||$key=='site_names'||$key=='inventory')){
@@ -4320,5 +4321,88 @@ function get_other_rate($site_key_arr,$game_type){
   //通过正则获得所有网站的数据
   $all_site_info_array = get_info_array($all_result,$rate_match,true);
   return $all_site_info_array;
+}
+
+/*
+ * 处理梦幻网站的采集信息
+ */
+function tep_get_mugenrmt_info($result,$preg_arr){
+$result = str_replace('<\/tr><tr>',"<\/tr>\n<tr>",$result);
+$result = str_replace('<tr><td',"<tr>\n<td",$result);
+$result = str_replace('<\/td><',"<\/td>\n<",$result);
+$res_info = array();
+if(preg_match_all("/".$preg_arr['title']."/i",$result,$arr)){
+  $price_arr = array();
+  $count_arr = array();
+  foreach($arr[1] as $temp){
+    if(preg_match_all("/".$preg_arr['price_title']."/i",$temp,$t_arr)){
+      if(!in_array($t_arr[0],$count_arr)){
+        $count_arr[] = $t_arr[0];
+      }
+    }
+  }
+  foreach($count_arr as $count_temp){
+    $str_start = '';
+    $str = '';
+    foreach($count_temp as $temp_start){
+      $temp_start = str_replace('/','\/',$temp_start);
+      $str_start .= '[^>]*'.$temp_start;
+      $str .= $preg_arr['match_price'];
+    }
+    $start_preg = str_replace('title_sum',$str_start,$preg_arr['match_title']);
+    $t_preg = str_replace('price_sum',$str,$preg_arr['match_info']);
+    $t_preg = $start_preg.$t_preg;
+    if(preg_match_all("/".$t_preg."/i",$result,$s_arr)){
+      foreach($s_arr[0] as $key => $del_value){
+        $res = array();
+        $index = 1;
+        $res['products_name'] = $s_arr[$index][$key];
+        $index++;
+        foreach($count_temp as $value){
+          $res[strip_tags($value)] = $s_arr[$index][$key];
+          $index++;
+        }
+        $res['inventory'] = $s_arr[$index][$key];
+        $res_info[] = $res;
+      }
+    }
+  }
+}
+$last_res = array();
+$last_res['products_name'] = array();
+$last_res['price'] = array();
+$last_res['inventory'] = array();
+foreach($res_info as $temp_info){
+  $last_res['products_name'][] = $temp_info['products_name'];
+  $last_res['inventory'][] = $temp_info['inventory'];
+  preg_match_all('/([0-9]+)口/i',$temp_info['inventory'],$temp_array);
+  if($temp_array[1][0] != ''){
+    $current_inventory = $temp_array[1][0];
+  }else{
+    $current_inventory = 999;
+  }
+  unset($temp_info['products_name']);
+  unset($temp_info['inventory']);
+  $t_price = 0;
+  $i = 0;
+  foreach($temp_info as $t_key => $t_value){
+    preg_match_all('/[0-9]+/i',$t_key,$t_array);
+    if($current_inventory >= $t_array[0][0] && $current_inventory <= $t_array[0][1]){
+
+      $t_price = $t_value;
+      break;
+    }else if($current_inventory < $t_array[0][0]){
+
+      $t_price = $t_value;
+      break;
+    }else if($current_inventory >  $t_array[0][1] && count($temp_info)-1 == $i){
+
+      $t_price = $t_value;
+    }
+    $i++;
+  }
+  $last_res['price'][] = $t_price;
+}
+return $last_res;
 }
 ?>
