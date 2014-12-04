@@ -3910,7 +3910,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
           }
 		//L2
         if($game_type=='L2'){
-            if($product_name=='キャスディエン'){
+            if(strpos($product_name,'キャスディエン')!==false){
                $product_real_name = 'キャスティエン';
             }
             if(strpos($fix_url,'diamond-gil')){
@@ -4016,6 +4016,9 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
        if($game_type=='FF14'){
           if(strpos($fix_url,'mugenrmt')){
              $product_real_name = str_replace('(LEGASY)','',$product_name);
+             if(strpos($product_name,'Valefor')!==false){
+               $product_real_name = 'Valefora';
+             }
            }
           preg_match('/kakaran/',$fix_url,$seach_url_kk);
           if(!empty($seach_url_kk)){
@@ -4096,6 +4099,7 @@ if($flag){
 
 function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,$site_key){
   $this_price = 0;
+  $old_inventory = $result_arr['inventory'][$index];
   $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
   $inventory_str = str_replace(',','',$result_arr['inventory'][$index]);
   if(preg_match('/[0-9]+/',$inventory_str,$inv_arr)){
@@ -4196,7 +4200,10 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
 
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
-    if(preg_match('/予約受付中/',$inventory_str)){
+    if(preg_match('/予約受付中/',$old_inventory)){
+      $this_inventory = 999;
+    }
+    if(preg_match('/入荷通知/',$old_inventory)){
       $this_inventory = 999;
     }
   }
