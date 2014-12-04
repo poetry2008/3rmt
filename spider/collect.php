@@ -370,6 +370,10 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
       $search_info_array = $search_array[$search_key];
     }
     $res_search_array = array();
+    //根据正则数组获得数据
+    if($rate_only==false&&$search_key=='www.mugenrmt.com'){
+      //调用获得 梦幻网站数据的方法
+    }else{
     foreach($search_info_array as $key => $value){
       if($search_key == 'rmtrank.com'&&($key=='price'||$key=='site_names'||$key=='inventory')){
         preg_match_all('/'.$value.'/i',$res,$temp_array);
@@ -397,6 +401,8 @@ function get_info_array($curl_results,$search_array,$rate_only=false){
         $res_search_array[$key] = $temp_array[1];
       }
     }
+    }
+    //针对FF14 多个URL 的特殊处理
     if(!in_array($search_key,$search_key_arr)){
       $search_key_arr[] = $search_key;
       $url_info_array[$search_key] = $res_search_array;
@@ -530,6 +536,7 @@ function save2db($category_id,$site_value,$result_str_search,$category_value,$ga
     mysql_query("update product set is_error=1 where category_id='".$category_id."'");
   }
   $name_arr =array();
+
   foreach($result_array[0]['products_name'] as $product_key=>$value){
     if(in_array($value,$name_arr)){
       $name_arr[] = $value;
