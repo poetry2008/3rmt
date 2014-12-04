@@ -1497,7 +1497,7 @@ foreach($kk_res as $kk_site){
     }
 }
 //rank网站url
-$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%' or site_name like '%エルモ%'");
+$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%' or site_name like '%エルモ%' or site_name like '%WM%'");
 while($rank_row = mysql_fetch_array($rank_site_query)){
   $rank_res[]=$rank_row['site_id'];
 }
@@ -1572,10 +1572,9 @@ echo '<table style="min-width:750px;" class="dataTableContent_right" width="100%
 echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
 
 if($flag == 'buy'){
-echo '<td width="5%" style="min-width:80px; text-align:center;">最安</td><td width="5%" style="min-width:80px; text-align:center;">次点</td>';
+	echo '<td width="5%" style="min-width:70px; text-align:center;">最安</td><td width="5%" style="min-width:70px; text-align:center;">次点</td>';
 }else{
-
-echo '<td width="5%" style="min-width:80px; text-align:center;">最高</td><td width="5%" style="min-width:80px; text-align:center;">次点</td>';
+	echo '<td width="5%" style="min-width:70px; text-align:center;">最高</td><td width="5%" style="min-width:70px; text-align:center;">次点</td>';
 }
 //查询当前游戏不是主站商品的信息
 $category_list_array = array();
