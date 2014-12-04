@@ -1571,6 +1571,12 @@ echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($da
 echo '<table style="min-width:750px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 echo '<tr class="dataTableHeadingRow"><td class="dataTableHeadingContent_order" style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
 
+if($flag == 'buy'){
+echo '<td width="5%" style="min-width:80px; text-align:center;">最安</td><td width="5%" style="min-width:80px; text-align:center;">次点</td>';
+}else{
+
+echo '<td width="5%" style="min-width:80px; text-align:center;">最高</td><td width="5%" style="min-width:80px; text-align:center;">次点</td>';
+}
 //查询当前游戏不是主站商品的信息
 $category_list_array = array();
 //if($game == 'FF14'){
@@ -1603,11 +1609,7 @@ $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 /*判断网站数据是否存在
 * 1.价格不能是0
 * 2.网站内是否有和主站相同的数据
-<<<<<<< HEAD
-*/
-=======
  */
->>>>>>> b6e65ab3b102ef57a01a9a9b858ee036b7bd0bea
 $game_type = $_GET['flag'] == 'sell' ? 0 : 1;
 //主站的商品名
 $product_name_sql= mysql_query("select * from product p,category c where p.category_id=c.category_id and category_name='".$game."' and category_type='".$game_type."' and c.game_server='jp' and c.site_id=7");
@@ -1661,12 +1663,7 @@ if(($url_array[$game][$flag][$site_array['site_id']]==$_GET['error_url'] && isse
 }
   }
 }
-if($flag == 'buy'){
-echo '<td width="5%" style="min-width:80px;">最安</td><td width="5%" style="min-width:80px;">次点</td></tr>';
-}else{
-
-echo '<td width="5%" style="min-width:80px;">最高</td><td width="5%" style="min-width:80px;">次点</td></tr>';
-}
+echo '</tr>';
 $product_list_aray = array();
 $product_name_array = array();
 $product_real_array = array();
@@ -1790,7 +1787,8 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
  
     $price_array = array();
     foreach($site_list_array as $site_value){
-      $product_key = '';
+
+$product_key = '';
       foreach($product_list_aray[$category_list_array[$site_value][$type]] as $product_name_key=>$product_name_value){
 
         if($product_value == strtolower(trim(preg_replace('/\s+/is','',$product_name_value['name'])))){
@@ -1798,62 +1796,13 @@ echo '<tr class="'. $nowColor .'"  onmouseover="this.className=\'dataTableRowOve
           $product_key = $product_name_key;
         }
       }
-$price = explode('.',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']);
-if($price[1]=='00'){
-    $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] = $price[0];
-}else if(substr($price[1], -1)=='0'){
-	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
-}
-//      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != ''&&number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'])!=0){
-      //if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] != -1){
-      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] >=0){
-        if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
-          if($inventory_flag_array[$game] === 0){
-          //  echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>';
-            if($site_value == 7){
 
-            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-            }else{ 
-            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">0個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-//            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-         }
-        }else{
-          echo '<td>&nbsp;</td>'; 
-        }
-        }else{ 
-      //   if(strpos($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'],'-')){
-        //     $prices_array = explode('-',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']);
-          //   $inventorys_array =  explode('-',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']);      
-            // $prices_str = '';
-            // $prices_str .= '<td width="50%" align="right" nowrap="nowrap"><input type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'">'.number_format($prices_array[0]).'円</td><td align="right" style="min-width:45px">'.$inventorys_array[0].'個</td>';
-           //  $prices_str .= '<td width="50%" align="right" nowrap="nowrap"><input type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'">'.number_format($prices_array[1]).'円</td><td align="right" style="min-width:45px">'.$inventorys_array[1].'個</td>';
-            // $prices_str .= '<td width="50%" align="right" nowrap="nowrap"><input type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'">'.number_format($prices_array[2]).'円</td><td align="right" style="min-width:45px">'.$inventorys_array[2].'個</td>';
-             
-            // echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr>'.$prices_str.'<td width="40%">&nbsp;</td></tr></table></td>'; 
-          // }else{ 
-         //echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap">'.number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'円'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:50px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-        if($site_value == 7){ 
-          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<span style="margin-left: 2px;">円</span></b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-        }else{
-
-          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<span  style="margin-left: 2px;">円</span></b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-
-        }  // }
-        }
-      }else{
-
-        if($inventory_flag_array[$game] === 0){
-          echo '<td><table width="100%" cellspacing="0" cellpadding="0" border="0" class="dataTableContent_right"><tr><td width="50%" nowrap="nowrap" align="right"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>-<span style="margin-left: 2px;">円</span></label></b></td><td align="right" style="min-width:45px">'.($inventory_show_array[$game] !== 0 ? '-個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
-        }else{
-          echo '<td>&nbsp;</td>';
-        }
-      }
-      if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0 && !($inventory_flag_array[$game] !== 0 && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0)){
+if(number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) != 0 && !($inventory_flag_array[$game] !== 0 && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0)){
 if($site_value!=7){
         $price_array[] = $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'];
 }
       }
-    }
+}
     $price_array = array_filter($price_array);
     foreach($price_array as $price_key=>$price_value){
 
@@ -1875,15 +1824,61 @@ if($type=='buy'){
     }
 $i++;
 if(count($price)>=1){
-    echo '<td><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : '&nbsp;').'<label></td><td><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : '&nbsp;').'<label></td>';
+    echo '<td align="center"><input id= "zui_'.$i.'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : '&nbsp;').'<label></td><td align="center"><input id="ci_'.$i.'" type="radio" '.(isset($products_price_array[$product_real_array[$p_key]]) && $products_price_array[$product_real_array[$p_key]] == 0 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'0\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : '&nbsp;').'<label></td>';
 }else{
    if(count($price)==0){
      $hidden_style = 'type="hidden"';
   }else{
      $hidden_style = 'type="radio"';
   }
-    echo '<td><input '.$hidden_style.'  id="zui_'.$i.'"  '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td><td><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td>';
+    echo '<td align="center"><input '.$hidden_style.'  id="zui_'.$i.'"  '.($products_price_array[$product_real_array[$p_key]] == -1 ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\'-1\')" name="select_products['.$product_real_array[$p_key].']" value=""><label for="zui_'.$i.'">'.(number_format($price[0]) != 0 ? price_number_format($price[0]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td><td align="center"><label for="ci_'.$i.'">'.(number_format($price[1]) != 0 ? price_number_format($price[1]).'円' : $inventory_flag_array[$game] === 0 ? '-円' : '&nbsp;').'<label></td>';
 }
+    foreach($site_list_array as $site_value){
+      $product_key = '';
+      foreach($product_list_aray[$category_list_array[$site_value][$type]] as $product_name_key=>$product_name_value){
+
+        if($product_value == strtolower(trim(preg_replace('/\s+/is','',$product_name_value['name'])))){
+
+          $product_key = $product_name_key;
+        }
+      }
+$price = explode('.',$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']);
+if($price[1]=='00'){
+    $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] = $price[0];
+}else if(substr($price[1], -1)=='0'){
+	$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory']=substr($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'],0,-1);
+}
+      if(isset($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']) && $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price'] >=0){
+        if($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'] == 0){
+          if($inventory_flag_array[$game] === 0){
+            if($site_value == 7){
+
+            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+            }else{ 
+            echo '<td class="dataTableContent_gray"><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] == 1 ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'" type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for ='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'</label>円</b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">0個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+         }
+        }else{
+          echo '<td>&nbsp;</td>'; 
+        }
+        }else{ 
+        if($site_value == 7){ 
+          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<span style="margin-left: 2px;">円</span></b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+        }else{
+
+          echo '<td><table width="100%" border="0" cellspacing="0" cellpadding="0"  class="dataTableContent_right"><tr><td width="50%" align="right" nowrap="nowrap"><b>'.($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['is_error'] ? '<span id="enable_img" ><img src="images/icon_alarm_log.gif"></span>' : '').'<input id='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].' type="radio" '.($products_price_array[$product_real_array[$p_key]] == $product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'] ? 'checked ' : '').'onclick="update_products_price(\''.$game.'\',\''.$product_real_array[$p_key].'\',\''.$flag.'\',\''.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'\')" name="select_products['.$product_real_array[$p_key].']" value="'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'"><label for='.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['product_id'].'>'.price_number_format($product_list_aray[$category_list_array[$site_value][$type]][$product_key]['price']).'<span  style="margin-left: 2px;">円</span></b>'.($inventory_show_array[$game] !== 0 ? '</td><td align="right" style="min-width:45px">'.$product_list_aray[$category_list_array[$site_value][$type]][$product_key]['inventory'].'個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+
+        }  // }
+        }
+      }else{
+
+        if($inventory_flag_array[$game] === 0){
+          echo '<td><table width="100%" cellspacing="0" cellpadding="0" border="0" class="dataTableContent_right"><tr><td width="50%" nowrap="nowrap" align="right"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>-<span style="margin-left: 2px;">円</span></label></b></td><td align="right" style="min-width:45px">'.($inventory_show_array[$game] !== 0 ? '-個' : '').'</td><td width="40%">&nbsp;</td></tr></table></td>'; 
+        }else{
+          echo '<td>&nbsp;</td>';
+        }
+      }
+      }
+    }
     echo '</tr>';
 }
 
