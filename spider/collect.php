@@ -4082,6 +4082,16 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
              }
 		 }
      }
+        if($game_type=='LH'){
+            preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
+            if(!empty($seach_url_mg)){
+                preg_match('/カベラ/',$product_name,$seach_name_mg_1);
+                if(!empty($seach_name_mg_1)){
+                    $product_real_name=  'カペラ';
+                }
+             }
+         }
+
 
    }
    $product_real_name = str_replace('<br />','',$product_real_name);
