@@ -4077,7 +4077,19 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            $product_real_name = str_replace($name_mode_array,$name_replace_array,$product_name);
          }
        }
-
+       if($game_type=='lakatonia'){
+         preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
+         if(!empty($seach_url_mg)){
+             preg_match('/1/',$product_name,$seach_name_mg_1);
+             preg_match('/2/',$product_name,$seach_name_mg_2);
+             if(!empty($seach_name_mg_1)){
+                  $product_real_name=  '第一サーバー';
+             }
+             if(!empty($seach_name_mg_2)){
+                  $product_real_name=  '第二サーバー';
+             }
+	 }
+       }
    }
    $product_real_name = str_replace('<br />','',$product_real_name);
    $product_real_name = preg_replace('/<.*?>/','',$product_real_name);
