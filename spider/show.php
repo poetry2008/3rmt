@@ -1877,7 +1877,6 @@ if($price[1]=='00'){
           echo '<td>&nbsp;</td>';
         }
       }
-      }
     }
     echo '</tr>';
 }
