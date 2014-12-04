@@ -173,7 +173,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
             }
             save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
           }else{
-            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type);
+            save2db($category_id,$site_value,$site_info_arr,$category_value,$game_type,$site_info_key);
       }
     }
     //采集网站的特殊处理
@@ -562,7 +562,7 @@ if($value==''){
       $host_rate = 1;
    }
 
-   $price_info = format_price_inventory($result_str_search,$value,$product_key,$host_rate,$rate_arr);
+   $price_info = format_price_inventory($result_str_search,$value,$product_key,$host_rate,$rate_arr,$site_name);
    /*
 if($value!='' && $site_name=='rmt1.jp'){
    $price_info = get_price_info_new($result_array,$category_value,$game_type,$site_name,$product_key,$value);
