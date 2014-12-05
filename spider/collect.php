@@ -3946,6 +3946,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }else if(strpos($fix_url,'ftb-rmt')){
                 $tep_arr=explode('_',$product_name);
                 $product_tep_name=$tep_arr[1].$tep_arr[0];
+           }else if(strpos($fix_url,'mugenrmt')){
+                $product_name = str_replace(array('1','2','-rmt'),'',$product_name);
+                $tep_arr=explode('_',$product_name);
+                $product_tep_name=$tep_arr[1].$tep_arr[0];
            }
 
            $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
@@ -3996,12 +4000,17 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
         }
         if($game_type=='latale'){
-          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran') ||!empty($seach_url_wm)||!empty($seach_url_wm)){
+          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')||strpos($fix_url,'mugenrmt') !empty($seach_url_wm)){
+             if(strpos($fix_url,'mugenrmt')){
+
+               $product_name = str_replace('3','',$product_name);
+               $product_name = trim($product_name);
+             }
              if($product_name=='ダイアモンド'){
                   $product_real_name= str_replace('ダイアモンド','ダイヤモンド',$product_name);
      	     }else if($product_name=='サファイヤ'){
                 $product_real_name = str_replace('サファイヤ','サファイア',$product_name);
- 	        }
+ 	     }
           }
        }
       if($game_type=='talesweave'){
@@ -4177,6 +4186,12 @@ if($flag){
     return $arr;
   }else if(preg_match('/1ロ=(\d+M)/',$str,$arr)){
     return $arr;
+  }else if(preg_match('/1口=(\d+)m[^m\d]+(\d+)m=(\d+)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1口=(\d+m)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1ロ=(\d+m)/',$str,$arr)){
+    return $arr;
   }else if(preg_match('/1口=(\d+)/',$str,$arr)){
     return $arr;
   }
@@ -4273,8 +4288,8 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   $res_rate = 1;
   // M 個 枚 特殊处理
   if($host_rate!=''&&$host_rate!=0&&!empty($this_rate)){
-    if(preg_match('/M/',$this_rate[count($this_rate)-1])){
-      $this_rate[count($this_rate)-1] = str_replace('M','000000',$this_rate[count($this_rate)-1]);
+    if(preg_match('/M/',$this_rate[count($this_rate)-1]) || preg_match('/m/',$this_rate[count($this_rate)-1])){
+      $this_rate[count($this_rate)-1] = str_replace(array('M','m'),'000000',$this_rate[count($this_rate)-1]);
       $add_sub = $host_rate/$this_rate[count($this_rate)-1];
      
     }else{
