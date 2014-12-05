@@ -4224,6 +4224,9 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
       $preorder_inventory = 0;
     } 
     $inventory += $preorder_inventory;
+    if($old_preorder_inventory==0){
+       $old_preorder_inventory = $preorder_inventory; 
+    }
   }
   foreach($result_arr as $key => $val){
     if($key == 'inventory'||$key=='products_name'||$key=='rate'){
