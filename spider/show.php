@@ -1905,7 +1905,7 @@ foreach($name_arr as $index => $name){
     if($zero_inventory == 1&&$host_info[$index]['product_inventory']==0){
       echo '<td class="td_host_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')" >&nbsp;</td><td class="td_host_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')" >&nbsp;</td>';
     }else{
-      echo '<td class="td_host_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\')"  style="min-width:50px"><font style="font-weight: bold;">';
+      echo '<td class="td_host_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')"  style="min-width:50px"><font style="font-weight: bold;">';
       echo price_number_format($host_info[$index]['product_price']).'円';
       echo '</font></td>';
       echo '<td class="td_host_inventory" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')"  style="min-width:50px">';
@@ -1913,7 +1913,7 @@ foreach($name_arr as $index => $name){
       echo '</td>';
     }
   }else{
-    echo '<td class="td_host_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\')"  style="min-width:45px"><font style="font-weight: bold;">';
+    echo '<td class="td_host_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)"  style="min-width:45px"><font style="font-weight: bold;">';
     if($zero_inventory == 1&&$host_info[$index]['product_inventory']==0){
       echo '&nbsp;';
     }else{
