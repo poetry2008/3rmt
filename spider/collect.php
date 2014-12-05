@@ -159,7 +159,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       $site_value = array_search($site_info_key,$site);
       $category_id = $category_id_array[$site_value];
 	  //如果是rmt1需要特殊处理
-	  if($site_info_key=='rmt1.jp'){ 
+	  if($site_info_key=='rmt1.jp' || $site_info_key=='www.rmt-wm.com'){ 
               $site_info_arr['0-'.$site_info_arr['section_2']['0']]= $site_info_arr['price_1'];
               unset($site_info_arr['section_1']);
               unset($site_info_arr['price_1']);
@@ -3858,6 +3858,8 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          }
 
          $product_name = trim(preg_replace('/\s+/is','',$product_name));
+         preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+         preg_match('/rmtrank/',$fix_url,$seach_url_rr);
 
 	   //RS拼写错误
           if($game_type=='RS'){
@@ -3885,20 +3887,33 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
             }
          }
 		}
-		//2.PSO2
+	//2.PSO2
          if($game_type=='PSO2'){
             if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran') || strpos($fix_url,'matubusi')){
               $product_real_name = str_replace('：',' ',$product_name);
-            }else if(strpos($fix_url,'mugenrmt')){
-              $product_real_name = preg_replace('/(.*?)([0-9]+):(.*?)\(即時取引\)/i','$1$2 $3',$product_name);
-              if(strpos($product_real_name,'10') == false){
+			}
+			if(strpos($fix_url,'mugenrmt')){
+               $product_real_name = preg_replace('/(.*?)([0-9]+):(.*?)\(即時取引\)/i','$1$2 $3',$product_name);
+               if(strpos($product_real_name,'10') == false){
                 $product_real_name = preg_replace('/([1-9]+)/i','0$1',$product_real_name);
-              }
-            }else{
+               }
+			}
+			if(!empty($seach_url_rr)){
                $product_real_name = str_replace('．',' ',$product_name);
             }
+            if(!empty($seach_url_wm)){
+             //01-フェオ   Ship01 フェオ
+           $tep_data = explode('-',$product_name);
+	       $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
+	       $get_tep_name = trim(preg_replace('/\s+/is','',$tep_data[1]));
+               preg_match('/'.$get_tep_name.'/is',$iimy_tep_name,$seach_product_wm);
+              if(!empty($seach_product_wm)){
+                  $product_real_name = $product_row['product_name'];
+              }
+                
+            }
           }
-		//3.DQ10
+	//3.DQ10
           if($game_type=='DQ10'){
              $array_dq = array('共通サーバー','普通取引','ドラゴンクエスト10・ゴールド','PC','全サーバー共通','ゴールド','Windows版');
             if(strpos($fix_url,'diamond')){
@@ -3931,6 +3946,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }else if(strpos($fix_url,'ftb-rmt')){
                 $tep_arr=explode('_',$product_name);
                 $product_tep_name=$tep_arr[1].$tep_arr[0];
+           }else if(strpos($fix_url,'mugenrmt')){
+                $product_name = str_replace(array('1','2','-rmt'),'',$product_name);
+                $tep_arr=explode('_',$product_name);
+                $product_tep_name=$tep_arr[1].$tep_arr[0];
            }
 
            $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
@@ -3939,7 +3958,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                $product_real_name =  $product_row['product_name']; 
 		  }
           preg_match('/rmtrank/',$fix_url,$seach_url_rr);
-          if(!empty($seach_url_rr)){
+          preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+
+          if(!empty($seach_url_rr) || !empty($seach_url_wm)){
+              $product_name= str_replace('-','',$product_name);
               $pname_len = mb_strlen($product_name,'UTF8');
               $str_len = $pname_len-2;
               $pro1 = mb_substr($product_name,0,$str_len,'utf-8');
@@ -3978,14 +4000,26 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
         }
         if($game_type=='latale'){
-          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')){
+          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')||strpos($fix_url,'mugenrmt') !empty($seach_url_wm)){
+             if(strpos($fix_url,'mugenrmt')){
+
+               $product_name = str_replace('3','',$product_name);
+               $product_name = trim($product_name);
+             }
              if($product_name=='ダイアモンド'){
                   $product_real_name= str_replace('ダイアモンド','ダイヤモンド',$product_name);
      	     }else if($product_name=='サファイヤ'){
                 $product_real_name = str_replace('サファイヤ','サファイア',$product_name);
- 	        }
-         }
+ 	     }
+          }
        }
+      if($game_type=='talesweave'){
+         preg_match('/ミストフル/',$product_name,$seach_name_wm);
+         if(!empty($seach_url_wm) && !empty($seach_name_wm)){
+              $product_real_name = 'ミストラル';
+         }
+
+      }
        if($game_type=='HR'){
               $product_real_name = str_replace('共通サーバー','マビノギ英雄伝',$product_name);
               preg_match('/rmtrank/',$fix_url,$seach_url);
@@ -4026,9 +4060,25 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
              }
            }
           preg_match('/kakaran/',$fix_url,$seach_url_kk);
-          if(!empty($seach_url_kk)){
-             $product_real_name = str_replace('Valefor','Valefora',$product_name);
+          preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+          preg_match('/pastel-rmt/',$fix_url,$seach_url_psl);
+          if(!empty($seach_url_kk)||!empty($seach_url_wm) || !empty($seach_url_psl)){
+             preg_match('/Valefor/',$product_name,$seach_name_tep);
+             if(!empty($seach_name_tep)){
+                  $product_real_name = str_replace('Valefor','Valefora',$product_name);
+             }
           }
+          if(!empty($seach_url_wm)){
+             preg_match('/Zelera/',$product_name,$seach_name_tep);
+             if(!empty($seach_name_tep)){
+                 $product_real_name = str_replace('Zelera','Zalera',$product_name);
+             }
+          }
+       }
+       if($game_type=='tenjouhi'){
+          if(!empty($seach_url_wm)){
+              $product_real_name = str_replace('まほろぼ','まほろば',$product_name);
+          } 
        }
        if($game_type=='MU'){
           if(strpos($fix_url,'matubusi')){
@@ -4078,7 +4128,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          }
        }
        if($game_type=='lakatonia'){
-         preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
+         preg_match('/(mugenrmt|rmt-wm)/',$fix_url,$seach_url_mg);
          if(!empty($seach_url_mg)){
              preg_match('/1/',$product_name,$seach_name_mg_1);
              preg_match('/2/',$product_name,$seach_name_mg_2);
@@ -4090,15 +4140,23 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
              }
 		 }
      }
-        if($game_type=='LH'){
-            preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
-            if(!empty($seach_url_mg)){
-                preg_match('/カベラ/',$product_name,$seach_name_mg_1);
-                if(!empty($seach_name_mg_1)){
-                    $product_real_name=  'カペラ';
-                }
-             }
+     if($game_type=='LH'){
+         preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
+         if(!empty($seach_url_mg)){
+            preg_match('/カベラ/',$product_name,$seach_name_mg_1);
+            if(!empty($seach_name_mg_1)){
+                $product_real_name=  'カペラ';
+            }
+        }
+     }
+     if($game_type=='EWD'){
+       if(strpos($fix_url,'mugenrmt')){
+
+         if(preg_match('/予約制/i',$product_name)){
+           $product_real_name = ''; 
          }
+       }
+     }
 
 
    }
@@ -4128,6 +4186,12 @@ if($flag){
     return $arr;
   }else if(preg_match('/1ロ=(\d+M)/',$str,$arr)){
     return $arr;
+  }else if(preg_match('/1口=(\d+)m[^m\d]+(\d+)m=(\d+)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1口=(\d+m)/',$str,$arr)){
+    return $arr;
+  }else if(preg_match('/1ロ=(\d+m)/',$str,$arr)){
+    return $arr;
   }else if(preg_match('/1口=(\d+)/',$str,$arr)){
     return $arr;
   }
@@ -4136,7 +4200,15 @@ if($flag){
 function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,$site_key){
   $this_price = 0;
   $old_inventory = $result_arr['inventory'][$index];
-  $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+  if($site_key != 'www.rmt-wm.com'){
+    $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+  }else{
+    if(strip_tags($result_arr['inventory'][$index]) != ''){
+      $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+    }else{
+      $result_arr['inventory'][$index] = strip_tags($result_arr['inventory_preorder'][$index]);
+    } 
+  }
   $inventory_str = str_replace(',','',$result_arr['inventory'][$index]);
   if(preg_match('/[0-9]+/',$inventory_str,$inv_arr)){
     $inventory = $inv_arr[0];
@@ -4159,6 +4231,18 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   $temp_price = 0;
   $inv_price_arr = array();
   $temp_inv = 0;
+  $old_preorder_inventory = $inventory;
+  if($site_key == 'www.rmt-wm.com'){
+    if(preg_match('/[0-9]+/',strip_tags($result_arr['inventory_preorder'][$index]),$preorder_array)){
+      $preorder_inventory = $preorder_array[0];
+    }else{
+      $preorder_inventory = 0;
+    } 
+    $inventory += $preorder_inventory;
+    if($old_preorder_inventory==0){
+       $old_preorder_inventory = $preorder_inventory; 
+    }
+  }
   foreach($result_arr as $key => $val){
     if($key == 'inventory'||$key=='products_name'||$key=='rate'){
       continue;
@@ -4196,6 +4280,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
       }
     }
   }
+  $inventory = $old_preorder_inventory;
   if($inventory == 0&&!empty($inv_price_arr)){
     $this_price = min($inv_price_arr);
   }
@@ -4203,8 +4288,8 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   $res_rate = 1;
   // M 個 枚 特殊处理
   if($host_rate!=''&&$host_rate!=0&&!empty($this_rate)){
-    if(preg_match('/M/',$this_rate[count($this_rate)-1])){
-      $this_rate[count($this_rate)-1] = str_replace('M','000000',$this_rate[count($this_rate)-1]);
+    if(preg_match('/M/',$this_rate[count($this_rate)-1]) || preg_match('/m/',$this_rate[count($this_rate)-1])){
+      $this_rate[count($this_rate)-1] = str_replace(array('M','m'),'000000',$this_rate[count($this_rate)-1]);
       $add_sub = $host_rate/$this_rate[count($this_rate)-1];
      
     }else{
