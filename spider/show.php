@@ -1794,12 +1794,12 @@ while($all_site_row = mysql_fetch_array($all_site_query)){
   if(preg_match('/www\.iimy\.co\.jp/',$all_site_row['site_url'])){
     $host_site_id = $all_site_row['site_id'];
     $left_title[] = '<td '.$colspan.' style="min-width:75px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
-      $url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$all_site_row['site_name'].
+      $url_array[$game][$flag][$all_site_row['site_id']].'" target="_blank">'.$all_site_row['site_name'].
       '</a></td>';
   }else{
     $site_other_arr[$all_site_row['site_id']] = $all_site_row['site_id'];
     $right_title[$all_site_row['site_id']] = '<td '.$colspan.' style="min-width:75px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
-      $url_array[$game][$flag][$site_array['site_id']].'" target="_blank">'.$all_site_row['site_name'].
+      $url_array[$game][$flag][$all_site_row['site_id']].'" target="_blank">'.$all_site_row['site_name'].
       '</a></td>';
   }
 }
@@ -1942,7 +1942,7 @@ foreach($name_arr as $index => $name){
     $index_other = array_search($name,$all_site_name_arr[$site_id]);
     $error_str = '';
     $radio_str = '';
-    if($index_other === false){
+    if($index_other === false||$temp_price = price_number_format($all_site_info_arr[$site_id][$index_other]['product_price'])<0){
       $temp_price_str = '-円';
       $temp_inventory_str = '-個';
       $temp_pid = '';
