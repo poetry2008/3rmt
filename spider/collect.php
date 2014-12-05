@@ -3891,17 +3891,19 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          if($game_type=='PSO2'){
             if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran') || strpos($fix_url,'matubusi')){
               $product_real_name = str_replace('：',' ',$product_name);
-            }else if(strpos($fix_url,'mugenrmt')){
-              $product_real_name = preg_replace('/(.*?)([0-9]+):(.*?)\(即時取引\)/i','$1$2 $3',$product_name);
-              if(strpos($product_real_name,'10') == false){
+			}
+			if(strpos($fix_url,'mugenrmt')){
+               $product_real_name = preg_replace('/(.*?)([0-9]+):(.*?)\(即時取引\)/i','$1$2 $3',$product_name);
+               if(strpos($product_real_name,'10') == false){
                 $product_real_name = preg_replace('/([1-9]+)/i','0$1',$product_real_name);
-              }
-            }else{
+               }
+			}
+			if(!empty($seach_url_rr)){
                $product_real_name = str_replace('．',' ',$product_name);
             }
             if(!empty($seach_url_wm)){
              //01-フェオ   Ship01 フェオ
-               $tep_data = explode('-',$product_name);
+           $tep_data = explode('-',$product_name);
 	       $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
 	       $get_tep_name = trim(preg_replace('/\s+/is','',$tep_data[1]));
                preg_match('/'.$get_tep_name.'/is',$iimy_tep_name,$seach_product_wm);
