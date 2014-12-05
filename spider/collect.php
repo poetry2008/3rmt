@@ -4105,7 +4105,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          }
        }
        if($game_type=='lakatonia'){
-         preg_match('/mugenrmt/',$fix_url,$seach_url_mg);
+         preg_match('/(mugenrmt|rmt-wm)/',$fix_url,$seach_url_mg);
          if(!empty($seach_url_mg)){
              preg_match('/1/',$product_name,$seach_name_mg_1);
              preg_match('/2/',$product_name,$seach_name_mg_2);
