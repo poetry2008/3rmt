@@ -3996,7 +3996,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
         }
         if($game_type=='latale'){
-          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran') ||!empty($seach_url_wm)){
+          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran') ||!empty($seach_url_wm)||!empty($seach_url_wm)){
              if($product_name=='ダイアモンド'){
                   $product_real_name= str_replace('ダイアモンド','ダイヤモンド',$product_name);
      	     }else if($product_name=='サファイヤ'){
