@@ -4169,7 +4169,15 @@ if($flag){
 function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,$site_key){
   $this_price = 0;
   $old_inventory = $result_arr['inventory'][$index];
-  $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+  if($site_key != 'www.rmt-wm.com'){
+    $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+  }else{
+    if(strip_tags($result_arr['inventory'][$index]) != ''){
+      $result_arr['inventory'][$index] = strip_tags($result_arr['inventory'][$index]);
+    }else{
+      $result_arr['inventory'][$index] = strip_tags($result_arr['inventory_preorder'][$index]);
+    } 
+  }
   $inventory_str = str_replace(',','',$result_arr['inventory'][$index]);
   if(preg_match('/[0-9]+/',$inventory_str,$inv_arr)){
     $inventory = $inv_arr[0];
@@ -4192,6 +4200,15 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   $temp_price = 0;
   $inv_price_arr = array();
   $temp_inv = 0;
+  $old_preorder_inventory = $inventory;
+  if($site_key == 'www.rmt-wm.com'){
+    if(preg_match('/[0-9]+/',strip_tags($result_arr['inventory_preorder'][$index]),$preorder_array)){
+      $preorder_inventory = $preorder_array[0];
+    }else{
+      $preorder_inventory = 0;
+    } 
+    $inventory += $preorder_inventory;
+  }
   foreach($result_arr as $key => $val){
     if($key == 'inventory'||$key=='products_name'||$key=='rate'){
       continue;
@@ -4229,6 +4246,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
       }
     }
   }
+  $inventory = $old_preorder_inventory;
   if($inventory == 0&&!empty($inv_price_arr)){
     $this_price = min($inv_price_arr);
   }
