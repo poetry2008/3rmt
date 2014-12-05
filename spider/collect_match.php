@@ -2646,7 +2646,8 @@ $search_array_match = array(
                     'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                     'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">[0-9,]+円<\/td>',
                     'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>'
-                  ),
+             ),
+
              'www.mugenrmt.com'=>  array(
                    'title'=>"<td[^>]*>サーバー名<\/td>[^<]*((<td class='border03 border04 bgd'>([^<]*)<\/td>[^<]*){1,})(<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*){3}[^<]*<\/tr>",
                    'match_title'=>"<td[^>]*>サーバー名<\/td>title_sum[^<]*<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*[^<]*<td class='border03 border04 bgd'>[^<]*<\/td>[^<]*[^<]*<td class='border03 border04 bgd'>.*<\/td>[^<]*<\/tr>[^<]*<tr>[^<]*",
@@ -2654,6 +2655,17 @@ $search_array_match = array(
                    'match_info'=>"<td[^<]*class='border03 border04'[^<]*>([^<]*)<\/td>price_sum[^<]*<td[^<]*class='border03 border04'[^<]*>.*<\/td>[^<]*<td[^<]*class='border03 border04'[^<]*>(.*)<\/td>[^<]*<td[^<]*class='border03 border04'[^<]*>.*<\/td>[^<]*<\/tr>",
                    'match_price'=>"[^<]*<td[^<]*class='border03 border04'[^<]*>([0-9,\.]*)円.*<\/td>",
                   ),
+           'www.rmt-wm.com'=>array(
+                  'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                  'section_1'=>'<td>サーバー<\/td>[^>]*<th>決済方法<\/th>[^>]*<th>([0-9,])口~<\/th><th>(.*?)口~<\/th><th>(.*?)口~<\/th>',
+                  'section_2'=>'<td>サーバー<\/td>[^>]*<th>決済方法<\/th>[^>]*<th>[0-9,]+口~<\/th><th>([0-9,]+)口~<\/th><th>[0-9,]+口~<\/th>',
+                  'section_3'=>'<td>サーバー<\/td>[^>]*<th>決済方法<\/th>[^>]*<th>[0-9,]+口~<\/th><th>[0-9,]+口~<\/th><th>([0-9,]+)口~<\/th>',
+                  'products_name'=>'<td rowspan="3"><span>(.*?)<\/span><\/td>',
+                  'price_1'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>',
+                  'price_2'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td><td>[0-9,.]+?円<\/td>',
+                  'price_3'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>([0-9,.]+?)円<\/td>',
+                  'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
+            ),
          ),
        'sell'=> array(
 		   'www.matubusi.com'=>array(
@@ -2662,6 +2674,14 @@ $search_array_match = array(
                      'price'=>'<td class="center">([0-9,]+)円<\/td>.*?<td class="center">.*?<\/td>',
                      'inventory'=>'<td class="center">[0-9,]+円<\/td>.*?<td class="center">(.*?)<\/td>'
              ),
+                 'www.rmt-wm.com'=>array(
+                          'products_name'=>'<tr class=".*?">[^<]*<td class="th">(.*?)<\/td>',
+                          'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                          'section_1'=>'<td>サーバー名<\/td>\s*<td>([0-9,.]+)口あたりのRM<\/td>\s*<td>[0-9,.]+口あたりのWM<\/td>\s*<td>在庫<\/td>',
+                          'price_1'=>'<tr class=".*?">\s*<td class="th">.*?<\/td>\s*<td>([0-9,.]+)円<\/td>',
+                          'inventory'=>'<td>([0-9,]+) 口[^<]*<a .*?><img [^>]*><\/a>|買取停止中'
+                      ),
+
 
          )
     )

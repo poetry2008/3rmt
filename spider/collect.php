@@ -159,7 +159,7 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
       $site_value = array_search($site_info_key,$site);
       $category_id = $category_id_array[$site_value];
 	  //如果是rmt1需要特殊处理
-	  if($site_info_key=='rmt1.jp'){ 
+	  if($site_info_key=='rmt1.jp' || $site_info_key=='www.rmt-wm.com'){ 
               $site_info_arr['0-'.$site_info_arr['section_2']['0']]= $site_info_arr['price_1'];
               unset($site_info_arr['section_1']);
               unset($site_info_arr['price_1']);
@@ -3858,6 +3858,8 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          }
 
          $product_name = trim(preg_replace('/\s+/is','',$product_name));
+         preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+         preg_match('/rmtrank/',$fix_url,$seach_url_rr);
 
 	   //RS拼写错误
           if($game_type=='RS'){
@@ -3885,7 +3887,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
             }
          }
 		}
-		//2.PSO2
+	//2.PSO2
          if($game_type=='PSO2'){
             if(strpos($fix_url,'ftb-rmt') || strpos($fix_url,'kakaran') || strpos($fix_url,'matubusi')){
               $product_real_name = str_replace('：',' ',$product_name);
@@ -3897,8 +3899,19 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
             }else{
                $product_real_name = str_replace('．',' ',$product_name);
             }
+            if(!empty($seach_url_wm)){
+             //01-フェオ   Ship01 フェオ
+               $tep_data = explode('-',$product_name);
+	       $iimy_tep_name = trim(preg_replace('/\s+/is','',$product_row['product_name']));
+	       $get_tep_name = trim(preg_replace('/\s+/is','',$tep_data[1]));
+               preg_match('/'.$get_tep_name.'/is',$iimy_tep_name,$seach_product_wm);
+              if(!empty($seach_product_wm)){
+                  $product_real_name = $product_row['product_name'];
+              }
+                
+            }
           }
-		//3.DQ10
+	//3.DQ10
           if($game_type=='DQ10'){
              $array_dq = array('共通サーバー','普通取引','ドラゴンクエスト10・ゴールド','PC','全サーバー共通','ゴールド','Windows版');
             if(strpos($fix_url,'diamond')){
@@ -3939,7 +3952,10 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
                $product_real_name =  $product_row['product_name']; 
 		  }
           preg_match('/rmtrank/',$fix_url,$seach_url_rr);
-          if(!empty($seach_url_rr)){
+          preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+
+          if(!empty($seach_url_rr) || !empty($seach_url_wm)){
+              $product_name= str_replace('-','',$product_name);
               $pname_len = mb_strlen($product_name,'UTF8');
               $str_len = $pname_len-2;
               $pro1 = mb_substr($product_name,0,$str_len,'utf-8');
@@ -3986,6 +4002,13 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
  	        }
          }
        }
+      if($game_type=='talesweave'){
+         preg_match('/ミストフル/',$product_name,$seach_name_wm);
+         if(!empty($seach_url_wm) && !empty($seach_name_wm)){
+              $product_real_name = 'ミストラル';
+         }
+
+      }
        if($game_type=='HR'){
               $product_real_name = str_replace('共通サーバー','マビノギ英雄伝',$product_name);
               preg_match('/rmtrank/',$fix_url,$seach_url);
@@ -4026,7 +4049,9 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
              }
            }
           preg_match('/kakaran/',$fix_url,$seach_url_kk);
-          if(!empty($seach_url_kk)){
+          preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
+          preg_match('/pastel-rmt/',$fix_url,$seach_url_psl);
+          if(!empty($seach_url_kk)||!empty($seach_url_wm) || !empty($seach_url_psl)){
              $product_real_name = str_replace('Valefor','Valefora',$product_name);
           }
        }
