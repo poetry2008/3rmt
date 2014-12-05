@@ -1917,7 +1917,7 @@ if($price[1]=='00'){
     $index++;
 }
 $div_str = '<div id="site_info" style="min-width:465px;height:100%; overflow-x:scroll;">';
-$div_str .= '<table style="min-width:465px;" class="dataTableContent_right" width="77%" cellspacing="0" cellpadding="2" border="0">';
+$div_str .= '<table style="min-width:465px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 $index=0;
 foreach($other_info_arr as $row){
   if($index == 0){
@@ -1934,10 +1934,6 @@ foreach($other_info_arr as $row){
   }
   foreach($row as $td){
     $div_str .= $td;
-  }
-  if($index == 0){
-    $div_str .= '<td colspan="'.$colspan_sum.'" rowspan="'.$rowspan_sum.'">';
-    $div_str .= '</td>';
   }
   $div_str .= '</tr>';
   $index++;
