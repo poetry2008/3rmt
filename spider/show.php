@@ -425,7 +425,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
   </head>
   <body>';
 echo '<br>';
-$page_title = '<span onclick="get_category_info()" class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
+$page_title = '<span class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
 echo $page_title;
 echo '<select onchange="show_game_info(this.value)">';
 foreach($game_str_array as $key => $value){
@@ -455,9 +455,6 @@ $(window).resize(function() {
     var info_width = document.body.clientWidth-info_left_widht;
     $("#site_info").width(info_width);
     });
-function get_category_info(){
-  $('#category_info_box').show();
-}
 
 function onmouseover_style(_this,index,c_flag){
   if(c_flag == false){
@@ -1925,7 +1922,7 @@ foreach($name_arr as $index => $name){
 }
 echo '</table>';
 echo '</td>';
-echo '<td width="77%" valign="top" style="border-left:2px solid #808080;">';
+echo '<td width="77%" valign="top">';
 echo '<div id="site_info" style="min-width:465px;height:100%; overflow-x:scroll;">';
 echo '<table style="min-width:465px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 $show_site_arr = array();
