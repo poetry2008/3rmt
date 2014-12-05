@@ -494,13 +494,13 @@ function onmouseout_style(_this,index,c_flag){
     var z_temp;
     $('.'+class_temp).each(function(i){
         if(z==0){
-          $(this).css({'border-top':'0px solid #fc9700'});
+          $(this).css({'border-top':'2px solid #808080'});
           z++;
         }
-      $(this).css({'border-left':'0px solid #fc9700','border-right':'0px solid #fc9700'});
+      $(this).css({'border-left':'2px solid #808080','border-right':'2px solid #808080'});
       z_temp = this;
         });
-      $(z_temp).css({'border-bottom':'0px solid #fc9700'});
+      $(z_temp).css({'border-bottom':'2px solid #808080'});
   }else{
     var class_first = c_flag+'_price';
     var class_second = c_flag+'_inventory';
@@ -510,37 +510,37 @@ function onmouseout_style(_this,index,c_flag){
     var zs_temp;
     $('.'+class_first).each(function(i){
         if(zf==0){
-          $(this).css({'border-top':'0px solid #fc9700'});
+          $(this).css({'border-top':'2px solid #808080'});
           zf++;
         }
-      $(this).css({'border-left':'0px solid #fc9700'});
+      $(this).css({'border-left':'2px solid #808080'});
       zf_temp = this;
         });
-    $(zf_temp).css({'border-bottom':'0px solid #fc9700'});
+    $(zf_temp).css({'border-bottom':'2px solid #808080'});
     $('.'+class_second).each(function(i){
         if(zs==0){
-          $(this).css({'border-top':'0px solid #fc9700'});
+          $(this).css({'border-top':'2px solid #808080'});
           zs++;
         }
-      $(this).css({'border-right':'0px solid #fc9700'});
+      $(this).css({'border-right':'2px solid #808080'});
       zs_temp = this;
         });
-    $(zs_temp).css({'border-bottom':'0px solid #fc9700'});
+    $(zs_temp).css({'border-bottom':'2px solid #808080'});
 
   }
   var temp;
   $("#tr_div_"+index).find("td").each(function(i){
-    $(this).css({'border-bottom':'0px solid #fc9700','border-top':'0px solid #fc9700'});
+    $(this).css({'border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
     temp = this;
   });
-  $(temp).css({'border-right':'0px solid #fc9700'});
+  $(temp).css({'border-right':'2px solid #808080'});
   var x = 0;
   $("#tr_start_"+index).find("td").each(function(i){
     if(x==0){
-      $(this).css({'border-left':'0px solid #fc9700','border-bottom':'0px solid #fc9700','border-top':'0px solid #fc9700'});
+      $(this).css({'border-left':'2px solid #808080','border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
       x++;
     }else{
-      $(this).css({'border-bottom':'0px solid #fc9700','border-top':'0px solid #fc9700'});
+      $(this).css({'border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
     }
     i++;
   });
@@ -1961,7 +1961,7 @@ foreach($name_arr as $index => $name){
         echo '</td>';
       }
     }else{
-      echo '<td class="td_'.$site_id.'_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\')" >';
+      echo '<td class="td_'.$site_id.'_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
       if($zero_inventory == 1&&$temp_inventory==0){
         echo '&nbsp;';
       }else{
