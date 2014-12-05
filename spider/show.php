@@ -1947,7 +1947,12 @@ foreach($name_arr as $index => $name){
       if($zero_inventory == 1&&$temp_inventory==0){
         echo '<td class="td_'.$site_id.'_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td><td class="td_'.$site_id.'_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td>';
       }else{
-        echo '<td class="td_'.$site_id.'_price" align="right" style="min-width:60px" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
+        if($error_str == ''){
+          $style_str = ' style="min-width:70px" ';
+        }else{
+          $style_str = ' style="min-width:80px" ';
+        }
+        echo '<td class="td_'.$site_id.'_price" align="right" '.$style_str.' onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $error_str;
         echo $temp_price_str;
         echo '</td>';
