@@ -351,34 +351,7 @@ if($_GET['action'] == 'save'){
 
   $inventory_show = $_POST['inventory_show'];
   $inventory_flag = $_POST['inventory_flag'];
-  $site = $_POST['site'];
   $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
-
-  $site_id_array = array();
-  $site_all_query = mysql_query("select site_id from site order by sort_order");
-  while($site_all_array = mysql_fetch_array($site_all_query)){
-
-    $site_id_array[] = $site_all_array['site_id'];
-  }
-  mysql_free_result($site_all_query);
-  foreach($site_id_array as $site_value){
-
-    $site_str_query = mysql_query("select is_show from site where site_id='".$site_value."'");
-    $site_str_array = mysql_fetch_array($site_str_query);
-    $site_setting_array = array();
-    if($site_str_array['is_show'] != ''){
-      $site_setting_array = unserialize($site_str_array['is_show']);
-    }
-
-    if(in_array($site_value,$site)){
-      $site_setting_array[$game_name] = 1;
-    }else{
-      $site_setting_array[$game_name] = 0;
-    }
-    $site_setting_str = serialize($site_setting_array);
-    mysql_free_result($site_str_query);
-    mysql_query("update site set is_show='".$site_setting_str."' where site_id='".$site_value."'");
-  }
 
   $quantity_array = array();
   $inventory_array = array();
@@ -1763,6 +1736,18 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
 		   'genshin'=>'1個あたり  100金',
 		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
+$date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."' and site_id!=7");
+$date_array = mysql_fetch_array($date_query);
+$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
+while($config_array = mysql_fetch_array($config_query)){
+  if($config_array['config_value'] != ''){
+    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
+      $inventory_show_array = unserialize($config_array['config_value']);
+    }else{
+      $inventory_flag_array = unserialize($config_array['config_value']);
+    }
+  }
+}
 echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
 //获得所有网站的 标题 
 //数据输出的三个数组
@@ -1771,9 +1756,9 @@ $right_info = array();
 $left_title = array();
 $right_title = array();
 //获得释放显示库存 
-$show_inventory = 1;
+$show_inventory = $inventory_show_array[$game];
 //获得是否显示库存0的数据
-$zero_inventory = 0;
+$zero_inventory = $inventory_flag_array[$game];
 $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
 $flag_type = $_GET['flag'] == 'sell'?0:1;
 $left_title[] = '<td class="dataTableHeadingContent_order" width="5%" style="min-width:70px; style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
@@ -1992,26 +1977,6 @@ echo '</table>';
 echo '<br/>';
 echo '<br/>';
 echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
-echo '<table style="min-width:750px" width="100%" cellspacing="0" cellpadding="0" border="0">';
-echo '<tr><td width="12%">表示業者設定</td>';
-$site_query = mysql_query("select * from site order by sort_order");
-$all_site_array = array();
-$index = 0;
-while($site_array_row = mysql_fetch_array($site_query)){
-  $index++;
-  if($site_array_row['site_name']=='ジャックポット'){
-    $all_site_array[0] = $site_array_row;
-  }else{
-    $all_site_array[$index] = $site_array_row;
-  }
-
-}
-ksort($all_site_array);
-foreach($all_site_array as $site_array){
-  $site_temp = unserialize($site_array['is_show']);
-  echo '<td><input type="checkbox" name="site[]" value="'.$site_array['site_id'].'"'.(in_array($site_array['site_id'],$_POST['site']) ? ' checked="checked"' : $site_temp[$game] !== 0 ? ' checked="checked"' : '').' id="site_'.$site_array['site_id'].'"><label for="site_'.$site_array['site_id'].'">'.$site_array['site_name'].'</label></td>';
-}
-echo '<td><input type="button" name="button1" value="全てチェック・解除" onclick="check_all();">&nbsp;&nbsp;<input type="hidden" name="num1" id="num" value="1"></td></tr></table>';
 echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
 echo '<tr><td width="12%">オプション</td>';
 echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
