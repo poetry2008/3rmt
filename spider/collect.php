@@ -4000,7 +4000,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
         }
         if($game_type=='latale'){
-          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')||strpos($fix_url,'mugenrmt') !empty($seach_url_wm)){
+          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')||strpos($fix_url,'mugenrmt')||!empty($seach_url_wm)){
              if(strpos($fix_url,'mugenrmt')){
 
                $product_name = str_replace('3','',$product_name);
