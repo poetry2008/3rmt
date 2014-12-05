@@ -3996,13 +3996,13 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
         }
         if($game_type=='latale'){
-          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran')){
+          if(strpos($fix_url,'rmtrank')||strpos($fix_url,'kakaran') ||!empty($seach_url_wm)){
              if($product_name=='ダイアモンド'){
                   $product_real_name= str_replace('ダイアモンド','ダイヤモンド',$product_name);
      	     }else if($product_name=='サファイヤ'){
                 $product_real_name = str_replace('サファイヤ','サファイア',$product_name);
  	        }
-         }
+          }
        }
       if($game_type=='talesweave'){
          preg_match('/ミストフル/',$product_name,$seach_name_wm);
@@ -4054,8 +4054,22 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
           preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
           preg_match('/pastel-rmt/',$fix_url,$seach_url_psl);
           if(!empty($seach_url_kk)||!empty($seach_url_wm) || !empty($seach_url_psl)){
-             $product_real_name = str_replace('Valefor','Valefora',$product_name);
+             preg_match('/Valefor/',$product_name,$seach_name_tep);
+             if(!empty($seach_name_tep)){
+                  $product_real_name = str_replace('Valefor','Valefora',$product_name);
+             }
           }
+          if(!empty($seach_url_wm)){
+             preg_match('/Zelera/',$product_name,$seach_name_tep);
+             if(!empty($seach_name_tep)){
+                 $product_real_name = str_replace('Zelera','Zalera',$product_name);
+             }
+          }
+       }
+       if($game_type=='tenjouhi'){
+          if(!empty($seach_url_wm)){
+              $product_real_name = str_replace('まほろぼ','まほろば',$product_name);
+          } 
        }
        if($game_type=='MU'){
           if(strpos($fix_url,'matubusi')){
