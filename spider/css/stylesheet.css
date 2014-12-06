@@ -2392,4 +2392,18 @@ display:inline-block;
 .dataTableContent_right{
 	text-align:right;	
 }
+.tr_line td{
+  border-bottom:1px solid #808080;
+}
 
+.info_site .info_inventory .info_show_status .info_footer{
+ position: absolute;
+}
+.left {
+ float: left;
+ border: 1px;
+}
+.right {
+ float: right;
+ border: 1px;
+}

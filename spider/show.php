@@ -398,8 +398,10 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
   </head>
   <body>';
 echo '<br>';
-$page_title = '<span class="pageHeading">'.$game_str_array[$game].' RMT '.$product_type.'価格相場</span><br><br>';
+$page_title = $game_str_array[$game].' RMT '.$product_type.'価格相場';
+echo '<span class="pageHeading" onclick="get_category_info()">';
 echo $page_title;
+echo '</span><br><br>';
 echo '<select onchange="show_game_info(this.value)">';
 foreach($game_str_array as $key => $value){
   echo '<option value="'.$key.'" '.($_GET['game']==$key ? 'selected="selected"' : '').'>'.$value.'</option>';
@@ -410,6 +412,49 @@ echo '</select>';
 <?php
 echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
 ?>
+<div class="info_title" width="100%">
+  <div class="left">
+  <?php echo $page_title;?>
+  </div>
+  <div class="right">
+  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  </div>
+</div>
+<br>
+<div class="info_site">
+  <div class="left">
+  <?php echo $page_title;?>
+  </div>
+  <div class="right">
+  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  </div>
+</div>
+<br>
+<div class="info_inventory">
+  <div class="left">
+  <?php echo $page_title;?>
+  </div>
+  <div class="right">
+  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  </div>
+</div>
+<br>
+<div class="info_show_status">
+  <div class="left">
+  <?php echo $page_title;?>
+  </div>
+  <div class="right">
+  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  </div>
+</div>
+<br>
+<div class="info_footer">
+  <div class="center">
+  <input type="submit" name="submit" value="Save">
+  <input type="button" value="clear" onclick="close_category_info()">
+  </div>
+</div>
+</div>
 <?php
 echo '</form>';
 ?>
@@ -421,14 +466,25 @@ $(document).ready(function(){
     var info_left_widht = $('#info_left').width();
     var info_width = document.body.clientWidth-info_left_widht;
     $("#site_info").width(info_width);
-
+    $(".dataTableContent_right").each(function(){
+       $(this).find("td").each(function(i){
+          $(this).css({'border-left':'1px','border-right':'1px'});
+          $(this).css({'border-top':'1px solid #808080','border-bottom':'1px solid #808080'});
+           
+         });
+       });
     });
 $(window).resize(function() {
     var info_left_widht = $('#info_left').width();
     var info_width = document.body.clientWidth-info_left_widht;
     $("#site_info").width(info_width);
     });
-
+function close_category_info(){
+  $('#category_info_box').hide();
+}
+function get_category_info(){
+  $('#category_info_box').show();
+}
 function onmouseover_style(_this,index,c_flag){
   if(c_flag == false){
     var class_temp = $(_this).attr('class');
@@ -436,13 +492,13 @@ function onmouseover_style(_this,index,c_flag){
     var z_temp;
     $('.'+class_temp).each(function(i){
         if(z==0){
-          $(this).css({'border-top':'2px solid #fc9700'});
+          $(this).css({'border-top':'1px solid #fc9700'});
           z++;
         }
-      $(this).css({'border-left':'2px solid #fc9700','border-right':'2px solid #fc9700'});
+      $(this).css({'border-left':'1px solid #fc9700','border-right':'1px solid #fc9700'});
       z_temp = this;
         });
-      $(z_temp).css({'border-bottom':'2px solid #fc9700'});
+      $(z_temp).css({'border-bottom':'1px solid #fc9700'});
   }else{
     var class_first = c_flag+'_price';
     var class_second = c_flag+'_inventory';
@@ -452,37 +508,37 @@ function onmouseover_style(_this,index,c_flag){
     var zs_temp;
     $('.'+class_first).each(function(i){
         if(zf==0){
-          $(this).css({'border-top':'2px solid #fc9700'});
+          $(this).css({'border-top':'1px solid #fc9700'});
           zf++;
         }
-      $(this).css({'border-left':'2px solid #fc9700'});
+      $(this).css({'border-left':'1px solid #fc9700'});
       zf_temp = this;
         });
-    $(zf_temp).css({'border-bottom':'2px solid #fc9700'});
+    $(zf_temp).css({'border-bottom':'1px solid #fc9700'});
     $('.'+class_second).each(function(i){
         if(zs==0){
-          $(this).css({'border-top':'2px solid #fc9700'});
+          $(this).css({'border-top':'1px solid #fc9700'});
           zs++;
         }
-      $(this).css({'border-right':'2px solid #fc9700'});
+      $(this).css({'border-right':'1px solid #fc9700'});
       zs_temp = this;
         });
-    $(zs_temp).css({'border-bottom':'2px solid #fc9700'});
+    $(zs_temp).css({'border-bottom':'1px solid #fc9700'});
 
   }
   var temp;
   $("#tr_div_"+index).find("td").each(function(i){
-    $(this).css({'border-bottom':'2px solid #fc9700','border-top':'2px solid #fc9700'});
+    $(this).css({'border-bottom':'1px solid #fc9700','border-top':'1px solid #fc9700'});
     temp = this;
   });
-  $(temp).css({'border-right':'2px solid #fc9700'});
+  $(temp).css({'border-right':'1px solid #fc9700'});
   var x=0;
   $("#tr_start_"+index).find("td").each(function(i){
     if(x==0){
-      $(this).css({'border-left':'2px solid #fc9700','border-bottom':'2px solid #fc9700','border-top':'2px solid #fc9700'});
+      $(this).css({'border-left':'1px solid #fc9700','border-bottom':'1px solid #fc9700','border-top':'1px solid #fc9700'});
       x++;
     }else{
-      $(this).css({'border-bottom':'2px solid #fc9700','border-top':'2px solid #fc9700'});
+      $(this).css({'border-bottom':'1px solid #fc9700','border-top':'1px solid #fc9700'});
     }
   });
 
@@ -494,13 +550,13 @@ function onmouseout_style(_this,index,c_flag){
     var z_temp;
     $('.'+class_temp).each(function(i){
         if(z==0){
-          $(this).css({'border-top':'2px solid #808080'});
+          $(this).css({'border-top':'1px solid #808080'});
           z++;
         }
-      $(this).css({'border-left':'2px solid #808080','border-right':'2px solid #808080'});
+      $(this).css({'border-left':'1px ','border-right':'1px'});
       z_temp = this;
         });
-      $(z_temp).css({'border-bottom':'2px solid #808080'});
+      $(z_temp).css({'border-bottom':'1px solid #808080'});
   }else{
     var class_first = c_flag+'_price';
     var class_second = c_flag+'_inventory';
@@ -510,37 +566,37 @@ function onmouseout_style(_this,index,c_flag){
     var zs_temp;
     $('.'+class_first).each(function(i){
         if(zf==0){
-          $(this).css({'border-top':'2px solid #808080'});
+          $(this).css({'border-top':'1px solid #808080'});
           zf++;
         }
-      $(this).css({'border-left':'2px solid #808080'});
+      $(this).css({'border-left':'1px'});
       zf_temp = this;
         });
-    $(zf_temp).css({'border-bottom':'2px solid #808080'});
+    $(zf_temp).css({'border-bottom':'1px solid #808080'});
     $('.'+class_second).each(function(i){
         if(zs==0){
-          $(this).css({'border-top':'2px solid #808080'});
+          $(this).css({'border-top':'1px solid #808080'});
           zs++;
         }
-      $(this).css({'border-right':'2px solid #808080'});
+      $(this).css({'border-right':'1px'});
       zs_temp = this;
         });
-    $(zs_temp).css({'border-bottom':'2px solid #808080'});
+    $(zs_temp).css({'border-bottom':'1px solid #808080'});
 
   }
   var temp;
   $("#tr_div_"+index).find("td").each(function(i){
-    $(this).css({'border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
+    $(this).css({'border-bottom':'1px solid #808080','border-top':'1px solid #808080'});
     temp = this;
   });
-  $(temp).css({'border-right':'2px solid #808080'});
+  $(temp).css({'border-right':'1px'});
   var x = 0;
   $("#tr_start_"+index).find("td").each(function(i){
     if(x==0){
-      $(this).css({'border-left':'2px solid #808080','border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
+      $(this).css({'border-left':'1px solid','border-bottom':'1px solid #808080','border-top':'1px solid #808080'});
       x++;
     }else{
-      $(this).css({'border-bottom':'2px solid #808080','border-top':'2px solid #808080'});
+      $(this).css({'border-bottom':'1px solid #808080','border-top':'1px solid #808080'});
     }
     i++;
   });
@@ -1854,7 +1910,7 @@ echo '</tr>';
 //输出详细信息
 foreach($name_arr as $index => $name){
   $check_pid_row = $check_pid[array_search($name,$check_name)];
-  echo '<tr height="30px" id="tr_start_'.$index.'">';
+  echo '<tr class="tr_line" height="30px" id="tr_start_'.$index.'">';
   echo '<td class="td_name" align="left" nowrap="nowrap" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
   echo $name;
   echo '</td>';
@@ -1921,7 +1977,7 @@ foreach($right_title as $r_key => $title){
 }
 echo '</tr>';
 foreach($name_arr as $index => $name){
-  echo '<tr height="30px" id="tr_div_'.$index.'">';
+  echo '<tr class="tr_line" height="30px" id="tr_div_'.$index.'">';
   //其他网站信息
   foreach($show_site_arr as $site_id){
     $index_other = array_search($name,$all_site_name_arr[$site_id]);
