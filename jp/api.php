@@ -78,7 +78,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'sp' && $_GET['keyword']) {
     limit ".$limit."
     ";
   $result_query = tep_db_query($sql);
-
+$res=tep_db_query("select * from set_auto_calc where parent_id='".$cID."'");
+$cacl = 0;
+if($col=tep_db_fetch_array($res)){
+  $cacl = $col['bairitu'];
+}
+    
 header ("content-type: text/xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?><?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>'."\n";
 echo "<result>\n";
@@ -94,6 +99,10 @@ echo "<result>\n";
   $currencies->display_price(tep_get_price($result['products_price'],
         $result['products_price_offset'], $result['products_small_sum'],
         $result['products_bflag']), tep_get_tax_rate($result['products_tax_class_id']));?></price>
+  <cacl><?php echo $cacl;?></cacl>
+  <max><?php echo $result['max_inventory'];?></max>
+  <min><?php echo $result['min_inventory'];?></min>
+  <avg><?php echo $result['min_inventory'];?></avg>
 </product>
 <?php
   }
