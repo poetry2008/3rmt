@@ -2396,8 +2396,32 @@ display:inline-block;
   border-bottom:1px solid #808080;
 }
 
-.info_site .info_inventory .info_show_status .info_footer{
- position: absolute;
+.info_title{
+  height:20px;
+  position:relative;
+}
+.info_site{
+  position:relative;
+}
+.info_inventory{
+  position:relative;
+} 
+.info_show_status{
+  position:relative;
+}
+.info_footer{
+  position:relative;
+}
+.left_info {
+ float: left;
+ border: 1px;
+ margin-left: 8%;
+ width:15%;
+}
+.right_info,.right_info_site {
+ float: left;
+ border: 1px;
+ width:77%;
 }
 .left {
  float: left;
@@ -2407,3 +2431,28 @@ display:inline-block;
  float: right;
  border: 1px;
 }
+.center{
+ text-align: center;
+ border: 1px;
+}
+.left, ul {
+  list-style-type:none;
+  margin:0;
+  padding:0; 
+  text-align:left;
+}
+.left ul li{
+  height:20px;
+}
+.right_info_site ul {
+  width:100%;
+  list-style:none
+} 
+.right_info_site li {
+  float:left;
+  width:20%;
+  height:20px;
+  min-width:70px;
+  text-align:left;
+  line-height:20px
+} 

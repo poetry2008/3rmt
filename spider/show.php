@@ -21,8 +21,66 @@ $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_query('set names utf8');
 mysql_select_db(DB_DATABASE);
 
-//处理 category info 信息 
 
+
+//处理 category info 信息 
+if($_GET['action'] == 'save_category_info'){
+  $inventory_show = $_POST['inventory_show']?$_POST['inventory_show']:'0';
+  $inventory_flag = $_POST['inventory_flag']?$_POST['inventory_flag']:'0';
+  $category_key = $_GET['game'];
+  $category_type = $_GET['flag_type'];
+  if(empty($_POST['rate_site'])){
+    $site_select = null;
+  }else{
+    $site_select = serialize($_POST['rate_site']);
+  }
+  if(empty($_POST['rate_text'])){
+   $site_rate = null;
+  }else{
+    $site_rate = serialize($_POST['rate_text']);
+  }
+
+  $status_arr = array();
+  $manual_arr = array();
+  $auto_arr = array();
+  foreach($_POST['p_key'] as $key => $value){
+    $t_name = $_POST['p_name'][$key];
+    $status_arr[$t_name] = $_POST['module_type'][$value];
+    $manual_arr[$t_name] = $_POST['manual'][$value];
+    $auto_arr[$t_name] = $_POST['auto_text'][$value];
+  }
+  $inventory_status = serialize($status_arr);
+  $manual =  serialize($manual_arr);
+  $auto = serialize($auto_arr);
+  if(isset($_POST['info_id'])&&$_POST['info_id']!=''){
+    //修改数据
+    $update_sql = "update category_info set 
+      `site_select` ='".$site_select."', 
+      `site_rate` ='".$site_rate."', 
+      `inventory_show` ='".$inventory_show."', 
+      `inventory_flag` ='".$inventory_flag."', 
+      `inventory_status` ='".$inventory_status."', 
+      `manual` ='".$manual."',
+      `auto` ='".$auto."'
+  where id='".$_POST['info_id']."'";
+ mysql_query($update_sql);
+  }else{
+   //新建数据
+   $insert_sql = "INSERT INTO `category_info` VALUES 
+   (NULL, 
+   '".$category_key."', 
+   '".$category_type."', 
+   '".$site_select."', 
+   '".$site_rate."', 
+   '".$inventory_show."', 
+   '".$inventory_flag."', 
+   '".$inventory_status."', 
+   '".$manual."', 
+   '".$auto."')";
+   mysql_query($insert_sql);
+  }
+  exit;
+}
 
 //判断产品名背景颜色
 
@@ -31,7 +89,267 @@ mysql_select_db(DB_DATABASE);
 打开页面自动通过api自动获取主站数据
   */
 if(function_exists('curl_init')){
-get_iimy_data();
+  $api_arr = get_iimy_data();
+  $api_name = $api_arr['name'];
+  $api_info = $api_arr['info'];
+}
+//测试数据
+$api_name = array(
+  'Asura',
+  'Bahamut',
+  'Bismarck',
+  'Carbuncle',
+  'Cerberus',
+  'Fenrir',
+  'Lakshmi',
+  'Leviathan',
+  'Odin',
+  'Phoenix',
+  'Quetzalcoatl',
+  'Ragnarok',
+  'Shiva',
+  'Siren',
+  'Sylph',
+  'Valefor',);
+$api_info = array(
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>239),
+    array('quantity'=>50,'max' =>0, 'min' =>50, 'cacl' =>1, 'avg' =>239),
+    array('quantity'=>1000,'max' =>0, 'min' =>50, 'cacl' =>1, 'avg' =>339),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>539),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>439),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>339),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>250),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>360),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>480),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>339),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>219),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>329),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>199),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>679),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>529),
+    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>479),
+ );
+
+function get_max_or_min($site_info_list,$type='min'){
+  $site_id_arr = array();
+  $site_price_arr = array();
+  foreach($site_info_list as $site_info){
+    $site_id_arr[] = $site_info['site_id'];
+    $site_price_arr[] = $site_info['price'];
+  }
+  if($type=='min'){
+    $index == array_search(min($site_price_arr),$site_price_arr);
+  }else{
+    $index == array_search(max($site_price_arr),$site_price_arr);
+  }
+  return $site_id_arr[$index];
+}
+
+//获得每一行的 黑名单白名单
+/*
+$p_name 产品名
+$p_type 供应情况
+*/
+function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_type,$flag_type,$game){
+  $api_index = array_search($p_name,$api_name);
+  $info = $api_info[$api_index];
+  //最大库存最小库存 库存
+  $max_quantity = $info['max'];
+  $min_quantity = $info['min'];
+  $quantity = $info['quantity'];
+  //实际库存的平均采购价格 或者 关联商品的贩卖单价 根据产品贩卖买取 
+  $price_avg = $info['avg'];
+  //计算设置＞倍率设置
+  $product_cacl = $info['cacl'];
+  $yellow_site = 0;
+  $white_site = array();
+  //所有网站存入白名单
+  $all_site_sql = "select * from product p,category c 
+    where c.category_id = p.category_id
+    and c.category_type='".$flag_type."'
+    and c.category_name='".$game."' 
+    and c.site_id != '".$host_site_id."'
+    and p.product_name='".$p_name."' 
+    order by p.product_id asc";
+  $all_site_query = mysql_query($all_site_sql);
+  while($all_site_row = mysql_fetch_array($all_site_query)){
+    $white_site[$all_site_row['site_id']] = $all_site_row;
+  }
+  $black_site = array();
+  // 「计算设置＞倍率设置」的设置有的话
+  if($product_cacl!=0){
+    //白名单里，如果有单价是赤字的网站，就将这些网站 放入黑名单
+    foreach($white_site as $site_id => $site_info){
+      if($flag_type == '1'){
+        if($stie_info['price'] <= $price_avg*$product_cacl){
+          //放入黑名单
+          $black_site[$site_id] = $site_info;
+          //从白名单移出
+          unset($white_site[$site_id]);
+        }
+      }else{
+        if($stie_info['price'] >= $price_avg/$product_cacl){
+          //放入黑名单
+          $black_site[$site_id] = $site_info;
+          //从白名单移出
+          unset($white_site[$site_id]);
+        }
+      }
+    }
+   // 供应正常的情况下
+    if($p_type == 'manual'){
+      //该商品的【最大库存】被设置了。 && 「库存」 >= 「最大库存」
+      if($max_quantity!=0&&$quantity>=$max_quantity){
+       foreach($white_site as $site_id => $site_info){
+         if($site_info['price']*$site_info['inventory'] <= 2000 ){
+            //放入黑名单
+            $black_site[$site_id] = $site_info;
+            //从白名单移出
+            unset($white_site[$site_id]);
+         }
+       }
+       if(!empty($white_site)){
+         $yellow_site = get_max_or_min($white_site);
+       }else{
+         $target_error = true;
+       }
+      //该商品的【库存最小】被设置了。&& 「库存」 <= 「最小库存」
+      }else if($min_quantity!=0&&$quantity>=$min_quantity){
+       foreach($white_site as $site_id => $site_info){
+         if(!in_array($site_id,$site_select)){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+         }
+         if($site_info['price']*$site_info['inventory'] <= 10000 ){
+            //放入黑名单
+            $black_site[$site_id] = $site_info;
+            //从白名单移出
+            unset($white_site[$site_id]);
+         }
+       }
+       // 从白名单中，找出比价格领先者（最便宜的）的平均单价少10%的网站 放入黑名单 未作
+       if(!empty($white_site)){
+         $yellow_site = get_max_or_min($white_site);
+       }else{
+         $target_error = true;
+       }
+      }else{
+       foreach($white_site as $site_id => $site_info){
+         if(!in_array($site_id,$site_select)){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+         }
+         if($site_info['price']*$site_info['inventory'] <= 4000 ){
+            //放入黑名单
+            $black_site[$site_id] = $site_info;
+            //从白名单移出
+            unset($white_site[$site_id]);
+         }
+       }
+       //从白名单里，找出价格领先者（最便宜的）没有设置 && 比价格领先者（最便宜的）的平均单价少10%的网站 放入黑名单 未作
+       if(!empty($white_site)){
+         $yellow_site = get_max_or_min($white_site);
+       }else{
+         $target_error = true;
+       }
+      }
+    // 供应不足的话
+    }else if($p_type == 'less'){
+      foreach($white_site as $site_id => $site_info){
+        if($site_info['price']*$site_info['inventory'] <= 15000 ){
+          //放入黑名单
+          $black_site[$site_id] = $site_info;
+          //从白名单移出
+          unset($white_site[$site_id]);
+       }
+      }
+      if(!empty($white_site)){
+        $yellow_site = get_max_or_min($white_site);
+      }else{
+        $target_error = true;
+      }
+    // 无供应的话
+    }else{
+      foreach($white_site as $site_id => $site_info){
+        if(!in_array($site_id,$site_select)){
+          $black_site[$site_id] = $site_info;
+          unset($white_site[$site_id]);
+          continue;
+        }
+      }
+      //从白名单里，找到价格领先者（最便宜的） 放入黑名单 未作
+      if(!empty($white_site)){
+        $yellow_site = get_max_or_min($white_site,'max');
+      }else{
+        $target_error = true;
+      }
+    }
+  }else{
+    $target_error = true;
+  }
+  return array('yellow_site'=>$yellow_site,'is_error'=>$target_error,'white_site'=>$white_site,'black_site'=>$black_site);
+}
+
+function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
+  $sql = "select * from category 
+     where site_id ='".$site_id."'
+     and category_name ='".$game."'
+     and category_type ='".$flag_type."' order by category_id desc limit 1";
+  $query = mysql_query($sql);
+  if($row = mysql_fetch_array($query)){
+    $url = $row['category_url'];
+    $url_info = parse_url($row['category_url']);
+    $host_url = $url_info['host'];
+    if($host_url=='rmt.kakaran.jp'){
+      if($flag_type == 0){
+        $url = str_replace('buy','sell',$url);
+      }
+      $url = $url.'?s=bank_transfer';
+      $return_url = "http://rmt.kakaran.jp".$url;
+    }else if($host_url=='rmtrank.com'){
+      $return_url = preg_replace('/\.htm$/','+sort+price.htm',$url);
+      if($flag_type == 0){
+        $return_url = str_replace('content_id+1','content_id+2',$return_url);
+      }
+    }else  if($host_url=='www.rmtsonic.jp'){
+      $return_url = $site_title_url[$game][$host_url];
+      if($flag_type==0){
+        $return_url = str_replace('/games/','/sell/',$return_url);
+      }
+    }else if($host_url=='www.mugenrmt.com'){
+      $return_url = $site_title_url[$game][$host_url];
+    }else{
+      $return_url = $url;
+    }
+    return $return_url;
+  }else{
+    return '';
+  }
+}
+function get_product_bg_color($inventory,$status,$status_value){
+  if($status == 'manual'){
+    if($status_value == 'less'){
+      return 'less';
+    }else if($status_value == 'zero'){
+      return 'zero';
+    }else{
+      return 'normal';
+    }
+  }else if($status == 'auto'){
+    if($inventory>0){
+      if($inventory>$status_value){
+        return 'normal';
+      }else{
+        return 'less';
+      }
+    }else{
+      return 'zero';
+    }
+  }else{
+    return 'normal';
+  }
 }
 function get_iimy_data(){
     $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
@@ -60,6 +378,10 @@ function get_iimy_data(){
                    'inventory'=>'<quantity>(.*?)<\/quantity>',
                    'rate'=>'<rate>([0-9,.]+)<\/rate>',
                    'rate_other'=>'<rate_other>([^<]*)<\/rate_other>',
+                   'cacl'=>'<cacl>([^<]*)<\/cacl>',
+                   'max'=>'<max>([^<]*)<\/max>',
+                   'min'=>'<min>([^<]*)<\/min>',
+                   'avg'=>'<avg>([^<]*)<\/avg>',
              );
         }else{
              $mode_array =array('products_name'=>'<name>(.*?)の.*?<\/name>',
@@ -67,6 +389,10 @@ function get_iimy_data(){
                    'inventory'=>'<quantity>(.*?)<\/quantity>',
                    'rate'=>'<rate>([0-9,.]+)<\/rate>',
                    'rate_other'=>'<rate_other>([^<]*)<\/rate_other>',
+                   'cacl'=>'<cacl>([^<]*)<\/cacl>',
+                   'max'=>'<max>([^<]*)<\/max>',
+                   'min'=>'<min>([^<]*)<\/min>',
+                   'avg'=>'<avg>([^<]*)<\/avg>',
              );
         }
 //匹配数据
@@ -77,7 +403,17 @@ function get_iimy_data(){
        }
 
 //插入数据库
+      $tools_arr = array();
+      $tools_index = array();
       foreach($search_array['products_name'] as $key=>$value){
+         $tools_arr[$key] = array(
+            'max' => $search_array['max'][$key],
+             'min' => $search_array['min'][$key],
+             'cacl' => $search_array['cacl'][$key],
+             'avg' => $search_array['avg'][$key],
+             'quantity' => $search_array['inventory'][$key],
+           );
+         $tools_index[$key] = $value;
           $search_array['price'][$key] = str_replace(',','',$search_array['price'][$key]);
           $search_array['inventory'][$key] = str_replace(',','',$search_array['inventory'][$key]);
           $sort_order= 10000-$key;
@@ -117,11 +453,14 @@ function get_iimy_data(){
       }
      //新获取的数据已经不包含数据库的数据,删除
       foreach($product_old_list as $product_old_name){
-         if(!in_array($product_old_name,$search_array['products_name']) && !empty($search_array['products_name'])){
-            $products_query = mysql_query("delete from product where category_id='".$category_row['category_id']."' and product_name='".$product_old_name."'");
+        if(!in_array($product_old_name,$search_array['products_name']) && !empty($search_array['products_name'])){
+          $products_query = mysql_query("delete from product where category_id='".$category_row['category_id']."' and product_name='".$product_old_name."'");
          }
       }
    }
+   return array(
+     'info' => $tools_arr,
+     'name' => $tools_index);
 }
 
 
@@ -218,39 +557,39 @@ while($game_str_row = mysql_fetch_array($game_str_query)){
                         'nobunaga'=>'信長の野望',
                         'PSO2'=>'PSO2',
                         'L1'=>'リネージュ',
-			'TERA'=> 'TERA',
-			'AION'=> 'AION',
-			'CABAL'=> 'CABAL',
-			'WZ'=> 'ウィザードリィ',
-			'latale'=> 'ラテール',
-			'blade'=> 'ブレイドアンドソウル',
-			'megaten'=> '女神転生IMAGINE',
-			'EWD'=> 'エルソード',
-			'LH'=> 'ルーセントハート',
-			'HR'=> 'マビノギ英雄伝',
-			'AA'=> 'ArcheAge',
-			'ThreeSeven'=> '777タウン',
-			'ECO'=> 'エミルクロニクル',
-			'FNO'=> 'FNO',
-			'SUN'=> 'SUN',
-			'talesweave'=> 'テイルズウィーバー',
-			'MU'=> 'MU',
-			'C9'=> 'C9',
-			'MS'=> 'メイプルストーリー',
-			'cronous'=> 'クロノス',
-			'tenjouhi'=> '天上碑',
-			'rose'=> 'ローズオンライン',
-			'hzr'=> '晴空物語',
-			'dekaron'=> 'デカロン',
-			'fez'=> 'ファンタジーアースゼロ',
-			'lakatonia'=> 'ラカトニア',
-			'moe'=> 'マスターオブエピック',
-			'mabinogi'=> 'マビノギ',
-			'WF'=> '戦場のエルタ',
-			'rohan'=> 'ROHAN',
+   'TERA'=> 'TERA',
+   'AION'=> 'AION',
+   'CABAL'=> 'CABAL',
+   'WZ'=> 'ウィザードリィ',
+   'latale'=> 'ラテール',
+   'blade'=> 'ブレイドアンドソウル',
+   'megaten'=> '女神転生IMAGINE',
+   'EWD'=> 'エルソード',
+   'LH'=> 'ルーセントハート',
+   'HR'=> 'マビノギ英雄伝',
+   'AA'=> 'ArcheAge',
+   'ThreeSeven'=> '777タウン',
+   'ECO'=> 'エミルクロニクル',
+   'FNO'=> 'FNO',
+   'SUN'=> 'SUN',
+   'talesweave'=> 'テイルズウィーバー',
+   'MU'=> 'MU',
+   'C9'=> 'C9',
+   'MS'=> 'メイプルストーリー',
+   'cronous'=> 'クロノス',
+   'tenjouhi'=> '天上碑',
+   'rose'=> 'ローズオンライン',
+   'hzr'=> '晴空物語',
+   'dekaron'=> 'デカロン',
+   'fez'=> 'ファンタジーアースゼロ',
+   'lakatonia'=> 'ラカトニア',
+   'moe'=> 'マスターオブエピック',
+   'mabinogi'=> 'マビノギ',
+   'WF'=> '戦場のエルタ',
+   'rohan'=> 'ROHAN',
             'tartaros'=> 'タルタロス',
             'atlantica'=> 'アトランティカ',
-			'genshin'=> '幻想神域',
+   'genshin'=> '幻想神域',
                       );
 if(!$has_row){
   $game_str_array = $old_game_str_array;
@@ -346,49 +685,34 @@ if($_GET['action'] == 'update_status'){
   $update_status = $_POST['update_status'];
   $result = mysql_query("update config set config_value='".$update_status."' where config_key='COLLECT_IS_STOP_STATUS'");
 }
-//设置保存处理
-if($_GET['action'] == 'save'){
 
-  $inventory_show = $_POST['inventory_show'];
-  $inventory_flag = $_POST['inventory_flag'];
-  $game_name = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
-
-  $quantity_array = array();
-  $inventory_array = array();
-  $config_value_query = mysql_query("select config_key,config_value from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
-  while($config_value_array = mysql_fetch_array($config_value_query)){
-
-    if($config_value_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW' && $config_value_array['config_value'] !='' ){
-
-      $quantity_array = unserialize($config_value_array['config_value']);
-    }
-   
-    if($config_value_array['config_key'] == 'TEXT_IS_INVENTORY_SHOW' && $config_value_array['config_value'] !='' ){
-
-      $inventory_array = unserialize($config_value_array['config_value']);
-    }
-  }
-  mysql_free_result($config_value_query);
-  if($inventory_show == 1){
-    $quantity_array[$game_name] = 1;
-  }else{
-    $quantity_array[$game_name] = 0;
-  }
-  $quantity_str = serialize($quantity_array);
-  mysql_query("update config set config_value='".$quantity_str."' where config_key='TEXT_IS_QUANTITY_SHOW'");
-  if($inventory_flag == 1){
-    $inventory_array[$game_name] = 1;
-  }else{
-    $inventory_array[$game_name] = 0;
-  }
-  $inventory_str = serialize($inventory_array);
-  mysql_query("update config set config_value='".$inventory_str."' where config_key='TEXT_IS_INVENTORY_SHOW'");
-  
-  header('Location: show.php'.(isset($_GET['flag']) ? '?flag='.$_GET['flag'].'&num='.time() : '').(isset($_GET['game']) ? (isset($_GET['flag']) ? '&game='.$_GET['game'] : '?game='.$_GET['game']) : ''));  
-}
 $tep_flag= (isset($_GET['flag']) ? '&flag='.$_GET['flag'].'' : '');
 $product_type = $_GET['flag'] == 'sell' ? '買取' : '購入';
 $game = !isset($_GET['game']) ? 'FF11' : $_GET['game'];
+$flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
+$flag_type = $_GET['flag'] == 'sell'?0:1;
+$other_site_url_arr = array('http://rmtrank.com/','http://rmt.kakaran.jp/');
+//获得 category info 信息
+$c_info_sql = "select * from category_info where category_key='".$game."' and category_type='".$flag_type."' order by id desc limit 1";
+$c_info_query = mysql_query($c_info_sql);
+if($c_info_row = mysql_fetch_array($c_info_query)){
+  $c_info_arr = $c_info_row;
+  $show_cid = $c_info_row['id'];
+  $show_site_select = unserialize($c_info_row['site_select']);
+  $show_site_rate = unserialize($c_info_row['site_rate']); 
+  $show_inventory_show = $c_info_row['inventory_show']; 
+  $show_inventory_flag = $c_info_row['inventory_flag']; 
+  $show_inventory_status = unserialize($c_info_row['inventory_status']); 
+  $show_manual =  unserialize($c_info_row['manual']); 
+  $show_auto = unserialize($c_info_row['auto']);
+}else{
+  $c_info_arr = array();
+}
+
+//获得 rmt 主站信息
+$host_site_sql = "select * from site where site_url = 'http://www.iimy.co.jp/' limit 1";
+$host_site_query = mysql_query($host_site_sql);
+$host_site_info = mysql_fetch_array($host_site_query);
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -399,9 +723,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
   <body>';
 echo '<br>';
 $page_title = $game_str_array[$game].' RMT '.$product_type.'価格相場';
-echo '<span class="pageHeading" onclick="get_category_info()">';
+echo '<a href="javascript:void(0)" onclick="get_category_info()"><span class="pageHeading" >';
 echo $page_title;
-echo '</span><br><br>';
+echo '</span></a><br><br>';
 echo '<select onchange="show_game_info(this.value)">';
 foreach($game_str_array as $key => $value){
   echo '<option value="'.$key.'" '.($_GET['game']==$key ? 'selected="selected"' : '').'>'.$value.'</option>';
@@ -410,45 +734,228 @@ echo '</select>';
 ?>
 <div id="category_info_box" style="min-width:550px;display:none; position:absolute; background:#FFFF00; width:70%;z-index:2; /*bottom:0;margin-top:40px;right:0; width:200px;*/">
 <?php
-echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
+echo '<form name="form_category_info" method="post" action="show.php?action=save_category_info&flag_type='.$flag_type.'&game='.$game.'">';
+//获得所有网站
+
+//获得表示状态信息
+
+//获得库存显示
+
 ?>
-<div class="info_title" width="100%">
+<div class="info_title">
   <div class="left">
   <?php echo $page_title;?>
+  <input type="hidden" name="info_id" value="<?php echo $show_cid;?>">
   </div>
   <div class="right">
-  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  <a href="javascript:void(0)" onclick="close_category_info()">X</a>
   </div>
 </div>
-<br>
 <div class="info_site">
-  <div class="left">
-  <?php echo $page_title;?>
+  <div class="left_info">
+  プライスリーダー
+  <br>
+  *最大5つ
   </div>
-  <div class="right">
-  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  <div class="right_info_site">
+  <?php 
+  $other_site_sql = "select * from site where site_id !='".$host_site_info['site_id']."'";
+  $other_site_query = mysql_query($other_site_sql);
+  $site_only_arr = array();
+  $site_some_arr = array();
+  $site_info_arr = array();
+  $site_some_info_arr = array();
+  $site_all_info = array();
+  while($other_site_row = mysql_fetch_array($other_site_query)){
+    if(!in_array($other_site_row['site_url'],$other_site_url_arr)){
+      $site_only_arr[] = $other_site_row['site_url'];
+      $site_info_arr[] = $other_site_row;
+    }else{
+      $site_some_arr[] = $other_site_row;
+      $site_some_info_arr[] = $other_site_row['site_name'];
+    }
+  }
+  $count = count($site_only_arr);
+  if($count%2!=0){
+    $count = $count/2+1;
+  }else{
+    $count = $count/2;
+  }
+  echo '<ul>';
+  $i=1;
+  $index=0;
+  while($i<=$count){
+    echo '<li>';
+    $checked_temp = '';
+    if(in_array($site_info_arr[$index]['site_id'],$show_site_select)){
+      $checked_temp = ' checked ';
+    }
+    echo '<input type="checkbox" '.$checked_temp.' name="rate_site[]" value="'.$site_info_arr[$index]['site_id'].'">';
+    echo '&nbsp;';
+    echo $site_info_arr[$index]['site_name'];
+    echo '</li>';
+    echo '<li>';
+    echo '<input  style="text-align:right" type="text"name="rate_text['.$site_info_arr[$index]['site_id'].']" size="10"  value="'.($show_site_rate[$site_info_arr[$index]['site_id']]!=0?$show_site_rate[$site_info_arr[$index]['site_id']]:0).'">';
+    echo '</li>';
+    $index++;
+    $checked_temp = '';
+    if(in_array($site_info_arr[$index]['site_id'],$show_site_select)){
+      $checked_temp = ' checked ';
+    }
+    echo '<li>';
+    echo '<input type="checkbox" '.$checked_temp.' name="rate_site[]" value="'.$site_info_arr[$index]['site_id'].'">';
+    echo '&nbsp;';
+    echo $site_info_arr[$index]['site_name'];
+    echo '</li>';
+    echo '<li>';
+    echo '<input style="text-align:right" type="text" name="rate_text['.$site_info_arr[$index]['site_id'].']" size="10" value="'.($show_site_rate[$site_info_arr[$index]['site_id']]!=0?$show_site_rate[$site_info_arr[$index]['site_id']]:0).'">';
+    echo '</li>';
+    $index++;
+    if($i==1){
+      echo '<li>';
+      echo '*通貨レート調整';
+      echo '</li>';
+    }else{
+      echo '<li>';
+      echo '</li>';
+    }
+    $i++;
+  }
+  $row=1;
+  asort($site_some_info_arr);
+  foreach($site_some_info_arr as $some_key => $some_row){
+    $checked_temp = '';
+    if(in_array($site_some_arr[$some_key]['site_id'],$show_site_select)){
+      $checked_temp = ' checked ';
+    }
+    echo '<li>';
+    echo '<input type="checkbox" '.$checked_temp.' name="rate_site[]" value="'.$site_some_arr[$some_key]['site_id'].'">';
+    echo '&nbsp;';
+    echo $some_row;
+    echo '</li>';
+    if($row %3 == 0){
+      $some_input_id = $site_some_arr[$some_key]['site_id'];
+      echo '<li>';
+      echo '<input style="text-align:right" type="text" name="rate_text['.$some_input_id.']" size="10" value="'.($show_site_rate[$site_some_arr[$some_key]['site_id']]!=0?$show_site_rate[$site_some_arr[$some_key]['site_id']]:0).'">';
+      echo '</li>';
+      echo '<li>';
+      echo '</li>';
+    }
+    $row++;
+  }
+  echo '</ul>';
+  ?>
   </div>
 </div>
-<br>
 <div class="info_inventory">
-  <div class="left">
-  <?php echo $page_title;?>
+  <div class="left_info">
+  表示設定
   </div>
-  <div class="right">
-  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  <div class="right_info">
+  <?php
+   $show_inventory_show_check = (isset($show_inventory_show)&&$show_inventory_show==1)?' checked ':'';
+   $show_inventory_flag_check = (isset($show_inventory_flag)&&$show_inventory_flag==1)?' checked ':'';
+  ?>
+  <div class="left" style="width:17%">
+  <input type="checkbox" id="inventory_show" value="1" <?php echo $show_inventory_show_check;?> name="inventory_show">
+  <label for="inventory_show">数量表示</label>
+  </div>
+  <div class="left">
+  <input type="checkbox" id="inventory_flag" value="1" <?php echo $show_inventory_flag_check;?> name="inventory_flag">
+  <label for="inventory_flag">在庫ゼロ非表示</label>
+  </div>
   </div>
 </div>
-<br>
 <div class="info_show_status">
-  <div class="left">
-  <?php echo $page_title;?>
+  <div class="left_info">
+  供給状況
   </div>
-  <div class="right">
-  <a href="javascript:viod()" onclick="close_category_info()">X</a>
+  <div class="right_info">
+   <div class="left" style="width:17%">
+   <div class="left" style="width:100%">&nbsp;</div>
+   <div class="left">
+     <?php
+       //输出当前分类下的所有JP 产品
+       $p_list_sql =  "select * from product p,category c 
+          where c.category_id = p.category_id
+          and c.category_type='".$flag_type."'
+          and c.category_name='".$game."' 
+          and c.site_id = '".$host_site_info['site_id']."'
+          order by p.product_id asc";
+        $p_list_query = mysql_query($p_list_sql);
+        $p_name_info = array();
+       $p_name_arr = array();
+       while($p_list_row = mysql_fetch_array($p_list_query)){
+         $p_name_info[] = $p_list_row;
+         $p_name_arr[] = $p_list_row['product_name'];
+       }
+     ?>
+     <ul>
+     <?php 
+         foreach($p_name_arr as $p_key => $p_name){
+         echo '<li>';
+         echo $p_name;
+         echo '<input type="hidden" name="p_key[]" value="'.$p_key.'">';
+         echo '<input type="hidden" name="p_name[]" value="'.$p_name.'">';
+         echo '</li>';
+       }
+     ?>
+     </ul>
+   </div>
+   </div>
+    <div class="left" style="width:30%">
+      <div class="left" style="width:100%">⋆手動設定</div>
+      <div class="left">
+      <ul>
+      <?php 
+       //手动的所有设置
+       foreach($p_name_arr as $p_key => $p_name){
+         $type_checked = '';
+         if($show_inventory_status[$p_name] == 'manual'||empty($show_inventory_status)||$show_inventory_status==null){
+           $type_checked = ' checked ';
+         }
+         echo '<li>';
+         echo '<input type="checkbox" '.$type_checked.' class="module_type_'.$p_key.'" name="module_type['.$p_key.']" value="manual">';
+         echo '&nbsp';
+         echo '<input type="radio" name="manual['.$p_key.']" value="normal" '.(($show_manual[$p_name]=='normal'||$show_manual[$p_name]==null)?' checked ':'').'>';
+         echo '普通';
+         echo '&nbsp';
+         echo '<input type="radio" name="manual['.$p_key.']" value="less" '.($show_manual[$p_name]=='less'?' checked ':'').'>';
+         echo '小 ';
+         echo '&nbsp';
+         echo '<input type="radio" name="manual['.$p_key.']" value="zero" '.($show_manual[$p_name]=='zero'?' checked ':'').'>';
+         echo  '無し';
+         echo '</li>';
+       }
+      ?>
+      </ul>
+      </div>
+    </div>
+    <div class="left" style="width:30%">
+      <div class="left" style="width:100%">⋆JPの在庫により自動判断</div>
+      <div class="left">
+      <ul>
+      <?php 
+       //自动的所有设置
+       foreach($p_name_arr as $p_key => $p_name){
+         $type_checked = '';
+         if($show_inventory_status[$p_name] == 'auto'){
+           $type_checked = ' checked ';
+         }
+         echo '<li>';
+         echo '<input type="checkbox" '.$type_checked.' class="module_type_'.$p_key.'" name="module_type['.$p_key.']" value="auto">';
+         echo '&nbsp;';
+         echo '<input style="text-align:right" type="text" name="auto_text['.$p_key.']" size="10" value="'.($show_auto[$p_name]!=0?$show_auto[$p_name]:0).'">';
+         echo '以下は小となる';
+         echo '</li>';
+       }
+      ?>
+      </ul>
+      </div>
+    </div>
   </div>
 </div>
-<br>
-<div class="info_footer">
+<div >
   <div class="center">
   <input type="submit" name="submit" value="Save">
   <input type="button" value="clear" onclick="close_category_info()">
@@ -463,6 +970,23 @@ echo '</form>';
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+<?php foreach($p_name_arr as $p_key => $p_name){ ?>
+  $('.module_type_<?php echo $p_key;?>').each(function(){
+    $(this).click(function(){
+      if($(this).attr('checked')){
+        $('.module_type_<?php echo $p_key;?>').removeAttr('checked');
+        $(this).attr('checked','checked');
+      }
+    });
+  });
+<?php } ?>
+ 
+ $("input[name='rate_site[]']").click( function() {
+      if ( $("input[name='rate_site[]']:checked").length > 5 ) {
+        $(this).attr("checked",false);
+        alert("check more than 5");
+      }
+    });
     var info_left_widht = $('#info_left').width();
     var info_width = document.body.clientWidth-info_left_widht;
     $("#site_info").width(info_width);
@@ -721,1031 +1245,47 @@ function update_products_price(category_name,products_name,products_type,product
 
 </script>
 <?php
-/*
- * FF14 游戏各网站数据显示
- */
-
-$url_array = array('FF14'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff14.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/ff14-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/ff14/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/ff14.html',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/ff14/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/ff14-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/ff14/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/ff14.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                             ),
-                  'RO'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ro.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/ro-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/ro/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/0004.html',
-                                5=>'http://rmtrank.com/pico2+index.htm',
-                                6=>'http://rmt.kakaran.jp/ragnarok/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=28&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/ro/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/ragnarok/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=48&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/ro.html',
-                                13=>'http://rmt.kakaran.jp/ragnarok/',
-                                14=>'http://rmt.kakaran.jp/ragnarok/',
-                                15=>'http://rmt.kakaran.jp/ragnarok/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/ro-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/ro/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/0004.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/ragnarok/',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=28&Mode=Buy&',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/ro/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/items/index2.cgi?gname=ragnarok_purchase&call=new',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=48&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/',
-                                ),
-                              ), 
-                  'RS'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/RedStone.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/redstone-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/redstone/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/redstone.html',
-                                5=>'http://rmtrank.com/pico7+index.htm',
-                                6=>'http://rmt.kakaran.jp/redstone/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=13&Mode=Buy&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/redstone/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/redstone/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=9&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/redstone.html',
-                                13=>'http://rmt.kakaran.jp/redstone/',
-                                14=>'http://rmt.kakaran.jp/redstone/'
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/redstone-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/redstone/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/redstone.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/redstone/',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=13&Mode=Sale',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/redstone/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/redstone/purchase.html',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=9&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/'
-                                ),
-                              ),
-                   'FF11'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/ff11.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/ff11-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/ff11/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/0005.html',
-                                5=>'http://rmtrank.com/pico3+index.htm',
-                                6=>'http://rmt.kakaran.jp/ff11',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/ff11/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/ff/sale_yoyaku.html',
-                                11=>'http://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=8&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/ff11.html',
-                                13=>'http://rmt.kakaran.jp/ff11',
-                                14=>'http://rmt.kakaran.jp/ff11',
-                                15=>'http://rmt.kakaran.jp/ff11'
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/ff11-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/ff11/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/0005.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/ff11',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/ff11/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/ff/purchase.html',
-                                 11=>'http://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=8&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/',
-                                ),
-                              ),
-                   'DQ10'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/dqx.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/dq10-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/dq10/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/dragonquest.html',
-                                5=>'http://rmtrank.com/dq10+index.htm',
-                                6=>'http://rmt.kakaran.jp/dqx',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=38&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/doragonkuesuto/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/dqx/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=161&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/wii.html',
-                                13=>'http://rmt.kakaran.jp/dqx',
-                                14=>'http://rmt.kakaran.jp/dqx',
-                                15=>'http://rmt.kakaran.jp/dqx',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/dq10-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/dq10/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/dragonquest.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/dqx',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=38&Mode=Buy&',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/doragonkuesuto/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/dqx/purchase.html',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=161&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/',
-                                ),
-                              ),
-                  'L2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Lineage2.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/lineage2-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/lineage2/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/0003.html',
-                                5=>'http://rmtrank.com/pico5+index.htm',
-                                6=>'http://rmt.kakaran.jp/lineage2/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/lineage2/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/lineage/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/lineage2.html',
-                                13=>'http://rmt.kakaran.jp/lineage2/',
-                                14=>'http://rmt.kakaran.jp/lineage2/',
-                                15=>'http://rmt.kakaran.jp/lineage2/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/lineage2-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/lineage2/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/0003.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/lineage2',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=10&Mode=Buy&',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/lineage2/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/lineage/purchase.html',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=4&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/',
-                                ),
-                              ),
-                 'ARAD'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/arad.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/arad-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/arad/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico+index.htm',
-                                6=>'http://rmt.kakaran.jp/arad/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/arad-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/arad/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                              ),
-               'nobunaga'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/nobunaga.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/nobunaga-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/nobunaga/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/nobunaga/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/nobunaga/view/sv/',
-                                13=>'http://rmt.kakaran.jp/nobunaga/',
-                                14=>'http://rmt.kakaran.jp/nobunaga/',
-                                15=>'http://rmt.kakaran.jp/nobunaga/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/nobunaga-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/nobunaga/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                              ),
-            'PSO2'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/PSO2.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/pso2-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pso2+index.htm',
-                                6=>'http://rmt.kakaran.jp/pso2/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/pso2-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/nobunaga/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                              ),
-            'L1'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Lineage1.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/lineage-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico4+index.htm',
-                                6=>'http://rmt.kakaran.jp/lineage/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=3&Mode=Sale&',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/lineage-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/nobunaga/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/lineage/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=3&Mode=Buy&',
-                                ),
-                             ),
-
-            'TERA'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/tera.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/tera-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/tera/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/tera.html',
-                                5=>'http://rmtrank.com/tera+index.htm',
-                                6=>'http://rmt.kakaran.jp/tera/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=36&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/tera/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/tera/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=95&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/TERA.html',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/tera-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/tera/sell/', 
-                                 4=>'http://www.rmt-wm.com/sale/tera.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/tera/',
-                                 8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=36&Mode=Buy&',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/tera/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/tera/purchase.html',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=95&Mode=Buy&',
-                                 12=>'http://www.rmtsonic.jp/',
-                                ),
-                             ),
-            'AION'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/aion.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/aion-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/aion/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/aion+index.htm',
-                                6=>'http://rmt.kakaran.jp/aion/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/aion-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/aion/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                             ),
-            'CABAL'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/cabal.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/cabal-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/cabal/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/aion+index.htm',
-                                6=>'http://rmt.kakaran.jp/cabal/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/cabal-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/cabal/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                             ),
-            'WZ'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/Wizardry.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/wizardry-rmt-hanbai/hanbai/items', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/aion+index.htm',
-                                6=>'http://rmt.kakaran.jp/wizardry/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/wizardry-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/cabal/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/wizardry/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                ),
-                             ),
-            'latale'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/latale.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/latale-rmt-hanbai/hanbai/items',
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico28+index.htm',
-                                6=>'http://rmt.kakaran.jp/latale/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/latale/sale.html',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/latale-rmt-kaitori/kaitori/items',
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/latale/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/latale/purchase.html',
-                                ),
-                             ),
-            'blade'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/BNS.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/bns-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/blade/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/BladeSoul/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/bns-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/blade/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/BladeSoul/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'megaten'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/imagine.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/megaten-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/megaten/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                 'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/megaten-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/megaten/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'EWD'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/elsword.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/elsword-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/elsword+index.htm',
-                                6=>'http://rmt.kakaran.jp/elsword/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/elsword-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/elsword/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'LH'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/lucentheart.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/lucentheart-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/lh/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/lucentheart/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/lucentheart-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/lh/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/lucentheart/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'HR'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/mabinogiheroes.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/mabinogiheroes-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/heroes/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/mabinogiheroes-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'AA'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/archeage.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/archeage-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/archeage/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/archeage-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/archeage/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'ThreeSeven'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
-                                2=>'http://www.matubusi.com/system/pc/cart/777-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/777town+index.htm',
-                                6=>'http://rmt.kakaran.jp/777town/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/777town/',
-                                14=>'http://rmt.kakaran.jp/777town/',
-                                15=>'http://rmt.kakaran.jp/777town/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/777-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/archeage/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-            'ECO'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/eco.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/eco-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/eco/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/eco/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/eco-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/eco/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/eco/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'FNO'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/fno.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/fno-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/fno+index.htm',
-                                6=>'http://rmt.kakaran.jp/fno/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/fno-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'SUN'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/sun.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/sunonline-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico10+index.htm',
-                                6=>'http://rmt.kakaran.jp/sun/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/sunonline-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'talesweave'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/talesweaver.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico12+index.htm',
-                                6=>'http://rmt.kakaran.jp/talesweaver/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'MU'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/mu.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/mu-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico16+index.htm',
-                                6=>'http://rmt.kakaran.jp/mu/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/mu/',
-                                14=>'http://rmt.kakaran.jp/mu/',
-                                15=>'http://rmt.kakaran.jp/mu/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/mu-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'C9'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/c9.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/c9-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/c9/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/c9/',
-                                14=>'http://rmt.kakaran.jp/c9/',
-                                15=>'http://rmt.kakaran.jp/c9/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/c9-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'MS'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/MapleStory.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/buy/54862123356.html',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/maplestory/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/maplestory/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/sale/54862123356.html', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/maplestory/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/maplestory/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'cronous'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/cronous.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/cronous-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico17+index.htm',
-                                6=>'http://rmt.kakaran.jp/cronous/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/',
-                                12=>'http://www.rmtsonic.jp/',
-                                13=>'http://rmt.kakaran.jp/cronous/',
-                                14=>'http://rmt.kakaran.jp/cronous/',
-                                15=>'http://rmt.kakaran.jp/cronous/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/cronous-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/cronous/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'tenjouhi'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/tenjouhi/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/tenjouhi/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/tenjouhi/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'rose'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/rose.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/rose-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/pico27+index.htm',
-                                6=>'http://rmt.kakaran.jp/rose/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/rose-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'hzr'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/haresora.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/harezora+index.htm',
-                                6=>'http://rmt.kakaran.jp/milkyrush/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'dekaron'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/dekaron.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/dekaron-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/dekaron+index.htm',
-                                6=>'http://rmt.kakaran.jp/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/dekaron-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'fez'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/fez.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/fez/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/fezero+index.htm',
-                                6=>'http://rmt.kakaran.jp/fez/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/fez/',
-                                14=>'http://rmt.kakaran.jp/fez/',
-                                15=>'http://rmt.kakaran.jp/fez/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/fez/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'lakatonia'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/lakatoniarmt.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/lakatonia/buy/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/lakatonia/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/lakatonia/',
-                                14=>'http://rmt.kakaran.jp/lakatonia/',
-                                15=>'http://rmt.kakaran.jp/lakatonia/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/lakatonia/sell/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'moe'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/moe.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/moe/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/moe/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/moe/',
-                                14=>'http://rmt.kakaran.jp/moe/',
-                                15=>'http://rmt.kakaran.jp/moe/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/game2.php/gameid/moe/view/sv/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'mabinogi'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/mabinogi.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/mabinogi-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/mabinogi/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/mabinogi/',
-                                14=>'http://rmt.kakaran.jp/mabinogi/',
-                                15=>'http://rmt.kakaran.jp/mabinogi/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/mabinogi-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'WF'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/elter/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=47&Mode=Sale&',
-                                13=>'http://rmt.kakaran.jp/elter/',
-                                14=>'http://rmt.kakaran.jp/elter/',
-                                15=>'http://rmt.kakaran.jp/elter/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/elter/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=47&Mode=Buy&',
-                                ),
-                             ),
-                             'rohan'=>array('buy'=>array(1=>'http://www.mugenrmt.com/',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/rohan+index.htm',
-                                6=>'http://rmt.kakaran.jp/rohan/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                13=>'http://rmt.kakaran.jp/rohan/',
-                                14=>'http://rmt.kakaran.jp/rohan/',
-                                15=>'http://rmt.kakaran.jp/rohan/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                ),
-                             ),
-                             'genshin'=>array('buy'=>array(1=>'http://www.mugenrmt.com/rmt/fantasyfrontier.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/genshin-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/', 
-                                4=>'http://www.rmt-wm.com/',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/genshin/',
-                                8=>'http://pastel-rmt.jp/',
-                                9=>'http://rmt.diamond-gil.jp/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=198&Mode=Sale&',
-                                12=>'http://rmt.kakaran.jp/genshin/',
-                                13=>'http://rmt.kakaran.jp/genshin/',
-                                14=>'http://rmt.kakaran.jp/genshin/',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/genshin-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/genshin/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=198&Mode=Buy&',
-                                ),
-                             ),
-                             'tartaros'=>array('buy'=>array(
-                                1=>'http://www.mugenrmt.com/rmt/tartaros.html',
-                                2=>'http://www.matubusi.com/system/pc/cart/tartarosrebirth-rmt-hanbai/hanbai/items', 
-                                3=>'http://ftb-rmt.jp/tartaros/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/xk.html',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=23&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/Tartraos/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/',
-                                11=>'https://www.rmt-king.com/',
-                                12=>'http://www.rmtsonic.jp/games/Tartaros.html',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/tartarosrebirth-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=3&Mode=Buy&',
-                                ),
-                             ),
-                             'atlantica'=>array('buy'=>array(
-                                1=>'http://www.mugenrmt.com/rmt/atlantica.html',
-                                2=>'http://www.matubusi.com/', 
-                                3=>'http://ftb-rmt.jp/atlantica/buy/', 
-                                4=>'http://www.rmt-wm.com/buy/atlantica.html',
-                                5=>'http://rmtrank.com/',
-                                6=>'http://rmt.kakaran.jp/',
-                                8=>'http://pastel-rmt.jp/cart/cart.php?ACTION=Shop%3A%3AShopForm&ID=22&Mode=Sale&',
-                                9=>'http://rmt.diamond-gil.jp/game.php/gameid/atlantica/view/sv/',
-                                10=>'http://www.asahi-rmt-service.com/atlantica/sale.html',
-                                11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=31&Mode=Sale&',
-                                12=>'http://www.rmtsonic.jp/games/atlantica.html',
-                                ),
-                                'sell'=>array(1=>'http://www.mugenrmt.com/',
-                                 2=>'http://www.matubusi.com/system/pc/cart/tartarosrebirth-rmt-kaitori/kaitori/items', 
-                                 3=>'http://ftb-rmt.jp/', 
-                                 4=>'http://www.rmt-wm.com/', 
-                                 5=>'http://rmtrank.com/',
-                                 6=>'http://rmt.kakaran.jp/',
-                                 8=>'http://pastel-rmt.jp/',
-                                 9=>'http://rmt.diamond-gil.jp/',
-                                 10=>'http://www.asahi-rmt-service.com/',
-                                 11=>'https://www.rmt-king.com/rmtcart/cart.php?ACTION=Shop%3A%3AShopForm&ID=3&Mode=Buy&',
-                                ),
-                             ),
-
-
-);
+  $site_title_url = array(
+    'FF11' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ff11.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ff11.html'),
+    'RS' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/redstone.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/RedStone.html'),
+    'DQ10' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wii.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dqx.html'),
+    'TERA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/TERA.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tera.html'),
+    'RO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ro.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ro.html'),
+    'ARAD' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aradosenki.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/arad.html'),
+    'nobunaga' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/nobunaga.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/nobunaga.html'),
+    'PSO2' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/PSO2.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/PSO2.html'),
+    'AION' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aion.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/aion.html'),
+    'FF14' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/FF14RMT.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/FF14NAEUrmt.html'),
+    'genshin' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/InnocentWorld.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fantasyfrontier.html'),
+    'latale' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/latale.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/latale.html'),
+    'L1' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lineage.html'),
+    'WZ' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wizardry.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/Wizardry.html'),
+    'blade' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/BladeSoul.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/BNS.html'),
+    'CABAL' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cabal.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cabal.html'),
+    'megaten' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/imagine.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/imagine.html'),
+    'EWD' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Elsword.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/elsword.html'),
+    'LH' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lucentheart.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/lucentheart.html'),
+    'HR' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mabinogi:heroes.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogiheroes.html'),
+    'AA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ArcheAge.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/archeage.html'),
+    'ECO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/eco.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/eco.html'),
+    'FNO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Finding%20Neverland%20Online.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fno.html'),
+    'SUN' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/sun.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/sun.html'),
+    'talesweave' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/talesweaver.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/talesweaver.html'),
+    'MU' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mu.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mu.html'),
+    'MS' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/maplestory.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/MapleStory.html'),
+    'cronous' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cronous.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cronous.html'),
+    'tenjouhi' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/tenjohi.html'),
+    'rose' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rose.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rose.html'),
+    'hzr' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/harezora.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/haresora.html'),
+    'dekaron' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/dekaron.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dekaron.html'),
+    'fez' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/fez.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fez.html'),
+    'moe' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/senmado.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/moe.html'),
+    'mabinogi' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Mabinogi.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogi.html'),
+    'rohan' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rohan.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rohan.html'),
+    'tartaros' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Tartaros.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tartaros.html'),
+ 'atlantica' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/atlantica.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/atlantica.html'),
+  );
 //获取主站的URL
-$main_site_query = mysql_query("select site_id from site where site_name='ジャックポット'");
-$main_site_array = mysql_fetch_array($main_site_query);
-$main_category_query = mysql_query("select * from category where site_id='".$main_site_array['site_id']."'");
-while($main_category_array = mysql_fetch_array($main_category_query)){
-
-  $category_type = $main_category_array['category_type'] == 1 ? 'buy' : 'sell';
-  if($main_category_array['category_name'] == 'AION'){
-    $url_array[$main_category_array['category_name']][$category_type][$main_site_array['site_id']] = 'http://www.iimy.co.jp/rmt/c-396.html';
-  }else{
-    $url_array[$main_category_array['category_name']][$category_type][$main_site_array['site_id']] = $main_category_array['category_url'];
-  }
-}
-
-//kakaran网站url
-$kk_site_query = mysql_query("select site_id from site where site_name like '%カカ%'");
-while($kk_row = mysql_fetch_array($kk_site_query)){
-  $kk_res[]=$kk_row['site_id'];
-}
-foreach($kk_res as $kk_site){
-   $kk_category_query = mysql_query("select * from category where site_id='".$kk_site."'");
-    while($kk_category_array = mysql_fetch_array($kk_category_query)){
-       $category_type = $kk_category_array['category_type'] == 1 ? 'buy' : 'sell';
-       $url_array[$kk_category_array['category_name']][$category_type][$kk_site] = $kk_category_array['category_url'];
-    }
-}
-//rank网站url
-$rank_site_query = mysql_query("select site_id from site where site_name like '%ランキング%' or site_name like '%エルモ%' or site_name like '%WM%'");
-while($rank_row = mysql_fetch_array($rank_site_query)){
-  $rank_res[]=$rank_row['site_id'];
-}
-foreach($rank_res as $rank_site){
-   $rank_category_query = mysql_query("select * from category where site_id='".$rank_site."'");
-    while($rank_category_array = mysql_fetch_array($rank_category_query)){
-       $category_type = $rank_category_array['category_type'] == 1 ? 'buy' : 'sell';
-       $url_array[$rank_category_array['category_name']][$category_type][$rank_site] = $rank_category_array['category_url'];
-    }
-}
-
 
 echo '<table width="100%"><tr height="30px"><td'.(!isset($_GET['flag']) || $_GET['flag'] == 'buy' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=buy'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">販売</a></td><td'.($_GET['flag'] == 'sell' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=sell'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">買取</a></td>';
 $game = isset($_GET['game']) ? $_GET['game'] : 'FF11';
@@ -1759,51 +1299,41 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
                    'nobunaga'=>'1個あたり  10万（100,000）貫',
                    'PSO2'=>'1個あたり  100万（1,000,000）メセ',
                    'L1'=>'1個あたり  100万（1,000,000）アデナ(Adena)',
-		   'TERA'=>'1個あたり  1万（10,000）金(金貨)',
-		   'AION'=>'1個あたり  1億（100,000,000）ギーナ',
-		   'CABAL'=>'1個あたり  1億（100,000,000）アゼル',
-		   'WZ'=>'1個あたり  1千万（10,000,000）G',
-		   'latale'=>'1個あたり  10億（1,000,000,000）エリー(ELY)',
-		   'blade'=>'1個あたり  10金',
-		   'megaten'=>'1個あたり  1千万（10,000,000）マッカ',
-		   'EWD'=>'1個あたり  1億（100,000,000）ED',
-		   'LH'=>'1個あたり  1億（100,000,000）スター',
-		   'HR'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-		   'AA'=>'1個あたり  100金',
-		   'ThreeSeven'=>'1個あたり  10枚',
-		   'ECO'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-		   'FNO'=>'1個あたり  1千（1,000）G',
-		   'SUN'=>'1個あたり  1億（100,000,000）ハイム',
-		   'talesweave'=>'1個あたり  1千万（10,000,000）シード(Seed)',
-		   'MU'=>'1個あたり　祝福の宝石  10個',
-		   'C9'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-		   'MS'=>'1個あたり  10億（1,000,000,000）メル',
-		   'cronous'=>'1個あたり  100億（10,000,000,000）クロ',
-		   'tenjouhi'=>'1個あたり  1億（100,000,000）銀銭',
-		   'rose'=>'1個あたり貯金箱  1個(1億ジュリー)',
-		   'hzr'=>'1個あたり  100G(金)',
-		   'dekaron'=>'1個あたり  1億（100,000,000）ディル(DIL)',
-		   'fez'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-		   'lakatonia'=>'1個あたり  100G',
-		   'moe'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-		   'mabinogi'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
-		   'WF'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
-		   'rohan'=>'1個あたり  1千万（10,000,000）クロン',
-		   'genshin'=>'1個あたり  100金',
-		   'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
+     'TERA'=>'1個あたり  1万（10,000）金(金貨)',
+     'AION'=>'1個あたり  1億（100,000,000）ギーナ',
+     'CABAL'=>'1個あたり  1億（100,000,000）アゼル',
+     'WZ'=>'1個あたり  1千万（10,000,000）G',
+     'latale'=>'1個あたり  10億（1,000,000,000）エリー(ELY)',
+     'blade'=>'1個あたり  10金',
+     'megaten'=>'1個あたり  1千万（10,000,000）マッカ',
+     'EWD'=>'1個あたり  1億（100,000,000）ED',
+     'LH'=>'1個あたり  1億（100,000,000）スター',
+     'HR'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+     'AA'=>'1個あたり  100金',
+     'ThreeSeven'=>'1個あたり  10枚',
+     'ECO'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+     'FNO'=>'1個あたり  1千（1,000）G',
+     'SUN'=>'1個あたり  1億（100,000,000）ハイム',
+     'talesweave'=>'1個あたり  1千万（10,000,000）シード(Seed)',
+     'MU'=>'1個あたり 祝福の宝石  10個',
+     'C9'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+     'MS'=>'1個あたり  10億（1,000,000,000）メル',
+     'cronous'=>'1個あたり  100億（10,000,000,000）クロ',
+     'tenjouhi'=>'1個あたり  1億（100,000,000）銀銭',
+     'rose'=>'1個あたり貯金箱  1個(1億ジュリー)',
+     'hzr'=>'1個あたり  100G(金)',
+     'dekaron'=>'1個あたり  1億（100,000,000）ディル(DIL)',
+     'fez'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+     'lakatonia'=>'1個あたり  100G',
+     'moe'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+     'mabinogi'=>'1個あたり  100万（1,000,000）ゴールド(Gold)',
+     'WF'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
+     'rohan'=>'1個あたり  1千万（10,000,000）クロン',
+     'genshin'=>'1個あたり  100金',
+     'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
 );
 $date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."' and site_id!=7");
 $date_array = mysql_fetch_array($date_query);
-$config_query = mysql_query("select * from config where config_key='TEXT_IS_QUANTITY_SHOW' or config_key='TEXT_IS_INVENTORY_SHOW'");
-while($config_array = mysql_fetch_array($config_query)){
-  if($config_array['config_value'] != ''){
-    if($config_array['config_key'] == 'TEXT_IS_QUANTITY_SHOW'){
-      $inventory_show_array = unserialize($config_array['config_value']);
-    }else{
-      $inventory_flag_array = unserialize($config_array['config_value']);
-    }
-  }
-}
 echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
 //获得所有网站的 标题 
 //数据输出的三个数组
@@ -1812,11 +1342,11 @@ $right_info = array();
 $left_title = array();
 $right_title = array();
 //获得释放显示库存 
-$show_inventory = $inventory_show_array[$game];
+
+
+$show_inventory = $show_inventory_show;
 //获得是否显示库存0的数据
-$zero_inventory = $inventory_flag_array[$game];
-$flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
-$flag_type = $_GET['flag'] == 'sell'?0:1;
+$zero_inventory = $show_inventory_flag;
 $left_title[] = '<td class="dataTableHeadingContent_order" width="5%" style="min-width:70px; style=" text-align:left; padding-left:20px;"  nowrap="nowrap">'.(isset($_GET['game']) ? $game_str_array[$_GET['game']] : 'FF11').'</td>';
 if($flag == 'buy'){
   $left_title[] = '<td width="5%" style="min-width:70px; text-align:center;">最安</td><td width="5%" style="min-width:70px; text-align:center;">次点</td>';
@@ -1832,17 +1362,19 @@ if($show_inventory == 1){
   $colspan = ' colspan="2" ';
 }
 while($all_site_row = mysql_fetch_array($all_site_query)){
-  if(preg_match('/www\.iimy\.co\.jp/',$all_site_row['site_url'])){
+  $link_url = get_site_title_url($all_site_row['site_id'],$game,$flag_type,$site_title_url);
+  if($all_site_row['site_id']==$host_site_info['site_id']){
     $host_site_id = $all_site_row['site_id'];
     $left_title[] = '<td '.$colspan.' style="min-width:75px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
-      $url_array[$game][$flag][$all_site_row['site_id']].'" target="_blank">'.$all_site_row['site_name'].
+      $link_url.'" target="_blank">'.$all_site_row['site_name'].
       '</a></td>';
   }else{
     $site_other_arr[$all_site_row['site_id']] = $all_site_row['site_id'];
     $right_title[$all_site_row['site_id']] = '<td '.$colspan.' style="min-width:75px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
-      $url_array[$game][$flag][$all_site_row['site_id']].'" target="_blank">'.$all_site_row['site_name'].
+      $link_url.'" target="_blank">'.$all_site_row['site_name'].
       '</a></td>';
   }
+  $link_url = '';
 }
 $data_info_sql = "select * from product p,category c 
   where c.category_id = p.category_id
@@ -1910,8 +1442,23 @@ echo '</tr>';
 //输出详细信息
 foreach($name_arr as $index => $name){
   $check_pid_row = $check_pid[array_search($name,$check_name)];
+  $p_status = $show_inventory_status[$name];
+  if($p_status == 'manual'){
+    $p_status_value = $show_manual[$name];
+  }else{
+    $p_status_value = $show_auto[$name];
+  }
+  $bg_color_type = get_product_bg_color($host_info[$index]['product_inventory'],$p_status,$p_status_value);
+  if($bg_color_type == 'zero'){
+    $p_bg_color = '#0000FF';
+  }else if($bg_color_type == 'less'){
+    $p_bg_color = '#00EEEE';
+  }else{
+    $p_bg_color = '#FFFFFF';
+  }
+  
   echo '<tr class="tr_line" height="30px" id="tr_start_'.$index.'">';
-  echo '<td class="td_name" align="left" nowrap="nowrap" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
+  echo '<td  bgcolor="'.$p_bg_color.'" class="td_name" align="left" nowrap="nowrap" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
   echo $name;
   echo '</td>';
   //最高最低值
@@ -1989,7 +1536,7 @@ foreach($name_arr as $index => $name){
       $temp_pid = '';
     }else{
       $temp_price = price_number_format($all_site_info_arr[$site_id][$index_other]['product_price']); 
-      $temp_inventory = show_effective_number($all_site_info_arr[$site_id][$index_other]['product_inventory']);;
+      $temp_inventory = show_effective_number($all_site_info_arr[$site_id][$index_other]['product_inventory']);
       $temp_pid = $all_site_info_arr[$site_id][$index_other]['product_id'];
       if($all_site_info_arr[$site_id][$index_other]['is_error']==1){
         $error_str = '<span id="enable_img" ><img width="10" height="10" src="images/icon_alarm_log.gif"></span>';
