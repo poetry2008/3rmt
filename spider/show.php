@@ -463,7 +463,9 @@ function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
       $return_url = $url.'?s=bank_transfer';
     }else if($host_url=='rmtrank.com'){
       if($flag_type == 0){
-        $return_url = str_replace('content_id+1','content_id+2',$return_url);
+        $return_url = str_replace('content_id+1','content_id+2',$url);
+      }else{
+        $return_url = $url;
       }
     }else  if($host_url=='www.rmtsonic.jp'){
       $return_url = $site_title_url[$game][$host_url];
@@ -1483,7 +1485,9 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
      'WF'=>'1個あたり  1千万（10,000,000）ゴールド(Gold)',
      'rohan'=>'1個あたり  1千万（10,000,000）クロン',
      'genshin'=>'1個あたり  100金',
-     'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)'
+     'lineage'=>'1個あたり  100万（1,000,000）アデナ(Adena)',
+     'atlantica'=>'1個あたり  10億（1,000,000,000）G',
+     'tartaros'=>'1個あたり  100万（1,000,000）リル',
 );
 $date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."' and site_id!=7");
 $date_array = mysql_fetch_array($date_query);
