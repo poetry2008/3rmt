@@ -767,6 +767,20 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
       $totals_custom_array[] = array('title'=>$preorder_total_res['title'],'value'=>$preorder_total_res['value']);
     }
   }
+
+  //检测订单ID是否重复 
+  $success_flag = true; 
+  $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$orders_id."'");  
+  if(tep_db_num_rows($orders_query) > 0){
+
+    $success_flag = false;
+  }
+
+  if($success_flag == false){
+
+    tep_redirect(tep_href_link('change_preorder_success.php', '', 'SSL'));
+    exit;
+  }
   tep_db_perform(TABLE_ORDERS, $insert_sql_data_array);
   if(isset($_SESSION['paypal_order_info'])&&is_array($_SESSION['paypal_order_info'])&&!empty($_SESSION['paypal_order_info'])){
     tep_db_perform(TABLE_ORDERS, $_SESSION['paypal_order_info'],'update', "orders_id='".$orders_id."'");

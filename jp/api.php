@@ -78,11 +78,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'sp' && $_GET['keyword']) {
     limit ".$limit."
     ";
   $result_query = tep_db_query($sql);
-$res=tep_db_query("select * from set_auto_calc where parent_id='".$cID."'");
-$cacl = 0;
-if($col=tep_db_fetch_array($res)){
-  $cacl = $col['bairitu'];
-}
     
 header ("content-type: text/xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?><?xml-stylesheet href="http://www.w3.org/2000/08/w3c-synd/style.css" type="text/css" encoding="UTF-8"?>'."\n";
@@ -99,10 +94,6 @@ echo "<result>\n";
   $currencies->display_price(tep_get_price($result['products_price'],
         $result['products_price_offset'], $result['products_small_sum'],
         $result['products_bflag']), tep_get_tax_rate($result['products_tax_class_id']));?></price>
-  <cacl><?php echo $cacl;?></cacl>
-  <max><?php echo $result['max_inventory'];?></max>
-  <min><?php echo $result['min_inventory'];?></min>
-  <avg><?php echo $result['min_inventory'];?></avg>
 </product>
 <?php
   }
@@ -112,12 +103,153 @@ echo "</result>\n";
 }
 if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
   api_log($_GET['keyword']);
+function tep_array_merge($array1, $array2, $array3 = '') {
+  if ($array3 == '') $array3 = array();
+  if (!is_array($array2)) $array2 = array();
+  if (!is_array($array1)) $array1 = array();
+  if (function_exists('array_merge')) {
+    $array_merged = array_merge($array1, $array2, $array3);
+  } else {
+    while (list($key, $val) = each($array1)) $array_merged[$key] = $val;
+    while (list($key, $val) = each($array2)) $array_merged[$key] = $val;
+    if (sizeof($array3) > 0) while (list($key, $val) = each($array3)) $array_merged[$key] = $val;
+  }
+
+  return (array) $array_merged;
+}
+
+function tep_new_get_quantity($product_info){
+  
+  if ($product_info) {
+    if ($product_info['products_attention_1_3'] != '' && $product_info['products_attention_1_3'] != 0) {
+      return floor($product_info['products_real_quantity'] / $product_info['products_attention_1_3']);
+    } else {
+      return $product_info['products_real_quantity']; 
+    }
+  } else {
+    return 0; 
+  }
+}
+
+function tep_new_get_avg_by_pid($product_info){
+    $product_quantity = tep_new_get_quantity($product_info);
+    
+    if (isset($product_info['products_attention_1_3'])) {
+      $p_radices = (int)$product_info['products_attention_1_3'];
+    } else {
+      $p_radices = 1;
+    }
+    
+    $order_history_query = tep_db_query("
+        select * 
+        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
+        where 
+        op.products_id='".$product_info['relate_products_id']."'
+        and os.calc_price = '1'
+        order by o.torihiki_date desc
+        ");
+    $sum = 0;
+    $cnt = 0;
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      $product_quantity = $product_quantity*$p_radices;
+    }
+    while($h = tep_db_fetch_array($order_history_query)){
+      if(isset($h['products_rate'])&&$h['products_rate']!=''&&$h['products_rate']!=0){
+        $h_pq = $h['products_quantity']*$h['products_rate'];
+        $h_fp = $h['final_price']/$h['products_rate'];
+      }else{
+        if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+          $h_pq = $h['products_quantity']*$p_radices;
+          $h_fp = $h['final_price']/$p_radices;
+        }else{
+          $h_pq = $h['products_quantity'];
+          $h_fp = $h['final_price'];
+        }
+      }
+      if ($cnt + $h_pq > $product_quantity) {
+        $sum += ($product_quantity - $cnt) * abs($h_fp);
+        $cnt = $product_quantity;
+        break;
+      } else {
+        $sum += $h_pq * abs($h_fp);
+        $cnt += $h_pq;
+      }
+    }
+    if(isset($p_radices)&&$p_radices!=''&&$p_radices!=0){
+      return $sum/$cnt*$p_radices;
+    }else{
+      return $sum/$cnt;
+    }
+  }
+
+function tep_get_pinfo_by_pid($pid,$site_id=0) {
+  global $languages_id;
+  $product_query = tep_db_query("
+          select pd.products_name, 
+                 pd.products_description, 
+                 pd.products_url, 
+                 pd.romaji, 
+                 p.products_attention_5,
+                 p.products_id,
+                 p.option_type, 
+                 p.products_real_quantity + p.products_virtual_quantity as products_quantity,
+                 p.products_real_quantity, 
+                 p.products_virtual_quantity, 
+                 p.products_model, 
+                 pd.products_image,
+                 pd.products_image2,
+                 pd.products_image3, 
+                 p.products_price, 
+                 p.products_price_offset,
+                 p.products_weight, 
+                 p.products_user_added,
+                 p.products_date_added, 
+                 pd.products_last_modified, 
+                 pd.products_user_update,
+                 date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, 
+                 p.products_shipping_time,
+                 p.products_weight,
+                 pd.products_status, 
+                 p.products_tax_class_id, 
+                 p.manufacturers_id, 
+                 p.products_bflag, 
+                 p.products_cflag, 
+                 p.relate_products_id,
+                 p.sort_order,
+                 p.max_inventory,
+                 p.min_inventory,
+                 p.products_small_sum,
+                 p.products_cartflag ,
+                 p.products_cart_buyflag,
+                 p.products_cart_image,
+                 p.products_cart_min,
+                 p.products_cartorder,
+                 p.belong_to_option,
+                 pd.preorder_status,
+                 p.products_attention_1_3
+          from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+          where p.products_id = '" . $pid . "' 
+            and p.products_id = pd.products_id 
+            and pd.language_id = '" . $languages_id . "' 
+            and pd.site_id = '".(tep_products_description_exist($pid, $site_id, $languages_id)?$site_id:0)."'");
+      $product = tep_db_fetch_array($product_query);
+       $reviews_query = tep_db_query("select 
+           (avg(reviews_rating) / 5 * 100) as average_rating from " 
+           . TABLE_REVIEWS . " where 
+           products_id = '" . $product['products_id'] . "'");
+      $reviews = tep_db_fetch_array($reviews_query);
+      $pInfo_array = tep_array_merge($product, $reviews);
+      $pInfo = $pInfo_array;
+      return $pInfo;
+}
 
   $cpath = $_GET['cpath'];
   $sql = "select p.* from " . TABLE_PRODUCTS . " as p left jion  " . TABLE_PRODUCTS_DESCRIPTION . " pd on pd.products_id=p.products_id where p.products_id in('". $product_id_list ."')";
 
         $listing_sql = "
           select * from ( select
+                 p.relate_products_id, 
+                 p.products_real_quantity,
                  p.products_attention_1_3,
                  p.products_attention_1_4,
                  p.products_id, 
@@ -125,10 +257,12 @@ if(isset($_GET['action'])&&$_GET['action']=='clt'&& $_GET['cpath']){
                  p.products_price_offset, 
                  p.products_small_sum, 
                  p.products_tax_class_id, 
-                 pd.site_id,
-                 pd.products_name,
                  p.products_bflag,
                  p.sort_order,
+                 p.max_inventory,
+                 p.min_inventory,
+                 pd.site_id,
+                 pd.products_name,
                  pd.products_status
                  from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . "
                    pd, " .TABLE_PRODUCTS_TO_CATEGORIES . " p2c
@@ -167,7 +301,25 @@ echo "<result>\n";
     }
     $rate = $result['products_attention_1_3'];
     $rate_other  = $result['products_attention_1_4'];
-                          
+    $res=tep_db_query("select * from set_auto_calc where parent_id='".$cpath."'");
+    $cacl = 0;
+    if($col=tep_db_fetch_array($res)){
+      $cacl = $col['bairitu'];
+    }
+
+
+    $avg = 0;
+    $pInfo = $result;
+    if (!$pInfo['products_bflag'] && $pInfo['relate_products_id']) {
+      $avg = tep_new_get_avg_by_pid($pInfo);
+    }else{
+      $avg = $pInfo['products_price'];
+    }
+    if ($pInfo['products_bflag'] == 1){
+      $relate_pInfo = tep_get_pinfo_by_pid($pInfo['relate_products_id'], SITE_ID);
+      $avg = tep_get_price($relate_pInfo['products_price'], $relate_pInfo['products_price_offset'],
+            $relate_pInfo['products_small_sum'],$relate_pInfo['products_bflag'],$relate_pInfo['price_type']);
+    }
 ?>
 <product>
   <name><?php echo $result['products_name'];?></name>
@@ -175,6 +327,10 @@ echo "<result>\n";
   <quantity><?php echo tep_show_quantity(tep_get_quantity($result['products_id'],true))?></quantity>
   <rate><?php echo $rate;?></rate>
   <rate_other><?php echo $rate_other;?></rate_other>
+  <cacl><?php echo $cacl;?></cacl>
+  <max><?php echo $result['max_inventory'];?></max>
+  <min><?php echo $result['min_inventory'];?></min>
+  <avg><?php echo $avg;?></avg>
 </product>
 <?php
   }
