@@ -313,6 +313,7 @@ function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
       }
       $return_url = $url.'?s=bank_transfer';
     }else if($host_url=='rmtrank.com'){
+      $return_url = $row['category_url'];
       if($flag_type == 0){
         $return_url = str_replace('content_id+1','content_id+2',$return_url);
       }
