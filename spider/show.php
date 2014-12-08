@@ -114,22 +114,22 @@ $api_name = array(
   'Sylph',
   'Valefor',);
 $api_info = array(
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>239),
-    array('quantity'=>50,'max' =>0, 'min' =>50, 'cacl' =>1, 'avg' =>239),
-    array('quantity'=>1000,'max' =>0, 'min' =>50, 'cacl' =>1, 'avg' =>339),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>539),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>439),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>339),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>250),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>360),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>480),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>339),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>219),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>329),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>199),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>679),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>529),
-    array('quantity'=>1000,'max' =>1000, 'min' =>50, 'cacl' =>1, 'avg' =>479),
+    array('quantity'=>1807,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>263.32),
+    array('quantity'=>804,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>260.13),
+    array('quantity'=>645,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>265.9),
+    array('quantity'=>972,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>249.08),
+    array('quantity'=>784,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>266.64),
+    array('quantity'=>1113,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>261.23),
+    array('quantity'=>168,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>255.12),
+    array('quantity'=>1144,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>266.1),
+    array('quantity'=>1572,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>258.54),
+    array('quantity'=>569,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>258.23),
+    array('quantity'=>1221,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>266.62),
+    array('quantity'=>379,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>253.55),
+    array('quantity'=>545,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>266.07),
+    array('quantity'=>1409,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>261.67),
+    array('quantity'=>285,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>256.74),
+    array('quantity'=>110,'max' =>0, 'min' =>100, 'cacl' =>1.1, 'avg' =>253.45),
  );
 
 function get_max_or_min($site_info_list,$type='min'){
@@ -152,7 +152,7 @@ function get_max_or_min($site_info_list,$type='min'){
 $p_name 产品名
 $p_type 供应情况
 */
-function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_type,$flag_type,$game){
+function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_type,$flag_type,$game,$check_site_id){
   $api_index = array_search($p_name,$api_name);
   $info = $api_info[$api_index];
   //最大库存最小库存 库存
@@ -163,6 +163,7 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
   $price_avg = $info['avg'];
   //计算设置＞倍率设置
   $product_cacl = $info['cacl'];
+  $host_price = $info['price'];
   $yellow_site = 0;
   $white_site = array();
   //所有网站存入白名单
@@ -174,125 +175,273 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
     and p.product_name='".$p_name."' 
     order by p.product_id asc";
   $all_site_query = mysql_query($all_site_sql);
+  $all_site_info_pid = array();
+  $site_select_count = 0;
+  $site_select_sum = 0;
   while($all_site_row = mysql_fetch_array($all_site_query)){
+  	if(in_array($all_site_row['site_id'],$site_select)){
+  	  $site_select_count++;
+  	  $site_select_sum += $all_site_row['product_price'];
+  	}
+  	$all_site_info_pid[$all_site_row['site_id']] = $all_site_row['product_id'];
     $white_site[$all_site_row['site_id']] = $all_site_row;
   }
+  $site_select_avg = $site_select_sum/$site_select_count;
+  $checked_site_id = array_search($check_site_id,$all_site_info_pid);
   $black_site = array();
-  // 「计算设置＞倍率设置」的设置有的话
+  //if 「计算设置→汇率设置」的设置有的话 {
   if($product_cacl!=0){
-    //白名单里，如果有单价是赤字的网站，就将这些网站 放入黑名单
-    foreach($white_site as $site_id => $site_info){
-      if($flag_type == '1'){
-        if($stie_info['price'] <= $price_avg*$product_cacl){
-          //放入黑名单
-          $black_site[$site_id] = $site_info;
-          //从白名单移出
-          unset($white_site[$site_id]);
-        }
-      }else{
-        if($stie_info['price'] >= $price_avg/$product_cacl){
-          //放入黑名单
-          $black_site[$site_id] = $site_info;
-          //从白名单移出
-          unset($white_site[$site_id]);
-        }
-      }
+    /*
+    if 白名单里，如果有单价是赤字的网站，就将这些网站{
+      放入黑名单
     }
-   // 供应正常的情况下
-    if($p_type == 'manual'){
-      //该商品的【最大库存】被设置了。 && 「库存」 >= 「最大库存」
-      if($max_quantity!=0&&$quantity>=$max_quantity){
-       foreach($white_site as $site_id => $site_info){
-         if($site_info['price']*$site_info['inventory'] <= 2000 ){
+    */
+    foreach($white_site as $site_id => $site_info){
+        if($flag_type == '1'){
+          if($stie_info['product_price'] <= $price_avg*$product_cacl){
             //放入黑名单
             $black_site[$site_id] = $site_info;
             //从白名单移出
             unset($white_site[$site_id]);
-         }
-       }
-       if(!empty($white_site)){
-         $yellow_site = get_max_or_min($white_site);
-       }else{
-         $target_error = true;
-       }
-      //该商品的【库存最小】被设置了。&& 「库存」 <= 「最小库存」
-      }else if($min_quantity!=0&&$quantity>=$min_quantity){
-       foreach($white_site as $site_id => $site_info){
-       	 // 【ターゲット設定】（设置目标）里没有选中的网站
-         if(!in_array($site_id,$site_select)){
+          }
+        }else{
+          if($stie_info['product_price'] >= $price_avg/$product_cacl){
+            //放入黑名单
+            $black_site[$site_id] = $site_info;
+            //从白名单移出
+            unset($white_site[$site_id]);
+          }
+        }
+    }
+  //  if 供应正常的情况下{
+    if($p_type == 'normal'){
+  //    if 该商品的【最大库存】被设置了。{
+      if($max_quantity!=0){
+  //      if 「库存」 >= 「最大库存」{
+        if($quantity>=$max_quantity){
+  /*
+          if 从白名单里，选出订单金额上限 <= 2000円的{
+            放入黑名单
+          }
+  */
+          foreach($white_site as $site_id => $site_info){
+            if($site_info['product_price']*$site_info['product_inventory'] <= 2000 ){
+              $black_site[$site_id] = $site_info;
+              unset($white_site[$site_id]);
+            }
+          }
+  /*
+          if 白名单里如果有数据的话 {
+            从名单里选出最便宜的单价，将其背景色变成黄色
+          }else{
+            $target_error = true;
+          }
+  */
+          if(!empty($white_site)){
+            $yellow_site = get_max_or_min($white_site);
+          }else{
+            $target_error = true;
+          }
+  //    }elseif 该商品的【最小库存】被设置了。&& 「库存」 >= (（「最大库存」 - 「最小库存」）/ 2 ） + 「最小库存」 {
+        }else if($min_quantity!=0 && $quantity >= (($max_quantity-$min_quantity)/2) +$min_quantity){
+  /*
+          if 从白名单里，选出订单金额上限 <= 4000円的{
+            放入黑名单
+          }
+          if 从白名单中，价格领先者（最便宜的）没有设置 && 【ターゲット設定】（设置目标）没有设置 && 比价格领先者（最便宜的）的平均单价少10%的网站{
+            放入黑名单
+          }
+  */
+          foreach($white_site as $site_id => $site_info){
+            if($site_info['product_price']*$site_info['product_inventory'] <= 4000 ){
+              $black_site[$site_id] = $site_info;
+              unset($white_site[$site_id]);
+              continue;
+            }
+            if(!in_array($site_id,$site_select)&&$site_id!=$check_site_id&&$site_info['product_price']<$site_select_avg*0.9){
+              $black_site[$site_id] = $site_info;
+              unset($white_site[$site_id]);
+            }
+          }
+  /*
+          if 白名单里如果有数据的话 {
+            从名单里选出最便宜的单价，将其背景色变成黄色
+          }else{
+            $target_error = true;
+          }
+  */
+          if(!empty($white_site)){
+            $yellow_site = get_max_or_min($white_site);
+          }else{
+            $target_error = true;
+          }
+        }
+  //    }elseif 该商品的「最小库存」的值设置了&& 「库存」 <= 「最小库存」{
+      }else if ($min_quantity!=0&&$quantity <= $min_quantity){
+  /*
+        if 白名单里，订单金额上限 <= 10,000円{
+          放入黑名单
+        }
+        if 白名单里，比现在的jp的单价便宜10%以上的网站{
+          放入黑名单
+        }
+        if 白名单里，【ターゲット設定】（设置目标）没有选中的网站{
+          放入黑名单
+        }
+        if 白名单里，比价格领先者（最便宜的）的平均单价少10%的网站{
+          放入黑名单
+        }
+  */
+        foreach($white_site as $site_id => $site_info){
+          if($site_info['product_price']*$site_info['product_inventory'] <= 10000 ){
             $black_site[$site_id] = $site_info;
             unset($white_site[$site_id]);
             continue;
-         }
-         if($site_info['price']*$site_info['inventory'] <= 10000 ){
-            //放入黑名单
+          }
+          if($site_info['product_price']<$host_price*0.9){
             $black_site[$site_id] = $site_info;
-            //从白名单移出
             unset($white_site[$site_id]);
-         }
-       }
-       // 从白名单中，找出比价格领先者（最便宜的）的平均单价少10%的网站 放入黑名单 未作
-       if(!empty($white_site)){
-         $yellow_site = get_max_or_min($white_site);
-       }else{
-         $target_error = true;
-       }
+            continue;
+          }
+          if($site_id!=$check_site_id){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+          }
+          if($site_info['product_price']<$site_select_avg*0.9){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+          }
+        }
+        /*
+        if 白名单里有数据的话 {
+          白名单里最便宜的值的背景色变成黄色。
+        }else{
+          $target_error = true;
+        }
+        */
+        if(!empty($white_site)){
+          $yellow_site = get_max_or_min($white_site);
+        }else{
+          $target_error = true;
+        }
       }else{
-       foreach($white_site as $site_id => $site_info){
-       	 // 【ターゲット設定】（设置目标）里没有选中的网站
-         if(!in_array($site_id,$site_select)){
+        /*
+        if 白名单里，订单金额上限 <= 4000円{
+          放入黑名单
+        }
+        if 白名单里，【ターゲット設定】（设置目标）没有选中的网站{
+          放入黑名单
+        }
+        */
+        foreach($white_site as $site_id => $site_info){
+          if($site_info['product_price']*$site_info['product_inventory'] <= 4000 ){
             $black_site[$site_id] = $site_info;
             unset($white_site[$site_id]);
             continue;
-         }
-         if($site_info['price']*$site_info['inventory'] <= 4000 ){
-            //放入黑名单
+          }
+          if($site_id!=$check_site_id){
             $black_site[$site_id] = $site_info;
-            //从白名单移出
             unset($white_site[$site_id]);
-         }
-       }
-       //从白名单里，找出价格领先者（最便宜的）没有设置 && 比价格领先者（最便宜的）的平均单价少10%的网站 放入黑名单 未作
-       if(!empty($white_site)){
-         $yellow_site = get_max_or_min($white_site);
-       }else{
-         $target_error = true;
-       }
+          }
+        }
+        /*
+        if 白名单里有数据的话{
+          白名单里最便宜的值的背景色变成黄色。
+        }else{
+          $target_error = true;
+        }
+        */
+        if(!empty($white_site)){
+          $yellow_site = get_max_or_min($white_site);
+        }else{
+          $target_error = true;
+        }
       }
-    // 供应不足的话
-    }else if($p_type == 'less'){
-      foreach($white_site as $site_id => $site_info){
-        if($site_info['price']*$site_info['inventory'] <= 15000 ){
-          //放入黑名单
-          $black_site[$site_id] = $site_info;
-          //从白名单移出
-          unset($white_site[$site_id]);
-       }
+  //  }elseif 供应不足的话 {
+      }else if ($p_type == 'less') {
+    	/*
+      if 白名单里，订单金额上限 <= 15,000円{
+        放入黑名单
       }
+      if 白名单里，比现在的jp的单价便宜10%以上的网站{
+        放入黑名单
+      }
+      if 白名单里，【ターゲット設定】（设置目标）没有选中的网站{
+        放入黑名单
+      }
+      if 白名单里，比价格领先者（最便宜的）的平均单价少10%的网站{
+        放入黑名单
+      }
+      */
+        foreach($white_site as $site_id => $site_info){
+          if($site_info['product_price']*$site_info['product_inventory'] <= 15000 ){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+          }
+          if($site_info['product_price']<$host_price*0.9){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+          }
+          if($site_id!=$check_site_id){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+            continue;
+          }
+          if($site_info['product_price']<$site_select_avg*0.9){
+            $black_site[$site_id] = $site_info;
+            unset($white_site[$site_id]);
+          }
+        }
+      /*
+      if 白名单里有数据的话{
+        白名单里最便宜的值的背景色变成黄色。
+      }else{
+        $target_error = true;
+      }
+      */
       if(!empty($white_site)){
         $yellow_site = get_max_or_min($white_site);
       }else{
         $target_error = true;
       }
-    // 无供应的话
     }else{
+    	/*
+      if 白名单里，价格领先者（最便宜的）和【ターゲット設定】（设置目标）没有选中的网站{
+        放入黑名单
+      }
+      if 白名单里，比现在的jp的单价贵50%以上的网站{
+        放入黑名单
+      }
+      */
       foreach($white_site as $site_id => $site_info){
-      	// 【ターゲット設定】（设置目标）里没有选中的网站
-        if(!in_array($site_id,$site_select)){
+        if(!in_array($site_id,$site_select)||$site_id!=$check_site_id){
           $black_site[$site_id] = $site_info;
           unset($white_site[$site_id]);
           continue;
         }
+        if($site_info['product_price']>$host_price*1.5){
+          $black_site[$site_id] = $site_info;
+          unset($white_site[$site_id]);
+        }
       }
-      //从白名单里，找到价格领先者（最便宜的） 放入黑名单 未作
+      /*
+      if 白名单里有数据的话{
+        从名单里选出最高的单价，将其背景色变成黄色。注意是最高的单价
+      }else{
+        $target_error = true;
+      }
+      */
       if(!empty($white_site)){
-        $yellow_site = get_max_or_min($white_site,'max');
+        $yellow_site = get_max_or_min($white_site);
       }else{
         $target_error = true;
       }
     }
   }else{
-    $target_error = true;
+      $target_error = true;
   }
   return array('yellow_site'=>$yellow_site,'is_error'=>$target_error,'white_site'=>$white_site,'black_site'=>$black_site);
 }
@@ -313,7 +462,6 @@ function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
       }
       $return_url = $url.'?s=bank_transfer';
     }else if($host_url=='rmtrank.com'){
-      $return_url = $row['category_url'];
       if($flag_type == 0){
         $return_url = str_replace('content_id+1','content_id+2',$return_url);
       }
@@ -416,6 +564,7 @@ function get_iimy_data(){
              'cacl' => $search_array['cacl'][$key],
              'avg' => $search_array['avg'][$key],
              'quantity' => $search_array['inventory'][$key],
+             'price' => $search_array['price'][$key],
            );
          $tools_index[$key] = $value;
           $search_array['price'][$key] = str_replace(',','',$search_array['price'][$key]);
@@ -1531,8 +1680,22 @@ foreach($right_title as $r_key => $title){
 echo '</tr>';
 foreach($name_arr as $index => $name){
   $p_type = $p_type_arr[$index];
-  $style_row_arr = get_style($api_name,$api_info,$host_site_id,$site_select,$name,$p_type,$flag_type,$game);
+  $check_pid_row = $check_pid[array_search($name,$check_name)];
+  foreach($show_site_arr as $site_id){
+    $index_other = array_search($name,$all_site_name_arr[$site_id]);
+    if($check_pid_row==$all_site_info_arr[$site_id][$index_other]['product_id']){
+      $check_site_id = $site_id;
+      break;
+    }
+  }
+  $style_row_arr = get_style($api_name,$api_info,$host_site_id,$site_select,$name,$p_type,$flag_type,$game,$check_site_id);
   //开始处理 处理 rmt 主站之外每一个网站的数据信息显示
+  if(isset($style_row_arr['black_site'])&&!empty($style_row_arr['black_site'])){
+    $black_site_arr = array();
+    foreach($style_row_arr['black_site'] as $s => $value){
+      $black_site_arr[] = $s;
+    }
+  }
   echo '<tr class="tr_line" height="30px" id="tr_div_'.$index.'">';
   //其他网站信息
   foreach($show_site_arr as $site_id){
@@ -1555,25 +1718,32 @@ foreach($name_arr as $index => $name){
       $temp_price_str .= "<label for='".$temp_pid."'>".$temp_price."円</label></font>";
       $temp_inventory_str .= $temp_inventory.'個';
     }
+    if(in_array($site_id,$black_site_arr)){
+      $td_bg_color = ' bgcolor="#808080" ';
+    }else if($site_id == $style_row_arr['yellow_site']){
+      $td_bg_color = ' bgcolor="#FFFF00" ';
+    }else {
+      $td_bg_color = ' bgcolor="#ffffff" ';
+    }
     if($show_inventory == 1){
       if($zero_inventory == 1&&$temp_inventory==0){
-        echo '<td class="td_'.$site_id.'_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td><td class="td_'.$site_id.'_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td>';
+        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td><td class="td_'.$site_id.'_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td>';
       }else{
         if($error_str == ''){
           $style_str = ' style="min-width:70px" ';
         }else{
           $style_str = ' style="min-width:80px" ';
         }
-        echo '<td class="td_'.$site_id.'_price" align="right" '.$style_str.' onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
+        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" align="right" '.$style_str.' onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $error_str;
         echo $temp_price_str;
         echo '</td>';
-        echo '<td class="td_'.$site_id.'_inventory" align="right" style="min-width:60px" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
+        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_inventory" align="right" style="min-width:60px" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $temp_inventory_str;
         echo '</td>';
       }
     }else{
-      echo '<td class="td_'.$site_id.'_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
+      echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
       if($zero_inventory == 1&&$temp_inventory==0){
         echo '&nbsp;';
       }else{
@@ -1593,21 +1763,16 @@ echo '</table>';
 
 echo '<br/>';
 echo '<br/>';
-echo '<form name="form1" method="post" action="show.php?action=save'.(isset($_GET['flag']) ? '&flag='.$_GET['flag'] : '').(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'">';
 echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
-echo '<tr><td width="12%">オプション</td>';
-echo '<td width="8%"><input type="checkbox" name="inventory_show" value="1"'.($_POST['inventory_show'] == 1 ? ' checked="checked"' : $inventory_show_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_show_flag"><label for="inventory_show_flag">数量表示</label></td>';
-echo '<td><input type="checkbox" name="inventory_flag" value="1"'.($_POST['inventory_flag'] == 1 ? ' checked="checked"' : $inventory_flag_array[$game] !== 0 ? ' checked="checked"' : '').' id="inventory_flag_id"><label for="inventory_flag_id">在庫ゼロ非表示</label></td></tr>';
 if($update_status==0){
 $value_status = '自動更新中止';
 }else{
 $value_status = '自動更新開始';
 }
-echo '<tr><td colspan="3"><input type="submit" name="submit1" value="設定を保存">&nbsp;&nbsp;<input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
+echo '<tr><td><input type="button" name="button_update" value="更新"  onclick="update_data();this.disabled=true;"'.(time() - strtotime($date_array['collect_date']) < 10*60 ? ' disabled' : '').'>&nbsp;&nbsp;<input type="button" id="update_status" name="button_update" value="'.$value_status.'" onclick="update_data_status('.$update_status.');">';
 echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
 echo '</tr></table>';
-echo '</form>';
 /*end*/
 ?>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
