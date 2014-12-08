@@ -752,15 +752,24 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'value' => $order_totals[$i]['value'], 
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order'],
-                          );
+                        );
+  $payment_flag = false;
   if($telecom_option_ok!=true){
-  $telecom_option_ok = $payment_modules->getExpress($payment,$order_totals,$i);
+    $telecom_option_ok = $payment_modules->getExpress($payment,$order_totals,$i);
+    $payment_flag = true;
   }
   $total_data_arr[] = $sql_data_array;
 }
 
 //检测订单ID是否重复 
 $success_flag = true;
+if($telecom_option_ok == true && $payment_flag == true){
+  $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$insert_id."'");
+  if(tep_db_num_rows($telecom_unknow_query) == 0){
+
+    $success_flag = false;
+  }
+}
 $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
 if(tep_db_num_rows($orders_query) > 0){
 

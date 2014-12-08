@@ -753,10 +753,12 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
                             'value' => $preorder_total_num, 
                             'class' => $preorder_total_res['class'], 
                             'sort_order' => $preorder_total_res['sort_order'], 
-        ); 
+                          ); 
+    $payment_flag = false;
     if ($preorder_total_res['class'] == 'ot_total') {
       if ($telecom_option_ok != true) {
         $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_num, $orders_id, $cpayment_code); 
+        $payment_flag = true;
       }
     }
     $totals_info_array[] = $sql_data_array;
@@ -770,6 +772,13 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
 
   //检测订单ID是否重复 
   $success_flag = true; 
+  if($telecom_option_ok == true && $payment_flag == true){
+    $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$orders_id."'");
+    if(tep_db_num_rows($telecom_unknow_query) == 0){
+
+      $success_flag = false;
+    }
+  }
   $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$orders_id."'");  
   if(tep_db_num_rows($orders_query) > 0){
 

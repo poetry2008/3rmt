@@ -2671,7 +2671,10 @@ $search_array_match = array(
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                         'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*(<br \/>){0,}[^<]*)<\/a><\/td>'
             ),
-
+         'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">([a-zA-Z]+)\(?.*?\)?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                 'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+             ), 
          ),
        'sell'=> array(
 		   'www.matubusi.com'=>array(
@@ -2692,6 +2695,11 @@ $search_array_match = array(
                       'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
                         'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*(<br \/>){0,}[^<]*)<\/a><\/td>'
                     ),
+
+               'rmt.kakaran.jp'=>  array( 'products_name'=>'<td><a href=".*?">(.*?)<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',
+                      'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                        'url'=>'<td><a href="(.*?)">.*?<\/a><\/td>.*?<td>[0-9,.]*?円<\/td>',  
+                ), 
 
          )
     )
@@ -2721,7 +2729,7 @@ $other_array_match = array(
             'rmtrank.com'=> array(
                         'site_names' => '<td class="colb0\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
                         'price' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
-                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
                         ), 
                      )
 );
