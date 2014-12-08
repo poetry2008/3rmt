@@ -1622,7 +1622,8 @@ foreach($name_arr as $index => $name){
   echo '</td>';
   //最高最低值
   $price_arr = array_unique($price_info_arr[$index]);
-  if($flag = 'buy'){
+  $flag = $_GET['flag'] == 'sell' ? 'sell' : 'buy';
+  if($flag == 'buy'){
     sort($price_arr);
   }else{
     rsort($price_arr);
