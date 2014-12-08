@@ -683,17 +683,20 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   //获取是否开启了帐单邮寄地址功能
   $billing_address_show = get_configuration_by_site_id('BILLING_ADDRESS_SETTING',SITE_ID);
   $billing_address_show = $billing_address_show == '' ? get_configuration_by_site_id('BILLING_ADDRESS_SETTING',0) : $billing_address_show; 
+  $billing_address_list_flag = false;
   if($billing_address_show == 'true' && $_SESSION['preorder_information']['preorders_billing_select'] == '1'){
     //把帐单邮寄地址的数据存入数据库
+    $billing_address_list = array();
+    $billing_address_list_flag = true;
     foreach($_SESSION['preorder_information'] as $address_key=>$address_value){
     if(substr($address_key,0,8) == 'billing_'){
       $address_query = tep_db_query("select id,name,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_key,8) ."'");
       $address_array = tep_db_fetch_array($address_query);
       tep_db_free_result($address_query);
       $address_id = $address_array['id'];
-      $add_list[] = array($address_array['name'],$address_value);
       $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','".addslashes($address_value)."','1')");
       tep_db_free_result($address_add_query);
+      $billing_address_list[$address_id] = $address_value;
     }
   }     
   }
@@ -704,6 +707,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   $totals_email_str = '';
   $totals_print_email_str = '';
   $totals_custom_array = array();
+  $totals_info_array = array();
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
       //总价 
@@ -749,10 +753,12 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
                             'value' => $preorder_total_num, 
                             'class' => $preorder_total_res['class'], 
                             'sort_order' => $preorder_total_res['sort_order'], 
-        ); 
+                          ); 
+    $payment_flag = false;
     if ($preorder_total_res['class'] == 'ot_total') {
       if ($telecom_option_ok != true) {
         $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_num, $orders_id, $cpayment_code); 
+        $payment_flag = true;
       }
     }
     $totals_info_array[] = $sql_data_array;
@@ -766,7 +772,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
 
   //检测订单ID是否重复 
   $success_flag = true; 
-  if($telecom_option_ok == true){
+  if($telecom_option_ok == true && $payment_flag == true){
     $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$orders_id."'");
     if(tep_db_num_rows($telecom_unknow_query) == 0){
 
@@ -1081,7 +1087,9 @@ if(!empty($add_list)){
   foreach($add_list as $ad_value){
     $ad_len = mb_strlen($ad_value[0],'utf8');
     $temp_str = str_repeat('　',$maxlen-$ad_len);
-    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    if(trim($ad_value[0]) != '' && trim($ad_value[1]) != ''){
+      $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    }
   }
   $email_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
   $email_order_text = str_replace('${USER_ADDRESS}',$email_address_str,$email_order_text);
@@ -1093,6 +1101,41 @@ if(!empty($add_list)){
 if($totals_email_str == ''){
   $email_order_text = str_replace("\n".'${CUSTOMIZED_FEE}','',$email_order_text);
   $email_order_text = str_replace('${CUSTOMIZED_FEE}','',$email_order_text);
+}
+
+//帐单邮寄地址
+$address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+$address_array = array();
+while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+  $address_array[$address_list_array['id']] = $address_list_array['name'];
+}
+tep_db_free_result($address_list_query);
+if($billing_address_show == 'true' && $billing_address_list_flag == true){
+
+  $billing_address_len_array = array();
+  foreach($billing_address_list as $billing_address_key=>$billing_address_value){
+
+    $billing_address_len_array[] = strlen($address_array[$billing_address_key]);
+  }
+  $maxlen = max($billing_address_len_array);
+  $email_billing_address_str = "";
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $maxlen = 9;
+  foreach($billing_address_list as $billing_key=>$billing_value){
+    $billing_len = mb_strlen($address_array[$billing_key],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$billing_len);
+    if(trim($address_array[$billing_key]) != '' && trim($billing_value) != ''){
+      $email_billing_address_str .= $address_array[$billing_key].$temp_str.'：'.$billing_value."\n";
+    }
+  }
+  $email_billing_address_str .= TEXT_ORDERS_PRODUCTS_LINE;
+  $email_order_text = str_replace('${BILLING_ADDRESS}',$email_billing_address_str,$email_order_text);
+}else{
+
+  $email_order_text = str_replace("\n".'${BILLING_ADDRESS}','',$email_order_text); 
+  $email_order_text = str_replace('${BILLING_ADDRESS}','',$email_order_text);
+  $email_order_text = str_replace("\n".TEXT_ORDERS_CUSTOMER_STRING.TEXT_BILLING_ADDRESS,'',$email_order_text);
 }
 $email_order_text = tep_replace_mail_templates($email_order_text,$preorder['customers_email_address'],$preorder['customers_name']);
 //订单邮件
@@ -1217,6 +1260,14 @@ if($email_address_str != ''){
   $email_printing_order = str_replace("\n".'${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace('${USER_ADDRESS}','',$email_printing_order);
   $email_printing_order = str_replace("\n".str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',TEXT_ORDERS_PRODUCTS_ADDRESS_INFO),'',$email_printing_order);
+}
+//帐单邮寄地址
+if($email_billing_address_str != ''){
+  $email_printing_order = str_replace('${BILLING_ADDRESS}',str_replace(TEXT_ORDERS_CUSTOMER_STRING,'',$email_billing_address_str),$email_printing_order);
+}else{
+  $email_printing_order = str_replace("\n".'${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace('${BILLING_ADDRESS}','',$email_printing_order);
+  $email_printing_order = str_replace("\n".TEXT_BILLING_ADDRESS,'',$email_printing_order);
 }
 
 $email_printing_order = tep_replace_mail_templates($email_printing_order,$preorder['customers_email_address'],$preorder['customers_name']);
