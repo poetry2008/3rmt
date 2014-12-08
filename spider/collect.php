@@ -3860,6 +3860,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
          $product_name = trim(preg_replace('/\s+/is','',$product_name));
          preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
          preg_match('/rmtrank/',$fix_url,$seach_url_rr);
+         preg_match('/king/',$fix_url,$seach_url_king);
 
 	   //RS拼写错误
           if($game_type=='RS'){
@@ -4062,7 +4063,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
           preg_match('/kakaran/',$fix_url,$seach_url_kk);
           preg_match('/rmt-wm/',$fix_url,$seach_url_wm);
           preg_match('/pastel-rmt/',$fix_url,$seach_url_psl);
-          if(!empty($seach_url_kk)||!empty($seach_url_wm) || !empty($seach_url_psl)){
+          if(!empty($seach_url_kk)||!empty($seach_url_wm) || !empty($seach_url_psl) || !empty($seach_url_rr) || !empty($seach_url_king)){
              preg_match('/Valefor/',$product_name,$seach_name_tep);
              if(!empty($seach_name_tep)){
                   $product_real_name = str_replace('Valefor','Valefora',$product_name);

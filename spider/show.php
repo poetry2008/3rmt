@@ -79,6 +79,8 @@ if($_GET['action'] == 'save_category_info'){
    '".$auto."')";
    mysql_query($insert_sql);
   }
+  $location_href = $_SERVER['HTTP_REFERER'];
+  header('Location: ' . $location_href);
   exit;
 }
 
@@ -216,6 +218,7 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
       //该商品的【库存最小】被设置了。&& 「库存」 <= 「最小库存」
       }else if($min_quantity!=0&&$quantity>=$min_quantity){
        foreach($white_site as $site_id => $site_info){
+       	 // 【ターゲット設定】（设置目标）里没有选中的网站
          if(!in_array($site_id,$site_select)){
             $black_site[$site_id] = $site_info;
             unset($white_site[$site_id]);
@@ -236,6 +239,7 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
        }
       }else{
        foreach($white_site as $site_id => $site_info){
+       	 // 【ターゲット設定】（设置目标）里没有选中的网站
          if(!in_array($site_id,$site_select)){
             $black_site[$site_id] = $site_info;
             unset($white_site[$site_id]);
@@ -273,6 +277,7 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
     // 无供应的话
     }else{
       foreach($white_site as $site_id => $site_info){
+      	// 【ターゲット設定】（设置目标）里没有选中的网站
         if(!in_array($site_id,$site_select)){
           $black_site[$site_id] = $site_info;
           unset($white_site[$site_id]);
@@ -306,10 +311,9 @@ function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
       if($flag_type == 0){
         $url = str_replace('buy','sell',$url);
       }
-      $url = $url.'?s=bank_transfer';
-      $return_url = "http://rmt.kakaran.jp".$url;
+      $return_url = $url.'?s=bank_transfer';
     }else if($host_url=='rmtrank.com'){
-      $return_url = preg_replace('/\.htm$/','+sort+price.htm',$url);
+      $return_url = $row['category_url'];
       if($flag_type == 0){
         $return_url = str_replace('content_id+1','content_id+2',$return_url);
       }
@@ -1370,7 +1374,7 @@ while($all_site_row = mysql_fetch_array($all_site_query)){
       '</a></td>';
   }else{
     $site_other_arr[$all_site_row['site_id']] = $all_site_row['site_id'];
-    $right_title[$all_site_row['site_id']] = '<td '.$colspan.' style="min-width:75px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
+    $right_title[$all_site_row['site_id']] = '<td '.$colspan.' style="min-width:100px;" width="8%" class="dataTableHeadingContent_order"><a href="'.
       $link_url.'" target="_blank">'.$all_site_row['site_name'].
       '</a></td>';
   }
@@ -1440,6 +1444,7 @@ foreach($left_title as $title){
 echo '</tr>';
 
 //输出详细信息
+$p_type_arr = array();
 foreach($name_arr as $index => $name){
   $check_pid_row = $check_pid[array_search($name,$check_name)];
   $p_status = $show_inventory_status[$name];
@@ -1449,6 +1454,7 @@ foreach($name_arr as $index => $name){
     $p_status_value = $show_auto[$name];
   }
   $bg_color_type = get_product_bg_color($host_info[$index]['product_inventory'],$p_status,$p_status_value);
+  $p_type_arr[$index] = $bg_color_type;
   if($bg_color_type == 'zero'){
     $p_bg_color = '#0000FF';
   }else if($bg_color_type == 'less'){
@@ -1524,6 +1530,9 @@ foreach($right_title as $r_key => $title){
 }
 echo '</tr>';
 foreach($name_arr as $index => $name){
+  $p_type = $p_type_arr[$index];
+  $style_row_arr = get_style($api_name,$api_info,$host_site_id,$site_select,$name,$p_type,$flag_type,$game);
+  //开始处理 处理 rmt 主站之外每一个网站的数据信息显示
   echo '<tr class="tr_line" height="30px" id="tr_div_'.$index.'">';
   //其他网站信息
   foreach($show_site_arr as $site_id){
