@@ -759,6 +759,19 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $total_data_arr[] = $sql_data_array;
 }
 
+//检测订单ID是否重复 
+$success_flag = true;
+$orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
+if(tep_db_num_rows($orders_query) > 0){
+
+  $success_flag = false;
+}
+
+if($success_flag == false){
+
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
+  exit;
+}
 
 tep_db_perform(TABLE_ORDERS, $order_sql_data_array);
 if(isset($_SESSION['paypal_order_info'])&&is_array($_SESSION['paypal_order_info'])&&!empty($_SESSION['paypal_order_info'])){
