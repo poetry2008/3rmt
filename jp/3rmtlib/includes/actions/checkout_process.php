@@ -761,6 +761,13 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
 
 //检测订单ID是否重复 
 $success_flag = true;
+if($telecom_option_ok == true){
+  $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$insert_id."'");
+  if(tep_db_num_rows($telecom_unknow_query) == 0){
+
+    $success_flag = false;
+  }
+}
 $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
 if(tep_db_num_rows($orders_query) > 0){
 
