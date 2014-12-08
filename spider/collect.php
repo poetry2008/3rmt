@@ -132,6 +132,40 @@ function get_collect_res($game_type,$category,$other_array_match,$search_array_m
     $rate_all_site_info_array = get_other_rate($other_rate_site,$game_type);
     //通过正则获得所有网站的数据
     $all_site_info_array = get_info_array($all_result,$search_array);
+//处理PSO2的梦幻
+if($game_type=='PSO2'){
+    foreach($all_site_info_array['www.mugenrmt.com']['inventory'] as $p_key=>$tep_invent){
+          preg_match('/入荷通知/is',$tep_invent,$inventory_array_tep);
+          preg_match('/即時取引/is',$all_site_info_array['www.mugenrmt.com']['products_name'][$p_key],$name_array_tep);
+          if($inventory_array_tep[0]!='' && $name_array_tep[0]!=''){
+             $name_tep = $all_site_info_array['www.mugenrmt.com']['products_name'][$p_key];
+             $all_site_info_array['www.mugenrmt.com']['products_name'][$p_key]=str_replace('即時取引','即時取引_tep',$all_site_info_array['www.mugenrmt.com']['products_name'][$p_key]); 
+                
+          }
+          $product_name_tp = preg_replace('/(.*?)\(即時取引\)/i','$1$2 $3',$name_tep);
+          $product_name_tt = preg_replace('/(.*?)\(予約制\)/i','$1$2 $3',$all_site_info_array['www.mugenrmt.com']['products_name'][$p_key]);
+          if($name_tep!=''&& $product_name_tt!='' && $product_name_tt==$product_name_tp){
+             $all_site_info_array['www.mugenrmt.com']['products_name'][$p_key]=str_replace('予約制','即時取引',$all_site_info_array['www.mugenrmt.com']['products_name'][$p_key]); 
+             preg_match('/入荷通知/is',$all_site_info_array['inventory']['products_name'][$p_key],$match_inventory);
+             if($match_inventory[0]!=''){
+                 $all_site_info_array['inventory']['products_name'][$p_key]=999;
+             }
+
+          }
+    }
+}else{
+    foreach($all_site_info_array['www.mugenrmt.com']['inventory'] as $p_key=>$tep_invent){
+          preg_match('/入荷通知/is',$tep_invent,$inventory_array_tep);
+          preg_match('/予約制/is',$all_site_info_array['www.mugenrmt.com']['products_name'][$p_key],$name_array_tep);
+          if($inventory_array_tep[0]!='' && $name_array_tep[0]!=''){
+              $all_site_info_array['www.mugenrmt.com']['inventory'][$p_key]='入荷通知';
+          }else if($inventory_array_tep[0]!=''){
+              $all_site_info_array['www.mugenrmt.com']['inventory'][$p_key]=0;
+          }
+       
+    }
+}
+
     //处理数据并存储到数据库
     $collect_res_url = array();
     $collect_res_name = array();
@@ -4323,7 +4357,7 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
     if(preg_match('/予約受付中/',$old_inventory)){
-      $this_inventory = 999;
+     // $this_inventory = 999;
     }
     if(preg_match('/入荷通知/',$old_inventory)){
       $this_inventory = 999;

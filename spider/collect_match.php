@@ -2721,7 +2721,7 @@ $other_array_match = array(
             'rmtrank.com'=> array(
                         'site_names' => '<td class="colb0\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(.*)<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
                         'price' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
-                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
+                        'inventory' => '<td class="colb0\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">(\d+|.*>\d+|--|.*>--).*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>[^<]*<td class="colb2\w{0,}">.*<\/td>',
                         ), 
                      )
 );
