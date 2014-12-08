@@ -769,12 +769,7 @@ if($address_error == false && $customers_type_info_res['customers_guest_chk'] ==
   }
 
   //检测订单ID是否重复 
-  $success_flag = true;
-  $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$orders_id."'");
-  if(tep_db_num_rows($telecom_unknow_query) > 0){
-
-    $success_flag = false;
-  }
+  $success_flag = true; 
   $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$orders_id."'");  
   if(tep_db_num_rows($orders_query) > 0){
 
