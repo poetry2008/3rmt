@@ -435,8 +435,20 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      
-      if($paypalData['PAYMENTSTATUS'] == "Completed"){
+
+      //检测订单ID是否重复 
+      $success_flag = true;
+      $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$insert_id."'");
+      if(tep_db_num_rows($telecom_unknow_query) > 0){
+
+        $success_flag = false;
+      }
+      $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
+      if(tep_db_num_rows($orders_query) > 0){
+
+        $success_flag = false;
+      }
+      if($paypalData['PAYMENTSTATUS'] == "Completed" && $success_flag == true){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => $insert_id,
@@ -563,8 +575,20 @@ function getpreexpress($pre_value, $pre_pid){
     }
 
     if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      
-      if($paypalData['PAYMENTSTATUS'] == "Completed"){
+
+      //检测预约订单ID是否重复 
+      $success_flag = true;
+      $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$pre_pid."'");
+      if(tep_db_num_rows($telecom_unknow_query) > 0){
+
+        $success_flag = false;
+      }
+      $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$pre_pid."'");  
+      if(tep_db_num_rows($orders_query) > 0){
+
+        $success_flag = false;
+      }  
+      if($paypalData['PAYMENTSTATUS'] == "Completed" && $success_flag == true){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
         '`option`'      => $pre_pid,
