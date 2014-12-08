@@ -2667,6 +2667,11 @@ $search_array_match = array(
                   'inventory'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">(.*?)<\/td>', 
                   'inventory_preorder'=>'<td rowspan="3" class="ipayment">銀行振込<br\/>クレジット決済<br\/>WebMoney<\/td>.*?<td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td><td>[0-9,.]+?円<\/td>.*?<td rowspan="3">.*?<\/td>.*?<td rowspan="3">(.*?)<\/td>' 
             ),
+           'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*(<br \/>){0,}[^<]*<\/a><\/td>',
+                      'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*(<br \/>){0,}[^<]*)<\/a><\/td>'
+            ),
+
          ),
        'sell'=> array(
 		   'www.matubusi.com'=>array(
@@ -2683,10 +2688,15 @@ $search_array_match = array(
                           'inventory'=>'<td>([0-9,]+) 口[^<]*<a .*?><img [^>]*><\/a>|買取停止中'
                       ),
 
+           'rmtrank.com'=>array('url'=>'<td class="col0"><a href="([^"]*)">[^<]*(<br \/>){0,}[^<]*<\/a><\/td>',
+                      'rate' => '((<span[^>]*>|※){0,}[1-9０１２３４５６７８９]{1,}(<\/span><span[^>]*>){0,}口(=|＝|あたり){1}[^<]*(<\/span>){0,}[1-9０１２３４５６７８９,]{1,}[^<]*)($|<){1}',
+                        'products_name'=>'<td class="col0"><a href="[^"]*">([^<]*(<br \/>){0,}[^<]*)<\/a><\/td>'
+                    ),
 
          )
     )
   );
+
 
 //kakran
 $other_array_match = array(
