@@ -164,6 +164,12 @@ if($game_type=='PSO2'){
           }
        
     }
+   foreach($all_site_info_array['ftb-rmt.jp']['inventory'] as $t_key=>$tep_invent){
+        if($all_site_info_array['ftb-rmt.jp']['inventory'][$t_key]==''){
+            $all_site_info_array['ftb-rmt.jp']['inventory'][$t_key]='FTB临时';
+
+       }
+   }
 }
 
     //处理数据并存储到数据库
@@ -4356,8 +4362,8 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
 
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
-    if(preg_match('/予約受付中/',$old_inventory)){
-     // $this_inventory = 999;
+    if(preg_match('/FTB临时/',$old_inventory)){
+      $this_inventory = 999;
     }
     if(preg_match('/入荷通知/',$old_inventory)){
       $this_inventory = 999;
