@@ -1155,6 +1155,8 @@ $(document).ready(function(){
        var sleft = scroll.scrollLeft;
        site_info.scrollLeft=parseInt(sleft);
     }
+
+
  $("input[name='rate_site[]']").click( function() {
       if ( $("input[name='rate_site[]']:checked").length > 5 ) {
         $(this).attr("checked",false);
@@ -1750,9 +1752,9 @@ foreach($name_arr as $index => $name){
         echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td><td class="td_'.$site_id.'_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td>';
       }else{
         if($error_str == ''){
-          $style_str = ' style="min-width:60px" ';
-        }else{
           $style_str = ' style="min-width:70px" ';
+        }else{
+          $style_str = ' style="min-width:80px" ';
         }
         echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" align="right" '.$style_str.' onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $error_str;
