@@ -164,14 +164,15 @@ if($game_type=='PSO2'){
           }
        
     }
-    /*
    foreach($all_site_info_array['ftb-rmt.jp']['inventory'] as $t_key=>$tep_invent){
-        if($all_site_info_array['ftb-rmt.jp']['inventory'][$t_key]==''){
-            $all_site_info_array['ftb-rmt.jp']['inventory'][$t_key]='FTB临时';
-
-       }
+         preg_match('/zaikogire/is',$tep_invent,$inventory_array_tep);
+         preg_match('/予約制/is',$all_site_info_array['ftb-rmt.jp']['products_name'][$p_key],$name_array_tep);
+         if($inventory_array_tep[0]!='' && $name_array_tep[0]!=''){
+             $all_site_info_array['ftb-rmt.jp']['inventory'][$p_key]='入荷通知';
+         }else if($inventory_array_tep[0]!=''){
+             $all_site_info_array['ftb-rmt.jp']['inventory'][$p_key]=0;
+         }
    }
-   */
 }
 
     //处理数据并存储到数据库
@@ -1145,8 +1146,6 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   if($inventory == 0&&!empty($inv_price_arr)){
     $this_price = min($inv_price_arr);
   }
-  $config_price = $this_price;
-  $config_inventory = $inventory;
   $this_inventory = $inventory;
   $res_rate = 1;
   // M 個 枚 特殊处理
@@ -1184,16 +1183,13 @@ function format_price_inventory($result_arr,$value,$index,$host_rate,$this_rate,
   }
   //使用设置汇率
   if($db_rate!=0){
-    $this_price = $config_price*$host_rate/$db_rate;
-    $this_inventory = $config_inventory*$db_rate/$host_rate;
+    $this_price = $this_price*$db_rate;
+    $this_inventory = $this_inventory/$db_rate;
   }
   //预约库存处理
 
   if($this_inventory==0){
     //マツブシ http://www.matubusi.com 库存处理
-    if(preg_match('/FTB临时/',$old_inventory)){
-      $this_inventory = 999;
-    }
     if(preg_match('/入荷通知/',$old_inventory)){
       $this_inventory = 999;
     }
