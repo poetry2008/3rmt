@@ -54,9 +54,7 @@ if($_GET['action'] == 'save_category_info'){
   $auto_arr = array();
   foreach($_POST['p_key'] as $key => $value){
     $t_name = $_POST['p_name'][$key];
-    $status_arr[$t_name] = $_POST['module_type'][$value];
     $manual_arr[$t_name] = $_POST['manual'][$value];
-    $auto_arr[$t_name] = $_POST['auto_text'][$value];
   }
   $inventory_status = serialize($status_arr);
   $manual =  serialize($manual_arr);
@@ -76,11 +74,9 @@ if($_GET['action'] == 'save_category_info'){
       `site_rate` ='".$site_rate."', 
       `inventory_show` ='".$inventory_show."', 
       `inventory_flag` ='".$inventory_flag."', 
-      `inventory_status` ='".$inventory_status."', 
-      `manual` ='".$manual."',
-      `auto` ='".$auto."'
-  where id='".$_POST['info_id']."'";
- mysql_query($update_sql);
+      `manual` ='".$manual."'
+    where id='".$_POST['info_id']."'";
+    mysql_query($update_sql);
   }else{
    //新建数据
    $insert_sql = "INSERT INTO `category_info` VALUES 
@@ -91,9 +87,7 @@ if($_GET['action'] == 'save_category_info'){
    '".$site_rate."', 
    '".$inventory_show."', 
    '".$inventory_flag."', 
-   '".$inventory_status."', 
-   '".$manual."', 
-   '".$auto."')";
+   '".$manual."')";
    mysql_query($insert_sql);
   }
   $location_href = $_SERVER['HTTP_REFERER'];
@@ -426,6 +420,54 @@ function get_style($api_name,$api_info,$host_site_id,$site_select,$p_name,$p_typ
   }
   return array('yellow_site'=>$yellow_site,'is_error'=>$target_error,'white_site'=>$white_site,'black_site'=>$black_site);
 }
+function tep_display_attention_1_3($str) {
+  $str2 = $str;
+  if (strlen($str) > 8) {
+    $ret .= floor(substr($str,0,strlen($str)-8)) . '億';
+  }
+  if (intval(substr($str,-8)) >= 10000000) {
+    $tmp = substr();
+    $ret .= intval(substr($str,-8)/10000000) . '千';
+    $a = true;
+  }
+  if (intval(substr($str,-7)) >= 10000) {
+    $ret .= intval(substr($str,-7)/10000) . '万';
+  } else if ($str > 10000 && $a) {
+    $ret .= '万';
+  }
+  if (intval(substr($str,-4)) >= 1000) {
+    $ret .= intval(substr($str,-4)/1000) . '千';
+  }
+  if (intval(substr($str,-3))) {
+    $ret .= intval(substr($str,-3));
+  }
+  if(intval($str) >= 1000){
+    return '&nbsp;&nbsp;'.$ret.'（'.number_format($str2).'）';
+  }else{
+    return '&nbsp;&nbsp;'.$ret;
+  }
+}
+function tep_get_rate_str($api_info,$game){
+  $rate = $api_info[0]['rate'];
+  $rate_other = $api_info[0]['rate_other'];
+  $res_str = tep_display_attention_1_3($rate).$rate_other;
+  if($game == 'ARAD'){
+    $res_str = '1個あたり金貨&nbsp;&nbsp;'.$res_str;
+  }else if($game == 'MU'){
+  	$res_str = '1個あたり&nbsp;&nbsp;祝福の宝石&nbsp;&nbsp;'.$res_str;
+  }else if($game == 'rose'){
+    $res_str = '1個あたり貯金箱&nbsp;&nbsp;'.$res_str;
+  }else if($game == 'RO'){
+  	$res_str = '1個あたりインゴット&nbsp;&nbsp;'.$res_str;
+  }else {
+  	 $res_str = '1個あたり&nbsp;&nbsp;'.$res_str;
+  }
+  if(empty($api_info)){
+    return '';
+  }
+  return $res_str;
+}
+
 
 function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
   $sql = "select * from category 
@@ -455,35 +497,21 @@ function get_site_title_url($site_id,$game,$flag_type,$site_title_url){
       }
     }else if($host_url=='www.mugenrmt.com'){
       $return_url = $site_title_url[$game][$host_url];
+    }else if($host_url=='www.asahi-rmt-service.com'){
+      $return_url = $site_title_url[$game][$host_url];
+      if($flag_type==0){
+        if($game=='FF11'){
+          $return_url = str_replace('sale_yoyaku.html','purchase.html',$return_url);
+        }else{
+          $return_url = str_replace('sale.html','purchase.html',$return_url);
+        }
+      }
     }else{
       $return_url = $url;
     }
     return $return_url;
   }else{
     return '';
-  }
-}
-function get_product_bg_color($inventory,$status,$status_value){
-  if($status == 'manual'){
-    if($status_value == 'less'){
-      return 'less';
-    }else if($status_value == 'zero'){
-      return 'zero';
-    }else{
-      return 'normal';
-    }
-  }else if($status == 'auto'){
-    if($inventory>0){
-      if($inventory>$status_value){
-        return 'normal';
-      }else{
-        return 'less';
-      }
-    }else{
-      return 'zero';
-    }
-  }else{
-    return 'normal';
   }
 }
 function get_iimy_data(){
@@ -548,6 +576,8 @@ function get_iimy_data(){
              'avg' => $search_array['avg'][$key],
              'quantity' => $search_array['inventory'][$key],
              'price' => $search_array['price'][$key],
+             'rate' => $search_array['rate'][$key],
+             'rate_other' => $search_array['rate_other'][$key],
            );
          $tools_index[$key] = $value;
           $search_array['price'][$key] = str_replace(',','',$search_array['price'][$key]);
@@ -840,9 +870,7 @@ if($c_info_row = mysql_fetch_array($c_info_query)){
   $show_site_rate = $temp_site_rate[$flag_type];
   $show_inventory_show = $c_info_row['inventory_show']; 
   $show_inventory_flag = $c_info_row['inventory_flag']; 
-  $show_inventory_status = unserialize($c_info_row['inventory_status']); 
   $show_manual =  unserialize($c_info_row['manual']); 
-  $show_auto = unserialize($c_info_row['auto']);
 }else{
   $c_info_arr = array();
 }
@@ -1035,7 +1063,6 @@ echo '<form name="form_category_info" method="post" action="show.php?action=save
   </div>
   <div class="right_info">
    <div class="left" style="width:17%">
-   <div class="left" style="width:100%">&nbsp;</div>
    <div class="left">
      <?php
        //输出当前分类下的所有JP 产品
@@ -1066,20 +1093,13 @@ echo '<form name="form_category_info" method="post" action="show.php?action=save
      </ul>
    </div>
    </div>
-    <div class="left" style="width:30%">
-      <div class="left" style="width:100%">⋆手動設定</div>
+    <div class="left" style="width:60%">
       <div class="left">
       <ul>
       <?php 
        //手动的所有设置
        foreach($p_name_arr as $p_key => $p_name){
-         $type_checked = '';
-         if($show_inventory_status[$p_name] == 'manual'||empty($show_inventory_status)||$show_inventory_status==null){
-           $type_checked = ' checked ';
-         }
          echo '<li>';
-         echo '<input type="checkbox" '.$type_checked.' class="module_type_'.$p_key.'" name="module_type['.$p_key.']" value="manual">';
-         echo '&nbsp';
          echo '<input type="radio" name="manual['.$p_key.']" value="normal" '.(($show_manual[$p_name]=='normal'||$show_manual[$p_name]==null)?' checked ':'').'>';
          echo '普通';
          echo '&nbsp';
@@ -1088,28 +1108,6 @@ echo '<form name="form_category_info" method="post" action="show.php?action=save
          echo '&nbsp';
          echo '<input type="radio" name="manual['.$p_key.']" value="zero" '.($show_manual[$p_name]=='zero'?' checked ':'').'>';
          echo  '無し';
-         echo '</li>';
-       }
-      ?>
-      </ul>
-      </div>
-    </div>
-    <div class="left" style="width:30%">
-      <div class="left" style="width:100%">⋆JPの在庫により自動判断</div>
-      <div class="left">
-      <ul>
-      <?php 
-       //自动的所有设置
-       foreach($p_name_arr as $p_key => $p_name){
-         $type_checked = '';
-         if($show_inventory_status[$p_name] == 'auto'){
-           $type_checked = ' checked ';
-         }
-         echo '<li>';
-         echo '<input type="checkbox" '.$type_checked.' class="module_type_'.$p_key.'" name="module_type['.$p_key.']" value="auto">';
-         echo '&nbsp;';
-         echo '<input style="text-align:right" type="text" name="auto_text['.$p_key.']" size="10" value="'.($show_auto[$p_name]!=0?$show_auto[$p_name]:0).'">';
-         echo '以下は小となる';
          echo '</li>';
        }
       ?>
@@ -1410,49 +1408,50 @@ function update_products_price(category_name,products_name,products_type,product
 </script>
 <?php
   $site_title_url = array(
-    'FF11' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ff11.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ff11.html'),
-    'RS' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/redstone.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/RedStone.html'),
-    'DQ10' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wii.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dqx.html'),
-    'TERA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/TERA.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tera.html'),
-    'RO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ro.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ro.html'),
-    'ARAD' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aradosenki.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/arad.html'),
-    'nobunaga' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/nobunaga.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/nobunaga.html'),
-    'PSO2' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/PSO2.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/PSO2.html'),
-    'AION' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aion.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/aion.html'),
-    'FF14' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/FF14RMT.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/FF14NAEUrmt.html'),
-    'genshin' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/InnocentWorld.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fantasyfrontier.html'),
-    'latale' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/latale.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/latale.html'),
-    'L1' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lineage.html'),
-    'WZ' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wizardry.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/Wizardry.html'),
-    'blade' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/BladeSoul.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/BNS.html'),
-    'CABAL' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cabal.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cabal.html'),
-    'megaten' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/imagine.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/imagine.html'),
-    'EWD' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Elsword.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/elsword.html'),
-    'LH' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lucentheart.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/lucentheart.html'),
-    'HR' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mabinogi:heroes.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogiheroes.html'),
-    'AA' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ArcheAge.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/archeage.html'),
-    'ECO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/eco.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/eco.html'),
-    'FNO' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Finding%20Neverland%20Online.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fno.html'),
-    'SUN' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/sun.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/sun.html'),
-    'talesweave' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/talesweaver.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/talesweaver.html'),
-    'MU' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mu.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mu.html'),
-    'MS' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/maplestory.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/MapleStory.html'),
-    'cronous' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cronous.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cronous.html'),
-    'tenjouhi' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/tenjohi.html'),
-    'rose' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rose.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rose.html'),
-    'hzr' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/harezora.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/haresora.html'),
-    'dekaron' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/dekaron.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dekaron.html'),
-    'fez' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/fez.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fez.html'),
-    'moe' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/senmado.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/moe.html'),
-    'mabinogi' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Mabinogi.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogi.html'),
-    'rohan' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rohan.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rohan.html'),
-    'tartaros' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Tartaros.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tartaros.html'),
- 'atlantica' => array('www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/atlantica.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/atlantica.html'),
+    'FF11' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/ff/sale_yoyaku.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ff11.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ff11.html'),
+    'RS' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/redstone/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/redstone.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/RedStone.html'),
+    'DQ10' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/dqx/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wii.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dqx.html'),
+    'TERA' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/tera/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/TERA.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tera.html'),
+    'RO' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/ragnarok/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ro.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/ro.html'),
+    'ARAD' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aradosenki.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/arad.html'),
+    'nobunaga' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/nobunaga.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/nobunaga.html'),
+    'PSO2' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/PSO2.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/PSO2.html'),
+    'AION' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/aion.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/aion.html'),
+    'FF14' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/FF14RMT.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/FF14NAEUrmt.html'),
+    'genshin' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/InnocentWorld.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fantasyfrontier.html'),
+    'latale' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/latale/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/latale.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/latale.html'),
+    'L1' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lineage.html'),
+    'WZ' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/wizardry.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/Wizardry.html'),
+    'blade' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/BladeSoul.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/BNS.html'),
+    'CABAL' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cabal.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cabal.html'),
+    'megaten' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/imagine.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/imagine.html'),
+    'EWD' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Elsword.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/elsword.html'),
+    'LH' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/lucentheart.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/lucentheart.html'),
+    'HR' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mabinogi:heroes.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogiheroes.html'),
+    'AA' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/ArcheAge.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/archeage.html'),
+    'ECO' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/eco.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/eco.html'),
+    'FNO' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Finding%20Neverland%20Online.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fno.html'),
+    'SUN' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/sun.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/sun.html'),
+    'talesweave' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/talesweaver.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/talesweaver.html'),
+    'MU' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/mu.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mu.html'),
+    'MS' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/maplestory.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/MapleStory.html'),
+    'cronous' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/cronous.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/cronous.html'),
+    'tenjouhi' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/tenjohi.html'),
+    'rose' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rose.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rose.html'),
+    'hzr' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/harezora.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/haresora.html'),
+    'dekaron' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/dekaron.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/dekaron.html'),
+    'fez' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/fez.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/fez.html'),
+    'moe' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/senmado.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/moe.html'),
+    'mabinogi' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Mabinogi.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/mabinogi.html'),
+    'rohan' => array('www.asahi-rmt-service.com' => 'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/rohan.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/rohan.html'),
+    'tartaros' => array('www.asahi-rmt-service.com'=>'http://www.asahi-rmt-service.com/' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/Tartaros.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/tartaros.html'),
+ 'atlantica' => array('www.asahi-rmt-service.com'=>'http://www.asahi-rmt-service.com/atlantica/sale.html' , 'www.rmtsonic.jp' => 'http://www.rmtsonic.jp/games/atlantica.html' , 'www.mugenrmt.com' => 'http://www.mugenrmt.com/rmt/atlantica.html'),
   );
 //获取主站的URL
 
 echo '<table width="100%"><tr height="30px"><td'.(!isset($_GET['flag']) || $_GET['flag'] == 'buy' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=buy'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">販売</a></td><td'.($_GET['flag'] == 'sell' ? ' style="background-color:#666666;"' : '').'><a href="show.php?flag=sell'.(isset($_GET['game']) ? '&game='.$_GET['game'] : '').'&num='.time().'">買取</a></td>';
 $game = isset($_GET['game']) ? $_GET['game'] : 'FF11';
+/*
 $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
                    'RO'=>'1個あたり  1億（100,000,000）ゼニー(Zeny)',
                    'RS'=>'1個あたりインゴット  1本(1億ゴールド)',
@@ -1498,9 +1497,13 @@ $game_info = array('FF14'=>'1個あたり  10万（100,000）ギル(Gil)',
      'atlantica'=>'1個あたり  10億（1,000,000,000）G',
      'tartaros'=>'1個あたり  100万（1,000,000）リル',
 );
+*/
 $date_query = mysql_query("select max(collect_date) as collect_date from category where category_name='".$game."' and site_id!=7");
 $date_array = mysql_fetch_array($date_query);
-echo '<td align="right">最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;'.$game_info[$game].'</td></tr></table>';
+echo '<td align="right">';
+echo '最終更新&nbsp;&nbsp;'.date('Y/m/d H:i',strtotime($date_array['collect_date'])).'&nbsp;&nbsp;&nbsp;';
+echo tep_get_rate_str($api_info,$game);
+echo '</td></tr></table>';
 //获得所有网站的 标题 
 //数据输出的三个数组
 $left_info = array();
@@ -1606,17 +1609,11 @@ foreach($left_title as $title){
 echo '</tr>';
 
 //输出详细信息
-$p_type_arr = array();
+$style_row_all = array();
 foreach($name_arr as $index => $name){
   $check_pid_row = $check_pid[array_search($name,$check_name)];
-  $p_status = $show_inventory_status[$name];
-  if($p_status == 'manual'){
-    $p_status_value = $show_manual[$name];
-  }else{
-    $p_status_value = $show_auto[$name];
-  }
-  $bg_color_type = get_product_bg_color($host_info[$index]['product_inventory'],$p_status,$p_status_value);
-  $p_type_arr[$index] = $bg_color_type;
+  $p_status_value = $show_manual[$name];
+  $bg_color_type = $p_status_value;
   if($bg_color_type == 'zero'){
     $p_bg_color = '#0000FF';
   }else if($bg_color_type == 'less'){
@@ -1624,6 +1621,9 @@ foreach($name_arr as $index => $name){
   }else{
     $p_bg_color = '#FFFFFF';
   }
+  $p_type = $p_status_value;
+  $style_row_arr = get_style($api_name,$api_info,$host_site_id,$site_select,$name,$p_type,$flag_type,$game,$show_white_site_select);
+  $style_row_all[$index] = $style_row_arr;
   
   echo '<tr class="tr_line" height="30px" id="tr_start_'.$index.'">';
   echo '<td  bgcolor="'.$p_bg_color.'" class="td_name" align="left" nowrap="nowrap" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
@@ -1638,8 +1638,8 @@ foreach($name_arr as $index => $name){
   }
   echo '<td class="td_first" align="center" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
   if(count($price_arr)>0){
-    echo "<input type='radio' ".(($check_pid_row == -1 )?'checked':'')." name='radio_".$index."' id='first_value' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",-1)'>";
-    echo '<label for="first_value">'.price_number_format($price_arr[0]).'円</label>';
+    echo "<input type='radio' ".(($check_pid_row == -1 )?'checked':'')." name='radio_".$index."' id='first_value_".$index."' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",-1)'>";
+    echo '<label for="first_value_'.$index.'">'.price_number_format($price_arr[0]).'円</label>';
   }else{
     echo '<label for="first_value">-円</label>';
   }
@@ -1647,8 +1647,8 @@ foreach($name_arr as $index => $name){
   //最高最低第二个值
   echo '<td class="td_second" align="center" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
   if(count($price_arr)>1){
-    echo "<input type='radio' ".(($check_pid_row == 0 )?'checked':'')." name='radio_".$index."' id='second_value' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",0)'>";
-    echo '<label for="second_value">'.price_number_format($price_arr[1]).'円</label>';
+    echo "<input type='radio' ".(($check_pid_row == 0 )?'checked':'')." name='radio_".$index."' id='second_value_".$index."' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",0)'>";
+    echo '<label for="second_value_'.$index.'">'.price_number_format($price_arr[1]).'円</label>';
   }else{
     echo '<label for="second_value">-円</label>';
   }
@@ -1692,17 +1692,8 @@ foreach($right_title as $r_key => $title){
 }
 echo '</tr>';
 foreach($name_arr as $index => $name){
-  $p_type = $p_type_arr[$index];
-  $check_pid_row = $check_pid[array_search($name,$check_name)];
-  foreach($show_site_arr as $site_id){
-    $index_other = array_search($name,$all_site_name_arr[$site_id]);
-    if($check_pid_row==$all_site_info_arr[$site_id][$index_other]['product_id']){
-      $check_site_id = $site_id;
-      break;
-    }
-  }
-  $style_row_arr = get_style($api_name,$api_info,$host_site_id,$site_select,$name,$p_type,$flag_type,$game,$show_white_site_select);
   //开始处理 处理 rmt 主站之外每一个网站的数据信息显示
+  $style_row_arr = $style_row_all[$index];
   if(isset($style_row_arr['black_site'])&&!empty($style_row_arr['black_site'])){
     $black_site_arr = array();
     foreach($style_row_arr['black_site'] as $s => $value){
@@ -1727,8 +1718,9 @@ foreach($name_arr as $index => $name){
         $error_str = '<span id="enable_img" ><img width="10" height="10" src="images/icon_alarm_log.gif"></span>';
       }
       $temp_inventory_str = '';
-      $temp_price_str = "<font style='font-weight: bold;'><input ".(($check_pid_row == $temp_pid )?'checked':'')." name='radio_".$index."' type='radio' id='first_value' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",\"".$temp_pid."\")'>";
-      $temp_price_str .= "<label for='".$temp_pid."'>".$temp_price."円</label></font>";
+      $temp_price_str = "<font style='font-weight: bold;'><input ".(($check_pid_row == $temp_pid )?'checked':'')." name='radio_".$index."' type='radio'
+        id='radio_".$temp_pid."_".$index."' onclick='update_products_price(\"".$game."\",\"".$name."\",\"".$flag."\",\"".$temp_pid."\")'>";
+      $temp_price_str .= "<label for='radio_".$temp_pid."_".$index."'>".$temp_price."円</label></font>";
       $temp_inventory_str .= $temp_inventory.'個';
     }
     if(in_array($site_id,$black_site_arr)){
