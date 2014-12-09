@@ -1132,6 +1132,19 @@ echo '</form>';
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+
+     var td_left_height = $('.td_first').height();
+     var td_right_height = $('.td_2_price').height();
+
+     if(td_left_height>td_right_height){
+         $('#td2 td').height(td_left_height);
+         $('#info_left td').height(td_left_height);
+     }else{
+         $('#info_left td').height(td_right_height);
+         $('#td2 td').height(td_right_height);
+     }
+    //  alert($('.td_first').height()+'  '+$('.td_2_price').height());
+
      document.body.style.cssText='overflow-x:hidden;';
      var site_info = scroll_bar_self('site_info');
      var scroll = scroll_bar_self('scroll');
@@ -1175,6 +1188,24 @@ $(document).ready(function(){
        });
     });
 $(window).resize(function() {
+
+    /*
+     *td自适应宽度
+     */
+  
+    var td_left_height = $('.td_first').height();
+    var td_right_height = $('.td_2_price').height();
+
+    if(td_left_height>td_right_height){
+        $('#td2 td').height(td_left_height);
+        $('#info_left td').height(td_left_height);
+    }else{
+        $('#info_left td').height(td_right_height);
+        $('#td2 td').height(td_right_height);
+    }
+    //alert($('.td_first').height()+'   '+$('.td_2_price').height());
+
+
     var info_left_widht = $('#info_left').width();
     var info_width = document.body.clientWidth-info_left_widht;
     $("#site_info").width(info_width);
