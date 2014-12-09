@@ -962,7 +962,7 @@ echo '<form name="form_category_info" method="post" action="show.php?action=save
     echo $site_info_arr[$index]['site_name'];
     echo '</li>';
     echo '<li>';
-    echo '<input  style="text-align:right" type="text"name="rate_text['.$site_info_arr[$index]['site_id'].']" size="10"  value="'.($show_site_rate[$site_info_arr[$index]['site_id']]!=0?$show_site_rate[$site_info_arr[$index]['site_id']]:0).'">';
+    echo '<input style="text-align:right" type="text" name="rate_text['.$site_info_arr[$index]['site_id'].']" size="10"  value="'.($show_site_rate[$site_info_arr[$index]['site_id']]!=0?$show_site_rate[$site_info_arr[$index]['site_id']]:0).'">';
     echo '</li>';
     $index++;
     $checked_temp = '';
@@ -1132,6 +1132,29 @@ echo '</form>';
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+     document.body.style.cssText='overflow-x:hidden;';
+     var site_info = scroll_bar_self('site_info');
+     var scroll = scroll_bar_self('scroll');
+     var t = scroll_bar_self('t');
+     var body_client_width = document.body.offsetWidth;
+    
+     var td1_scroll_width = scroll_bar_self('info_left').offsetWidth;
+     var site_info_scroll_width = scroll_bar_self('td2').scrollWidth;
+  
+    var min = body_client_width;
+    var max = site_info_scroll_width+td1_scroll_width;
+
+    scroll.style.cssText = "position:fixed;bottom:0px;border:1px solid #fff;"
+                          +"width:"+min+"px;"
+                          +"height:20px;"
+                          +"overflow-x:auto;";
+                          t.style.cssText = "border:1px solid #fff;"
+                          +"width:"+max+"px;"
+                          +"height:1px";
+    scroll.onscroll = function(){
+       var sleft = scroll.scrollLeft;
+       site_info.scrollLeft=parseInt(sleft);
+    }
  $("input[name='rate_site[]']").click( function() {
       if ( $("input[name='rate_site[]']:checked").length > 5 ) {
         $(this).attr("checked",false);
@@ -1392,6 +1415,9 @@ function update_products_price(category_name,products_name,products_type,product
   }); 
   },500);
 }
+function scroll_bar_self(idvalue) {
+  return document.getElementById(idvalue);
+}
 
 
 </script>
@@ -1650,7 +1676,7 @@ foreach($name_arr as $index => $name){
       echo '<td class="td_host_price" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')"  style="min-width:50px"><font style="font-weight: bold;">';
       echo price_number_format($host_info[$index]['product_price']).'円';
       echo '</font></td>';
-      echo '<td class="td_host_inventory" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')"  style="min-width:50px">';
+      echo '<td class="td_host_inventory" align="right" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_host\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_host\')" style="min-width:55px;">';
       echo show_effective_number($host_info[$index]['product_inventory']).'個';
       echo '</td>';
     }
@@ -1667,8 +1693,8 @@ foreach($name_arr as $index => $name){
 }
 echo '</table>';
 echo '</td>';
-echo '<td width="77%" valign="top">';
-echo '<div id="site_info" style="min-width:465px;height:100%; overflow-x:scroll;">';
+echo '<td id="td2" width="77%" valign="top">';
+echo '<div id="site_info" style="min-width:465px;height:100%; overflow-x:hidden;">';
 echo '<table style="min-width:465px;" class="dataTableContent_right" width="100%" cellspacing="0" cellpadding="2" border="0">';
 $show_site_arr = array();
 echo '<tr height="30px" class="dataTableHeadingRow">';
@@ -1724,15 +1750,15 @@ foreach($name_arr as $index => $name){
         echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td><td class="td_'.$site_id.'_inventory" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >&nbsp;</td>';
       }else{
         if($error_str == ''){
-          $style_str = ' style="min-width:70px" ';
+          $style_str = ' style="min-width:60px" ';
         }else{
-          $style_str = ' style="min-width:80px" ';
+          $style_str = ' style="min-width:70px" ';
         }
         echo '<td '.$td_bg_color.' class="td_'.$site_id.'_price" align="right" '.$style_str.' onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $error_str;
         echo $temp_price_str;
         echo '</td>';
-        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_inventory" align="right" style="min-width:60px" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
+        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_inventory" align="right" style="min-width:60px;" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $temp_inventory_str;
         echo '</td>';
       }
@@ -1767,6 +1793,21 @@ echo '<tr><td><input type="button" name="button_update" value="更新"  onclick=
 echo '&nbsp;&nbsp;<input type="button" onclick="get_category_sort()" value="ゲームタイトル並び順を更新">';
 echo '</td>';
 echo '</tr></table>';
+
+
+/* 滚动条 */
+echo '<table style="min-width:750px;" width="100%" height="30px" border="0">';
+echo '<tr><td></td></tr>';
+echo '</table>';
+echo '<table style="min-width:750px;" width="100%" cellspacing="0" cellpadding="0" border="0">';
+echo '<tr>';
+echo '<td widht="100%" valign="top">';
+echo '<div id="scroll">';
+echo '<table id="t" ><tr><td></td></tr> </table>';
+echo '</div>';
+echo '</td>';
+echo '</tr>';
+echo '</table>';
 /*end*/
 ?>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
