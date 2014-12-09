@@ -1132,17 +1132,6 @@ echo '</form>';
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-<?php foreach($p_name_arr as $p_key => $p_name){ ?>
-  $('.module_type_<?php echo $p_key;?>').each(function(){
-    $(this).click(function(){
-      if($(this).attr('checked')){
-        $('.module_type_<?php echo $p_key;?>').removeAttr('checked');
-        $(this).attr('checked','checked');
-      }
-    });
-  });
-<?php } ?>
- 
  $("input[name='rate_site[]']").click( function() {
       if ( $("input[name='rate_site[]']:checked").length > 5 ) {
         $(this).attr("checked",false);
