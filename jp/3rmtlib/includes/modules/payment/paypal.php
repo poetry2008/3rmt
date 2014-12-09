@@ -438,9 +438,11 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
 
       //检测订单ID是否重复 
       $success_flag = true;
+      $orders_id_array = array();
       $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$insert_id."'");
       if(tep_db_num_rows($telecom_unknow_query) > 0){
-        
+
+        $orders_id_array[] = $insert_id; 
         $success_flag = false;
         //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
         for($orders_num = 0;$orders_num < 10;$orders_num++){
@@ -451,12 +453,15 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             $_SESSION['insert_id'] = $insert_id;
             $success_flag = true;
             break;
+          }else{
+            $orders_id_array[] = $nid; 
           }
         }
       }
       $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
       if(tep_db_num_rows($orders_query) > 0){
 
+        $orders_id_array[] = $insert_id;
         $success_flag = false;
         //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
         for($orders_num = 0;$orders_num < 10;$orders_num++){
@@ -467,15 +472,18 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             $_SESSION['insert_id'] = $insert_id;
             $success_flag = true;
             break;
+          }else{
+            $orders_id_array[] = $nid; 
           }
         }
       }
+      $orders_id_array = array_unique($orders_id_array);
       if($success_flag == false){
 
         //发送电子邮件
         $message = new email(array('X-Mailer: iimy Mailer'));
         $orders_mail_title = 'paypal error';
-        $orders_mail_text = 'ID: '.$insert_id."\n";
+        $orders_mail_text = 'ID: '.implode(';',$orders_id_array)."\n";
         $orders_mail_text .= 'TIME: '.date('Y-m-d H:i:s')."\n";
         $text = $orders_mail_text;  
         $message->add_html(nl2br($orders_mail_text), $text);
@@ -613,16 +621,58 @@ function getpreexpress($pre_value, $pre_pid){
 
       //检测预约订单ID是否重复 
       $success_flag = true;
+      $orders_id_array = array();
       $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$pre_pid."'");
       if(tep_db_num_rows($telecom_unknow_query) > 0){
 
+        $orders_id_array[] = $pre_pid;  
         $success_flag = false;
+        //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
+        for($orders_num = 0;$orders_num < 10;$orders_num++){
+          $nid = date('Ymd-His').ds_makeRandStr(2);
+          $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$nid."'");
+          if(tep_db_num_rows($telecom_unknow_query) == 0){
+            $pre_pid = $nid;
+            $success_flag = true;
+            break;
+          }else{
+            $orders_id_array[] = $nid; 
+          }
+        }
       }
       $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$pre_pid."'");  
       if(tep_db_num_rows($orders_query) > 0){
 
+        $orders_id_array[] = $pre_pid;
         $success_flag = false;
-      }  
+        //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
+        for($orders_num = 0;$orders_num < 10;$orders_num++){
+          $nid = date('Ymd-His').ds_makeRandStr(2);
+          $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$nid."'");  
+          if(tep_db_num_rows($orders_query) == 0){
+            $pre_pid = $nid;
+            $success_flag = true;
+            break;
+          }else{
+            $orders_id_array[] = $nid; 
+          }
+        }
+      }
+      $orders_id_array = array_unique($orders_id_array);
+      if($success_flag == false){
+
+        //发送电子邮件
+        $message = new email(array('X-Mailer: iimy Mailer'));
+        $orders_mail_title = 'paypal error';
+        $orders_mail_text = 'ID: '.implode(';',$orders_id_array)."\n";
+        $orders_mail_text .= 'TIME: '.date('Y-m-d H:i:s')."\n";
+        $text = $orders_mail_text;  
+        $message->add_html(nl2br($orders_mail_text), $text);
+        $message->build_message();
+        //Administrator
+        $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+      } 
+        
       if($paypalData['PAYMENTSTATUS'] == "Completed" && $success_flag == true){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
