@@ -25,20 +25,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
 
-  //检测订单、预约订单ID是否重复 
-  $success_flag = true;
-  $telecom_unknow_query = tep_db_query("select id from telecom_unknow where `option`='".$w_option."'");
-  if(tep_db_num_rows($telecom_unknow_query) > 0){
-
-    $success_flag = false;
-  }
-  $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$w_option."'");  
-  if(tep_db_num_rows($orders_query) > 0){
-
-    $success_flag = false;
-  }
-
-  if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email'] && $success_flag == true) {
+  if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {
     // OK
     $payment_modules = payment::getInstance($orders['site_id']); 
     $payment_code = payment::changeRomaji($orders['payment_method'], PAYMENT_RETURN_TYPE_CODE);    
