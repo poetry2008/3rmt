@@ -771,9 +771,11 @@ if($telecom_option_ok == true && $payment_flag == true){
   }
 }
 $orders_id_array = array();
+$time_array = array();
 $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
 if(tep_db_num_rows($orders_query) > 0){
   $orders_id_array[] = $insert_id;
+  $time_array[] = date('Y-m-d H:i:s');
   $success_flag = false;
   //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
   for($orders_num = 0;$orders_num < 10;$orders_num++){
@@ -786,6 +788,7 @@ if(tep_db_num_rows($orders_query) > 0){
       break;
     }else{
       $orders_id_array[] = $nid;
+      $time_array[] = date('Y-m-d H:i:s');
     }
   }
 }
@@ -793,9 +796,12 @@ if($success_flag == false){
 
   //发送电子邮件
   $message = new email(array('X-Mailer: iimy Mailer'));
-  $orders_mail_title = 'paypal error';
-  $orders_mail_text = 'ID: '.implode(';',$orders_id_array)."\n";
-  $orders_mail_text .= 'TIME: '.date('Y-m-d H:i:s')."\n";
+  $orders_mail_title = 'orders error';
+  $orders_mail_text = 'PAYMENT: '.$payment."\n\n";
+  foreach($orders_id_array as $key=>$value){
+    $orders_mail_text .= 'ID: '.$value."\n";
+    $orders_mail_text .= 'TIME: '.$time_array[$key]."\n\n";
+  }
   $text = $orders_mail_text;  
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
