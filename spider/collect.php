@@ -4094,7 +4094,7 @@ function match_data_iimy($game_type,$c_type,$fix_url,$product_name){
            }
        }
        if($game_type=='FF14'){
-          if(strpos($fix_url,'mugenrmt')){
+          if(strpos($fix_url,'mugenrmt')||strpos($fix_url,'matubusi')){
              $product_real_name = str_replace('(LEGASY)','',$product_name);
              if(strpos($product_name,'Valefor')!==false){
                $product_real_name = 'Valefora';
