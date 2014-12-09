@@ -2402,6 +2402,7 @@ display:inline-block;
 }
 .info_site{
   position:relative;
+ 
 }
 .info_inventory{
   position:relative;
@@ -2417,23 +2418,53 @@ display:inline-block;
  border: 1px;
  margin-left: 8%;
  width:15%;
+
 }
 .right_info,.right_info_site {
  float: left;
  border: 1px;
  width:77%;
+
 }
+.price_title_left {
+ float: left;
+ border: 1px;
+ background:#333;
+ height:22px;
+ color:#fff;
+ line-height:22px;
+ width:95%;
+ font-size:16px;
+ text-indent:30px;
+ 
+}
+.price_title_right {
+ float:right;
+ background:#333;
+ height:22px;
+ color:#fff;
+ line-height:22px;
+ width:5%;
+
+}
+.price_title_right a{
+	color:#fff;
+}
+
 .left {
  float: left;
  border: 1px;
+ 
 }
 .right {
  float: right;
  border: 1px;
+
 }
 .center{
  text-align: center;
  border: 1px;
+  font-size:16px;
 }
 .left, ul {
   list-style-type:none;
