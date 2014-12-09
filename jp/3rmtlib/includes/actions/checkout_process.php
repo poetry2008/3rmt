@@ -772,12 +772,31 @@ if($telecom_option_ok == true && $payment_flag == true){
 }
 $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$insert_id."'");  
 if(tep_db_num_rows($orders_query) > 0){
-
   $success_flag = false;
+  //如果订单ID存在的话，最多循环10次生成新订单ID，最后如果还存在的话，跳转到注文失败页面，并发电子邮件
+  for($orders_num = 0;$orders_num < 10;$orders_num++){
+    $nid = date('Ymd-His').ds_makeRandStr(2);
+    $orders_query = tep_db_query("select orders_id from ".TABLE_ORDERS." where orders_id='".$nid."'");  
+    if(tep_db_num_rows($orders_query) == 0){
+      $insert_id = $nid;
+      $_SESSION['insert_id'] = $insert_id;
+      $success_flag = true;
+      break;
+    }
+  }
 }
-
 if($success_flag == false){
 
+  //发送电子邮件
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $orders_mail_title = 'paypal error';
+  $orders_mail_text = 'ID: '.$insert_id."\n";
+  $orders_mail_text .= 'TIME: '.date('Y-m-d H:i:s')."\n";
+  $text = $orders_mail_text;  
+  $message->add_html(nl2br($orders_mail_text), $text);
+  $message->build_message();
+  //Administrator
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS));
   exit;
 }
