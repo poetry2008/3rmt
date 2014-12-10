@@ -1133,6 +1133,15 @@ echo '</form>';
 <script type="text/javascript">
 $(document).ready(function(){
 
+  $(document).keyup(function(event) {
+    if (event.which == 27) {
+      //esc 
+      if ($('#category_info_box').css('display') != 'none') {
+        close_category_info();
+      }
+    }
+    });
+
      var td_left_height = $('.td_first').height();
      var td_right_height = $('.td_2_price').height();
 
@@ -1676,6 +1685,9 @@ foreach($name_arr as $index => $name){
   echo '<tr class="tr_line" height="30px" id="tr_start_'.$index.'">';
   echo '<td  bgcolor="'.$p_bg_color.'" class="td_name" align="left" nowrap="nowrap" onmouseover="onmouseover_style(this,\''.$index.'\',false)"; onmouseout="onmouseout_style(this,\''.$index.'\',false)" >';
   echo $name;
+  if($style_row_arr[$index]['is_error']){
+    echo '<img src="images/blink_exclamation.gif" alt="target_error">';
+  }
   echo '</td>';
   //最高最低值
   $price_arr = array_unique($price_info_arr[$index]);
@@ -1791,7 +1803,7 @@ foreach($name_arr as $index => $name){
         echo $error_str;
         echo $temp_price_str;
         echo '</td>';
-        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_inventory" align="right" style="min-width:60px;" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
+        echo '<td '.$td_bg_color.' class="td_'.$site_id.'_inventory" align="right" style="min-width:50px;" onmouseover="onmouseover_style(this,\''.$index.'\',\'td_'.$site_id.'\')"; onmouseout="onmouseout_style(this,\''.$index.'\',\'td_'.$site_id.'\')" >';
         echo $temp_inventory_str;
         echo '</td>';
       }
